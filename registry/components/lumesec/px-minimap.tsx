@@ -17,10 +17,5 @@ export type PxMinimapProps = LumesecElementProps<PxMinimapElement>;
  * @see https://elements.lumesec.ai/components/pixel-lab/minimap
  */
 export function PxMinimap({ ...props }: PxMinimapProps) {
-  return useLumesecElement(
-    "px-minimap",
-    props,
-    {},
-    {},
-  );
+  return useLumesecElement("px-minimap", props, {}, {});
 }

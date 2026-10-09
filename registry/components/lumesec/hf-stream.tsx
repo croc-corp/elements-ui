@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-stream.element";
 /** The `<hf-stream>` element, with its properties and methods. */
 export type HfStreamElement = ElementModule.HStream;
 
-export interface HfStreamProps extends Omit<LumesecElementProps<HfStreamElement>, "text" | "delay" | "loop" | "onStart" | "onDone"> {
+export interface HfStreamProps extends Omit<
+  LumesecElementProps<HfStreamElement>,
+  "text" | "delay" | "loop" | "onStart" | "onDone"
+> {
   /** Text to stream. Defaults to a built-in sample paragraph. Split at whitespace; each word counts as one token. Re-read on each start. */
   text?: string;
   /** Milliseconds before the first stream starts after connect. Default: `500`. */
@@ -31,7 +34,7 @@ export function HfStream({ text, delay, loop, onStart, onDone, ...props }: HfStr
   return useLumesecElement(
     "hf-stream",
     props,
-    { "text": text, "delay": delay, "loop": loop },
-    { "start": onStart, "done": onDone },
+    { text: text, delay: delay, loop: loop },
+    { start: onStart, done: onDone },
   );
 }

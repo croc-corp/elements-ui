@@ -2,12 +2,42 @@
   "kind": "react",
   "summary": "⌘K / Ctrl+K command palette with grouped commands, fuzzy search and a springing pixel highlight; focus stays in it while open.",
   "props": [
-    { "name": "open", "type": "boolean", "default": "-", "description": "Controlled open state. Use with `onOpenChange`." },
-    { "name": "defaultOpen", "type": "boolean", "default": "false", "description": "Initial open state when uncontrolled." },
-    { "name": "items", "type": "readonly PxCommandItem[]", "default": "-", "description": "The commands, in display order: `{ label: string; group: string; shortcut?: string }`. Consecutive commands with the same `group` share a heading." },
-    { "name": "hotkey", "type": "boolean", "default": "false", "description": "Ctrl+K or ⌘K anywhere on the page opens and closes the palette." },
-    { "name": "onOpenChange", "type": "(open: boolean) => void", "default": "-", "description": "Called when the palette opens or closes: the trigger, the hotkey, Escape, a click on the backdrop or running a command." },
-    { "name": "onCommand", "type": "(item: PxCommandItem) => void", "default": "-", "description": "Called with the command the user runs. The palette closes first." }
+    {
+      "name": "open",
+      "type": "boolean",
+      "default": "-",
+      "description": "Controlled open state. Use with `onOpenChange`."
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "default": "false",
+      "description": "Initial open state when uncontrolled."
+    },
+    {
+      "name": "items",
+      "type": "readonly PxCommandItem[]",
+      "default": "-",
+      "description": "The commands, in display order: `{ label: string; group: string; shortcut?: string }`. Consecutive commands with the same `group` share a heading."
+    },
+    {
+      "name": "hotkey",
+      "type": "boolean",
+      "default": "false",
+      "description": "Ctrl+K or ⌘K anywhere on the page opens and closes the palette."
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "default": "-",
+      "description": "Called when the palette opens or closes: the trigger, the hotkey, Escape, a click on the backdrop or running a command."
+    },
+    {
+      "name": "onCommand",
+      "type": "(item: PxCommandItem) => void",
+      "default": "-",
+      "description": "Called with the command the user runs. The palette closes first."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },

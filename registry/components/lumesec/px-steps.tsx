@@ -49,7 +49,11 @@ export function PxSteps({
   ...props
 }: PxStepsProps) {
   const count = steps.length;
-  const [rawStep, setStep] = useControllableState({ value: stepProp, defaultValue: defaultStep, onChange: onStepChange });
+  const [rawStep, setStep] = useControllableState({
+    value: stepProp,
+    defaultValue: defaultStep,
+    onChange: onStepChange,
+  });
   const current = clamp(Math.round(rawStep), 1, count + 1);
 
   /** The drawn progress, easing toward `current - 1`. */
@@ -69,9 +73,12 @@ export function PxSteps({
     const nodeX = (i: number) => ((i + 0.5) * width) / count;
     if (burstPending.current) {
       burstPending.current = false;
-      for (let i = 0; i < count; i++) sparksRef.current.add(nodeX(i), NODE_Y, 10, [palette.success, palette.shine], { speed: [30, 120] });
+      for (let i = 0; i < count; i++)
+        sparksRef.current.add(nodeX(i), NODE_Y, 10, [palette.success, palette.shine], { speed: [30, 120] });
     }
-    progress.current = reduced ? target : progress.current + clamp(target - progress.current, -delta * 2.5, delta * 2.5);
+    progress.current = reduced
+      ? target
+      : progress.current + clamp(target - progress.current, -delta * 2.5, delta * 2.5);
     const f = progress.current;
     frame.clear();
 
@@ -93,11 +100,18 @@ export function PxSteps({
       const color = done || isCurrent ? palette.accent : palette.foreground;
       for (let k = 0; k < 28; k++) {
         const a = (TAU * k) / 28;
-        frame.dot(x + Math.cos(a) * r - 1.1, NODE_Y + Math.sin(a) * r - 1.1, color, done || isCurrent ? 0.95 : 0.25, 2.2);
+        frame.dot(
+          x + Math.cos(a) * r - 1.1,
+          NODE_Y + Math.sin(a) * r - 1.1,
+          color,
+          done || isCurrent ? 0.95 : 0.25,
+          2.2,
+        );
       }
       if (done) {
         for (let yy = -9; yy <= 9; yy += 3) {
-          for (let xx = -9; xx <= 9; xx += 3) if (Math.hypot(xx, yy) < 9.5) frame.dot(x + xx - 1.2, NODE_Y + yy - 1.2, palette.accent, 1, 2.4);
+          for (let xx = -9; xx <= 9; xx += 3)
+            if (Math.hypot(xx, yy) < 9.5) frame.dot(x + xx - 1.2, NODE_Y + yy - 1.2, palette.accent, 1, 2.4);
         }
         for (const [px, py] of SMALL_CHECK) frame.dot(x - 7 + px * 2, NODE_Y - 5 + py * 2, palette.card, 1, 2);
       }
@@ -107,7 +121,8 @@ export function PxSteps({
       if (isCurrent && !reduced) {
         const k = (time * 0.9) % 1;
         const ring = r + 2 + k * 8;
-        for (let a = 0; a < TAU; a += TAU / 24) frame.dot(x + Math.cos(a) * ring - 1, NODE_Y + Math.sin(a) * ring - 1, palette.accent, (1 - k) * 0.5, 2);
+        for (let a = 0; a < TAU; a += TAU / 24)
+          frame.dot(x + Math.cos(a) * ring - 1, NODE_Y + Math.sin(a) * ring - 1, palette.accent, (1 - k) * 0.5, 2);
       }
     }
 
@@ -135,7 +150,11 @@ export function PxSteps({
     <div data-slot="px-steps" className={cn("block text-foreground", className)} {...props}>
       <div className="relative">
         <canvas ref={canvasRef} aria-hidden="true" className="block h-11 w-full [image-rendering:pixelated]" />
-        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 grid h-9" style={{ gridTemplateColumns: `repeat(${count}, 1fr)` }}>
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 grid h-9"
+          style={{ gridTemplateColumns: `repeat(${count}, 1fr)` }}
+        >
           {steps.map((name, i) => (
             <span
               key={`${i}:${name}`}
@@ -166,7 +185,7 @@ export function PxSteps({
                 aria-disabled={done ? undefined : true}
                 aria-label={`${name}, step ${i + 1} of ${count}${done ? ", done" : ""}`}
                 className={cn(
-                  "cursor-default select-none rounded-md border-0 bg-transparent px-1 py-0.5 text-[12.5px] leading-normal text-muted-foreground outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec",
+                  "cursor-default rounded-md border-0 bg-transparent px-1 py-0.5 text-[12.5px] leading-normal text-muted-foreground outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
                   done && "cursor-pointer text-foreground hover:text-lumesec",
                   isCurrent && "font-semibold text-foreground",
                 )}

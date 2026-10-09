@@ -146,9 +146,18 @@ export function GeoTraceroute({
   const lastLocated = model.located.length > 0 ? model.located[model.located.length - 1] : -1;
   const targetText = target ?? (demo ? DEMO_TARGET : defaultTarget(model));
 
-  const [selection, setSelection] = useControllableState<number | null>({ value, defaultValue, onChange: onValueChange });
-  const selectedIndex = selection !== null && Number.isInteger(selection) && selection >= 0 && selection < rowCount ? selection : -1;
-  const [playing, setPlaying] = useControllableState<boolean>({ value: playingProp, defaultValue: defaultPlaying, onChange: onPlayingChange });
+  const [selection, setSelection] = useControllableState<number | null>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
+  const selectedIndex =
+    selection !== null && Number.isInteger(selection) && selection >= 0 && selection < rowCount ? selection : -1;
+  const [playing, setPlaying] = useControllableState<boolean>({
+    value: playingProp,
+    defaultValue: defaultPlaying,
+    onChange: onPlayingChange,
+  });
   const reducedMotion = useReducedMotion();
 
   /**
@@ -266,7 +275,11 @@ export function GeoTraceroute({
     const end = total + TAIL;
 
     if (engine.inkStale || !engine.ink) refreshInk(engine, colors);
-    if (engine.layoutKey !== current.key || engine.width !== traceSurface.width || engine.height !== traceSurface.height) {
+    if (
+      engine.layoutKey !== current.key ||
+      engine.width !== traceSurface.width ||
+      engine.height !== traceSurface.height
+    ) {
       layoutEngine(engine, traceSurface.width, traceSurface.height);
     } else if (engine.layoutModel !== current) {
       // the same hops in a new array, or a new threshold: the geometry stands, the drawing follows the new model
@@ -337,7 +350,8 @@ export function GeoTraceroute({
         engine.sparks.add(hop.x + offset.left - layer.left, hop.y + offset.top - layer.top, 26, colors, SPARK_OPTIONS);
       }
       const total = totalRef.current;
-      if (total && typeof total.animate === "function") total.animate(TOTAL_POP, { duration: 560, easing: "cubic-bezier(.2,.8,.2,1)" });
+      if (total && typeof total.animate === "function")
+        total.animate(TOTAL_POP, { duration: 560, easing: "cubic-bezier(.2,.8,.2,1)" });
     }
     setPlaying(false);
     onComplete?.();
@@ -353,7 +367,9 @@ export function GeoTraceroute({
     if (nextCursor === engine.cursor && nextArrived === engine.arrived) return;
     engine.cursor = nextCursor;
     engine.arrived = nextArrived;
-    setTrace((previous) => (previous.key === current.key ? { key: previous.key, cursor: nextCursor, arrived: nextArrived } : previous));
+    setTrace((previous) =>
+      previous.key === current.key ? { key: previous.key, cursor: nextCursor, arrived: nextArrived } : previous,
+    );
   }
 
   /** The active row's round-trip time counts up mechanically; written straight to its cell, not through React. */
@@ -457,21 +473,46 @@ export function GeoTraceroute({
           <p className="m-0 text-[12px] leading-4 text-muted-foreground">Round trip</p>
           <p className="m-0 flex items-baseline justify-end gap-1 font-mono text-[13.5px] leading-5 font-medium tabular-nums">
             <span ref={totalRef} className="inline-block origin-right">
-              <RollText text={totalText} direction={complete ? 1 : -1} animate={!reducedMotion} reserve={totalReserve} className="justify-items-end" />
+              <RollText
+                text={totalText}
+                direction={complete ? 1 : -1}
+                animate={!reducedMotion}
+                reserve={totalReserve}
+                className="justify-items-end"
+              />
             </span>
-            <span className={cn("font-sans text-[12px] font-normal text-muted-foreground transition-opacity duration-300", totalText === MISSING && "opacity-0")}>
+            <span
+              className={cn(
+                "font-sans text-[12px] font-normal text-muted-foreground transition-opacity duration-300",
+                totalText === MISSING && "opacity-0",
+              )}
+            >
               ms
             </span>
           </p>
         </div>
         <div className="flex shrink-0 gap-1.5">
           <ToolbarButton label="Replay" onClick={replay} disabled={rowCount === 0}>
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-3.5 shrink-0">
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="size-3.5 shrink-0"
+            >
               <path d="M3.2 8.6A4.9 4.9 0 1 0 4.6 4.4" />
               <path d="M4.4 1.9v2.7h2.7" />
             </svg>
           </ToolbarButton>
-          <ToolbarButton label={playing ? "Pause" : "Play"} reserve={PLAY_LABELS} onClick={togglePlayback} disabled={rowCount === 0}>
+          <ToolbarButton
+            label={playing ? "Pause" : "Play"}
+            reserve={PLAY_LABELS}
+            onClick={togglePlayback}
+            disabled={rowCount === 0}
+          >
             {playing ? (
               <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" className="size-3.5 shrink-0">
                 <rect x="4" y="3.25" width="2.6" height="9.5" rx="0.7" />
@@ -486,7 +527,10 @@ export function GeoTraceroute({
         </div>
       </div>
 
-      <div ref={cardRef} className="relative rounded-xl border border-border bg-card [-webkit-tap-highlight-color:transparent]">
+      <div
+        ref={cardRef}
+        className="relative rounded-xl border border-border bg-card [-webkit-tap-highlight-color:transparent]"
+      >
         <div
           ref={boxRef}
           data-dimmed={mapDimmed ? "" : undefined}
@@ -501,7 +545,8 @@ export function GeoTraceroute({
             const reached = complete || row <= trace.arrived;
             const here = row === packetRow;
             const destination = complete && row === model.pingRow;
-            const state = row === selectedIndex ? "selected" : here || destination ? "current" : reached ? "reached" : "pending";
+            const state =
+              row === selectedIndex ? "selected" : here || destination ? "current" : reached ? "reached" : "pending";
             return (
               <span
                 key={model.rows[row].key}
@@ -511,12 +556,22 @@ export function GeoTraceroute({
                 className="group/hop absolute z-[1] -mt-2.5 -ml-2.5 grid size-5 cursor-pointer place-items-center"
                 style={{ left: percent(point.x), top: percent(point.y) }}
               >
-                <span className="block size-[7px] rounded-full border-[1.5px] border-muted-foreground/70 bg-card shadow-[0_0_0_2px_var(--card)] transition-[background-color,border-color,opacity,scale] duration-300 group-hover/hop:scale-[1.3] group-data-[state=current]/hop:border-lumesec group-data-[state=current]/hop:bg-lumesec group-data-[state=reached]/hop:border-foreground group-data-[state=reached]/hop:bg-foreground group-data-[state=selected]/hop:scale-[1.15] group-data-[state=selected]/hop:border-lumesec group-data-[state=selected]/hop:bg-lumesec group-data-[state=selected]/hop:shadow-[0_0_0_2px_var(--card),0_0_0_3.5px_var(--lumesec)] group-data-[dimmed]/map:opacity-35 motion-reduce:transition-none" />
+                <span className="block size-[7px] rounded-full border-[1.5px] border-muted-foreground/70 bg-card shadow-[0_0_0_2px_var(--card)] transition-[background-color,border-color,opacity,scale] duration-300 group-hover/hop:scale-[1.3] group-data-[dimmed]/map:opacity-35 group-data-[state=current]/hop:border-lumesec group-data-[state=current]/hop:bg-lumesec group-data-[state=reached]/hop:border-foreground group-data-[state=reached]/hop:bg-foreground group-data-[state=selected]/hop:scale-[1.15] group-data-[state=selected]/hop:border-lumesec group-data-[state=selected]/hop:bg-lumesec group-data-[state=selected]/hop:shadow-[0_0_0_2px_var(--card),0_0_0_3.5px_var(--lumesec)] motion-reduce:transition-none" />
               </span>
             );
           })}
-          <canvas ref={traceRef} aria-hidden="true" className="pointer-events-none absolute inset-0 z-[2] block size-full" />
-          <div aria-hidden="true" className={cn("pointer-events-none absolute inset-0 z-[3] transition-opacity duration-300", boxWidth === null && "opacity-0")}>
+          <canvas
+            ref={traceRef}
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-[2] block size-full"
+          />
+          <div
+            aria-hidden="true"
+            className={cn(
+              "pointer-events-none absolute inset-0 z-[3] transition-opacity duration-300",
+              boxWidth === null && "opacity-0",
+            )}
+          >
             {model.segments.map((segment, k) => {
               const placement = labels.chips[k];
               if (!segment.jump || !placement) return null;
@@ -564,7 +619,11 @@ export function GeoTraceroute({
             </p>
           ) : null}
         </div>
-        <canvas ref={fxRef} aria-hidden="true" className="pointer-events-none absolute -inset-x-4 -inset-y-10 z-[4] block h-[calc(100%+80px)] w-[calc(100%+32px)]" />
+        <canvas
+          ref={fxRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-x-4 -inset-y-10 z-[4] block h-[calc(100%+80px)] w-[calc(100%+32px)]"
+        />
       </div>
 
       <div className="overflow-hidden rounded-xl border border-border bg-card">
@@ -619,12 +678,15 @@ export function GeoTraceroute({
                       aria-label={rowLabel(row)}
                       onFocus={() => setFocusIndex(i)}
                       onKeyDown={(event) => handleRowKeyDown(event, i)}
-                      className="block h-[30px] w-full cursor-pointer border-0 bg-transparent p-0 pl-3 @max-[480px]:pl-2.5 text-left font-mono text-[12px] text-muted-foreground tabular-nums outline-none group-data-[selected]/row:text-lumesec focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+                      className="block h-[30px] w-full cursor-pointer border-0 bg-transparent p-0 pl-3 text-left font-mono text-[12px] text-muted-foreground tabular-nums outline-none group-data-[selected]/row:text-lumesec focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid @max-[480px]:pl-2.5"
                     >
                       {row.number}
                     </button>
                   </td>
-                  <td className={cn("truncate px-2 font-mono", row.kind === "timeout" && "text-muted-foreground")} title={row.address}>
+                  <td
+                    className={cn("truncate px-2 font-mono", row.kind === "timeout" && "text-muted-foreground")}
+                    title={row.address}
+                  >
                     {row.address}
                   </td>
                   <td className="truncate px-2 text-muted-foreground @max-[480px]:hidden" title={row.hop.name}>
@@ -681,7 +743,7 @@ function ToolbarButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={label}
-      className="inline-flex h-[30px] cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-card px-[11px] font-[inherit] text-[12.5px] font-medium text-foreground outline-none transition-[border-color] duration-200 hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec disabled:cursor-default disabled:opacity-50 @max-[480px]:px-2"
+      className="inline-flex h-[30px] cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-card px-[11px] font-[inherit] text-[12.5px] font-medium text-foreground transition-[border-color] duration-200 outline-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid disabled:cursor-default disabled:opacity-50 @max-[480px]:px-2"
     >
       {children}
       <span aria-hidden="true" className="@max-[480px]:hidden">
@@ -720,7 +782,12 @@ function RttCell({
   if (row.kind === "timeout") {
     return <span className="text-muted-foreground">{state === "pending" ? MISSING : "*"}</span>;
   }
-  const unit = <span className={cn("font-sans text-muted-foreground @max-[480px]:hidden", state === "pending" && "invisible")}> ms</span>;
+  const unit = (
+    <span className={cn("font-sans text-muted-foreground @max-[480px]:hidden", state === "pending" && "invisible")}>
+      {" "}
+      ms
+    </span>
+  );
   if (state === "pending") {
     return (
       <>
@@ -868,15 +935,64 @@ const TOTAL_POP: Keyframe[] = [
 const DEMO_HOPS: readonly TraceHop[] = [
   { address: "192.168.1.1", name: "router.home.arpa", rtt: [0.6, 0.5, 0.7] },
   { address: "100.64.0.1", rtt: [4.2, 3.8, 4.0] },
-  { address: "203.0.113.14", name: "ae2.br1.fra.example.net", location: "Frankfurt", lat: 50.1109, lon: 8.6821, rtt: [8.4, 8.1, 9.0] },
-  { address: "203.0.113.62", name: "et-3.cr1.lys.example.net", location: "Lyon", lat: 45.764, lon: 4.8357, rtt: [14.6, 14.2, 15.1] },
+  {
+    address: "203.0.113.14",
+    name: "ae2.br1.fra.example.net",
+    location: "Frankfurt",
+    lat: 50.1109,
+    lon: 8.6821,
+    rtt: [8.4, 8.1, 9.0],
+  },
+  {
+    address: "203.0.113.62",
+    name: "et-3.cr1.lys.example.net",
+    location: "Lyon",
+    lat: 45.764,
+    lon: 4.8357,
+    rtt: [14.6, 14.2, 15.1],
+  },
   { address: "*", rtt: [] },
-  { address: "198.51.100.21", name: "ae5.cr2.mrs.example.net", location: "Marseille", lat: 43.2965, lon: 5.3698, rtt: [19.2, 18.9, 19.6] },
-  { address: "198.51.100.86", name: "be-7.sub1.cai.example.net", location: "Cairo", lat: 30.0444, lon: 31.2357, rtt: [61.3, 60.8, 62.0] },
-  { address: "192.0.2.33", name: "et-1.cr1.bom.example.net", location: "Mumbai", lat: 19.076, lon: 72.8777, rtt: [110.4, 109.8, 111.2] },
+  {
+    address: "198.51.100.21",
+    name: "ae5.cr2.mrs.example.net",
+    location: "Marseille",
+    lat: 43.2965,
+    lon: 5.3698,
+    rtt: [19.2, 18.9, 19.6],
+  },
+  {
+    address: "198.51.100.86",
+    name: "be-7.sub1.cai.example.net",
+    location: "Cairo",
+    lat: 30.0444,
+    lon: 31.2357,
+    rtt: [61.3, 60.8, 62.0],
+  },
+  {
+    address: "192.0.2.33",
+    name: "et-1.cr1.bom.example.net",
+    location: "Mumbai",
+    lat: 19.076,
+    lon: 72.8777,
+    rtt: [110.4, 109.8, 111.2],
+  },
   { address: "192.0.2.70", rtt: [118.9, Number.NaN, 119.5] },
-  { address: "192.0.2.118", name: "ae-4.cr1.maa.example.net", location: "Chennai", lat: 13.0827, lon: 80.2707, rtt: [126.0, 125.4, 126.8] },
-  { address: "203.0.113.200", name: "app.example.com", location: "Singapore", lat: 1.3521, lon: 103.8198, rtt: [162.4, 161.9, 163.0] },
+  {
+    address: "192.0.2.118",
+    name: "ae-4.cr1.maa.example.net",
+    location: "Chennai",
+    lat: 13.0827,
+    lon: 80.2707,
+    rtt: [126.0, 125.4, 126.8],
+  },
+  {
+    address: "203.0.113.200",
+    name: "app.example.com",
+    location: "Singapore",
+    lat: 1.3521,
+    lon: 103.8198,
+    rtt: [162.4, 161.9, 163.0],
+  },
 ];
 
 /* Data model ----------------------------------------------------------------------------------------- */
@@ -976,7 +1092,13 @@ function resolveModel(hops: readonly TraceHop[], jumpMs: number, probes: number)
     const scope = parsed ? ipScope(parsed) : null;
     const hasPoint = isValidLatLon(hop);
     const kind: HopKind =
-      answered.length === 0 ? "timeout" : scope && HIDDEN_SCOPES.has(scope) ? "private" : hasPoint ? "located" : "unlocated";
+      answered.length === 0
+        ? "timeout"
+        : scope && HIDDEN_SCOPES.has(scope)
+          ? "private"
+          : hasPoint
+            ? "located"
+            : "unlocated";
     const point = kind === "located" ? { lat: hop.lat ?? 0, lon: wrapLongitude(hop.lon ?? 0) } : null;
     const value = answered.length ? median(answered) : Number.NaN;
     const address = parsed?.text ?? (raw || "*");
@@ -1029,7 +1151,9 @@ function resolveModel(hops: readonly TraceHop[], jumpMs: number, probes: number)
 
 /** A string that changes when the trace data changes, so inline arrays with the same hops do not restart anything. */
 function traceKey(hops: readonly TraceHop[]) {
-  return hops.map((hop) => `${hop.address}|${hop.lat}|${hop.lon}|${Array.isArray(hop.rtt) ? hop.rtt.join(" ") : ""}`).join("\n");
+  return hops
+    .map((hop) => `${hop.address}|${hop.lat}|${hop.lon}|${Array.isArray(hop.rtt) ? hop.rtt.join(" ") : ""}`)
+    .join("\n");
 }
 
 /**
@@ -1037,14 +1161,21 @@ function traceKey(hops: readonly TraceHop[]) {
  * packet appears at the first located hop, then for each segment it travels (0.35 s plus 0.25 s per 10,000 km) and
  * waits at the next hop for the segment's added time. Rows between two located hops take turns during the travel.
  */
-function scheduleTrace(rows: readonly HopRow[], located: readonly number[], segments: readonly TraceSegment[]): TraceTiming {
+function scheduleTrace(
+  rows: readonly HopRow[],
+  located: readonly number[],
+  segments: readonly TraceSegment[],
+): TraceTiming {
   const timing: RowTiming[] = rows.map(() => ({ start: 0, end: 0, countStart: 0, countEnd: 0 }));
   const travel: Span[] = [];
   const dwell: Span[] = [];
   let t = 0;
   const turn = (index: number) => {
     const row = rows[index];
-    const duration = row.kind === "timeout" ? TIMEOUT_STEP : Math.max(MIN_STEP, Math.max(0, row.median - row.previous) * SECONDS_PER_MS);
+    const duration =
+      row.kind === "timeout"
+        ? TIMEOUT_STEP
+        : Math.max(MIN_STEP, Math.max(0, row.median - row.previous) * SECONDS_PER_MS);
     timing[index] = { start: t, end: t + duration, countStart: t, countEnd: t + duration };
     t += duration;
   };
@@ -1068,7 +1199,12 @@ function scheduleTrace(rows: readonly HopRow[], located: readonly number[], segm
     }
     const arrival = t + duration;
     const wait = Math.max(MIN_DWELL, segment.delta * SECONDS_PER_MS);
-    timing[segment.to] = { start: t + between * slice, end: arrival + wait, countStart: arrival, countEnd: arrival + wait };
+    timing[segment.to] = {
+      start: t + between * slice,
+      end: arrival + wait,
+      countStart: arrival,
+      countEnd: arrival + wait,
+    };
     travel.push({ start: t, end: arrival });
     dwell.push({ start: arrival, end: arrival + wait });
     t = arrival + wait;
@@ -1145,7 +1281,12 @@ function mapView(points: readonly LatLon[]): MapView {
   const lon0 = wrapLongitude(middle);
   const width = NOMINAL_WIDTH;
   const height = width / MAP_ASPECT;
-  const projection = createProjection("equalEarth", { width, height, latRange: MAP_LAT_RANGE, center: { lat: 0, lon: lon0 } });
+  const projection = createProjection("equalEarth", {
+    width,
+    height,
+    latRange: MAP_LAT_RANGE,
+    center: { lat: 0, lon: lon0 },
+  });
   const south = clamp(bounds.south, MAP_LAT_RANGE[0], MAP_LAT_RANGE[1]);
   const north = clamp(bounds.north, MAP_LAT_RANGE[0], MAP_LAT_RANGE[1]);
   const span = bounds.east - bounds.west;
@@ -1353,7 +1494,12 @@ function placeHopLabels(
   height: number,
 ): HopLabelPlacement[] {
   const taken: Box[] = [...obstacles];
-  const placements: HopLabelPlacement[] = anchors.map((anchor) => ({ visible: false, x: anchor.x, y: anchor.y, variant: 0 }));
+  const placements: HopLabelPlacement[] = anchors.map((anchor) => ({
+    visible: false,
+    x: anchor.x,
+    y: anchor.y,
+    variant: 0,
+  }));
   const order = anchors.map((_, index) => index).sort((a, b) => anchors[b].priority - anchors[a].priority || a - b);
   const near = (point: Point, box: Box) =>
     point.x > box.x - POINT_MARGIN &&
@@ -1384,8 +1530,10 @@ function placeHopLabels(
       for (const avoidPoints of [true, false]) {
         for (const side of LABEL_SIDES) {
           const box: Box = {
-            x: side === "right" ? anchor.x + anchor.gap : side === "left" ? anchor.x - anchor.gap - w : anchor.x - w / 2,
-            y: side === "top" ? anchor.y - anchor.gap - h : side === "bottom" ? anchor.y + anchor.gap : anchor.y - h / 2,
+            x:
+              side === "right" ? anchor.x + anchor.gap : side === "left" ? anchor.x - anchor.gap - w : anchor.x - w / 2,
+            y:
+              side === "top" ? anchor.y - anchor.gap - h : side === "bottom" ? anchor.y + anchor.gap : anchor.y - h / 2,
             width: w,
             height: h,
           };
@@ -1404,7 +1552,13 @@ function placeHopLabels(
  * Chip boxes for long-haul segments: centred on the curve's midpoint, else moved off the line along its normal, first
  * to the outside of the bend, whichever keeps clear of every marker, of the box edges and of earlier chips.
  */
-function placeChips(model: TraceModel, layout: MarkerLayout, markers: readonly { x: number; y: number }[], width: number, height: number) {
+function placeChips(
+  model: TraceModel,
+  layout: MarkerLayout,
+  markers: readonly { x: number; y: number }[],
+  width: number,
+  height: number,
+) {
   const placed: { x: number; y: number; width: number }[] = [];
   return model.segments.map((segment, k) => {
     if (!segment.jump) return null;
@@ -1431,7 +1585,13 @@ function placeChips(model: TraceModel, layout: MarkerLayout, markers: readonly {
         const dy = Math.max(box.y - marker.y, 0, marker.y - (box.y + CHIP_HEIGHT));
         clearance = Math.min(clearance, Math.hypot(dx, dy));
       }
-      const overlaps = placed.some((other) => box.x < other.x + other.width + 3 && box.x + chipWidth + 3 > other.x && box.y < other.y + CHIP_HEIGHT + 3 && box.y + CHIP_HEIGHT + 3 > other.y);
+      const overlaps = placed.some(
+        (other) =>
+          box.x < other.x + other.width + 3 &&
+          box.x + chipWidth + 3 > other.x &&
+          box.y < other.y + CHIP_HEIGHT + 3 &&
+          box.y + CHIP_HEIGHT + 3 > other.y,
+      );
       const score = (overlaps ? -100 : 0) + Math.min(clearance, CHIP_CLEARANCE) - Math.abs(offset) * 0.01;
       if (score > bestScore) {
         bestScore = score;
@@ -1617,7 +1777,11 @@ function layoutEngine(engine: TraceEngine, width: number, height: number) {
     projection.project(point.lat, point.lon, screen);
     // the ring starts where the packet lands heading; the first hop has no incoming segment and starts at the top
     const startAngle = li > 0 ? (segments[li - 1]?.arrivalAngle ?? -Math.PI / 2) : -Math.PI / 2;
-    return { x: screen.x, y: screen.y, ring: discDots(projection, pitch, land, screen.x, screen.y, RING_INNER, RING_OUTER, startAngle) };
+    return {
+      x: screen.x,
+      y: screen.y,
+      ring: discDots(projection, pitch, land, screen.x, screen.y, RING_INNER, RING_OUTER, startAngle),
+    };
   });
 
   let ping: DiscDots | null = null;
@@ -1664,7 +1828,13 @@ const GRID_STRIDE = 1 << 16;
 
 function sampleTrack(table: ArcLengthTable): Track {
   const capacity = Math.floor(table.length / DOT_SPACING) + 2;
-  const track: Track = { table, count: 0, x: new Float32Array(capacity), y: new Float32Array(capacity), s: new Float32Array(capacity) };
+  const track: Track = {
+    table,
+    count: 0,
+    x: new Float32Array(capacity),
+    y: new Float32Array(capacity),
+    s: new Float32Array(capacity),
+  };
   forEachDot(table, DOT_SPACING, 0, table.length, (x, y, s) => {
     if (track.count >= capacity) return;
     track.x[track.count] = x;
@@ -1858,7 +2028,13 @@ function drawTrace(engine: TraceEngine, surface: CanvasSurface, batch: DotBatch,
       const depth = (ring.distance[i] - RING_INNER) / (RING_OUTER - RING_INNER);
       const alpha = (Math.max(track, shown * (0.95 - 0.4 * depth)) + lead * 0.35) * dimMap;
       if (alpha < 0.02) continue;
-      batch.add(snapCenter(ring.x[i], geometry.dotSize, dpr), snapCenter(ring.y[i], geometry.dotSize, dpr), geometry.dotSize, Math.max(lead, 0.08), Math.min(1, alpha));
+      batch.add(
+        snapCenter(ring.x[i], geometry.dotSize, dpr),
+        snapCenter(ring.y[i], geometry.dotSize, dpr),
+        geometry.dotSize,
+        Math.max(lead, 0.08),
+        Math.min(1, alpha),
+      );
     }
   });
 
@@ -1927,7 +2103,10 @@ function drawPing(engine: TraceEngine, geometry: TraceGeometry, model: TraceMode
       const p = (since - ring * PING_DELAY) / PING_SECONDS;
       if (p <= 0 || p >= 1) continue;
       const radius = easeOutCubic(p) * PING_RADIUS;
-      value = Math.max(value, ringFront(ping.distance[i], radius, 4.5, ping.jitter[i], 5) * Math.pow(1 - p, 1.2) * (ring === 0 ? 1 : 0.65));
+      value = Math.max(
+        value,
+        ringFront(ping.distance[i], radius, 4.5, ping.jitter[i], 5) * Math.pow(1 - p, 1.2) * (ring === 0 ? 1 : 0.65),
+      );
     }
     if (value < 0.04) continue;
     batch.add(ping.x[i], ping.y[i], geometry.dotSize, value, value);

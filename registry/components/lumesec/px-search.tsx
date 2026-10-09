@@ -11,7 +11,10 @@ import { useControllableState } from "@/lib/lumesec/use-controllable-state";
 import { cn } from "@/lib/utils";
 
 /** Props of `PxSearch`. Other `div` props go to the root. */
-export interface PxSearchProps extends Omit<React.ComponentProps<"div">, "children" | "defaultValue" | "onChange" | "onSelect"> {
+export interface PxSearchProps extends Omit<
+  React.ComponentProps<"div">,
+  "children" | "defaultValue" | "onChange" | "onSelect"
+> {
   /** Entries to search. Defaults to a demo list of 14 settings pages. */
   items?: readonly string[];
   /** Controlled query. Use with `onValueChange`. */
@@ -142,7 +145,8 @@ export function PxSearch({
     }
     return (
       searching.current ||
-      (target !== null && (Math.abs(target.y - highlight.current.position) > 0.3 || Math.abs(highlight.current.velocity) > 1))
+      (target !== null &&
+        (Math.abs(target.y - highlight.current.position) > 0.3 || Math.abs(highlight.current.velocity) > 1))
     );
   });
 
@@ -210,12 +214,18 @@ export function PxSearch({
     if (results.run === 0 || prefersReducedMotion()) return;
     listRef.current?.querySelectorAll("li").forEach((row, i) => {
       if (typeof row.animate !== "function") return;
-      row.animate([{ opacity: 0, transform: "translateY(4px)" }, { opacity: 1, transform: "none" }], {
-        duration: 280,
-        easing: "cubic-bezier(.2,.8,.2,1)",
-        delay: i * 30,
-        fill: "backwards",
-      });
+      row.animate(
+        [
+          { opacity: 0, transform: "translateY(4px)" },
+          { opacity: 1, transform: "none" },
+        ],
+        {
+          duration: 280,
+          easing: "cubic-bezier(.2,.8,.2,1)",
+          delay: i * 30,
+          fill: "backwards",
+        },
+      );
     });
   }, [results.run]);
 
@@ -244,7 +254,11 @@ export function PxSearch({
     <div
       data-slot="px-search"
       data-disabled={disabled ? "" : undefined}
-      className={cn("relative block leading-[1.5] text-foreground", disabled && "pointer-events-none opacity-55", className)}
+      className={cn(
+        "relative block leading-[1.5] text-foreground",
+        disabled && "pointer-events-none opacity-55",
+        className,
+      )}
       {...props}
     >
       <div
@@ -302,7 +316,10 @@ export function PxSearch({
           className="h-full min-w-0 flex-1 border-0 bg-transparent p-0 font-[inherit] text-[14px] text-inherit outline-none placeholder:text-muted-foreground placeholder:opacity-75"
         />
         {hotkey && (
-          <kbd aria-hidden="true" className="rounded-[5px] border border-border px-1.5 py-px font-mono text-[11px] text-muted-foreground">
+          <kbd
+            aria-hidden="true"
+            className="rounded-[5px] border border-border px-1.5 py-px font-mono text-[11px] text-muted-foreground"
+          >
             /
           </kbd>
         )}
@@ -321,7 +338,11 @@ export function PxSearch({
               className="group relative flex h-9 cursor-pointer items-center rounded-lg px-3 text-[13.5px]"
             >
               <span className="min-w-0 truncate">
-                <FuzzyHighlight text={match.text} indices={match.indices} markClassName="bg-transparent font-semibold text-lumesec" />
+                <FuzzyHighlight
+                  text={match.text}
+                  indices={match.indices}
+                  markClassName="bg-transparent font-semibold text-lumesec"
+                />
               </span>
               <span
                 aria-hidden="true"
@@ -370,11 +391,18 @@ function search(query: string, items: readonly string[]) {
 
 /** The status line: the number of matches, or of all entries while the query is empty. */
 function countStatus(query: string, total: number) {
-  return query ? `${total} result${total === 1 ? "" : "s"}` : `Suggested · ${total} ${total === 1 ? "entry" : "entries"}`;
+  return query
+    ? `${total} result${total === 1 ? "" : "s"}`
+    : `Suggested · ${total} ${total === 1 ? "entry" : "entries"}`;
 }
 
 /** Whether a key press comes from a form field or editable text, where "/" keeps its own meaning. */
 function isEditable(target: EventTarget | undefined) {
   if (!(target instanceof HTMLElement)) return false;
-  return target.isContentEditable || target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT";
+  return (
+    target.isContentEditable ||
+    target.tagName === "INPUT" ||
+    target.tagName === "TEXTAREA" ||
+    target.tagName === "SELECT"
+  );
 }

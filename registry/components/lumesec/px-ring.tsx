@@ -100,7 +100,13 @@ export function PxRing({ value, size = 120, onComplete, children, className, ...
       const edge = on && u > share - 2 / cells;
       const color = done ? palette.success : edge ? mixRgb(palette.accent, palette.shine, 0.6) : palette.accent;
       for (const r of [radius, radius - 5]) {
-        dot(center + Math.cos(angle) * r - 1.3, center + Math.sin(angle) * r - 1.3, on ? color : palette.foreground, on ? 0.95 : 0.1, 2.6);
+        dot(
+          center + Math.cos(angle) * r - 1.3,
+          center + Math.sin(angle) * r - 1.3,
+          on ? color : palette.foreground,
+          on ? 0.95 : 0.1,
+          2.6,
+        );
       }
     }
     const digits = digitsRef.current;

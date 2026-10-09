@@ -1,7 +1,12 @@
 {
   "summary": "Two rows of placeholder wordmarks drifting in opposite directions between dotted rules; the row under the pointer slows down.",
   "attributes": [
-    { "name": "label", "type": "string", "default": "Placeholder logos · teams building with it", "description": "Caption above the rows. Read once on connect." }
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Placeholder logos · teams building with it",
+      "description": "Caption above the rows. Read once on connect."
+    }
   ],
   "events": [],
   "methods": [],

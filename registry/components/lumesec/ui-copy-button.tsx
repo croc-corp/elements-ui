@@ -67,10 +67,13 @@ export function UiCopyButton({
     if (!mounted.current) return;
     setState(ok ? "done" : "fail");
     if (ok && !prefersReducedMotion()) {
-      checkRef.current?.animate([{ transform: "scale(.6)" }, { transform: "scale(1.3)", offset: 0.5 }, { transform: "scale(1)" }], {
-        duration: 440,
-        easing: "cubic-bezier(.2,.8,.2,1)",
-      });
+      checkRef.current?.animate(
+        [{ transform: "scale(.6)" }, { transform: "scale(1.3)", offset: 0.5 }, { transform: "scale(1)" }],
+        {
+          duration: 440,
+          easing: "cubic-bezier(.2,.8,.2,1)",
+        },
+      );
       if (iconRef.current) {
         fireSparks(iconRef.current, {
           count: 16,
@@ -94,7 +97,7 @@ export function UiCopyButton({
       className={cn(
         "group relative inline-flex h-[34px] cursor-pointer items-center gap-2 rounded-[9px] border border-border bg-card pr-3.5 pl-[11px] font-[inherit] text-[13.5px] leading-normal font-medium text-foreground outline-none select-none",
         "[transition:transform_.15s_cubic-bezier(.2,.8,.2,1),border-color_.3s,background-color_.2s,color_.3s] hover:bg-muted active:[transform:scale(.95)] disabled:pointer-events-none disabled:opacity-50",
-        "focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
         "data-[state=done]:border-[color-mix(in_srgb,var(--lumesec-success)_50%,var(--border))]",
         "data-[state=fail]:border-[color-mix(in_srgb,var(--destructive)_50%,var(--border))] data-[state=fail]:text-destructive",
         className,
@@ -109,7 +112,7 @@ export function UiCopyButton({
         <svg
           viewBox="0 0 16 16"
           aria-hidden="true"
-          className="col-start-1 row-start-1 size-4 fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.6] [transition:opacity_.18s_ease,transform_.35s_cubic-bezier(.2,.8,.2,1)] group-data-[state=done]:opacity-0 group-data-[state=done]:[transform:scale(.4)_rotate(-25deg)]"
+          className="col-start-1 row-start-1 size-4 fill-none stroke-current [stroke-width:1.6] [stroke-linecap:round] [stroke-linejoin:round] [transition:opacity_.18s_ease,transform_.35s_cubic-bezier(.2,.8,.2,1)] group-data-[state=done]:[transform:scale(.4)_rotate(-25deg)] group-data-[state=done]:opacity-0"
         >
           <rect x="5.2" y="5.2" width="8.3" height="8.3" rx="1.8" />
           <path d="M10.8 5.2V4.1c0-1-.8-1.6-1.6-1.6H4.1c-.9 0-1.6.7-1.6 1.6v5.1c0 .9.7 1.6 1.6 1.6h1.1" />
@@ -118,7 +121,7 @@ export function UiCopyButton({
           ref={checkRef}
           viewBox="0 0 16 16"
           aria-hidden="true"
-          className="col-start-1 row-start-1 size-4 fill-none stroke-current text-lumesec-success opacity-0 [transition:opacity_.15s] [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:2] group-data-[state=done]:opacity-100"
+          className="col-start-1 row-start-1 size-4 fill-none stroke-current [stroke-width:2] text-lumesec-success opacity-0 [stroke-linecap:round] [stroke-linejoin:round] [transition:opacity_.15s] group-data-[state=done]:opacity-100"
         >
           <path
             d="M3.3 8.6l3 3 6.4-7"

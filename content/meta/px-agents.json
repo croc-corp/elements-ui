@@ -3,11 +3,13 @@
   "attributes": [],
   "events": [
     { "name": "run", "detail": "{}", "description": "Fires when a run starts, from the button or from `run()`." },
-    { "name": "done", "detail": "{ seconds: number }", "description": "Fires when the verifier finishes. `seconds` is the elapsed run time, rounded to one decimal." }
+    {
+      "name": "done",
+      "detail": "{ seconds: number }",
+      "description": "Fires when the verifier finishes. `seconds` is the elapsed run time, rounded to one decimal."
+    }
   ],
-  "methods": [
-    { "signature": "run()", "description": "Starts the workflow. Ignored while a run is in progress." }
-  ],
+  "methods": [{ "signature": "run()", "description": "Starts the workflow. Ignored while a run is in progress." }],
   "properties": [],
   "keyboard": [],
   "accessibility": [

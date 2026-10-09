@@ -3,19 +3,47 @@
   "summary": "Tooltip whose bubble grows out of its arrow pixel by pixel on hover or keyboard focus before the text fades in; Escape hides it.",
   "props": [
     { "name": "content", "type": "React.ReactNode", "default": "-", "description": "Tooltip text. It does not wrap." },
-    { "name": "children", "type": "React.ReactNode", "default": "-", "description": "The trigger, usually a button. A single element gets `aria-describedby` pointing at the tooltip." },
-    { "name": "placement", "type": "\"top\" | \"bottom\"", "default": "\"top\"", "description": "Preferred side: `bottom` places the bubble below the trigger. It flips to the other side when this one has no room in the viewport." },
-    { "name": "delay", "type": "number", "default": "250", "description": "Milliseconds of hover or focus before the bubble opens." },
-    { "name": "open", "type": "boolean", "default": "-", "description": "Controlled open state. Use with `onOpenChange`." },
-    { "name": "defaultOpen", "type": "boolean", "default": "false", "description": "Initial open state when uncontrolled." },
-    { "name": "onOpenChange", "type": "(open: boolean) => void", "default": "-", "description": "Called when hover, focus or Escape opens or closes the tooltip." }
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "default": "-",
+      "description": "The trigger, usually a button. A single element gets `aria-describedby` pointing at the tooltip."
+    },
+    {
+      "name": "placement",
+      "type": "\"top\" | \"bottom\"",
+      "default": "\"top\"",
+      "description": "Preferred side: `bottom` places the bubble below the trigger. It flips to the other side when this one has no room in the viewport."
+    },
+    {
+      "name": "delay",
+      "type": "number",
+      "default": "250",
+      "description": "Milliseconds of hover or focus before the bubble opens."
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "default": "-",
+      "description": "Controlled open state. Use with `onOpenChange`."
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "default": "false",
+      "description": "Initial open state when uncontrolled."
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "default": "-",
+      "description": "Called when hover, focus or Escape opens or closes the tooltip."
+    }
   ],
   "extends": "span",
   "ref": { "type": "HTMLSpanElement", "methods": [] },
   "subcomponents": [],
-  "keyboard": [
-    { "keys": "Escape", "action": "Hide the tooltip, wherever focus is." }
-  ],
+  "keyboard": [{ "keys": "Escape", "action": "Hide the tooltip, wherever focus is." }],
   "accessibility": [
     "The bubble has `role=\"tooltip\"` and stays in the DOM (hidden when closed); the trigger references it with `aria-describedby`, merged with any value the trigger already has.",
     "It opens on keyboard focus as well as hover, and closes 60 ms after focus or the pointer leaves.",

@@ -17,6 +17,7 @@
 //   node scripts/catalog.mjs --dry     analyses and reports without writing anything
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import * as prettier from "prettier";
 import ts from "typescript";
 
 import { camel, COLLECTIONS, ENGINES, LIB_MODULES, pascal, readJson, ROOT, SITE_URL } from "./lib/catalog.mjs";
@@ -32,6 +33,9 @@ const DRY = process.argv.includes("--dry");
 function write(file, text) {
   if (!DRY) writeFileSync(file, text.replace(/\r\n/g, "\n"));
 }
+
+/** Custom-element wrappers, written once every entry is analysed (see the end of this script). */
+const wrappers = [];
 
 const collectionOf = Object.fromEntries(COLLECTIONS.map((c) => [c.slug, c]));
 
@@ -151,14 +155,30 @@ function nestedTags(tag, code) {
 }
 
 /** Method names from documented signatures such as `reset(): void`. */
-const methodNames = (methods = []) => methods.map((m) => String(m.signature).match(/^([A-Za-z_$][\w$]*)/)?.[1]).filter(Boolean);
+const methodNames = (methods = []) =>
+  methods.map((m) => String(m.signature).match(/^([A-Za-z_$][\w$]*)/)?.[1]).filter(Boolean);
 
 /** Keys of an event detail written as a type, e.g. `{ value: number; source?: string }`. */
 const detailKeys = (detail) => [...String(detail ?? "").matchAll(/([A-Za-z_$][\w$]*)\??\s*:/g)].map((m) => m[1]);
 
 /* ------------------------------------------------------------------ typed notes -> TS */
 
-const ALLOWED_REFS = new Set(["Record", "Array", "ReadonlyArray", "Promise", "Date", "File", "FileList", "Blob", "FormData", "Map", "Set", "HTMLElement", "Element", "Event"]);
+const ALLOWED_REFS = new Set([
+  "Record",
+  "Array",
+  "ReadonlyArray",
+  "Promise",
+  "Date",
+  "File",
+  "FileList",
+  "Blob",
+  "FormData",
+  "Map",
+  "Set",
+  "HTMLElement",
+  "Element",
+  "Event",
+]);
 
 /** True when `src` parses as a TypeScript type using only built-in names. */
 function validTs(src) {
@@ -206,7 +226,8 @@ const RESERVED_PROPS = new Set(["children", "className", "style", "ref", "key", 
 /** The wrapper's note on data: demo-only components say so where the developer reads the props. */
 function dataDoc(notes) {
   const kind = notes?.data?.kind;
-  if (kind === "demo") return `\n *\n * Demo data: ${docText(notes.data.note)} It cannot show your own data yet; use it as a template.`;
+  if (kind === "demo")
+    return `\n *\n * Demo data: ${docText(notes.data.note)} It cannot show your own data yet; use it as a template.`;
   if (kind === "input") return `\n *\n * Data: ${docText(notes.data.note)}`;
   return "";
 }
@@ -224,7 +245,9 @@ function eventProp(event, info) {
 /** The event's type: from the module's typed event map, else from the detail written in the notes. */
 function eventType(event, info) {
   if (info.eventMap) return `ElementModule.${info.eventMap}[${JSON.stringify(event.name)}]`;
-  const detail = String(event.detail ?? "").trim().replace(/'/g, '"');
+  const detail = String(event.detail ?? "")
+    .trim()
+    .replace(/'/g, '"');
   if (!detail || detail === "{}") return "CustomEvent<Record<string, never>>";
   return `CustomEvent<${validTs(detail) ? detail : "Record<string, unknown>"}>`;
 }
@@ -232,7 +255,9 @@ function eventType(event, info) {
 function wrapper(entry, info) {
   const name = entry.component;
   const collection = collectionOf[entry.collection];
-  const attrs = info.attributeNotes.filter((a) => a?.name && !RESERVED_PROPS.has(camel(a.name)) && isPlainAttribute(a.name));
+  const attrs = info.attributeNotes.filter(
+    (a) => a?.name && !RESERVED_PROPS.has(camel(a.name)) && isPlainAttribute(a.name),
+  );
   const events = info.eventNotes;
   const propNames = attrs.map((a) => camel(a.name));
   const eventProps = events.map((e) => `on${pascal(e.name)}`);
@@ -240,8 +265,12 @@ function wrapper(entry, info) {
   const omit = [...new Set(ownProps)].map((n) => JSON.stringify(n)).join(" | ") || "never";
   const body = [...attrs.map(attributeProp), ...events.map((e) => eventProp(e, info))].join("\n");
   const summary = docText(info.notes?.summary ?? entry.description[0]);
-  const attributeMap = attrs.length ? `{ ${attrs.map((a) => `${JSON.stringify(a.name)}: ${camel(a.name)}`).join(", ")} }` : "{}";
-  const eventMap = events.length ? `{ ${events.map((e) => `${JSON.stringify(e.name)}: on${pascal(e.name)}`).join(", ")} }` : "{}";
+  const attributeMap = attrs.length
+    ? `{ ${attrs.map((a) => `${JSON.stringify(a.name)}: ${camel(a.name)}`).join(", ")} }`
+    : "{}";
+  const eventMap = events.length
+    ? `{ ${events.map((e) => `${JSON.stringify(e.name)}: on${pascal(e.name)}`).join(", ")} }`
+    : "{}";
 
   return `"use client";
 
@@ -252,9 +281,13 @@ import type * as ElementModule from "@/components/lumesec/${entry.tag}.element";
 /** The \`<${entry.tag}>\` element, with its properties and methods. */
 export type ${name}Element = ElementModule.${info.className};
 
-${body ? `export interface ${name}Props extends Omit<LumesecElementProps<${name}Element>, ${omit}> {
+${
+  body
+    ? `export interface ${name}Props extends Omit<LumesecElementProps<${name}Element>, ${omit}> {
 ${body}
-}` : `export type ${name}Props = LumesecElementProps<${name}Element>;`}
+}`
+    : `export type ${name}Props = LumesecElementProps<${name}Element>;`
+}
 
 /**
  * ${entry.title} · \`<${entry.tag}>\` · LumeSec Elements, ${collection.title}.
@@ -274,10 +307,13 @@ export function ${name}({ ${ownProps.map((p) => `${p}, `).join("")}...props }: $
 
 /* ------------------------------------------------------------------ install files */
 
-const libImports = (text) => [...new Set([...text.matchAll(/from\s+["']@\/lib\/lumesec\/([\w-]+)["']/g)].map((m) => m[1]))];
+const libImports = (text) => [
+  ...new Set([...text.matchAll(/from\s+["']@\/lib\/lumesec\/([\w-]+)["']/g)].map((m) => m[1])),
+];
 
 function libPath(name) {
-  for (const ext of ["ts", "tsx"]) if (existsSync(join(LIB, `${name}.${ext}`))) return `registry/lib/lumesec/${name}.${ext}`;
+  for (const ext of ["ts", "tsx"])
+    if (existsSync(join(LIB, `${name}.${ext}`))) return `registry/lib/lumesec/${name}.${ext}`;
   throw new Error(`missing lib module @/lib/lumesec/${name}`);
 }
 
@@ -303,16 +339,33 @@ function installFiles(tag, kind, texts) {
       target: `lib/lumesec/${name}.${source.split(".").pop()}`,
       source,
       title: LIB_MODULES[name]?.[0] ?? name,
-      note: ENGINES.has(name) ? "Shared by every component of this family. Copy it once." : "Shared by several components. Copy it once.",
+      note: ENGINES.has(name)
+        ? "Shared by every component of this family. Copy it once."
+        : "Shared by several components. Copy it once.",
     };
   });
   if (kind === "react") {
-    files.push({ target: `components/lumesec/${tag}.tsx`, source: `registry/components/lumesec/${tag}.tsx`, title: "The component", note: "React and Tailwind. Uses `cn` from `@/lib/utils`." });
+    files.push({
+      target: `components/lumesec/${tag}.tsx`,
+      source: `registry/components/lumesec/${tag}.tsx`,
+      title: "The component",
+      note: "React and Tailwind. Uses `cn` from `@/lib/utils`.",
+    });
     return files;
   }
   files.push(
-    { target: `components/lumesec/${tag}.element.ts`, source: `registry/components/lumesec/${tag}.element.ts`, title: "The element", note: "Framework-free TypeScript. Importing it registers the tag." },
-    { target: `components/lumesec/${tag}.tsx`, source: `registry/components/lumesec/${tag}.tsx`, title: "React wrapper", note: "Typed props and event handlers." },
+    {
+      target: `components/lumesec/${tag}.element.ts`,
+      source: `registry/components/lumesec/${tag}.element.ts`,
+      title: "The element",
+      note: "Framework-free TypeScript. Importing it registers the tag.",
+    },
+    {
+      target: `components/lumesec/${tag}.tsx`,
+      source: `registry/components/lumesec/${tag}.tsx`,
+      title: "React wrapper",
+      note: "Typed props and event handlers.",
+    },
   );
   return files;
 }
@@ -320,7 +373,8 @@ function installFiles(tag, kind, texts) {
 /* ------------------------------------------------------------------ metadata */
 
 function reactMeta(entry, notes) {
-  if (notes?.kind !== "react") console.warn(`! ${entry.tag}: React component without React notes (content/meta/${entry.tag}.json)`);
+  if (notes?.kind !== "react")
+    console.warn(`! ${entry.tag}: React component without React notes (content/meta/${entry.tag}.json)`);
   const source = readFileSync(join(COMPONENTS, `${entry.tag}.tsx`), "utf8");
   const demo = readFileSync(join(EXAMPLES, `${entry.tag}-demo.tsx`), "utf8");
   return {
@@ -332,7 +386,12 @@ function reactMeta(entry, notes) {
     events: [],
     methods: methodNames(notes?.ref?.methods),
     observed: [],
-    controls: (notes?.playground?.controls ?? []).map((c) => ({ name: c.name, kind: c.kind, options: c.options ?? null, default: c.default ?? null })),
+    controls: (notes?.playground?.controls ?? []).map((c) => ({
+      name: c.name,
+      kind: c.kind,
+      options: c.options ?? null,
+      default: c.default ?? null,
+    })),
     playgroundProps: notes?.playground?.props ?? {},
     formAssociated: Boolean(notes?.form),
     data: notes?.data?.kind ?? null,
@@ -352,19 +411,25 @@ function writeWrapper(entry, info) {
     return readFileSync(file, "utf8");
   }
   const text = wrapper(entry, info);
-  write(file, text);
+  wrappers.push({ file, text });
   return text;
 }
 
 function elementMeta(entry, notes) {
   const file = join(COMPONENTS, `${entry.tag}.element.ts`);
-  if (!existsSync(file)) throw new Error(`${entry.tag}: neither a native React component (with a demo) nor a custom element module (${entry.tag}.element.ts)`);
+  if (!existsSync(file))
+    throw new Error(
+      `${entry.tag}: neither a native React component (with a demo) nor a custom element module (${entry.tag}.element.ts)`,
+    );
   const source = readFileSync(file, "utf8");
   const classes = classesIn(source, file);
-  const exported = source.match(/export\s*\{\s*([A-Za-z_$][\w$]*)/)?.[1] ?? source.match(/export\s+class\s+([A-Za-z_$][\w$]*)/)?.[1];
+  const exported =
+    source.match(/export\s*\{\s*([A-Za-z_$][\w$]*)/)?.[1] ?? source.match(/export\s+class\s+([A-Za-z_$][\w$]*)/)?.[1];
   const cls = classes.find((c) => c.name === exported) ?? classes[0];
   if (!cls) throw new Error(`${entry.tag}: no class found in ${file}`);
-  const eventMap = new RegExp(`export\\s+interface\\s+${cls.name}EventMap\\b`).test(source) ? `${cls.name}EventMap` : null;
+  const eventMap = new RegExp(`export\\s+interface\\s+${cls.name}EventMap\\b`).test(source)
+    ? `${cls.name}EventMap`
+    : null;
 
   const detected = detectAttributes(source);
   for (const name of cls.observed) if (!detected.has(name) && isPlainAttribute(name)) detected.set(name, "string");
@@ -377,7 +442,9 @@ function elementMeta(entry, notes) {
     name: entry.tag,
     kind: "element",
     props: [],
-    attributes: attributeNotes.filter((a) => a?.name && isPlainAttribute(a.name)).map((a) => ({ name: a.name, prop: camel(a.name), type: valueKind(a) })),
+    attributes: attributeNotes
+      .filter((a) => a?.name && isPlainAttribute(a.name))
+      .map((a) => ({ name: a.name, prop: camel(a.name), type: valueKind(a) })),
     events: eventNotes.map((e) => ({ name: e.name, prop: `on${pascal(e.name)}`, detail: detailKeys(e.detail) })),
     methods: methodNames(notes?.methods),
     observed: cls.observed,
@@ -425,11 +492,21 @@ const collections = COLLECTIONS.map((c) => {
     count: items.length,
     kind: collectionKind(items),
     groups: [...new Set(items.map((m) => m.group).filter(Boolean))],
-    updated: items.map((m) => m.added).sort().at(-1),
+    updated: items
+      .map((m) => m.added)
+      .sort()
+      .at(-1),
   };
 });
 
 const json = (value) => JSON.stringify(value, null, 2) + "\n";
+
+// The wrappers are committed with the rest of registry/, so they are written in the repository's Prettier
+// style: `pnpm format` leaves them unchanged, and CI can compare a fresh catalog run with the commit.
+const prettierOptions = await prettier.resolveConfig(join(COMPONENTS, "wrapper.tsx"));
+for (const { file, text } of wrappers) {
+  write(file, await prettier.format(text, { ...prettierOptions, filepath: file }));
+}
 
 write(join(GENERATED, "elements.json"), json(meta));
 write(join(GENERATED, "collections.json"), json(collections));
@@ -459,4 +536,7 @@ ${reactTags.map((t) => `  ${JSON.stringify(t)}: () => import("@/components/lumes
 write(join(GENERATED, "react-tags.json"), json(reactTags));
 
 const byCollection = Object.fromEntries(collections.map((c) => [c.slug, c.count]));
-console.log(`catalog: ${meta.length} components (${reactTags.length} React, ${elementTags.length} elements)${DRY ? ", dry run" : ""}`, byCollection);
+console.log(
+  `catalog: ${meta.length} components (${reactTags.length} React, ${elementTags.length} elements)${DRY ? ", dry run" : ""}`,
+  byCollection,
+);

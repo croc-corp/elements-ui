@@ -995,7 +995,7 @@ function ipv6Text(bytes: Uint8Array): string {
   for (let i = 0; i < 16; i += 2) groups.push((bytes[i] << 8) | bytes[i + 1]);
   let bestStart = -1;
   let bestLength = 1;
-  for (let i = 0; i < 8; ) {
+  for (let i = 0; i < 8;) {
     if (groups[i] !== 0) {
       i++;
       continue;
@@ -1008,7 +1008,11 @@ function ipv6Text(bytes: Uint8Array): string {
     }
     i = j;
   }
-  const hex = (from: number, to: number) => groups.slice(from, to).map((group) => group.toString(16)).join(":");
+  const hex = (from: number, to: number) =>
+    groups
+      .slice(from, to)
+      .map((group) => group.toString(16))
+      .join(":");
   if (bestStart < 0) return hex(0, 8);
   return `${hex(0, bestStart)}::${hex(bestStart + bestLength, 8)}`;
 }
@@ -1112,7 +1116,15 @@ export const DEMO_CITIES: readonly GeoCity[] = [
   { id: "dub", name: "Dublin", country: "IE", timeZone: "Europe/Dublin", weight: 0.4, lat: 53.3498, lon: -6.2603 },
   { id: "mxp", name: "Milan", country: "IT", timeZone: "Europe/Rome", weight: 0.5, lat: 45.4642, lon: 9.19 },
   { id: "zrh", name: "Zurich", country: "CH", timeZone: "Europe/Zurich", weight: 0.4, lat: 47.3769, lon: 8.5417 },
-  { id: "arn", name: "Stockholm", country: "SE", timeZone: "Europe/Stockholm", weight: 0.4, lat: 59.3293, lon: 18.0686 },
+  {
+    id: "arn",
+    name: "Stockholm",
+    country: "SE",
+    timeZone: "Europe/Stockholm",
+    weight: 0.4,
+    lat: 59.3293,
+    lon: 18.0686,
+  },
   { id: "hel", name: "Helsinki", country: "FI", timeZone: "Europe/Helsinki", weight: 0.3, lat: 60.1699, lon: 24.9384 },
   { id: "waw", name: "Warsaw", country: "PL", timeZone: "Europe/Warsaw", weight: 0.4, lat: 52.2297, lon: 21.0122 },
   { id: "ist", name: "Istanbul", country: "TR", timeZone: "Europe/Istanbul", weight: 0.6, lat: 41.0082, lon: 28.9784 },
@@ -1125,14 +1137,62 @@ export const DEMO_CITIES: readonly GeoCity[] = [
   { id: "dfw", name: "Dallas", country: "US", timeZone: "America/Chicago", weight: 0.5, lat: 32.7767, lon: -96.797 },
   { id: "mia", name: "Miami", country: "US", timeZone: "America/New_York", weight: 0.4, lat: 25.7617, lon: -80.1918 },
   { id: "yyz", name: "Toronto", country: "CA", timeZone: "America/Toronto", weight: 0.5, lat: 43.6532, lon: -79.3832 },
-  { id: "sea", name: "Seattle", country: "US", timeZone: "America/Los_Angeles", weight: 0.5, lat: 47.6062, lon: -122.3321 },
-  { id: "sfo", name: "San Francisco", country: "US", timeZone: "America/Los_Angeles", weight: 0.8, lat: 37.7749, lon: -122.4194 },
-  { id: "lax", name: "Los Angeles", country: "US", timeZone: "America/Los_Angeles", weight: 0.7, lat: 34.0522, lon: -118.2437 },
-  { id: "mex", name: "Mexico City", country: "MX", timeZone: "America/Mexico_City", weight: 0.6, lat: 19.4326, lon: -99.1332 },
+  {
+    id: "sea",
+    name: "Seattle",
+    country: "US",
+    timeZone: "America/Los_Angeles",
+    weight: 0.5,
+    lat: 47.6062,
+    lon: -122.3321,
+  },
+  {
+    id: "sfo",
+    name: "San Francisco",
+    country: "US",
+    timeZone: "America/Los_Angeles",
+    weight: 0.8,
+    lat: 37.7749,
+    lon: -122.4194,
+  },
+  {
+    id: "lax",
+    name: "Los Angeles",
+    country: "US",
+    timeZone: "America/Los_Angeles",
+    weight: 0.7,
+    lat: 34.0522,
+    lon: -118.2437,
+  },
+  {
+    id: "mex",
+    name: "Mexico City",
+    country: "MX",
+    timeZone: "America/Mexico_City",
+    weight: 0.6,
+    lat: 19.4326,
+    lon: -99.1332,
+  },
   { id: "bog", name: "Bogotá", country: "CO", timeZone: "America/Bogota", weight: 0.4, lat: 4.711, lon: -74.0721 },
   { id: "lim", name: "Lima", country: "PE", timeZone: "America/Lima", weight: 0.3, lat: -12.0464, lon: -77.0428 },
-  { id: "scl", name: "Santiago", country: "CL", timeZone: "America/Santiago", weight: 0.3, lat: -33.4489, lon: -70.6693 },
-  { id: "gru", name: "São Paulo", country: "BR", timeZone: "America/Sao_Paulo", weight: 0.8, lat: -23.5505, lon: -46.6333 },
+  {
+    id: "scl",
+    name: "Santiago",
+    country: "CL",
+    timeZone: "America/Santiago",
+    weight: 0.3,
+    lat: -33.4489,
+    lon: -70.6693,
+  },
+  {
+    id: "gru",
+    name: "São Paulo",
+    country: "BR",
+    timeZone: "America/Sao_Paulo",
+    weight: 0.8,
+    lat: -23.5505,
+    lon: -46.6333,
+  },
   {
     id: "eze",
     name: "Buenos Aires",
@@ -1142,14 +1202,54 @@ export const DEMO_CITIES: readonly GeoCity[] = [
     lat: -34.6037,
     lon: -58.3816,
   },
-  { id: "yvr", name: "Vancouver", country: "CA", timeZone: "America/Vancouver", weight: 0.3, lat: 49.2827, lon: -123.1207 },
-  { id: "gig", name: "Rio de Janeiro", country: "BR", timeZone: "America/Sao_Paulo", weight: 0.4, lat: -22.9068, lon: -43.1729 },
+  {
+    id: "yvr",
+    name: "Vancouver",
+    country: "CA",
+    timeZone: "America/Vancouver",
+    weight: 0.3,
+    lat: 49.2827,
+    lon: -123.1207,
+  },
+  {
+    id: "gig",
+    name: "Rio de Janeiro",
+    country: "BR",
+    timeZone: "America/Sao_Paulo",
+    weight: 0.4,
+    lat: -22.9068,
+    lon: -43.1729,
+  },
   { id: "cai", name: "Cairo", country: "EG", timeZone: "Africa/Cairo", weight: 0.5, lat: 30.0444, lon: 31.2357 },
-  { id: "cmn", name: "Casablanca", country: "MA", timeZone: "Africa/Casablanca", weight: 0.3, lat: 33.5731, lon: -7.5898 },
+  {
+    id: "cmn",
+    name: "Casablanca",
+    country: "MA",
+    timeZone: "Africa/Casablanca",
+    weight: 0.3,
+    lat: 33.5731,
+    lon: -7.5898,
+  },
   { id: "los", name: "Lagos", country: "NG", timeZone: "Africa/Lagos", weight: 0.6, lat: 6.5244, lon: 3.3792 },
   { id: "nbo", name: "Nairobi", country: "KE", timeZone: "Africa/Nairobi", weight: 0.4, lat: -1.2921, lon: 36.8219 },
-  { id: "jnb", name: "Johannesburg", country: "ZA", timeZone: "Africa/Johannesburg", weight: 0.5, lat: -26.2041, lon: 28.0473 },
-  { id: "cpt", name: "Cape Town", country: "ZA", timeZone: "Africa/Johannesburg", weight: 0.3, lat: -33.9249, lon: 18.4241 },
+  {
+    id: "jnb",
+    name: "Johannesburg",
+    country: "ZA",
+    timeZone: "Africa/Johannesburg",
+    weight: 0.5,
+    lat: -26.2041,
+    lon: 28.0473,
+  },
+  {
+    id: "cpt",
+    name: "Cape Town",
+    country: "ZA",
+    timeZone: "Africa/Johannesburg",
+    weight: 0.3,
+    lat: -33.9249,
+    lon: 18.4241,
+  },
   { id: "dxb", name: "Dubai", country: "AE", timeZone: "Asia/Dubai", weight: 0.6, lat: 25.2048, lon: 55.2708 },
   { id: "ruh", name: "Riyadh", country: "SA", timeZone: "Asia/Riyadh", weight: 0.4, lat: 24.7136, lon: 46.6753 },
   { id: "tlv", name: "Tel Aviv", country: "IL", timeZone: "Asia/Jerusalem", weight: 0.3, lat: 32.0853, lon: 34.7818 },
@@ -1167,8 +1267,24 @@ export const DEMO_CITIES: readonly GeoCity[] = [
   { id: "kix", name: "Osaka", country: "JP", timeZone: "Asia/Tokyo", weight: 0.4, lat: 34.6937, lon: 135.5023 },
   { id: "pvg", name: "Shanghai", country: "CN", timeZone: "Asia/Shanghai", weight: 0.7, lat: 31.2304, lon: 121.4737 },
   { id: "syd", name: "Sydney", country: "AU", timeZone: "Australia/Sydney", weight: 0.6, lat: -33.8688, lon: 151.2093 },
-  { id: "mel", name: "Melbourne", country: "AU", timeZone: "Australia/Melbourne", weight: 0.4, lat: -37.8136, lon: 144.9631 },
-  { id: "akl", name: "Auckland", country: "NZ", timeZone: "Pacific/Auckland", weight: 0.3, lat: -36.8485, lon: 174.7633 },
+  {
+    id: "mel",
+    name: "Melbourne",
+    country: "AU",
+    timeZone: "Australia/Melbourne",
+    weight: 0.4,
+    lat: -37.8136,
+    lon: 144.9631,
+  },
+  {
+    id: "akl",
+    name: "Auckland",
+    country: "NZ",
+    timeZone: "Pacific/Auckland",
+    weight: 0.3,
+    lat: -36.8485,
+    lon: 174.7633,
+  },
   { id: "per", name: "Perth", country: "AU", timeZone: "Australia/Perth", weight: 0.2, lat: -31.9505, lon: 115.8605 },
 ];
 
@@ -1180,15 +1296,36 @@ export const DEMO_CITIES: readonly GeoCity[] = [
  */
 export const DEMO_REGIONS: readonly GeoRegion[] = [
   { id: "us-east", label: "us-east", city: "Ashburn", timeZone: "America/New_York", lat: 39.0438, lon: -77.4874 },
-  { id: "us-west", label: "us-west", city: "San Francisco", timeZone: "America/Los_Angeles", lat: 37.7749, lon: -122.4194 },
+  {
+    id: "us-west",
+    label: "us-west",
+    city: "San Francisco",
+    timeZone: "America/Los_Angeles",
+    lat: 37.7749,
+    lon: -122.4194,
+  },
   { id: "sa-east", label: "sa-east", city: "São Paulo", timeZone: "America/Sao_Paulo", lat: -23.5505, lon: -46.6333 },
   { id: "eu-west", label: "eu-west", city: "Dublin", timeZone: "Europe/Dublin", lat: 53.3498, lon: -6.2603 },
   { id: "eu-central", label: "eu-central", city: "Frankfurt", timeZone: "Europe/Berlin", lat: 50.1109, lon: 8.6821 },
   { id: "eu-north", label: "eu-north", city: "Stockholm", timeZone: "Europe/Stockholm", lat: 59.3293, lon: 18.0686 },
   { id: "me-central", label: "me-central", city: "Dubai", timeZone: "Asia/Dubai", lat: 25.2048, lon: 55.2708 },
-  { id: "af-south", label: "af-south", city: "Johannesburg", timeZone: "Africa/Johannesburg", lat: -26.2041, lon: 28.0473 },
+  {
+    id: "af-south",
+    label: "af-south",
+    city: "Johannesburg",
+    timeZone: "Africa/Johannesburg",
+    lat: -26.2041,
+    lon: 28.0473,
+  },
   { id: "ap-south", label: "ap-south", city: "Mumbai", timeZone: "Asia/Kolkata", lat: 19.076, lon: 72.8777 },
-  { id: "ap-southeast", label: "ap-southeast", city: "Singapore", timeZone: "Asia/Singapore", lat: 1.3521, lon: 103.8198 },
+  {
+    id: "ap-southeast",
+    label: "ap-southeast",
+    city: "Singapore",
+    timeZone: "Asia/Singapore",
+    lat: 1.3521,
+    lon: 103.8198,
+  },
   { id: "ap-northeast", label: "ap-northeast", city: "Tokyo", timeZone: "Asia/Tokyo", lat: 35.6762, lon: 139.6503 },
   { id: "au-east", label: "au-east", city: "Sydney", timeZone: "Australia/Sydney", lat: -33.8688, lon: 151.2093 },
   { id: "us-central", label: "us-central", city: "Dallas", timeZone: "America/Chicago", lat: 32.7767, lon: -96.797 },

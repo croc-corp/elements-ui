@@ -65,7 +65,8 @@ const DELETE_ICON =
 
 function keyButton(key: string, letters: string): string {
   if (key === "clr") return '<button class="k fn" type="button" data-k="clr">Clear</button>';
-  if (key === "del") return `<button class="k fn" type="button" data-k="del" aria-label="Delete">${DELETE_ICON}</button>`;
+  if (key === "del")
+    return `<button class="k fn" type="button" data-k="del" aria-label="Delete">${DELETE_ICON}</button>`;
   return `<button class="k" type="button" data-k="${key}">${key}<small>${letters || "&nbsp;"}</small></button>`;
 }
 

@@ -176,13 +176,7 @@ export interface Spring {
  * One step of a damped spring toward `target`, integrated in two half steps for stability.
  * `stiffness` 520 and `damping` 0.72 give the slightly under-damped snap the components use.
  */
-export function springStep(
-  state: Spring,
-  target: number,
-  delta: number,
-  stiffness = 520,
-  damping = 0.72,
-) {
+export function springStep(state: Spring, target: number, delta: number, stiffness = 520, damping = 0.72) {
   const c = 2 * Math.sqrt(stiffness) * damping;
   for (let i = 0; i < 2; i++) {
     const acceleration = stiffness * (target - state.position) - c * state.velocity;
@@ -196,13 +190,7 @@ export function springStep(
  * One explicit Euler step of a damped spring toward `target`, the integrator the Pixel UI indicators use
  * (tab underlines, pagination blocks, nav and list highlights). `damping` is the ratio to critical damping.
  */
-export function springEuler(
-  state: Spring,
-  target: number,
-  delta: number,
-  stiffness: number,
-  damping: number,
-) {
+export function springEuler(state: Spring, target: number, delta: number, stiffness: number, damping: number) {
   const c = 2 * Math.sqrt(stiffness) * damping;
   state.velocity += (stiffness * (target - state.position) - c * state.velocity) * delta;
   state.position += state.velocity * delta;

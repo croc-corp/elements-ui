@@ -51,7 +51,9 @@ export function ComponentView({ e, col, page }: { e: ElementMeta; col: Collectio
             }
             title={e.title}
             description={page.data.description}
-            actions={<PageActions url={absoluteUrl(path)} markdownPath={`${path}.md`} registryUrl={registryUrl} item={e.tag} />}
+            actions={
+              <PageActions url={absoluteUrl(path)} markdownPath={`${path}.md`} registryUrl={registryUrl} item={e.tag} />
+            }
           />
           <div className="prose mt-8">
             <MDX components={getMDXComponents()} />

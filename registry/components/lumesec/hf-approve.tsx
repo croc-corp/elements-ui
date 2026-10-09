@@ -20,10 +20,5 @@ export interface HfApproveProps extends Omit<LumesecElementProps<HfApproveElemen
  * @see https://elements.lumesec.ai/components/pixel-hd/approve
  */
 export function HfApprove({ onDecision, ...props }: HfApproveProps) {
-  return useLumesecElement(
-    "hf-approve",
-    props,
-    {},
-    { "decision": onDecision },
-  );
+  return useLumesecElement("hf-approve", props, {}, { decision: onDecision });
 }

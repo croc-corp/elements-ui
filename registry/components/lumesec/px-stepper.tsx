@@ -22,10 +22,5 @@ export interface PxStepperProps extends Omit<LumesecElementProps<PxStepperElemen
  * @see https://elements.lumesec.ai/components/pixel-lab/stepper
  */
 export function PxStepper({ onChange, onComplete, ...props }: PxStepperProps) {
-  return useLumesecElement(
-    "px-stepper",
-    props,
-    {},
-    { "change": onChange, "complete": onComplete },
-  );
+  return useLumesecElement("px-stepper", props, {}, { change: onChange, complete: onComplete });
 }

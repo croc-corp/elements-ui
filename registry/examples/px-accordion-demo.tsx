@@ -10,8 +10,14 @@ export default function PxAccordionDemo() {
             title: "What is Ultracode?",
             content: "A mode that sends xhigh effort and lets the agent plan multi-agent workflows on its own.",
           },
-          { title: "How is usage counted?", content: "Usage resets weekly. Longer reasoning and more agents use more of it." },
-          { title: "Can I export my data?", content: "Yes. Settings has an export that includes chats, projects and files." },
+          {
+            title: "How is usage counted?",
+            content: "Usage resets weekly. Longer reasoning and more agents use more of it.",
+          },
+          {
+            title: "Can I export my data?",
+            content: "Yes. Settings has an export that includes chats, projects and files.",
+          },
         ]}
       />
     </div>

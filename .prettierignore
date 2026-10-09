@@ -1,0 +1,16 @@
+# written by the generators (pnpm catalog, docs:generate, registry:build); scripts/catalog.mjs formats the
+# custom-element wrappers it writes into registry/ itself
+src/generated
+registry.json
+content/components
+.registry
+public/cdn
+.source
+.next
+.data
+
+# prose is wrapped by hand
+*.md
+*.mdx
+
+pnpm-lock.yaml

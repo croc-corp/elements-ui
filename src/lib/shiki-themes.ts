@@ -10,15 +10,51 @@ function theme(name: string, type: "light" | "dark", c: Record<string, string>):
     settings: [
       { settings: { foreground: c.fg, background: c.bg } },
       { scope: ["comment", "punctuation.definition.comment"], settings: { foreground: c.comment } },
-      { scope: ["keyword", "storage", "storage.type", "storage.modifier", "keyword.control", "keyword.operator.new", "keyword.operator.expression", "variable.language"], settings: { foreground: c.keyword } },
-      { scope: ["string", "string.quoted", "string.template", "punctuation.definition.string"], settings: { foreground: c.string } },
-      { scope: ["constant.numeric", "constant.language", "constant.character", "support.constant"], settings: { foreground: c.number } },
-      { scope: ["entity.name.function", "support.function", "meta.function-call", "variable.function"], settings: { foreground: c.fn } },
+      {
+        scope: [
+          "keyword",
+          "storage",
+          "storage.type",
+          "storage.modifier",
+          "keyword.control",
+          "keyword.operator.new",
+          "keyword.operator.expression",
+          "variable.language",
+        ],
+        settings: { foreground: c.keyword },
+      },
+      {
+        scope: ["string", "string.quoted", "string.template", "punctuation.definition.string"],
+        settings: { foreground: c.string },
+      },
+      {
+        scope: ["constant.numeric", "constant.language", "constant.character", "support.constant"],
+        settings: { foreground: c.number },
+      },
+      {
+        scope: ["entity.name.function", "support.function", "meta.function-call", "variable.function"],
+        settings: { foreground: c.fn },
+      },
       { scope: ["entity.name.tag", "support.class.component", "meta.tag.custom"], settings: { foreground: c.tag } },
       { scope: ["entity.other.attribute-name", "meta.attribute"], settings: { foreground: c.attr } },
-      { scope: ["entity.name.type", "entity.name.class", "support.type", "support.class", "entity.other.inherited-class"], settings: { foreground: c.type } },
-      { scope: ["variable", "variable.other", "meta.object-literal.key", "support.type.property-name"], settings: { foreground: c.fg } },
-      { scope: ["punctuation", "meta.brace", "keyword.operator", "punctuation.separator", "punctuation.terminator"], settings: { foreground: c.punct } },
+      {
+        scope: [
+          "entity.name.type",
+          "entity.name.class",
+          "support.type",
+          "support.class",
+          "entity.other.inherited-class",
+        ],
+        settings: { foreground: c.type },
+      },
+      {
+        scope: ["variable", "variable.other", "meta.object-literal.key", "support.type.property-name"],
+        settings: { foreground: c.fg },
+      },
+      {
+        scope: ["punctuation", "meta.brace", "keyword.operator", "punctuation.separator", "punctuation.terminator"],
+        settings: { foreground: c.punct },
+      },
       { scope: ["markup.inserted"], settings: { foreground: c.string } },
       { scope: ["markup.deleted"], settings: { foreground: c.deleted } },
       { scope: ["markup.heading"], settings: { foreground: c.fn, fontStyle: "bold" } },

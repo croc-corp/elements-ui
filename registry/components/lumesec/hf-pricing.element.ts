@@ -35,7 +35,8 @@ export interface HPricingEventMap {
   change: CustomEvent<{ period: HPricingPeriod; price: number }>;
 }
 
-const DEFAULT_FEATURES = "Ultracode and multi-agent workflows|Priority access at peak times|Projects with shared context";
+const DEFAULT_FEATURES =
+  "Ultracode and multi-agent workflows|Priority access at peak times|Projects with shared context";
 
 /** A price for display: whole amounts as they are, others with two decimals (`16`, `16.50`). */
 const amount = (value: number): string => {

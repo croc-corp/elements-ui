@@ -16,7 +16,10 @@ export default function GeoClusterDemo() {
           if (id === null) setPoint(null);
         }}
       />
-      <p className="m-0 flex min-h-[18px] items-baseline gap-2 px-1 text-[12.5px] leading-[1.4] text-muted-foreground" aria-live="polite">
+      <p
+        className="m-0 flex min-h-[18px] items-baseline gap-2 px-1 text-[12.5px] leading-[1.4] text-muted-foreground"
+        aria-live="polite"
+      >
         {point ? (
           <>
             <span className="font-medium text-foreground">{point.label ?? "Selected location"}</span>

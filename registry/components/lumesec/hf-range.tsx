@@ -7,7 +7,23 @@ import type * as ElementModule from "@/components/lumesec/hf-range.element";
 /** The `<hf-range>` element, with its properties and methods. */
 export type HfRangeElement = ElementModule.HRange;
 
-export interface HfRangeProps extends Omit<LumesecElementProps<HfRangeElement>, "min" | "max" | "step" | "low" | "high" | "prefix" | "data" | "scale" | "label" | "unitLabel" | "name" | "disabled" | "onInput" | "onChange"> {
+export interface HfRangeProps extends Omit<
+  LumesecElementProps<HfRangeElement>,
+  | "min"
+  | "max"
+  | "step"
+  | "low"
+  | "high"
+  | "prefix"
+  | "data"
+  | "scale"
+  | "label"
+  | "unitLabel"
+  | "name"
+  | "disabled"
+  | "onInput"
+  | "onChange"
+> {
   /** Lower bound of the scale. Observed. Default: `0`. */
   min?: number;
   /** Upper bound of the scale. Observed. Default: `500`. */
@@ -45,11 +61,40 @@ export interface HfRangeProps extends Omit<LumesecElementProps<HfRangeElement>, 
  * Data: Pass your histogram as `data` and the count factor as `scale`. Without `data` the histogram is a generated demo distribution.
  * @see https://elements.lumesec.ai/components/pixel-hd/range
  */
-export function HfRange({ min, max, step, low, high, prefix, data, scale, label, unitLabel, name, disabled, onInput, onChange, ...props }: HfRangeProps) {
+export function HfRange({
+  min,
+  max,
+  step,
+  low,
+  high,
+  prefix,
+  data,
+  scale,
+  label,
+  unitLabel,
+  name,
+  disabled,
+  onInput,
+  onChange,
+  ...props
+}: HfRangeProps) {
   return useLumesecElement(
     "hf-range",
     props,
-    { "min": min, "max": max, "step": step, "low": low, "high": high, "prefix": prefix, "data": data, "scale": scale, "label": label, "unit-label": unitLabel, "name": name, "disabled": disabled },
-    { "input": onInput, "change": onChange },
+    {
+      min: min,
+      max: max,
+      step: step,
+      low: low,
+      high: high,
+      prefix: prefix,
+      data: data,
+      scale: scale,
+      label: label,
+      "unit-label": unitLabel,
+      name: name,
+      disabled: disabled,
+    },
+    { input: onInput, change: onChange },
   );
 }

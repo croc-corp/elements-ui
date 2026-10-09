@@ -71,7 +71,9 @@ export const THEME_TOKENS = {
 /** A colour name of {@link THEME_TOKENS}. */
 export type ThemeColorName = keyof typeof THEME_TOKENS;
 
-const KNOWN_FALLBACKS = new Map<string, string>(Object.values(THEME_TOKENS).map(([token, fallback]) => [token, fallback]));
+const KNOWN_FALLBACKS = new Map<string, string>(
+  Object.values(THEME_TOKENS).map(([token, fallback]) => [token, fallback]),
+);
 
 /**
  * Resolve a theme variable (`"--lumesec"`) or a CSS colour on an element, using the documented fallback

@@ -142,8 +142,7 @@ class HConsent extends HF {
     const stamp = R0 ? 0 : clamp(1 - (t - this.stampedAt) / 0.7, 0, 1);
     F.clear();
     // the shield sits in the card until it folds, then in the pill
-    const emblem =
-      (this.phase === "ask" || stamp > 0) && !this.full.hidden ? this.$(".full .em") : this.$(".pill .em");
+    const emblem = (this.phase === "ask" || stamp > 0) && !this.full.hidden ? this.$(".full .em") : this.$(".pill .em");
     const { x: x0, y: y0, w, h } = local(emblem);
     const cx = x0 + w / 2;
     const scale = 1 + stamp * 0.15 * Math.sin(stamp * Math.PI);

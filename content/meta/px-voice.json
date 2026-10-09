@@ -1,17 +1,37 @@
 {
   "summary": "Simulated dictation control with a mirrored pixel spectrum and words that fade into focus; stopping collapses the bars to a point.",
   "attributes": [
-    { "name": "text", "type": "string", "default": "Make the trail grow out of the thumb toward the left and stop at three quarters of the track.", "description": "The sentence the simulated recognition types out, split on whitespace. Read each time listening starts." }
+    {
+      "name": "text",
+      "type": "string",
+      "default": "Make the trail grow out of the thumb toward the left and stop at three quarters of the track.",
+      "description": "The sentence the simulated recognition types out, split on whitespace. Read each time listening starts."
+    }
   ],
   "events": [
-    { "name": "transcript", "detail": "{ text: string }", "description": "Fires when listening stops, with the words recognised so far joined by spaces." }
+    {
+      "name": "transcript",
+      "detail": "{ text: string }",
+      "description": "Fires when listening stops, with the words recognised so far joined by spaces."
+    }
   ],
   "methods": [
-    { "signature": "start()", "description": "Clears the transcript and starts the simulated listening. Ignored while the closing animation runs." },
-    { "signature": "stop()", "description": "Stops listening and fires `transcript`. Only acts while listening. Removing the element ends a session without firing." }
+    {
+      "signature": "start()",
+      "description": "Clears the transcript and starts the simulated listening. Ignored while the closing animation runs."
+    },
+    {
+      "signature": "stop()",
+      "description": "Stops listening and fires `transcript`. Only acts while listening. Removing the element ends a session without firing."
+    }
   ],
   "properties": [
-    { "name": "sentence", "type": "string", "readonly": false, "description": "The sentence the simulated recognition types out; reflects the `text` attribute, or the default sentence when it is missing." }
+    {
+      "name": "sentence",
+      "type": "string",
+      "readonly": false,
+      "description": "The sentence the simulated recognition types out; reflects the `text` attribute, or the default sentence when it is missing."
+    }
   ],
   "keyboard": [],
   "accessibility": [

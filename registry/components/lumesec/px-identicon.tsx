@@ -18,10 +18,5 @@ export interface PxIdenticonProps extends Omit<LumesecElementProps<PxIdenticonEl
  * @see https://elements.lumesec.ai/components/pixel-lab/identicon
  */
 export function PxIdenticon({ onChange, ...props }: PxIdenticonProps) {
-  return useLumesecElement(
-    "px-identicon",
-    props,
-    {},
-    { "change": onChange },
-  );
+  return useLumesecElement("px-identicon", props, {}, { change: onChange });
 }

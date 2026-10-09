@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-modes.element";
 /** The `<hf-modes>` element, with its properties and methods. */
 export type HfModesElement = ElementModule.HModes;
 
-export interface HfModesProps extends Omit<LumesecElementProps<HfModesElement>, "value" | "name" | "disabled" | "onChange"> {
+export interface HfModesProps extends Omit<
+  LumesecElementProps<HfModesElement>,
+  "value" | "name" | "disabled" | "onChange"
+> {
   /** Selected mode. Observed and reflected. An unknown value on connect selects `code`; unknown values set later are ignored. Default: `code`. */
   value?: "chat" | "code" | "ultracode";
   /** Form field name. */
@@ -24,10 +27,5 @@ export interface HfModesProps extends Omit<LumesecElementProps<HfModesElement>, 
  * @see https://elements.lumesec.ai/components/pixel-hd/modes
  */
 export function HfModes({ value, name, disabled, onChange, ...props }: HfModesProps) {
-  return useLumesecElement(
-    "hf-modes",
-    props,
-    { "value": value, "name": name, "disabled": disabled },
-    { "change": onChange },
-  );
+  return useLumesecElement("hf-modes", props, { value: value, name: name, disabled: disabled }, { change: onChange });
 }

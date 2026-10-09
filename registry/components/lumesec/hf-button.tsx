@@ -7,7 +7,19 @@ import type * as ElementModule from "@/components/lumesec/hf-button.element";
 /** The `<hf-button>` element, with its properties and methods. */
 export type HfButtonElement = ElementModule.HButton;
 
-export interface HfButtonProps extends Omit<LumesecElementProps<HfButtonElement>, "variant" | "loadingText" | "successText" | "errorText" | "type" | "demo" | "disabled" | "onStart" | "onSuccess" | "onError"> {
+export interface HfButtonProps extends Omit<
+  LumesecElementProps<HfButtonElement>,
+  | "variant"
+  | "loadingText"
+  | "successText"
+  | "errorText"
+  | "type"
+  | "demo"
+  | "disabled"
+  | "onStart"
+  | "onSuccess"
+  | "onError"
+> {
   /** Set to `danger` for the red colour scheme. Without it the accent colour is used. Read directly by CSS and the canvas, so changes apply on the next frame. */
   variant?: string;
   /** Label shown while the promise passed to `run()` is pending. Default: `Working…`. */
@@ -35,11 +47,31 @@ export interface HfButtonProps extends Omit<LumesecElementProps<HfButtonElement>
  * Dot-matrix button with a pointer light and press ripples; `run(fn)` shows loading, success and error states around a promise.
  * @see https://elements.lumesec.ai/components/pixel-hd/button
  */
-export function HfButton({ variant, loadingText, successText, errorText, type, demo, disabled, onStart, onSuccess, onError, ...props }: HfButtonProps) {
+export function HfButton({
+  variant,
+  loadingText,
+  successText,
+  errorText,
+  type,
+  demo,
+  disabled,
+  onStart,
+  onSuccess,
+  onError,
+  ...props
+}: HfButtonProps) {
   return useLumesecElement(
     "hf-button",
     props,
-    { "variant": variant, "loading-text": loadingText, "success-text": successText, "error-text": errorText, "type": type, "demo": demo, "disabled": disabled },
-    { "start": onStart, "success": onSuccess, "error": onError },
+    {
+      variant: variant,
+      "loading-text": loadingText,
+      "success-text": successText,
+      "error-text": errorText,
+      type: type,
+      demo: demo,
+      disabled: disabled,
+    },
+    { start: onStart, success: onSuccess, error: onError },
   );
 }

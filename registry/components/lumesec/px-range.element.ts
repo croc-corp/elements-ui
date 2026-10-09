@@ -40,8 +40,7 @@ const KEY_STEPS: Partial<Record<string, number>> = { ArrowRight: 1, ArrowUp: 1, 
 /** Demo histogram: a main mode around 1 s and a smaller one around 2.5 s, with stable per-bucket variation. */
 const COUNTS: readonly number[] = Array.from({ length: BUCKETS }, (_, i) => {
   const x = i / (BUCKETS - 1);
-  const density =
-    Math.exp(-(((x - 0.24) / 0.13) ** 2)) + 0.38 * Math.exp(-(((x - 0.62) / 0.09) ** 2)) + 0.05;
+  const density = Math.exp(-(((x - 0.24) / 0.13) ** 2)) + 0.38 * Math.exp(-(((x - 0.62) / 0.09) ** 2)) + 0.05;
   return Math.round(density * 210 * (0.85 + 0.3 * hash(i * 9.1)));
 });
 const MAX_COUNT = Math.max(...COUNTS);

@@ -2,14 +2,49 @@
   "kind": "react",
   "summary": "Stat tile with a rolling value, a change chip against a previous value and a pixel history; invert makes a drop read as good.",
   "props": [
-    { "name": "value", "type": "number", "default": "0", "description": "The metric. Changes roll in, upward when the value grows." },
-    { "name": "previous", "type": "number", "default": "-", "description": "Comparison value. When set and not 0, a chip shows the percentage change with ▲ or ▼." },
-    { "name": "invert", "type": "boolean", "default": "false", "description": "For metrics where lower is better: a drop is coloured green and a rise red." },
-    { "name": "format", "type": "\"number\" | \"currency\" | \"percent\" | \"compact\" | \"ms\"", "default": "\"number\"", "description": "`percent` shows one decimal and %, `compact` shortens large numbers (48.2K). Uses en-US formatting." },
-    { "name": "currency", "type": "string", "default": "\"EUR\"", "description": "ISO currency code used with `format=\"currency\"`. Amounts from 1,000 up show whole units." },
+    {
+      "name": "value",
+      "type": "number",
+      "default": "0",
+      "description": "The metric. Changes roll in, upward when the value grows."
+    },
+    {
+      "name": "previous",
+      "type": "number",
+      "default": "-",
+      "description": "Comparison value. When set and not 0, a chip shows the percentage change with ▲ or ▼."
+    },
+    {
+      "name": "invert",
+      "type": "boolean",
+      "default": "false",
+      "description": "For metrics where lower is better: a drop is coloured green and a rise red."
+    },
+    {
+      "name": "format",
+      "type": "\"number\" | \"currency\" | \"percent\" | \"compact\" | \"ms\"",
+      "default": "\"number\"",
+      "description": "`percent` shows one decimal and %, `compact` shortens large numbers (48.2K). Uses en-US formatting."
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "default": "\"EUR\"",
+      "description": "ISO currency code used with `format=\"currency\"`. Amounts from 1,000 up show whole units."
+    },
     { "name": "label", "type": "React.ReactNode", "default": "-", "description": "Caption above the value." },
-    { "name": "note", "type": "React.ReactNode", "default": "-", "description": "Muted text at the end of the value row, such as \"vs. last month\"." },
-    { "name": "data", "type": "readonly number[]", "default": "[]", "description": "History drawn as pixel columns; needs at least two finite values (others are dropped). A change replays the draw-in." }
+    {
+      "name": "note",
+      "type": "React.ReactNode",
+      "default": "-",
+      "description": "Muted text at the end of the value row, such as \"vs. last month\"."
+    },
+    {
+      "name": "data",
+      "type": "readonly number[]",
+      "default": "[]",
+      "description": "History drawn as pixel columns; needs at least two finite values (others are dropped). A change replays the draw-in."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -27,12 +62,24 @@
   "tokens": ["--lumesec-success", "--destructive", "--foreground", "--muted-foreground"],
   "usage": "import { PxKpi } from \"@/components/lumesec/px-kpi\";\n\nexport function Example() {\n  return (\n    <PxKpi\n      label=\"Revenue this month\"\n      value={48210}\n      previous={42900}\n      format=\"currency\"\n      note=\"vs. last month\"\n      data={[30, 32, 31, 35, 38, 36, 40, 44, 43, 48]}\n    />\n  );\n}\n",
   "playground": {
-    "props": { "label": "Revenue this month", "value": 48210, "previous": 42900, "format": "currency", "note": "vs. last month", "data": [30, 32, 31, 35, 38, 36, 40, 44, 43, 48] },
+    "props": {
+      "label": "Revenue this month",
+      "value": 48210,
+      "previous": 42900,
+      "format": "currency",
+      "note": "vs. last month",
+      "data": [30, 32, 31, 35, 38, 36, 40, 44, 43, 48]
+    },
     "controls": [
       { "name": "value", "kind": "number", "options": null, "default": "48210" },
       { "name": "previous", "kind": "number", "options": null, "default": "42900" },
       { "name": "invert", "kind": "boolean", "options": null, "default": "false" },
-      { "name": "format", "kind": "enum", "options": ["number", "currency", "percent", "compact", "ms"], "default": "currency" }
+      {
+        "name": "format",
+        "kind": "enum",
+        "options": ["number", "currency", "percent", "compact", "ms"],
+        "default": "currency"
+      }
     ]
   }
 }

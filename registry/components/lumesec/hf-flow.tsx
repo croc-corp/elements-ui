@@ -20,10 +20,5 @@ export interface HfFlowProps extends Omit<LumesecElementProps<HfFlowElement>, "l
  * @see https://elements.lumesec.ai/components/pixel-hd/flow
  */
 export function HfFlow({ label, ...props }: HfFlowProps) {
-  return useLumesecElement(
-    "hf-flow",
-    props,
-    { "label": label },
-    {},
-  );
+  return useLumesecElement("hf-flow", props, { label: label }, {});
 }

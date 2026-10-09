@@ -35,7 +35,11 @@ export default function GeoBadgeDemo() {
         <button type="button" className={BUTTON_CLASS} onClick={switchRegion}>
           Switch region
         </button>
-        <button type="button" className={BUTTON_CLASS} onClick={() => setStatus((index) => (index + 1) % STATUSES.length)}>
+        <button
+          type="button"
+          className={BUTTON_CLASS}
+          onClick={() => setStatus((index) => (index + 1) % STATUSES.length)}
+        >
           Change status
         </button>
       </div>

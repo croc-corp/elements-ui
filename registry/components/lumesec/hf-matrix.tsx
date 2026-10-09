@@ -20,10 +20,5 @@ export interface HfMatrixProps extends Omit<LumesecElementProps<HfMatrixElement>
  * @see https://elements.lumesec.ai/components/pixel-hd/matrix
  */
 export function HfMatrix({ label, ...props }: HfMatrixProps) {
-  return useLumesecElement(
-    "hf-matrix",
-    props,
-    { "label": label },
-    {},
-  );
+  return useLumesecElement("hf-matrix", props, { label: label }, {});
 }

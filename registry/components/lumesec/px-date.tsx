@@ -44,7 +44,20 @@ interface Box {
   height: number;
 }
 
-const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 const SHORT_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const SHORT_WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -123,7 +136,9 @@ export function PxDate({
     const { start, end } = selection;
     const cellBox = (index: number): Box | null => {
       const cell = cellRefs.current[index];
-      return cell ? { x: cell.offsetLeft, y: cell.offsetTop, width: cell.offsetWidth, height: cell.offsetHeight } : null;
+      return cell
+        ? { x: cell.offsetLeft, y: cell.offsetTop, width: cell.offsetWidth, height: cell.offsetHeight }
+        : null;
     };
     clear();
     let moving = false;
@@ -168,7 +183,8 @@ export function PxDate({
       // on a selected day the mark sits on the block, so it takes the card colour
       const onBlock = sameDay(days[todayIndex], start) || sameDay(days[todayIndex], end);
       const color = onBlock ? palette.card : palette.accent;
-      for (let k = -1; k <= 1; k++) dot(todayBox.x + todayBox.width / 2 + k * 3 - 1, todayBox.y + todayBox.height - 6, color, 1, 2);
+      for (let k = -1; k <= 1; k++)
+        dot(todayBox.x + todayBox.width / 2 + k * 3 - 1, todayBox.y + todayBox.height - 6, color, 1, 2);
     }
     return moving;
   });
@@ -187,12 +203,18 @@ export function PxDate({
     const offset = nav.direction < 0 ? -10 : 10;
     cellRefs.current.forEach((cell, index) => {
       if (!cell || typeof cell.animate !== "function") return;
-      cell.animate([{ opacity: 0, transform: `translateX(${offset}px)` }, { opacity: 1, transform: "none" }], {
-        duration: 300,
-        easing: "cubic-bezier(.2,.8,.2,1)",
-        delay: (index % 7) * 12,
-        fill: "backwards",
-      });
+      cell.animate(
+        [
+          { opacity: 0, transform: `translateX(${offset}px)` },
+          { opacity: 1, transform: "none" },
+        ],
+        {
+          duration: 300,
+          easing: "cubic-bezier(.2,.8,.2,1)",
+          delay: (index % 7) * 12,
+          fill: "backwards",
+        },
+      );
     });
   }, [nav.id, nav.direction, nav.animate]);
 
@@ -289,7 +311,11 @@ export function PxDate({
         ))}
       </div>
       <div className="relative">
-        <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute inset-0 block size-full [image-rendering:pixelated]" />
+        <canvas
+          ref={canvasRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 block size-full [image-rendering:pixelated]"
+        />
         <div ref={gridRef} role="grid" aria-labelledby={titleId}>
           {weeks && shownView
             ? weeks.map((week, row) => (
@@ -323,7 +349,7 @@ export function PxDate({
                         }}
                         onKeyDown={(event) => onDayKeyDown(event, day)}
                         className={cn(
-                          "relative z-[1] h-9 cursor-pointer rounded-lg border-0 bg-transparent p-0 font-[inherit] text-[13px] text-inherit tabular-nums select-none outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec",
+                          "relative z-[1] h-9 cursor-pointer rounded-lg border-0 bg-transparent p-0 font-[inherit] text-[13px] text-inherit tabular-nums outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
                           day.getMonth() !== shownView.getMonth() && "text-muted-foreground opacity-45",
                           selected ? "font-semibold text-lumesec-foreground" : "hover:bg-foreground/6",
                         )}
@@ -349,7 +375,7 @@ export function PxDate({
             setNav((previous) => ({ id: previous.id + 1, direction: 0, animate: true }));
             pick(day);
           }}
-          className="inline-flex h-[30px] cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-border bg-card px-3 font-[inherit] text-[12.5px] font-medium text-foreground select-none outline-none [transition:transform_.15s_cubic-bezier(.2,.8,.2,1),background-color_.2s,border-color_.2s,color_.2s] hover:bg-muted focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec active:[transform:scale(.95)]"
+          className="inline-flex h-[30px] cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 font-[inherit] text-[12.5px] font-medium whitespace-nowrap text-foreground outline-none select-none [transition:transform_.15s_cubic-bezier(.2,.8,.2,1),background-color_.2s,border-color_.2s,color_.2s] hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid active:[transform:scale(.95)]"
         >
           Today
         </button>
@@ -378,7 +404,16 @@ function keyTarget(event: React.KeyboardEvent, day: Date, weekStart: number): Da
 
 function ChevronIcon({ path }: { path: string }) {
   return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 16 16"
+      aria-hidden="true"
+      className="size-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d={path} />
     </svg>
   );
@@ -447,10 +482,12 @@ function formatSelection({ start, end }: Selection, range: boolean) {
 }
 
 /** "Saturday, 24 October 2026", like `toLocaleDateString("en-GB")`, but the same on server and client. */
-const formatLong = (date: Date) => `${WEEKDAYS[date.getDay()]}, ${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+const formatLong = (date: Date) =>
+  `${WEEKDAYS[date.getDay()]}, ${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 
 /** "Sat, 24 Oct 2026". */
-const formatShort = (date: Date) => `${SHORT_WEEKDAYS[date.getDay()]}, ${date.getDate()} ${SHORT_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+const formatShort = (date: Date) =>
+  `${SHORT_WEEKDAYS[date.getDay()]}, ${date.getDate()} ${SHORT_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 
 function summarize({ start, end }: Selection, range: boolean) {
   if (!start) return range ? "Pick a start date" : "No date picked";

@@ -1,22 +1,44 @@
 {
   "summary": "Upload drop zone where the file icon dissolves pixel by pixel into the progress bar, which regroups into a check; oversized files shake red.",
   "attributes": [
-    { "name": "limit-mb", "type": "number", "default": "30", "description": "Size limit in megabytes (1 MB = 1,000,000 bytes); a missing, invalid or non-positive value uses 30. Read each time a file is started." }
+    {
+      "name": "limit-mb",
+      "type": "number",
+      "default": "30",
+      "description": "Size limit in megabytes (1 MB = 1,000,000 bytes); a missing, invalid or non-positive value uses 30. Read each time a file is started."
+    }
   ],
   "events": [
-    { "name": "error", "detail": "{ name: string, size: number }", "description": "Fires when a file is over the limit. `size` is in bytes. Does not bubble, so it never reaches the window's global `error` handlers; listen on the element." },
-    { "name": "uploaded", "detail": "{ name: string, size: number }", "description": "Fires when the simulated upload completes. `size` is in bytes." }
+    {
+      "name": "error",
+      "detail": "{ name: string, size: number }",
+      "description": "Fires when a file is over the limit. `size` is in bytes. Does not bubble, so it never reaches the window's global `error` handlers; listen on the element."
+    },
+    {
+      "name": "uploaded",
+      "detail": "{ name: string, size: number }",
+      "description": "Fires when the simulated upload completes. `size` is in bytes."
+    }
   ],
   "methods": [
-    { "signature": "start(name: string, size: number)", "description": "Runs the upload animation for a file of `size` bytes. Ignored unless the component is idle, and for a size that is not a finite number of at least 0." },
-    { "signature": "reset()", "description": "Returns to the idle drop zone. After a success the check flies back into the file icon." }
+    {
+      "signature": "start(name: string, size: number)",
+      "description": "Runs the upload animation for a file of `size` bytes. Ignored unless the component is idle, and for a size that is not a finite number of at least 0."
+    },
+    {
+      "signature": "reset()",
+      "description": "Returns to the idle drop zone. After a success the check flies back into the file icon."
+    }
   ],
   "properties": [
-    { "name": "limit", "type": "number", "readonly": true, "description": "The size limit in bytes, from `limit-mb`; 30 MB when it is missing, invalid or not positive." }
+    {
+      "name": "limit",
+      "type": "number",
+      "readonly": true,
+      "description": "The size limit in bytes, from `limit-mb`; 30 MB when it is missing, invalid or not positive."
+    }
   ],
-  "keyboard": [
-    { "keys": "Enter / Space (on the drop zone)", "action": "Open the file picker while idle." }
-  ],
+  "keyboard": [{ "keys": "Enter / Space (on the drop zone)", "action": "Open the file picker while idle." }],
   "accessibility": [
     "The drop zone is focusable with `role=\"button\"` and `aria-label=\"Upload a file: click or drop\"`.",
     "The status line (\"Uploading …\", \"Uploaded\", \"Over the 30 MB limit\") sits in the drop zone and is repeated in a visually hidden `aria-live=\"polite\"` region beside it, because assistive technology does not read the content of a button.",

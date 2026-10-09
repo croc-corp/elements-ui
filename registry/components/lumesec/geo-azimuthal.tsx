@@ -131,7 +131,11 @@ export function GeoAzimuthal({
     defaultValue: defaultCenter,
     onChange: onCenterChange,
   });
-  const [mode, setMode] = useControllableState<AzimuthalRings>({ value: rings, defaultValue: defaultRings, onChange: onRingsChange });
+  const [mode, setMode] = useControllableState<AzimuthalRings>({
+    value: rings,
+    defaultValue: defaultRings,
+    onChange: onRingsChange,
+  });
   const reducedMotion = useReducedMotion();
   const [size, setSize] = React.useState<number | null>(null);
   const [hovered, setHovered] = React.useState<string | null>(null);
@@ -143,7 +147,12 @@ export function GeoAzimuthal({
   const placesKey = items.map((place) => `${place.id}:${place.lat}:${place.lon}`).join("|");
   const resolved = resolveCenter(centerValue, items);
   const fibreStretch = Number.isFinite(stretch) && stretch > 0 ? stretch : DEFAULT_STRETCH;
-  const spec = ringSpec(mode === "latency" ? "latency" : "distance", ringStep, unit === "mi" ? "mi" : "km", fibreStretch);
+  const spec = ringSpec(
+    mode === "latency" ? "latency" : "distance",
+    ringStep,
+    unit === "mi" ? "mi" : "km",
+    fibreStretch,
+  );
 
   // Pure layout: the server lays the map out at a nominal size; positions are fractions of the disc, so CSS places
   // them exactly at any size, and the measured size only refines label placement.
@@ -169,13 +178,19 @@ export function GeoAzimuthal({
       bucket: bucketOf(projected.angle, placeJitter(place.id)),
     };
   });
-  const rows = placed.filter((entry) => !entry.isCenter).sort((a, b) => a.km - b.km || a.place.label.localeCompare(b.place.label));
+  const rows = placed
+    .filter((entry) => !entry.isCenter)
+    .sort((a, b) => a.km - b.km || a.place.label.localeCompare(b.place.label));
   const ringLabels = ringLabelVisibility(spec.units, radius);
 
   // Which kind of change the list rolls for: a new centre rolls with the map's wave, new rings roll down the list.
   const [change, setChange] = React.useState<ChangeState>({ centerKey: resolved.key, ringKey: spec.key, kind: "none" });
   if (change.centerKey !== resolved.key || change.ringKey !== spec.key) {
-    setChange({ centerKey: resolved.key, ringKey: spec.key, kind: change.centerKey !== resolved.key ? "center" : "rings" });
+    setChange({
+      centerKey: resolved.key,
+      ringKey: spec.key,
+      kind: change.centerKey !== resolved.key ? "center" : "rings",
+    });
   }
   const rowDelay = (entry: PlacedPlace, rank: number) => {
     if (reducedMotion || change.kind === "none") return 0;
@@ -186,9 +201,12 @@ export function GeoAzimuthal({
   const pointedId = hovered ?? focused;
   const placedIds = new Set(placed.map((entry) => entry.place.id));
   const tabStop =
-    active !== null && placedIds.has(active) ? active : (resolved.place?.id ?? (placed.length ? placed[0].place.id : null));
+    active !== null && placedIds.has(active)
+      ? active
+      : (resolved.place?.id ?? (placed.length ? placed[0].place.id : null));
   /** The place whose route is drawn: the pointed one, unless it is the centre. */
-  const routeTarget = pointedId !== null && pointedId !== resolved.place?.id && placedIds.has(pointedId) ? pointedId : null;
+  const routeTarget =
+    pointedId !== null && pointedId !== resolved.place?.id && placedIds.has(pointedId) ? pointedId : null;
 
   // Labels: the centre first, then the nearest places; the pointed place always gets its label.
   const labelEntries: LabelEntry[] = placed.map((entry) => {
@@ -269,7 +287,8 @@ export function GeoAzimuthal({
       if (animate) popCrosshair(crosshairRef.current, engine.ringLead);
     }
     // a new label angle redraws the rings like a new step does: their gaps move with the labels
-    if (engine.rings.latest?.key !== ringKey) setRings(engine, { key: ringKey, units: spec.units, angle: ringAngle }, now, reduced);
+    if (engine.rings.latest?.key !== ringKey)
+      setRings(engine, { key: ringKey, units: spec.units, angle: ringAngle }, now, reduced);
     writePlaces(engine, placeRefs.current, labelRefs.current, pointRef.current, now);
     writeRingLabels(engine, ringLabelRefs.current, now);
     loop.kick();
@@ -282,8 +301,12 @@ export function GeoAzimuthal({
     engine.rings.gaps = ringWidths.map((width, k) => (ringLabels[k] && width ? width / 2 + RING_LABEL_CLEARANCE : 0));
     if (size === null) return;
     const widths = new Map<string, number>();
-    for (const entry of labelEntries) widths.set(entry.id, nameRefs.current.get(entry.id)?.offsetWidth ?? entry.estimate);
-    const obstacles = [...fixedBoxes(stageSize), ...ringLabelBoxes(spec, ringLabels, radius, stageSize, ringAngle, ringWidths)];
+    for (const entry of labelEntries)
+      widths.set(entry.id, nameRefs.current.get(entry.id)?.offsetWidth ?? entry.estimate);
+    const obstacles = [
+      ...fixedBoxes(stageSize),
+      ...ringLabelBoxes(spec, ringLabels, radius, stageSize, ringAngle, ringWidths),
+    ];
     const placements = arrangeLabels(labelEntries, widths, obstacles, stageSize);
     labelEntries.forEach((entry, i) => {
       const element = labelRefs.current.get(entry.id);
@@ -420,7 +443,14 @@ export function GeoAzimuthal({
   function pick(next: string | LatLon, x: number, y: number) {
     const engine = engineRef.current;
     const ink = engine.ink;
-    if (ink) engine.sparks.add(x + engine.fxX, y + engine.fxY, typeof next === "string" ? 18 : 12, [ink.accent, ink.glint, ink.soft], SPARK_OPTIONS);
+    if (ink)
+      engine.sparks.add(
+        x + engine.fxX,
+        y + engine.fxY,
+        typeof next === "string" ? 18 : 12,
+        [ink.accent, ink.glint, ink.soft],
+        SPARK_OPTIONS,
+      );
     setCenterValue(next);
     loop.kick();
   }
@@ -449,7 +479,7 @@ export function GeoAzimuthal({
     const dy = y - half;
     const distance = Math.hypot(dx, dy);
     if (distance > r || distance < 3) return;
-    const bearing = ((Math.atan2(dx, -dy) / DEG) % 360 + 360) % 360;
+    const bearing = (((Math.atan2(dx, -dy) / DEG) % 360) + 360) % 360;
     const point = destinationPoint(resolved.point, bearing, (distance / r) * HALF_CIRCUMFERENCE_KM);
     const engine = engineRef.current;
     engine.pointFrom = { u: dx / r, v: dy / r };
@@ -479,7 +509,8 @@ export function GeoAzimuthal({
   const stageLabel = `${label}: ${resolved.name}. Rings every ${spec.stepText}.`;
   const heading = spec.mode === "latency" ? "Round trip from" : "Distance from";
   // one short line, so the list column beside the map is no taller than the map
-  const footnote = spec.mode === "latency" ? `Fibre estimate, stretch ${formatStretch(fibreStretch)}` : "Great-circle distance";
+  const footnote =
+    spec.mode === "latency" ? `Fibre estimate, stretch ${formatStretch(fibreStretch)}` : "Great-circle distance";
   const listRows: ListRow[] = rows.map((entry, rank) => ({
     id: entry.place.id,
     label: entry.place.label,
@@ -490,7 +521,11 @@ export function GeoAzimuthal({
   const gapFraction = (ANTIPODE_GAP / (Math.PI * (stageSize - 2 * GUTTER))) * RIM_LENGTH;
 
   return (
-    <div data-slot="geo-azimuthal" className={cn("@container w-full max-w-[660px] text-foreground", className)} {...props}>
+    <div
+      data-slot="geo-azimuthal"
+      className={cn("@container w-full max-w-[660px] text-foreground", className)}
+      {...props}
+    >
       <div className="grid gap-4 @min-[560px]:grid-cols-[minmax(0,1fr)_196px] @min-[560px]:gap-x-5">
         <div
           ref={stageRef}
@@ -501,7 +536,11 @@ export function GeoAzimuthal({
           className="relative aspect-square w-full cursor-crosshair touch-manipulation select-none [-webkit-tap-highlight-color:transparent]"
         >
           <div aria-hidden="true" className="absolute inset-2 rounded-full bg-muted/40" />
-          <svg aria-hidden="true" viewBox="0 0 100 100" className="pointer-events-none absolute inset-2 block size-[calc(100%-16px)] overflow-visible">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 100 100"
+            className="pointer-events-none absolute inset-2 block size-[calc(100%-16px)] overflow-visible"
+          >
             <circle
               cx={50}
               cy={50}
@@ -580,7 +619,7 @@ export function GeoAzimuthal({
                     }}
                     onPointerLeave={() => setHovered((current) => (current === place.id ? null : current))}
                     className={cn(
-                      "pointer-events-auto absolute -top-3 -left-3 grid size-6 place-items-center rounded-full border-0 bg-transparent p-0 outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-solid focus-visible:outline-lumesec",
+                      "pointer-events-auto absolute -top-3 -left-3 grid size-6 place-items-center rounded-full border-0 bg-transparent p-0 outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-lumesec focus-visible:outline-solid",
                       isCenter ? "cursor-default" : "cursor-pointer",
                     )}
                   >
@@ -599,7 +638,7 @@ export function GeoAzimuthal({
                     {...sideAttributes(placement.side)}
                     data-hidden={placement.visible || pointed || isCenter ? undefined : ""}
                     className={cn(
-                      "group/label pointer-events-none absolute w-max text-[11.5px] leading-4 whitespace-nowrap [text-shadow:0_0_2px_var(--card),0_0_2px_var(--card),0_0_4px_var(--card)] [transition:opacity_.2s_ease] opacity-[var(--flight,1)] motion-reduce:transition-none data-[align=center]:text-center data-[align=end]:text-right data-[hidden]:opacity-0",
+                      "group/label pointer-events-none absolute w-max text-[11.5px] leading-4 whitespace-nowrap opacity-[var(--flight,1)] [text-shadow:0_0_2px_var(--card),0_0_2px_var(--card),0_0_4px_var(--card)] [transition:opacity_.2s_ease] data-[align=center]:text-center data-[align=end]:text-right data-[hidden]:opacity-0 motion-reduce:transition-none",
                       "data-[side=right]:top-0 data-[side=right]:left-(--gap) data-[side=right]:-translate-y-1/2",
                       "data-[side=left]:top-0 data-[side=left]:right-(--gap) data-[side=left]:-translate-y-1/2",
                       "data-[side=top]:bottom-(--gap) data-[side=top]:left-0 data-[side=top]:-translate-x-1/2",
@@ -640,7 +679,10 @@ export function GeoAzimuthal({
           <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3 @min-[560px]:flex-col @min-[560px]:items-stretch">
             <p aria-live="polite" aria-atomic="true" className="m-0 grid min-w-0 gap-0.5">
               <RollText text={heading} className="text-[11.5px] leading-4 text-muted-foreground" />
-              <RollText text={resolved.name} className="max-w-full overflow-hidden text-[16px] leading-5 font-medium tracking-[-0.01em]" />
+              <RollText
+                text={resolved.name}
+                className="max-w-full overflow-hidden text-[16px] leading-5 font-medium tracking-[-0.01em]"
+              />
             </p>
             <RingsToggle value={spec.mode} onValueChange={setMode} className="w-[176px] @min-[560px]:w-full" />
           </div>
@@ -678,10 +720,18 @@ function RingsToggle({
   className?: string;
 }) {
   const buttons = React.useRef<(HTMLButtonElement | null)[]>([]);
-  const index = Math.max(0, RING_OPTIONS.findIndex((option) => option.value === value));
+  const index = Math.max(
+    0,
+    RING_OPTIONS.findIndex((option) => option.value === value),
+  );
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLButtonElement>) {
-    const step = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 0;
+    const step =
+      event.key === "ArrowRight" || event.key === "ArrowDown"
+        ? 1
+        : event.key === "ArrowLeft" || event.key === "ArrowUp"
+          ? -1
+          : 0;
     if (!step) return;
     event.preventDefault();
     const next = (index + step + RING_OPTIONS.length) % RING_OPTIONS.length;
@@ -714,7 +764,7 @@ function RingsToggle({
             tabIndex={checked ? 0 : -1}
             onClick={() => onValueChange(option.value)}
             onKeyDown={handleKeyDown}
-            className="relative z-[1] cursor-pointer rounded-md border-0 bg-transparent px-2.5 font-[inherit] text-[12px] leading-none font-medium text-muted-foreground outline-none [transition:color_.2s_ease] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-solid focus-visible:outline-lumesec aria-checked:text-foreground"
+            className="relative z-[1] cursor-pointer rounded-md border-0 bg-transparent px-2.5 font-[inherit] text-[12px] leading-none font-medium text-muted-foreground outline-none [transition:color_.2s_ease] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid aria-checked:text-foreground"
           >
             {option.label}
           </button>
@@ -831,7 +881,10 @@ function PlaceList({
           onClick={() => onPick(row.id)}
           className="group/row -mx-1.5 flex h-5 min-w-0 cursor-pointer items-center gap-2 rounded-md px-1.5 text-[12.5px] leading-4 [transition:background-color_.15s_ease] data-[pointed]:bg-muted"
         >
-          <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-foreground/55 [transition:background-color_.15s_ease] group-data-[pointed]/row:bg-lumesec" />
+          <span
+            aria-hidden="true"
+            className="size-1.5 shrink-0 rounded-full bg-foreground/55 [transition:background-color_.15s_ease] group-data-[pointed]/row:bg-lumesec"
+          />
           <span className="min-w-0 flex-1 truncate">{row.label}</span>
           <RowValue text={row.text} value={row.value} delay={row.delay} />
         </li>
@@ -883,7 +936,12 @@ function Crosshair({ ref }: { ref: React.Ref<HTMLSpanElement> }) {
 /** The crosshair opens once it has landed in the middle. */
 function popCrosshair(element: HTMLElement | null, lead: number) {
   if (!element || typeof element.animate !== "function") return;
-  element.animate(CROSSHAIR_KEYFRAMES, { duration: 520, delay: (lead + 0.28) * 1000, easing: "cubic-bezier(.2,.8,.2,1)", fill: "backwards" });
+  element.animate(CROSSHAIR_KEYFRAMES, {
+    duration: 520,
+    delay: (lead + 0.28) * 1000,
+    easing: "cubic-bezier(.2,.8,.2,1)",
+    fill: "backwards",
+  });
 }
 
 /* Constants ---------------------------------------------------------------------------------------------- */
@@ -972,7 +1030,23 @@ const CROSSHAIR_KEYFRAMES: Keyframe[] = [
 const RING_EASE = cubicBezier(0.45, 0, 0.25, 1);
 
 /** London and 14 cities around the world, from the shared demo set. */
-const DEMO_IDS = ["lhr", "jfk", "gru", "los", "jnb", "dxb", "bom", "sin", "nrt", "syd", "akl", "lax", "mex", "nbo", "ist"];
+const DEMO_IDS = [
+  "lhr",
+  "jfk",
+  "gru",
+  "los",
+  "jnb",
+  "dxb",
+  "bom",
+  "sin",
+  "nrt",
+  "syd",
+  "akl",
+  "lax",
+  "mex",
+  "nbo",
+  "ist",
+];
 const DEMO_PLACES: readonly AzimuthalPlace[] = DEMO_IDS.flatMap((id) => {
   const city = findCity(id);
   return city ? [{ id, label: city.name, lat: city.lat, lon: city.lon }] : [];
@@ -1064,7 +1138,12 @@ function cleanPlaces(list: readonly AzimuthalPlace[]): AzimuthalPlace[] {
     // ids are keys: a repeated id keeps its first place
     if (!place || seen.has(place.id) || !Number.isFinite(place.lat) || !Number.isFinite(place.lon)) continue;
     seen.add(place.id);
-    result.push({ id: place.id, label: place.label || place.id, lat: clamp(place.lat, -90, 90), lon: wrapLongitude(place.lon) });
+    result.push({
+      id: place.id,
+      label: place.label || place.id,
+      lat: clamp(place.lat, -90, 90),
+      lon: wrapLongitude(place.lon),
+    });
   }
   return result;
 }
@@ -1082,7 +1161,12 @@ function isPoint(value: unknown): value is LatLon {
 
 function pointCenter(point: LatLon): ResolvedCenter {
   const clean = { lat: clamp(point.lat, -90, 90), lon: wrapLongitude(point.lon) };
-  return { point: clean, place: null, key: `point:${clean.lat.toFixed(5)},${clean.lon.toFixed(5)}`, name: formatLatLon(clean, "decimal", 2) };
+  return {
+    point: clean,
+    place: null,
+    key: `point:${clean.lat.toFixed(5)},${clean.lon.toFixed(5)}`,
+    name: formatLatLon(clean, "decimal", 2),
+  };
 }
 
 function placeCenter(place: AzimuthalPlace): ResolvedCenter {
@@ -1109,12 +1193,18 @@ function measureOf(mode: AzimuthalRings, km: number, unit: AzimuthalUnit, stretc
   return { text: formatDistance(km, unit), value: unit === "mi" ? km / KM_PER_MILE : km };
 }
 
-function ringSpec(mode: AzimuthalRings, ringStep: number | undefined, unit: AzimuthalUnit, stretch: number): RingSpecResult {
+function ringSpec(
+  mode: AzimuthalRings,
+  ringStep: number | undefined,
+  unit: AzimuthalUnit,
+  stretch: number,
+): RingSpecResult {
   const latency = mode === "latency";
   const fallback = latency ? 50 : unit === "mi" ? 1000 : 2000;
   const step = ringStep !== undefined && Number.isFinite(ringStep) && ringStep > 0 ? ringStep : fallback;
   const kmPerStep = latency ? (FIBER_KM_PER_MS * step) / 2 / stretch : unit === "mi" ? step * KM_PER_MILE : step;
-  const format = (value: number) => (latency ? formatMs(value) : formatDistance(unit === "mi" ? value * KM_PER_MILE : value, unit));
+  const format = (value: number) =>
+    latency ? formatMs(value) : formatDistance(unit === "mi" ? value * KM_PER_MILE : value, unit);
   const units: number[] = [];
   const labels: string[] = [];
   for (let k = 1; k <= MAX_RINGS; k++) {
@@ -1178,14 +1268,24 @@ function fixedBoxes(size: number): Box[] {
 const RING_LABEL_ANGLES = [0, 30, -30, 150, -150, 180].map((degrees) => degrees * DEG);
 
 /** The first angle at which no place point sits on a ring label, or the least crowded one. */
-function ringLabelAngle(spec: RingSpecResult, visible: readonly boolean[], placed: readonly PlacedPlace[], radius: number, size: number) {
+function ringLabelAngle(
+  spec: RingSpecResult,
+  visible: readonly boolean[],
+  placed: readonly PlacedPlace[],
+  radius: number,
+  size: number,
+) {
   let best = 0;
   let bestScore = Infinity;
   for (const angle of RING_LABEL_ANGLES) {
     let score = 0;
     for (const box of ringLabelBoxes(spec, visible, radius, size, angle, null)) {
       for (const entry of placed) {
-        const near = entry.x > box.x - 6 && entry.x < box.x + box.width + 6 && entry.y > box.y - 6 && entry.y < box.y + box.height + 6;
+        const near =
+          entry.x > box.x - 6 &&
+          entry.x < box.x + box.width + 6 &&
+          entry.y > box.y - 6 &&
+          entry.y < box.y + box.height + 6;
         if (near) score++;
       }
     }
@@ -1206,7 +1306,16 @@ interface LabelSpot {
   side: LabelSide;
 }
 
-const LABEL_SIDES: readonly LabelSide[] = ["right", "left", "top", "bottom", "top-right", "bottom-right", "top-left", "bottom-left"];
+const LABEL_SIDES: readonly LabelSide[] = [
+  "right",
+  "left",
+  "top",
+  "bottom",
+  "top-right",
+  "bottom-right",
+  "top-left",
+  "bottom-left",
+];
 /** Labels keep this far from other places' points in the first pass. */
 const POINT_CLEARANCE = 4;
 /** A diagonal label's corner sits this share of the gap away from its point on each axis. */
@@ -1258,7 +1367,12 @@ function labelBox(side: LabelSide, x: number, y: number, w: number, h: number, g
  * the Antipode label and the crosshair), which `placeLabels` has no input for. Near the centre the crosshair leaves
  * the four sides no room, and the diagonals usually still fit.
  */
-function arrangeLabels(entries: readonly LabelEntry[], widths: Map<string, number> | null, fixed: readonly Box[], size: number) {
+function arrangeLabels(
+  entries: readonly LabelEntry[],
+  widths: Map<string, number> | null,
+  fixed: readonly Box[],
+  size: number,
+) {
   const taken: Box[] = [...fixed];
   const placements: LabelSpot[] = entries.map(() => ({ visible: false, side: "right" }));
   const order = entries.map((_, index) => index).sort((a, b) => entries[b].priority - entries[a].priority || a - b);
@@ -1292,7 +1406,8 @@ function arrangeLabels(entries: readonly LabelEntry[], widths: Map<string, numbe
 }
 
 /** The CSS variables a label's side classes position it with. */
-const labelGapStyle = (gap: number) => ({ "--gap": `${gap}px`, "--diagonal": `${gap * DIAGONAL}px` }) as React.CSSProperties;
+const labelGapStyle = (gap: number) =>
+  ({ "--gap": `${gap}px`, "--diagonal": `${gap * DIAGONAL}px` }) as React.CSSProperties;
 
 /** About 6.3 px per character for 11.5 px Geist medium; replaced by the measured width after mount. */
 const estimateLabelWidth = (text: string) => text.length * 6.3 + 2;
@@ -1525,7 +1640,12 @@ function createEngine(): Engine {
 
 function inkOf(palette: Palette<keyof typeof MAP_COLORS>): Ink {
   // the strong land grey of the other Location components: the foreground 45% of the way to the card
-  return { dot: mixRgb(palette.foreground, palette.card, 0.45), soft: palette.soft, accent: palette.accent, glint: palette.glint };
+  return {
+    dot: mixRgb(palette.foreground, palette.card, 0.45),
+    soft: palette.soft,
+    accent: palette.accent,
+    glint: palette.glint,
+  };
 }
 
 /** Tone 0 is the land grey, 0.5 the soft accent dots tint toward in flight, 1 the accent of pings and routes. */
@@ -1607,7 +1727,8 @@ function retarget(engine: Engine, center: LatLon, animate: boolean, now: number)
   for (const id of engine.places.keys()) if (!live.has(id)) engine.places.delete(id);
 
   // a free centre's crosshair flies in from the click, or from where the point was on the old map
-  const from = engine.pointFrom ?? (previous ? projectLatLon(previous, center.lat, center.lon, scratch) : { u: 0, v: 0 });
+  const from =
+    engine.pointFrom ?? (previous ? projectLatLon(previous, center.lat, center.lon, scratch) : { u: 0, v: 0 });
   engine.point.fromU = animate ? from.u : 0;
   engine.point.fromV = animate ? from.v : 0;
   engine.point.toU = 0;
@@ -1775,7 +1896,8 @@ function writeOffset(element: HTMLElement | null | undefined, flight: Flight, en
   const progress = engine.moving ? engine.buckets[flight.bucket].position : 1;
   const dx = (flight.fromU - flight.toU) * (1 - progress) * radius;
   const dy = (flight.fromV - flight.toV) * (1 - progress) * radius;
-  const transform = Math.abs(dx) < 0.01 && Math.abs(dy) < 0.01 ? "" : `translate3d(${dx.toFixed(2)}px,${dy.toFixed(2)}px,0)`;
+  const transform =
+    Math.abs(dx) < 0.01 && Math.abs(dy) < 0.01 ? "" : `translate3d(${dx.toFixed(2)}px,${dy.toFixed(2)}px,0)`;
   if (flight.written === transform && element.style.transform === transform) return;
   element.style.transform = transform;
   flight.written = transform;
@@ -1790,7 +1912,14 @@ const pingAmps = new Float32Array(2);
  * Draws the rings, the land dots (in flight, revealed, pinged) and the pointed place's route and equal-distance
  * circle, through one DotBatch. Returns whether the ping is still running.
  */
-function drawMap(engine: Engine, context: CanvasRenderingContext2D, size: number, time: number, front: number, reduced: boolean) {
+function drawMap(
+  engine: Engine,
+  context: CanvasRenderingContext2D,
+  size: number,
+  time: number,
+  front: number,
+  reduced: boolean,
+) {
   const batch = engine.batch;
   context.clearRect(0, 0, size, size);
   if (!batch || front < 0) return false;
@@ -1848,7 +1977,8 @@ function drawMap(engine: Engine, context: CanvasRenderingContext2D, size: number
       if (pings) {
         const distance = Math.hypot(x - cx, y - cy);
         let light = 0;
-        for (let j = 0; j < pings; j++) light += ringFront(distance, pingRadii[j], PING_BAND, jitter[i], 5) * pingAmps[j];
+        for (let j = 0; j < pings; j++)
+          light += ringFront(distance, pingRadii[j], PING_BAND, jitter[i], 5) * pingAmps[j];
         if (light > 0.02) {
           light = Math.min(1, light);
           tone = Math.max(tone, light);
@@ -1904,7 +2034,13 @@ function drawRings(engine: Engine, batch: DotBatch, cx: number, cy: number, radi
       }
       // the head of the sweep glows toward the accent
       const glow = sweep < 1 ? Math.exp(-(head - phi) / 0.35) : 0;
-      batch.add(cx + r * Math.sin(phi), cy - r * Math.cos(phi), DOT_SIZE, glow * 0.8, (RING_ALPHA + glow * 0.45) * alphaScale);
+      batch.add(
+        cx + r * Math.sin(phi),
+        cy - r * Math.cos(phi),
+        DOT_SIZE,
+        glow * 0.8,
+        (RING_ALPHA + glow * 0.45) * alphaScale,
+      );
     }
   });
 }
@@ -1933,6 +2069,12 @@ function drawPointed(engine: Engine, batch: DotBatch, cx: number, cy: number, ra
     let offset = Math.abs(phi - start) % TAU;
     if (offset > Math.PI) offset = TAU - offset;
     if (offset > span || offset < 7 / length) continue;
-    batch.add(cx + length * Math.sin(phi), cy - length * Math.cos(phi), DOT_SIZE, 0.78, 0.6 * Math.min(1, hover.position * 1.5));
+    batch.add(
+      cx + length * Math.sin(phi),
+      cy - length * Math.cos(phi),
+      DOT_SIZE,
+      0.78,
+      0.6 * Math.min(1, hover.position * 1.5),
+    );
   }
 }

@@ -2,10 +2,17 @@
   "summary": "Mixing-desk fader beside a stereo pixel meter with falling peak-hold segments and a clip light above 0 dB.",
   "attributes": [],
   "events": [
-    { "name": "change", "detail": "{ db: number }", "description": "Fires when a drag on the fader ends, on each handled key press and on the double-click snap to 0 dB. `db` is the target level in decibels, `-Infinity` at the bottom, about +6 dB at the top. A quick click on the track reports the level the cap glides to, and the double-click snap reports exactly `0`." }
+    {
+      "name": "change",
+      "detail": "{ db: number }",
+      "description": "Fires when a drag on the fader ends, on each handled key press and on the double-click snap to 0 dB. `db` is the target level in decibels, `-Infinity` at the bottom, about +6 dB at the top. A quick click on the track reports the level the cap glides to, and the double-click snap reports exactly `0`."
+    }
   ],
   "methods": [
-    { "signature": "db(v?: number): number", "description": "Returns the fader level in dB: of position `v` (0 to 1) when given, otherwise the current level." }
+    {
+      "signature": "db(v?: number): number",
+      "description": "Returns the fader level in dB: of position `v` (0 to 1) when given, otherwise the current level."
+    }
   ],
   "properties": [],
   "keyboard": [

@@ -20,10 +20,5 @@ export interface PxSignalProps extends Omit<LumesecElementProps<PxSignalElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/signal
  */
 export function PxSignal({ onOutage, ...props }: PxSignalProps) {
-  return useLumesecElement(
-    "px-signal",
-    props,
-    {},
-    { "outage": onOutage },
-  );
+  return useLumesecElement("px-signal", props, {}, { outage: onOutage });
 }

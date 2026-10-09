@@ -13,7 +13,11 @@ export const dynamicParams = false;
 export async function generateMetadata({ params }: { params: Promise<{ tag: string }> }): Promise<Metadata> {
   const { tag } = await params;
   const e = getElement(tag);
-  return { title: e ? `${e.title} preview` : "Preview", robots: { index: false, follow: true }, alternates: e ? { canonical: elementHref(e) } : undefined };
+  return {
+    title: e ? `${e.title} preview` : "Preview",
+    robots: { index: false, follow: true },
+    alternates: e ? { canonical: elementHref(e) } : undefined,
+  };
 }
 
 /** A component on its own, for screenshots, demos and testing at any size. */

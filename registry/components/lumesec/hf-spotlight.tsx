@@ -22,10 +22,5 @@ export interface HfSpotlightProps extends Omit<LumesecElementProps<HfSpotlightEl
  * @see https://elements.lumesec.ai/components/pixel-hd/spotlight
  */
 export function HfSpotlight({ onStep, onFinish, ...props }: HfSpotlightProps) {
-  return useLumesecElement(
-    "hf-spotlight",
-    props,
-    {},
-    { "step": onStep, "finish": onFinish },
-  );
+  return useLumesecElement("hf-spotlight", props, {}, { step: onStep, finish: onFinish });
 }

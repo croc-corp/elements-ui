@@ -1,16 +1,28 @@
 {
   "summary": "Shows text next to what a model would see, with names, emails, IBANs and phone numbers swapped for placeholders like EMAIL_1.",
   "attributes": [
-    { "name": "names", "type": "string", "default": "Jane Doe", "description": "Comma-separated names to redact, matched exactly and case-sensitively." },
-    { "name": "label", "type": "string", "default": "Before it leaves your device", "description": "Heading text. Read once on connect." }
+    {
+      "name": "names",
+      "type": "string",
+      "default": "Jane Doe",
+      "description": "Comma-separated names to redact, matched exactly and case-sensitively."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Before it leaves your device",
+      "description": "Heading text. Read once on connect."
+    }
   ],
   "events": [
-    { "name": "change", "detail": "{ redacted: boolean, text: string }", "description": "Fires on connect, when the Redact switch changes and 160 ms after the text is edited. `text` is the output pane: placeholders when `redacted` is `true`, the original otherwise." }
+    {
+      "name": "change",
+      "detail": "{ redacted: boolean, text: string }",
+      "description": "Fires on connect, when the Redact switch changes and 160 ms after the text is edited. `text` is the output pane: placeholders when `redacted` is `true`, the original otherwise."
+    }
   ],
   "methods": [],
-  "properties": [
-    { "name": "names", "type": "string[]", "readonly": true, "description": "The parsed `names`." }
-  ],
+  "properties": [{ "name": "names", "type": "string[]", "readonly": true, "description": "The parsed `names`." }],
   "keyboard": [],
   "accessibility": [
     "The Redact control is a button with `role=\"switch\"` and `aria-checked`.",

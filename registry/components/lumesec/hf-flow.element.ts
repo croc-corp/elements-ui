@@ -148,7 +148,8 @@ class HFlow extends HF {
     const labels = (el: HTMLElement, nodes: FlowNode[], names: readonly string[], values: readonly number[]): void => {
       el.innerHTML = nodes
         .map(
-          (n, k) => `<span class="lb" style="top:${(n.y0 + n.y1) / 2}px">${names[k]}<small>${values[k]}k</small></span>`,
+          (n, k) =>
+            `<span class="lb" style="top:${(n.y0 + n.y1) / 2}px">${names[k]}<small>${values[k]}k</small></span>`,
         )
         .join("");
     };

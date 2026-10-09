@@ -1,15 +1,28 @@
 {
   "summary": "Half-circle pixel gauge for tokens per second with amber and red zones, a spring needle that overshoots and a peak marker.",
   "attributes": [
-    { "name": "max", "type": "number", "default": "200", "description": "Full-scale value of the gauge and its tick labels; a missing, invalid or non-positive value uses 200. Read every frame, so a change applies immediately." }
+    {
+      "name": "max",
+      "type": "number",
+      "default": "200",
+      "description": "Full-scale value of the gauge and its tick labels; a missing, invalid or non-positive value uses 200. Read every frame, so a change applies immediately."
+    }
   ],
   "events": [],
   "methods": [],
   "properties": [
-    { "name": "max", "type": "number", "readonly": false, "description": "Full-scale value; reflects the `max` attribute, `200` when it is missing, invalid or not positive." }
+    {
+      "name": "max",
+      "type": "number",
+      "readonly": false,
+      "description": "Full-scale value; reflects the `max` attribute, `200` when it is missing, invalid or not positive."
+    }
   ],
   "keyboard": [
-    { "keys": "Space / Enter (on the boost button)", "action": "Boost while held; releasing the key or moving focus away ends the boost." }
+    {
+      "keys": "Space / Enter (on the boost button)",
+      "action": "Boost while held; releasing the key or moving focus away ends the boost."
+    }
   ],
   "accessibility": [
     "The dial (canvas and reading) has `role=\"meter\"`, `aria-label=\"Output speed in tokens per second\"` and `aria-valuemin=\"0\"`.",

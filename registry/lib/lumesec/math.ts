@@ -43,7 +43,11 @@ export function stringHash(text: string) {
 }
 
 /** Linear mix of two RGB colours. */
-export const mixRgb = (a: RGB, b: RGB, t: number): RGB => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
+export const mixRgb = (a: RGB, b: RGB, t: number): RGB => [
+  lerp(a[0], b[0], t),
+  lerp(a[1], b[1], t),
+  lerp(a[2], b[2], t),
+];
 
 /** CSS colour string for an RGB colour, with optional alpha. */
 export function rgba(color: RGB, alpha?: number) {
@@ -64,7 +68,13 @@ export function hslToRgb(hue: number, saturation: number, lightness: number): RG
 
 /** `#rrggbb` for an RGB colour. */
 export const rgbToHex = (color: RGB) =>
-  `#${color.map((v) => Math.round(clamp(v, 0, 255)).toString(16).padStart(2, "0")).join("")}`;
+  `#${color
+    .map((v) =>
+      Math.round(clamp(v, 0, 255))
+        .toString(16)
+        .padStart(2, "0"),
+    )
+    .join("")}`;
 
 /**
  * A fraction as a CSS percentage with three decimals (`0.25` gives `"25.000%"`). Positions computed during render go

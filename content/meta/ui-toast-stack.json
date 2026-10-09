@@ -2,14 +2,22 @@
   "kind": "react",
   "summary": "Toast stack where new toasts spring up from below, hover or focus fans the stack out and pauses timers, and a sideways swipe dismisses.",
   "props": [
-    { "name": "trigger", "type": "boolean", "default": "true", "description": "Render the \"Show toast\" button under the stack, which shows the next built-in sample." },
+    {
+      "name": "trigger",
+      "type": "boolean",
+      "default": "true",
+      "description": "Render the \"Show toast\" button under the stack, which shows the next built-in sample."
+    },
     { "name": "ref", "type": "React.Ref<UiToastStackHandle>", "default": "-", "description": "Exposes `show()`." }
   ],
   "extends": "div",
   "ref": {
     "type": "UiToastStackHandle",
     "methods": [
-      { "signature": "show(toast?: ToastInput): void", "description": "Adds a toast `{ title: string; description?: string; tone?: \"accent\" | \"success\" | \"warning\" | \"destructive\" }`. Without an argument it shows the next built-in sample." }
+      {
+        "signature": "show(toast?: ToastInput): void",
+        "description": "Adds a toast `{ title: string; description?: string; tone?: \"accent\" | \"success\" | \"warning\" | \"destructive\" }`. Without an argument it shows the next built-in sample."
+      }
     ]
   },
   "subcomponents": [],
@@ -27,7 +35,17 @@
     "Each toast lives 5 s, and timers pause while the stack is expanded or a toast is held. At most five toasts are kept and three are visible; a sixth removes the oldest.",
     "A swipe of more than 80 px, or a fast flick, throws the toast away. The stack area is 196 px tall and up to 340 px wide."
   ],
-  "tokens": ["--card", "--muted", "--border", "--foreground", "--muted-foreground", "--lumesec", "--lumesec-success", "--lumesec-warning", "--destructive"],
+  "tokens": [
+    "--card",
+    "--muted",
+    "--border",
+    "--foreground",
+    "--muted-foreground",
+    "--lumesec",
+    "--lumesec-success",
+    "--lumesec-warning",
+    "--destructive"
+  ],
   "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { UiToastStack, type UiToastStackHandle } from \"@/components/lumesec/ui-toast-stack\";\n\nexport function Example() {\n  const toasts = React.useRef<UiToastStackHandle>(null);\n  return (\n    <div className=\"grid gap-3\">\n      <UiToastStack ref={toasts} trigger={false} />\n      <button\n        type=\"button\"\n        onClick={() => toasts.current?.show({ title: \"Saved\", description: \"All changes are stored.\", tone: \"success\" })}\n      >\n        Save\n      </button>\n    </div>\n  );\n}\n",
   "playground": {
     "props": {},

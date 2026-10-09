@@ -2,10 +2,30 @@
   "kind": "react",
   "summary": "Tabs whose underline is forty pixels that stream from the old tab to the new one, with panels that slide in from the side.",
   "props": [
-    { "name": "value", "type": "string", "default": "-", "description": "Controlled selected tab (an item's `value`, or its `label`). Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "string", "default": "first tab", "description": "Initially selected tab when uncontrolled." },
-    { "name": "items", "type": "readonly PxTabsItem[]", "default": "-", "description": "The tabs: `{ value?: string; label: string; count?: string | number; content: React.ReactNode }`. `value` defaults to `label`; `count` adds a small badge after the label." },
-    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called when the user selects another tab by click or key." }
+    {
+      "name": "value",
+      "type": "string",
+      "default": "-",
+      "description": "Controlled selected tab (an item's `value`, or its `label`). Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "default": "first tab",
+      "description": "Initially selected tab when uncontrolled."
+    },
+    {
+      "name": "items",
+      "type": "readonly PxTabsItem[]",
+      "default": "-",
+      "description": "The tabs: `{ value?: string; label: string; count?: string | number; content: React.ReactNode }`. `value` defaults to `label`; `count` adds a small badge after the label."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "default": "-",
+      "description": "Called when the user selects another tab by click or key."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -30,7 +50,11 @@
     "props": {
       "items": [
         { "label": "Overview", "content": "Usage is steady this week. Most runs come from the Research project." },
-        { "label": "Activity", "count": 12, "content": "12 events since Monday, including 3 deploys and 2 new members." },
+        {
+          "label": "Activity",
+          "count": 12,
+          "content": "12 events since Monday, including 3 deploys and 2 new members."
+        },
         { "label": "Settings", "content": "Default model, retention and notification settings live here." }
       ]
     },

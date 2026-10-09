@@ -31,7 +31,9 @@ function TocList({ items }: { items: TocEntry[] }) {
     const first = links[0];
     const last = links[links.length - 1];
     // measured before paint, so the marker never shows at a stale position
-    setMarker(first && last ? { top: first.offsetTop, height: last.offsetTop + last.offsetHeight - first.offsetTop } : null);
+    setMarker(
+      first && last ? { top: first.offsetTop, height: last.offsetTop + last.offsetHeight - first.offsetTop } : null,
+    );
   }, [active]);
 
   return (
@@ -41,7 +43,10 @@ function TocList({ items }: { items: TocEntry[] }) {
         <span className="absolute top-0 bottom-0 left-0 w-px bg-border" aria-hidden />
         <span
           aria-hidden
-          className={cn("absolute left-0 w-px bg-electric transition-[transform,height,opacity] duration-300 ease-[var(--ease-expo)]", marker ? "opacity-100" : "opacity-0")}
+          className={cn(
+            "absolute left-0 w-px bg-electric transition-[transform,height,opacity] duration-300 ease-[var(--ease-expo)]",
+            marker ? "opacity-100" : "opacity-0",
+          )}
           style={{ transform: `translateY(${marker?.top ?? 0}px)`, height: marker?.height ?? 0 }}
         />
         <ol ref={listRef} className="relative space-y-0.5">

@@ -1,10 +1,19 @@
 {
   "summary": "Scatter plot of 270 runs with a drag-to-select brush; the summary rolls to the selection's medians and the legend toggles groups.",
   "attributes": [
-    { "name": "label", "type": "string", "default": "Latency vs. output", "description": "Heading text. Read once on connect." }
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Latency vs. output",
+      "description": "Heading text. Read once on connect."
+    }
   ],
   "events": [
-    { "name": "select", "detail": "{ count: number }", "description": "Fires when a brush drag ends. `count` is the number of visible points inside the box; a click without dragging clears the brush and reports 0." }
+    {
+      "name": "select",
+      "detail": "{ count: number }",
+      "description": "Fires when a brush drag ends. `count` is the number of visible points inside the box; a click without dragging clears the brush and reports 0."
+    }
   ],
   "methods": [],
   "properties": [],

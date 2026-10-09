@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-countdown.element";
 /** The `<hf-countdown>` element, with its properties and methods. */
 export type HfCountdownElement = ElementModule.HCountdown;
 
-export interface HfCountdownProps extends Omit<LumesecElementProps<HfCountdownElement>, "seconds" | "loop" | "label" | "onDone"> {
+export interface HfCountdownProps extends Omit<
+  LumesecElementProps<HfCountdownElement>,
+  "seconds" | "loop" | "label" | "onDone"
+> {
   /** Starting duration in seconds (8049 is 2 h 14 min 9 s); a negative value counts as zero. Observed: a change restarts the countdown. `restart()` without an argument also reads it. Default: `8049`. */
   seconds?: number;
   /** Presence attribute. Restarts from `seconds` 1.6 s after reaching zero. Default: `false`. */
@@ -26,10 +29,5 @@ export interface HfCountdownProps extends Omit<LumesecElementProps<HfCountdownEl
  * @see https://elements.lumesec.ai/components/pixel-hd/countdown
  */
 export function HfCountdown({ seconds, loop, label, onDone, ...props }: HfCountdownProps) {
-  return useLumesecElement(
-    "hf-countdown",
-    props,
-    { "seconds": seconds, "loop": loop, "label": label },
-    { "done": onDone },
-  );
+  return useLumesecElement("hf-countdown", props, { seconds: seconds, loop: loop, label: label }, { done: onDone });
 }

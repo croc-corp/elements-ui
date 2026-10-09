@@ -62,7 +62,13 @@ export function TerminalDemo({ className }: { className?: string }) {
 
   const done = typed >= CMD.length;
   return (
-    <div ref={ref} className={cn("overflow-hidden rounded-xl border border-border bg-[var(--code-bg)] font-mono text-[12.5px] leading-[1.75]", className)}>
+    <div
+      ref={ref}
+      className={cn(
+        "overflow-hidden rounded-xl border border-border bg-[var(--code-bg)] font-mono text-[12.5px] leading-[1.75]",
+        className,
+      )}
+    >
       <div className="flex h-9 items-center gap-2 border-b border-border px-3.5">
         <span className="flex gap-1.5" aria-hidden>
           <span className="size-2.5 rounded-full bg-border" />
@@ -74,13 +80,24 @@ export function TerminalDemo({ className }: { className?: string }) {
       <p className="sr-only">{TRANSCRIPT}</p>
       {/* typed out for sighted users; the paragraph above carries the same text at once */}
       <div className="min-h-[248px] overflow-x-auto px-4 py-3.5" aria-hidden>
-        <p className="whitespace-pre-wrap break-all">
+        <p className="break-all whitespace-pre-wrap">
           <span className="text-muted-foreground">$ </span>
           {CMD.slice(0, typed)}
-          {!done || lines === 0 ? <span className="ml-px inline-block h-[1.1em] w-[7px] translate-y-[3px] animate-[sl-caret_1s_steps(1)_infinite] bg-foreground" aria-hidden /> : null}
+          {!done || lines === 0 ? (
+            <span
+              className="ml-px inline-block h-[1.1em] w-[7px] translate-y-[3px] animate-[sl-caret_1s_steps(1)_infinite] bg-foreground"
+              aria-hidden
+            />
+          ) : null}
         </p>
         {OUTPUT.slice(0, lines).map((l, i) => (
-          <p key={i} className={cn("animate-[sl-fade_.25s_ease] whitespace-pre", l.ok ? "text-foreground" : "text-muted-foreground")}>
+          <p
+            key={i}
+            className={cn(
+              "animate-[sl-fade_.25s_ease] whitespace-pre",
+              l.ok ? "text-foreground" : "text-muted-foreground",
+            )}
+          >
             {l.ok ? (
               <>
                 <span className="text-success">{l.text.slice(0, 1)}</span>

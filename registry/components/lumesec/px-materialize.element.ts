@@ -124,26 +124,29 @@ class Materialize extends PxBase {
     const maxW = this.w - 8;
     let x = PAD;
     let y = 20;
-    this.words = text.trim().split(/\s+/).map((word) => {
-      const width = g.measureText(word).width;
-      if (x + width > maxW && x > PAD) {
-        x = PAD;
-        y += LINE_HEIGHT;
-      }
-      const laid: StreamWord = {
-        word,
-        x,
-        y,
-        w: width,
-        pts: this.sample(word, width),
-        arrived: false,
-        t0: 0,
-        settleT: -1,
-        parts: [],
-      };
-      x += width + space;
-      return laid;
-    });
+    this.words = text
+      .trim()
+      .split(/\s+/)
+      .map((word) => {
+        const width = g.measureText(word).width;
+        if (x + width > maxW && x > PAD) {
+          x = PAD;
+          y += LINE_HEIGHT;
+        }
+        const laid: StreamWord = {
+          word,
+          x,
+          y,
+          w: width,
+          pts: this.sample(word, width),
+          arrived: false,
+          t0: 0,
+          settleT: -1,
+          parts: [],
+        };
+        x += width + space;
+        return laid;
+      });
     this.wordIndex = 0;
     this.nextAt = this.t + 0.35;
     this.finished = false;

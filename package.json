@@ -1,6 +1,6 @@
 {
   "name": "lumesec-elements",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "Interactive React and custom-element components in strict TypeScript, published as a shadcn registry, and the site that documents them.",
   "license": "MIT",
@@ -39,9 +39,13 @@
     "registry:build": "node scripts/build-registry.mjs",
     "check-types": "fumadocs-mdx && next typegen && tsc --noEmit",
     "lint": "eslint --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
     "docs:generate": "node scripts/gen-docs.mjs",
     "verify": "node scripts/verify.mjs",
-    "stats": "node scripts/stats.mjs"
+    "stats": "node scripts/stats.mjs",
+    "release:notes": "node scripts/release-notes.mjs"
   },
   "dependencies": {
     "clsx": "2.1.1",
@@ -69,9 +73,12 @@
     "eslint": "9.39.5",
     "eslint-config-next": "16.3.8",
     "postcss": "8.5.28",
+    "prettier": "3.9.9",
+    "prettier-plugin-tailwindcss": "0.8.1",
     "shadcn": "4.21.1",
     "tailwindcss": "4.3.3",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

@@ -3,11 +3,17 @@
   "attributes": [],
   "events": [],
   "methods": [
-    { "signature": "setMetric(index: 0 | 1)", "description": "Switches the metric: `0` for sessions, `1` for tokens. Other values are ignored." }
+    {
+      "signature": "setMetric(index: 0 | 1)",
+      "description": "Switches the metric: `0` for sessions, `1` for tokens. Other values are ignored."
+    }
   ],
   "properties": [],
   "keyboard": [
-    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "action": "In the metric switch: select and focus the other metric." }
+    {
+      "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown",
+      "action": "In the metric switch: select and focus the other metric."
+    }
   ],
   "accessibility": [
     "The metric switch is a `role=\"radiogroup\"` with `aria-label=\"Metric\"`; its two buttons have `role=\"radio\"` and `aria-checked`. Only the checked radio is in the tab order; arrow keys move the selection.",

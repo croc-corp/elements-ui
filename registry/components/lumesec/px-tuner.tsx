@@ -20,10 +20,5 @@ export interface PxTunerProps extends Omit<LumesecElementProps<PxTunerElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/tuner
  */
 export function PxTuner({ onLock, ...props }: PxTunerProps) {
-  return useLumesecElement(
-    "px-tuner",
-    props,
-    {},
-    { "lock": onLock },
-  );
+  return useLumesecElement("px-tuner", props, {}, { lock: onLock });
 }

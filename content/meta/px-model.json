@@ -2,10 +2,17 @@
   "summary": "Model picker where one pixel swarm morphs between a diamond, a ring and a rotating star, with speed, depth and cost bars.",
   "attributes": [],
   "events": [
-    { "name": "change", "detail": "{ model: string }", "description": "Fires when the user picks a model. `model` is `Swift`, `Balanced` or `Deep`. Not fired for the initial selection." }
+    {
+      "name": "change",
+      "detail": "{ model: string }",
+      "description": "Fires when the user picks a model. `model` is `Swift`, `Balanced` or `Deep`. Not fired for the initial selection."
+    }
   ],
   "methods": [
-    { "signature": "select(index: number)", "description": "Selects model 0 (`Swift`), 1 (`Balanced`) or 2 (`Deep`) and fires `change`. Other values are ignored." }
+    {
+      "signature": "select(index: number)",
+      "description": "Selects model 0 (`Swift`), 1 (`Balanced`) or 2 (`Deep`) and fires `change`. Other values are ignored."
+    }
   ],
   "properties": [],
   "keyboard": [

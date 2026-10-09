@@ -2,16 +2,56 @@
   "kind": "react",
   "summary": "One set of land dots that is either a globe or a flat map: switching peels the globe open at the back and lays it flat, routes and packets included.",
   "props": [
-    { "name": "view", "type": "\"globe\" | \"map\"", "default": "-", "description": "The shown view (controlled). Use with `onViewChange`. A change during the morph turns it around from where it is." },
-    { "name": "defaultView", "type": "\"globe\" | \"map\"", "default": "\"globe\"", "description": "The view when uncontrolled." },
-    { "name": "routes", "type": "readonly UnfoldRoute[]", "default": "8 demo routes", "description": "`{ from: LatLon, to: LatLon, weight? }` records shown in both views. `weight` (0 to 1, default 0.5) sets the packet rate, 0.4 + 1.2 × weight per second. Entries with missing or non-finite coordinates are skipped." },
-    { "name": "center", "type": "LatLon", "default": "{ lat: 20, lon: 10 }", "description": "Initial globe centre, and where Home turns the globe back to. Later changes do not move the globe." },
+    {
+      "name": "view",
+      "type": "\"globe\" | \"map\"",
+      "default": "-",
+      "description": "The shown view (controlled). Use with `onViewChange`. A change during the morph turns it around from where it is."
+    },
+    {
+      "name": "defaultView",
+      "type": "\"globe\" | \"map\"",
+      "default": "\"globe\"",
+      "description": "The view when uncontrolled."
+    },
+    {
+      "name": "routes",
+      "type": "readonly UnfoldRoute[]",
+      "default": "8 demo routes",
+      "description": "`{ from: LatLon, to: LatLon, weight? }` records shown in both views. `weight` (0 to 1, default 0.5) sets the packet rate, 0.4 + 1.2 × weight per second. Entries with missing or non-finite coordinates are skipped."
+    },
+    {
+      "name": "center",
+      "type": "LatLon",
+      "default": "{ lat: 20, lon: 10 }",
+      "description": "Initial globe centre, and where Home turns the globe back to. Later changes do not move the globe."
+    },
     { "name": "title", "type": "React.ReactNode", "default": "-", "description": "Heading shown left of the toggle." },
-    { "name": "projection", "type": "\"equalEarth\" | \"equirectangular\"", "default": "\"equalEarth\"", "description": "Projection of the map view. Both show the whole world." },
-    { "name": "duration", "type": "number", "default": "1100", "description": "Length of the morph in milliseconds. Values below 300 count as 300." },
+    {
+      "name": "projection",
+      "type": "\"equalEarth\" | \"equirectangular\"",
+      "default": "\"equalEarth\"",
+      "description": "Projection of the map view. Both show the whole world."
+    },
+    {
+      "name": "duration",
+      "type": "number",
+      "default": "1100",
+      "description": "Length of the morph in milliseconds. Values below 300 count as 300."
+    },
     { "name": "packets", "type": "boolean", "default": "true", "description": "Runs packets along the routes." },
-    { "name": "showToggle", "type": "boolean", "default": "true", "description": "Shows the Globe / Map toggle. Hide it to drive `view` from outside." },
-    { "name": "onViewChange", "type": "(view: \"globe\" | \"map\") => void", "default": "-", "description": "Called when the toggle changes the view. A controlled `view` changed from outside does not call it." }
+    {
+      "name": "showToggle",
+      "type": "boolean",
+      "default": "true",
+      "description": "Shows the Globe / Map toggle. Hide it to drive `view` from outside."
+    },
+    {
+      "name": "onViewChange",
+      "type": "(view: \"globe\" | \"map\") => void",
+      "default": "-",
+      "description": "Called when the toggle changes the view. A controlled `view` changed from outside does not call it."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -34,7 +74,17 @@
     "The stage keeps a 2:1 aspect ratio and the globe's radius is 46 % of its height. The canvas for packets and sparks reaches 16 px past the stage at the sides and 24 px above and below, so leave that room unclipped.",
     "Packets run only while the component is on screen. The animation loop stops when nothing moves and packets are off."
   ],
-  "tokens": ["--foreground", "--muted-foreground", "--muted", "--card", "--border", "--lumesec", "--lumesec-soft", "--lumesec-glint", "--lumesec-shine"],
+  "tokens": [
+    "--foreground",
+    "--muted-foreground",
+    "--muted",
+    "--card",
+    "--border",
+    "--lumesec",
+    "--lumesec-soft",
+    "--lumesec-glint",
+    "--lumesec-shine"
+  ],
   "usage": "import { GeoUnfold, type UnfoldRoute } from \"@/components/lumesec/geo-unfold\";\n\nconst routes: UnfoldRoute[] = [\n  { from: { lat: 50.11, lon: 8.68 }, to: { lat: 39.04, lon: -77.49 }, weight: 0.9 },\n  { from: { lat: 35.68, lon: 139.65 }, to: { lat: 37.77, lon: -122.42 }, weight: 0.6 },\n];\n\nexport function Example() {\n  return <GeoUnfold title=\"Traffic between regions\" routes={routes} />;\n}\n",
   "playground": {
     "props": { "title": "Traffic between regions" },

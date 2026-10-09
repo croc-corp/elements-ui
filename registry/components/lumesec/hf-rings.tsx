@@ -20,10 +20,5 @@ export interface HfRingsProps extends Omit<LumesecElementProps<HfRingsElement>, 
  * @see https://elements.lumesec.ai/components/pixel-hd/rings
  */
 export function HfRings({ rings, ...props }: HfRingsProps) {
-  return useLumesecElement(
-    "hf-rings",
-    props,
-    { "rings": rings },
-    {},
-  );
+  return useLumesecElement("hf-rings", props, { rings: rings }, {});
 }

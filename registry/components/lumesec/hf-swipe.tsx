@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-swipe.element";
 /** The `<hf-swipe>` element, with its properties and methods. */
 export type HfSwipeElement = ElementModule.HSwipe;
 
-export interface HfSwipeProps extends Omit<LumesecElementProps<HfSwipeElement>, "label" | "doneLabel" | "hint" | "doneHint" | "reset" | "onConfirm"> {
+export interface HfSwipeProps extends Omit<
+  LumesecElementProps<HfSwipeElement>,
+  "label" | "doneLabel" | "hint" | "doneHint" | "reset" | "onConfirm"
+> {
   /** Text in the track before confirming, also used in the handle's `aria-label`. Observed. Default: `Slide to deploy`. */
   label?: string;
   /** Text in the track after confirming; announced to screen readers. Observed. Default: `Deployed`. */
@@ -31,7 +34,7 @@ export function HfSwipe({ label, doneLabel, hint, doneHint, reset, onConfirm, ..
   return useLumesecElement(
     "hf-swipe",
     props,
-    { "label": label, "done-label": doneLabel, "hint": hint, "done-hint": doneHint, "reset": reset },
-    { "confirm": onConfirm },
+    { label: label, "done-label": doneLabel, hint: hint, "done-hint": doneHint, reset: reset },
+    { confirm: onConfirm },
   );
 }

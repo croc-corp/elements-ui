@@ -1,13 +1,25 @@
 {
   "summary": "Pixel checklist where checking fills the box from the centre and draws a fizzing strike-through; finishing the list runs a green wave.",
   "attributes": [
-    { "name": "items", "type": "string", "default": "Draft the launch post|Record the demo video|Review the pricing page|Ship v2.14 to production", "description": "Task labels separated by `|`; empty entries are skipped. Changing it rebuilds the list with every task unchecked." }
+    {
+      "name": "items",
+      "type": "string",
+      "default": "Draft the launch post|Record the demo video|Review the pricing page|Ship v2.14 to production",
+      "description": "Task labels separated by `|`; empty entries are skipped. Changing it rebuilds the list with every task unchecked."
+    }
   ],
   "events": [
-    { "name": "change", "detail": "{ done: number, total: number }", "description": "Fires each time a task is checked or unchecked." }
+    {
+      "name": "change",
+      "detail": "{ done: number, total: number }",
+      "description": "Fires each time a task is checked or unchecked."
+    }
   ],
   "methods": [
-    { "signature": "toggle(index: number)", "description": "Checks or unchecks the task at `index` and fires `change`. An index without a task is ignored." }
+    {
+      "signature": "toggle(index: number)",
+      "description": "Checks or unchecks the task at `index` and fires `change`. An index without a task is ignored."
+    }
   ],
   "properties": [],
   "keyboard": [],

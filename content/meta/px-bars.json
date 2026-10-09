@@ -2,10 +2,30 @@
   "kind": "react",
   "summary": "Pixel bar chart whose bars grow cell by cell and spring to new data; hover or the arrow keys show exact values in a tooltip.",
   "props": [
-    { "name": "data", "type": "readonly PxBarsDatum[]", "default": "Mon to Sun sample", "description": "The bars, left to right: `{ label: string; value: number }`. Bars spring to new values when it changes. Negative and non-finite values draw an empty bar." },
-    { "name": "max", "type": "number", "default": "0", "description": "Top of the value axis. With 0 the axis tops out at 110% of the largest value." },
-    { "name": "label", "type": "string", "default": "\"Bar chart\"", "description": "Start of the canvas `aria-label`, followed by every label and value." },
-    { "name": "unit", "type": "string", "default": "-", "description": "Unit shown after each value in the tooltip and the `aria-label`, separated by a space." },
+    {
+      "name": "data",
+      "type": "readonly PxBarsDatum[]",
+      "default": "Mon to Sun sample",
+      "description": "The bars, left to right: `{ label: string; value: number }`. Bars spring to new values when it changes. Negative and non-finite values draw an empty bar."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "default": "0",
+      "description": "Top of the value axis. With 0 the axis tops out at 110% of the largest value."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Bar chart\"",
+      "description": "Start of the canvas `aria-label`, followed by every label and value."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "default": "-",
+      "description": "Unit shown after each value in the tooltip and the `aria-label`, separated by a space."
+    },
     { "name": "height", "type": "number", "default": "170", "description": "Canvas height in pixels." }
   ],
   "extends": "div",

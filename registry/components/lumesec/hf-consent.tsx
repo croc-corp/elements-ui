@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-consent.element";
 /** The `<hf-consent>` element, with its properties and methods. */
 export type HfConsentElement = ElementModule.HConsent;
 
-export interface HfConsentProps extends Omit<LumesecElementProps<HfConsentElement>, "label" | "description" | "onConsent"> {
+export interface HfConsentProps extends Omit<
+  LumesecElementProps<HfConsentElement>,
+  "label" | "description" | "onConsent"
+> {
   /** Card title; also labels the card region. Observed. Default: `Your privacy choices`. */
   label?: string;
   /** Text under the title. Observed. Default: `We only use what you allow. You can change this any time in Settings.`. */
@@ -22,10 +25,5 @@ export interface HfConsentProps extends Omit<LumesecElementProps<HfConsentElemen
  * @see https://elements.lumesec.ai/components/pixel-hd/consent
  */
 export function HfConsent({ label, description, onConsent, ...props }: HfConsentProps) {
-  return useLumesecElement(
-    "hf-consent",
-    props,
-    { "label": label, "description": description },
-    { "consent": onConsent },
-  );
+  return useLumesecElement("hf-consent", props, { label: label, description: description }, { consent: onConsent });
 }

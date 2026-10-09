@@ -151,9 +151,9 @@ class Jog extends PxBase {
       this.canvas.setAttribute("aria-valuenow", String(frame));
       this.canvas.setAttribute("aria-valuetext", timecode);
     }
-    const rate = (Math.abs(omega) / TAU) * FPR / 24;
+    const rate = ((Math.abs(omega) / TAU) * FPR) / 24;
     const label = rate < 0.05 ? "Paused" : `${omega < 0 ? "Rewind" : "Scrub"} ${rate.toFixed(1)}×`;
-    if (Math.abs(rate - this.lastRate) > 0.25 || (rate < 0.05) !== (this.lastRate < 0.05)) {
+    if (Math.abs(rate - this.lastRate) > 0.25 || rate < 0.05 !== this.lastRate < 0.05) {
       this.lastRate = rate;
       rollText(this.$(".sp"), label, omega < 0 ? -1 : 1);
     }

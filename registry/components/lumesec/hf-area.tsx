@@ -24,10 +24,5 @@ export interface HfAreaProps extends Omit<LumesecElementProps<HfAreaElement>, "l
  * @see https://elements.lumesec.ai/components/pixel-hd/area
  */
 export function HfArea({ label, days, data, ...props }: HfAreaProps) {
-  return useLumesecElement(
-    "hf-area",
-    props,
-    { "label": label, "days": days, "data": data },
-    {},
-  );
+  return useLumesecElement("hf-area", props, { label: label, days: days, data: data }, {});
 }

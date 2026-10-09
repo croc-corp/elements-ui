@@ -20,10 +20,5 @@ export interface HfMarqueeProps extends Omit<LumesecElementProps<HfMarqueeElemen
  * @see https://elements.lumesec.ai/components/pixel-hd/marquee
  */
 export function HfMarquee({ label, ...props }: HfMarqueeProps) {
-  return useLumesecElement(
-    "hf-marquee",
-    props,
-    { "label": label },
-    {},
-  );
+  return useLumesecElement("hf-marquee", props, { label: label }, {});
 }

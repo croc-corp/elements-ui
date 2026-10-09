@@ -2,15 +2,50 @@
   "kind": "react",
   "summary": "Number stepper where every digit is its own rolling wheel; supports press-and-hold, sideways drag, the scroll wheel and the keyboard.",
   "props": [
-    { "name": "value", "type": "number", "default": "-", "description": "Controlled value, rounded to the nearest multiple of `step` and clamped to `min`/`max`. Use with `onValueChange`." },
+    {
+      "name": "value",
+      "type": "number",
+      "default": "-",
+      "description": "Controlled value, rounded to the nearest multiple of `step` and clamped to `min`/`max`. Use with `onValueChange`."
+    },
     { "name": "defaultValue", "type": "number", "default": "8192", "description": "Initial value when uncontrolled." },
     { "name": "min", "type": "number", "default": "1024", "description": "Lowest value." },
-    { "name": "max", "type": "number", "default": "65536", "description": "Highest value. Also sets the number of digit wheels. A `max` below `min` is treated as `min`." },
-    { "name": "step", "type": "number", "default": "1024", "description": "Increment per step, greater than 0 (anything else falls back to 1)." },
-    { "name": "label", "type": "string", "default": "\"Max output tokens\"", "description": "Caption above the number and the spinbutton's `aria-label`." },
-    { "name": "unit", "type": "string", "default": "-", "description": "Optional monospace caption under the number; hidden when empty." },
-    { "name": "onValueChange", "type": "(value: number) => void", "default": "-", "description": "Called on every value change from the buttons, drag, wheel or keys." },
-    { "name": "onValueCommit", "type": "(value: number) => void", "default": "-", "description": "Called with each change from the buttons, wheel or keys, and once when a drag on the number ends, even if the value did not change." }
+    {
+      "name": "max",
+      "type": "number",
+      "default": "65536",
+      "description": "Highest value. Also sets the number of digit wheels. A `max` below `min` is treated as `min`."
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "default": "1024",
+      "description": "Increment per step, greater than 0 (anything else falls back to 1)."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Max output tokens\"",
+      "description": "Caption above the number and the spinbutton's `aria-label`."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "default": "-",
+      "description": "Optional monospace caption under the number; hidden when empty."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: number) => void",
+      "default": "-",
+      "description": "Called on every value change from the buttons, drag, wheel or keys."
+    },
+    {
+      "name": "onValueCommit",
+      "type": "(value: number) => void",
+      "default": "-",
+      "description": "Called with each change from the buttons, wheel or keys, and once when a drag on the number ends, even if the value did not change."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },

@@ -6,7 +6,8 @@ import { GeoSpikes, type SpikeDatum } from "@/components/lumesec/geo-spikes";
 import { createRandom, findCity } from "@/lib/lumesec/geo-data";
 
 /** The 24 demo cities, spread over every continent. */
-const CITY_IDS = "lhr cdg fra ams mad ist jfk ord sfo lax yyz mex gru bog eze los cai jnb dxb bom sin nrt icn syd".split(" ");
+const CITY_IDS =
+  "lhr cdg fra ams mad ist jfk ord sfo lax yyz mex gru bog eze los cai jnb dxb bom sin nrt icn syd".split(" ");
 
 /**
  * Invented counts for one refresh. Round 0 is the baseline; every later round drifts each city a little and makes
@@ -37,7 +38,7 @@ export default function GeoSpikesDemo() {
       <button
         type="button"
         onClick={() => setRound((value) => value + 1)}
-        className="absolute top-3 right-3 z-[4] h-[30px] cursor-pointer rounded-lg border border-border bg-card px-[11px] font-[inherit] text-[12.5px] font-medium text-foreground outline-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+        className="absolute top-3 right-3 z-[4] h-[30px] cursor-pointer rounded-lg border border-border bg-card px-[11px] font-[inherit] text-[12.5px] font-medium text-foreground outline-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
       >
         Refresh
       </button>

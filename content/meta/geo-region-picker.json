@@ -117,15 +117,7 @@
     "kind": "input",
     "note": "Pass your regions as `regions` and the user's location as `from`. Without `regions` the picker shows 16 demo regions; nothing about the viewer's location is read or inferred."
   },
-  "tokens": [
-    "--lumesec",
-    "--lumesec-glint",
-    "--card",
-    "--muted",
-    "--muted-foreground",
-    "--foreground",
-    "--border"
-  ],
+  "tokens": ["--lumesec", "--lumesec-glint", "--card", "--muted", "--muted-foreground", "--foreground", "--border"],
   "usage": "import { GeoRegionPicker } from \"@/components/lumesec/geo-region-picker\";\n\nexport function Example() {\n  return (\n    <form>\n      <GeoRegionPicker name=\"region\" defaultValue=\"eu-west\" from={{ lat: 40.4168, lon: -3.7038, label: \"Madrid office\" }} />\n    </form>\n  );\n}\n",
   "playground": {
     "props": {
@@ -158,11 +150,7 @@
       {
         "name": "layout",
         "kind": "enum",
-        "options": [
-          "both",
-          "map",
-          "list"
-        ],
+        "options": ["both", "map", "list"],
         "default": "both"
       },
       {

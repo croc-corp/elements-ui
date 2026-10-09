@@ -27,7 +27,10 @@ const TRANSFERS: readonly ResidencyTransfer[] = [
 ];
 
 /** The export the switch adds: from the Frankfurt store to the us-east region. */
-const WITH_ANALYTICS: readonly ResidencyTransfer[] = [...TRANSFERS, { id: "fra-analytics", from: "fra", to: "us-east", volume: 0.6 }];
+const WITH_ANALYTICS: readonly ResidencyTransfer[] = [
+  ...TRANSFERS,
+  { id: "fra-analytics", from: "fra", to: "us-east", volume: 0.6 },
+];
 
 export default function GeoResidencyDemo() {
   const [analytics, setAnalytics] = React.useState(false);
@@ -40,7 +43,7 @@ export default function GeoResidencyDemo() {
         role="switch"
         aria-checked={analytics}
         onClick={() => setAnalytics((on) => !on)}
-        className="group inline-flex h-[30px] cursor-pointer items-center gap-2.5 justify-self-start rounded-lg border-0 bg-transparent px-0.5 font-[inherit] text-[13px] text-foreground outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+        className="group inline-flex h-[30px] cursor-pointer items-center gap-2.5 justify-self-start rounded-lg border-0 bg-transparent px-0.5 font-[inherit] text-[13px] text-foreground outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
       >
         <span
           aria-hidden="true"

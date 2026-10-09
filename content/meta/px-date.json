@@ -2,13 +2,48 @@
   "kind": "react",
   "summary": "Month-grid date picker for single dates or ranges, with a springing pixel selection block, a dotted range band and a mark on today.",
   "props": [
-    { "name": "value", "type": "string", "default": "-", "description": "Controlled selection: `YYYY-MM-DD`, or `YYYY-MM-DD/YYYY-MM-DD` with `range`. Use with `onValueChange`. A new value also shows its month." },
-    { "name": "defaultValue", "type": "string", "default": "\"\"", "description": "Initial selection when uncontrolled; it also sets the month shown. A form reset restores it." },
-    { "name": "range", "type": "boolean", "default": "false", "description": "Pick a start and an end date instead of a single date. Switching it reads the selection from `value` again." },
-    { "name": "firstDay", "type": "PxDateWeekday", "default": "1", "description": "First day of the week, from `0` (Sunday) to `6`. The default is Monday." },
-    { "name": "name", "type": "string", "default": "-", "description": "Form field name. A range submits as `start/end` and stays empty until both ends are picked." },
-    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the calendar and disables its buttons." },
-    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called when a date is picked; in range mode only when the end date is picked." }
+    {
+      "name": "value",
+      "type": "string",
+      "default": "-",
+      "description": "Controlled selection: `YYYY-MM-DD`, or `YYYY-MM-DD/YYYY-MM-DD` with `range`. Use with `onValueChange`. A new value also shows its month."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "default": "\"\"",
+      "description": "Initial selection when uncontrolled; it also sets the month shown. A form reset restores it."
+    },
+    {
+      "name": "range",
+      "type": "boolean",
+      "default": "false",
+      "description": "Pick a start and an end date instead of a single date. Switching it reads the selection from `value` again."
+    },
+    {
+      "name": "firstDay",
+      "type": "PxDateWeekday",
+      "default": "1",
+      "description": "First day of the week, from `0` (Sunday) to `6`. The default is Monday."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "default": "-",
+      "description": "Form field name. A range submits as `start/end` and stays empty until both ends are picked."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Dims the calendar and disables its buttons."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "default": "-",
+      "description": "Called when a date is picked; in range mode only when the end date is picked."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -17,8 +52,14 @@
     { "keys": "ArrowLeft / ArrowRight", "action": "Move to the previous / next day." },
     { "keys": "ArrowUp / ArrowDown", "action": "Move to the previous / next week." },
     { "keys": "Home / End", "action": "Move to the first / last day of the week." },
-    { "keys": "PageUp / PageDown", "action": "Move to the same day in the previous / next month, clamped to its length (31 January moves to 28 February)." },
-    { "keys": "Shift+PageUp / Shift+PageDown", "action": "Move to the same day in the previous / next year, clamped the same way." },
+    {
+      "keys": "PageUp / PageDown",
+      "action": "Move to the same day in the previous / next month, clamped to its length (31 January moves to 28 February)."
+    },
+    {
+      "keys": "Shift+PageUp / Shift+PageDown",
+      "action": "Move to the same day in the previous / next year, clamped the same way."
+    },
     { "keys": "Enter / Space", "action": "Pick the focused day." }
   ],
   "accessibility": [
@@ -36,7 +77,15 @@
     "The summary line, for example \"20 Oct – Sat, 24 Oct 2026 · 4 nights\", and all labels are in English. Dates use local time.",
     "A range `value` written end first is put in order. Dates that do not exist, such as `2026-02-31`, are ignored."
   ],
-  "tokens": ["--foreground", "--muted-foreground", "--card", "--border", "--muted", "--lumesec", "--lumesec-foreground"],
+  "tokens": [
+    "--foreground",
+    "--muted-foreground",
+    "--card",
+    "--border",
+    "--muted",
+    "--lumesec",
+    "--lumesec-foreground"
+  ],
   "usage": "import { PxDate } from \"@/components/lumesec/px-date\";\n\nexport function Example() {\n  return <PxDate name=\"trip\" range defaultValue=\"2026-10-20/2026-10-24\" />;\n}\n",
   "playground": {
     "props": { "range": true, "defaultValue": "2026-10-20/2026-10-24" },

@@ -127,7 +127,10 @@ export function GeoSessions({
   const [announcement, setAnnouncement] = React.useState({ key: 0, text: "" });
 
   const pendingIds = revoked !== null && revoked.list === list ? revoked.ids : NO_IDS;
-  const visible = React.useMemo(() => (pendingIds.size ? list.filter((session) => !pendingIds.has(session.id)) : list), [list, pendingIds]);
+  const visible = React.useMemo(
+    () => (pendingIds.size ? list.filter((session) => !pendingIds.has(session.id)) : list),
+    [list, pendingIds],
+  );
   const others = visible.filter((session) => !session.current && !leaving.has(session.id));
   const armed = armedAt !== null && others.length > 0 && !sweeping;
   const previewId = sweeping ? null : (hoverId ?? focusId ?? mapHoverId);
@@ -140,10 +143,19 @@ export function GeoSessions({
   if (anchor === null && reference !== null) setAnchor(reference);
   const clock: TimeContext = { demo, reference, anchor, locale };
 
-  const footerLabel = sweeping ? FOOTER.sweeping : others.length === 0 ? FOOTER.none : armed ? FOOTER.armed : FOOTER.idle;
+  const footerLabel = sweeping
+    ? FOOTER.sweeping
+    : others.length === 0
+      ? FOOTER.none
+      : armed
+        ? FOOTER.armed
+        : FOOTER.idle;
   const [footer, setFooter] = React.useState({ label: footerLabel, direction: 1 });
   if (footer.label !== footerLabel) {
-    setFooter({ label: footerLabel, direction: FOOTER_ORDER.indexOf(footerLabel) >= FOOTER_ORDER.indexOf(footer.label) ? 1 : -1 });
+    setFooter({
+      label: footerLabel,
+      direction: FOOTER_ORDER.indexOf(footerLabel) >= FOOTER_ORDER.indexOf(footer.label) ? 1 : -1,
+    });
   }
 
   const rootRef = React.useRef<HTMLDivElement>(null);
@@ -169,7 +181,8 @@ export function GeoSessions({
   function measureEffects() {
     const map = mapRef.current;
     const layer = effectsRef.current;
-    if (map && layer) engineRef.current.setEffectsOffset(map.offsetLeft - layer.offsetLeft, map.offsetTop - layer.offsetTop);
+    if (map && layer)
+      engineRef.current.setEffectsOffset(map.offsetLeft - layer.offsetLeft, map.offsetTop - layer.offsetTop);
   }
 
   const loop = useAnimationLoop(rootRef, step);
@@ -280,11 +293,17 @@ export function GeoSessions({
       const row = rowNodes.current.get(id);
       if (!row || typeof row.animate !== "function") continue;
       rowAnimations.current.get(id)?.cancel();
-      const animation = row.animate([{ height: `${row.offsetHeight}px`, opacity: 1 }, { height: "0px", opacity: 0 }], {
-        duration: COLLAPSE_MS,
-        easing: COLLAPSE_EASING,
-        fill: "forwards",
-      });
+      const animation = row.animate(
+        [
+          { height: `${row.offsetHeight}px`, opacity: 1 },
+          { height: "0px", opacity: 0 },
+        ],
+        {
+          duration: COLLAPSE_MS,
+          easing: COLLAPSE_EASING,
+          fill: "forwards",
+        },
+      );
       rowAnimations.current.set(id, animation);
     }
   }
@@ -295,7 +314,10 @@ export function GeoSessions({
     const done = new Set(ids);
     const { list: current, demo: isDemo, onRevoke: revoke } = latest.current;
     engineRef.current.forget(ids);
-    setRevoked((previous) => ({ list: current, ids: previous && previous.list === current ? withIds(previous.ids, ids) : done }));
+    setRevoked((previous) => ({
+      list: current,
+      ids: previous && previous.list === current ? withIds(previous.ids, ids) : done,
+    }));
     setLeaving((previous) => withoutIds(previous, ids));
     // a row that collapsed under the pointer or with focus fires no leave or blur: drop its preview
     const keep = (id: string | null) => (id !== null && done.has(id) ? null : id);
@@ -304,7 +326,10 @@ export function GeoSessions({
     setMapHoverId(keep);
     setList((previous) => previous.filter((session) => !done.has(session.id)));
     if (!isDemo) revoke?.(ids);
-    setAnnouncement((previous) => ({ key: previous.key + 1, text: `${ids.length} ${ids.length === 1 ? "session" : "sessions"} signed out` }));
+    setAnnouncement((previous) => ({
+      key: previous.key + 1,
+      text: `${ids.length} ${ids.length === 1 ? "session" : "sessions"} signed out`,
+    }));
   }
 
   function signOutOthers() {
@@ -355,7 +380,9 @@ export function GeoSessions({
 
   function signOutButtons() {
     const listElement = listRef.current;
-    return listElement ? Array.from(listElement.querySelectorAll<HTMLButtonElement>("li:not([inert]) button[data-sign-out]")) : [];
+    return listElement
+      ? Array.from(listElement.querySelectorAll<HTMLButtonElement>("li:not([inert]) button[data-sign-out]"))
+      : [];
   }
 
   function handleListKeyDown(event: React.KeyboardEvent<HTMLUListElement>) {
@@ -424,13 +451,22 @@ export function GeoSessions({
               preserveAspectRatio="none"
               className="pointer-events-none absolute inset-0 block size-full overflow-visible"
             >
-              <path d={MAP_OUTLINE} vectorEffect="non-scaling-stroke" strokeWidth={1} className="fill-muted/40 stroke-border" />
+              <path
+                d={MAP_OUTLINE}
+                vectorEffect="non-scaling-stroke"
+                strokeWidth={1}
+                className="fill-muted/40 stroke-border"
+              />
             </svg>
             <canvas ref={baseRef} className="absolute inset-0 block size-full" />
             <canvas
               ref={marksRef}
               className="pointer-events-none absolute block"
-              style={{ inset: -MARK_PAD, width: `calc(100% + ${MARK_PAD * 2}px)`, height: `calc(100% + ${MARK_PAD * 2}px)` }}
+              style={{
+                inset: -MARK_PAD,
+                width: `calc(100% + ${MARK_PAD * 2}px)`,
+                height: `calc(100% + ${MARK_PAD * 2}px)`,
+              }}
             />
           </div>
         </div>
@@ -441,7 +477,9 @@ export function GeoSessions({
       </div>
 
       <div className="flex items-baseline justify-between gap-3 px-4 pt-3.5 pb-1.5">
-        <div className="min-w-0 truncate text-[14px] leading-5 font-medium tracking-[-0.005em] text-foreground">{title}</div>
+        <div className="min-w-0 truncate text-[14px] leading-5 font-medium tracking-[-0.005em] text-foreground">
+          {title}
+        </div>
         <div className="shrink-0 text-[12.5px] leading-5 text-muted-foreground">
           Signed in on{" "}
           <span className="font-mono text-[12.5px] text-foreground tabular-nums">
@@ -452,9 +490,16 @@ export function GeoSessions({
       </div>
 
       {visible.length === 0 ? (
-        <p className="m-0 grid h-[52px] place-items-center px-4 pb-1.5 text-[12.5px] leading-5 text-muted-foreground">No active sessions</p>
+        <p className="m-0 grid h-[52px] place-items-center px-4 pb-1.5 text-[12.5px] leading-5 text-muted-foreground">
+          No active sessions
+        </p>
       ) : (
-        <ul ref={listRef} aria-label="Sessions" className="m-0 grid list-none p-0 px-1.5 pb-1.5" onKeyDown={handleListKeyDown}>
+        <ul
+          ref={listRef}
+          aria-label="Sessions"
+          className="m-0 grid list-none p-0 px-1.5 pb-1.5"
+          onKeyDown={handleListKeyDown}
+        >
           {visible.map((session) => (
             <SessionRow
               key={session.id}
@@ -480,13 +525,27 @@ export function GeoSessions({
           aria-disabled={sweeping || others.length === 0 || undefined}
           aria-describedby={armed ? hintId : undefined}
           onClick={handleFooterClick}
-          className="relative flex h-9 w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg border border-border bg-card px-3 font-[inherit] text-[13px] leading-5 font-medium text-foreground outline-none transition-[background-color,border-color,color] duration-200 hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec aria-disabled:cursor-default aria-disabled:text-muted-foreground aria-disabled:hover:bg-card data-[state=armed]:border-[color-mix(in_srgb,var(--destructive)_55%,var(--border))] data-[state=armed]:bg-destructive/6 data-[state=armed]:text-destructive data-[state=armed]:hover:bg-destructive/10 motion-reduce:transition-none"
+          className="relative flex h-9 w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg border border-border bg-card px-3 font-[inherit] text-[13px] leading-5 font-medium text-foreground transition-[background-color,border-color,color] duration-200 outline-none hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid aria-disabled:cursor-default aria-disabled:text-muted-foreground aria-disabled:hover:bg-card data-[state=armed]:border-[color-mix(in_srgb,var(--destructive)_55%,var(--border))] data-[state=armed]:bg-destructive/6 data-[state=armed]:text-destructive data-[state=armed]:hover:bg-destructive/10 motion-reduce:transition-none"
         >
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-3.5 shrink-0">
+          <svg
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.3}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            className="size-3.5 shrink-0"
+          >
             <path d="M6.5 2.5h-3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3" />
             <path d="M10.5 5 13.5 8l-3 3M13.5 8h-7" />
           </svg>
-          <RollText text={footer.label} direction={footer.direction} reserve={FOOTER_ORDER} className="justify-items-center" />
+          <RollText
+            text={footer.label}
+            direction={footer.direction}
+            reserve={FOOTER_ORDER}
+            className="justify-items-center"
+          />
           <Fuse armedAt={armed ? armedAt : null} />
         </button>
         <span id={hintId} hidden>
@@ -518,7 +577,17 @@ interface SessionRowProps {
 }
 
 /** One session: the device tile, the label and the city, the relative time and the Sign out button or the chip. */
-function SessionRow({ session, time, active, leaving, busy, register, onHover, onFocusPreview, onSignOut }: SessionRowProps) {
+function SessionRow({
+  session,
+  time,
+  active,
+  leaving,
+  busy,
+  register,
+  onHover,
+  onFocusPreview,
+  onSignOut,
+}: SessionRowProps) {
   const { id, current = false, approximate = false } = session;
   return (
     <li
@@ -560,7 +629,7 @@ function SessionRow({ session, time, active, leaving, busy, register, onHover, o
               if (event.currentTarget.matches(":focus-visible")) onFocusPreview(id);
             }}
             onBlur={() => onFocusPreview(null)}
-            className="h-7 w-[76px] shrink-0 cursor-pointer rounded-md border-0 bg-transparent px-2 font-[inherit] text-[12.5px] leading-4 font-medium text-muted-foreground outline-none transition-colors duration-150 hover:bg-destructive/8 hover:text-destructive focus-visible:outline-2 focus-visible:-outline-offset-1 focus-visible:outline-solid focus-visible:outline-lumesec disabled:cursor-default disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-muted-foreground motion-reduce:transition-none"
+            className="h-7 w-[76px] shrink-0 cursor-pointer rounded-md border-0 bg-transparent px-2 font-[inherit] text-[12.5px] leading-4 font-medium text-muted-foreground transition-colors duration-150 outline-none hover:bg-destructive/8 hover:text-destructive focus-visible:outline-2 focus-visible:-outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid disabled:cursor-default disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-muted-foreground motion-reduce:transition-none"
           >
             Sign out
           </button>
@@ -577,10 +646,19 @@ function DeviceTile({ device, current }: { device: SessionDevice; current: boole
       aria-hidden="true"
       className={cn(
         "grid size-7 shrink-0 place-items-center rounded-[7px] border border-border bg-muted/40 text-muted-foreground transition-colors duration-150 group-data-[active]/row:border-[color-mix(in_srgb,var(--foreground)_22%,var(--border))] group-data-[active]/row:text-foreground motion-reduce:transition-none",
-        current && "border-lumesec/35 bg-lumesec/8 text-lumesec group-data-[active]/row:border-lumesec/50 group-data-[active]/row:text-lumesec",
+        current &&
+          "border-lumesec/35 bg-lumesec/8 text-lumesec group-data-[active]/row:border-lumesec/50 group-data-[active]/row:text-lumesec",
       )}
     >
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.25} strokeLinecap="round" strokeLinejoin="round" className="size-4">
+      <svg
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.25}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-4"
+      >
         {DEVICE_ICONS[device] ?? DEVICE_ICONS.laptop}
       </svg>
     </span>
@@ -667,7 +745,13 @@ function Fuse({ armedAt }: { armedAt: number | null }) {
     return remaining > 0;
   }
 
-  return <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 block h-2 w-full" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-x-0 bottom-0 block h-2 w-full"
+    />
+  );
 }
 
 function clearSurface({ context, width, height }: CanvasSurface) {
@@ -695,7 +779,9 @@ function drawFuse(surface: CanvasSurface, colors: Palette<keyof typeof FUSE_TOKE
     let color = colors.destructive;
     if (lit >= 0) {
       const glow = Math.exp(-lit / 0.025);
-      const flicker = reduced ? 1 : 0.7 + 0.3 * Math.sin(time * (9 + seededUnit(seed + 0.71) * 14) + seededUnit(seed + 0.37) * 6.28);
+      const flicker = reduced
+        ? 1
+        : 0.7 + 0.3 * Math.sin(time * (9 + seededUnit(seed + 0.71) * 14) + seededUnit(seed + 0.37) * 6.28);
       alpha = 0.5 + 0.5 * glow * flicker;
       size = DOT + 0.75 * glow;
       if (glow > 0.3) color = mixRgb(colors.destructive, tip, glow);
@@ -844,12 +930,62 @@ const DEMO_NOW = Date.UTC(2026, 9, 3, 12, 0, 0);
 
 /** Six invented sessions: this laptop in London and five others, nearest to farthest from it. */
 const DEMO_SESSIONS: readonly Session[] = [
-  { id: "demo-laptop", device: "laptop", label: "Work laptop", city: "London", lat: 51.5072, lon: -0.1276, lastActive: DEMO_NOW, current: true },
-  { id: "demo-phone", device: "phone", label: "Phone", city: "London", lat: 51.5072, lon: -0.1276, lastActive: DEMO_NOW - 4 * MINUTE },
-  { id: "demo-desktop", device: "desktop", label: "Office desktop", city: "Berlin", lat: 52.52, lon: 13.405, lastActive: DEMO_NOW - 2 * HOUR },
-  { id: "demo-tablet", device: "tablet", label: "Tablet", city: "New York", lat: 40.7128, lon: -74.006, lastActive: DEMO_NOW - 27 * HOUR },
-  { id: "demo-terminal", device: "terminal", label: "Command line", city: "Singapore", lat: 1.3521, lon: 103.8198, lastActive: DEMO_NOW - 3 * DAY },
-  { id: "demo-lisbon", device: "laptop", label: "Laptop", city: "Lisbon", lat: 38.7223, lon: -9.1393, lastActive: DEMO_NOW - 9 * DAY, approximate: true },
+  {
+    id: "demo-laptop",
+    device: "laptop",
+    label: "Work laptop",
+    city: "London",
+    lat: 51.5072,
+    lon: -0.1276,
+    lastActive: DEMO_NOW,
+    current: true,
+  },
+  {
+    id: "demo-phone",
+    device: "phone",
+    label: "Phone",
+    city: "London",
+    lat: 51.5072,
+    lon: -0.1276,
+    lastActive: DEMO_NOW - 4 * MINUTE,
+  },
+  {
+    id: "demo-desktop",
+    device: "desktop",
+    label: "Office desktop",
+    city: "Berlin",
+    lat: 52.52,
+    lon: 13.405,
+    lastActive: DEMO_NOW - 2 * HOUR,
+  },
+  {
+    id: "demo-tablet",
+    device: "tablet",
+    label: "Tablet",
+    city: "New York",
+    lat: 40.7128,
+    lon: -74.006,
+    lastActive: DEMO_NOW - 27 * HOUR,
+  },
+  {
+    id: "demo-terminal",
+    device: "terminal",
+    label: "Command line",
+    city: "Singapore",
+    lat: 1.3521,
+    lon: 103.8198,
+    lastActive: DEMO_NOW - 3 * DAY,
+  },
+  {
+    id: "demo-lisbon",
+    device: "laptop",
+    label: "Laptop",
+    city: "Lisbon",
+    lat: 38.7223,
+    lon: -9.1393,
+    lastActive: DEMO_NOW - 9 * DAY,
+    approximate: true,
+  },
 ];
 
 /** Deterministic 0..1 per seed (the effort-slider hash), for the fuse's jitter and flicker. */
@@ -1102,7 +1238,18 @@ class SessionsMap {
       else targets.push({ ids: [item.id], distance: item.distance });
     }
     const now = performance.now();
-    this.wave = { start: now, x: origin.x, y: origin.y, reach, distances, targets, late, next: 0, lateDone: false, radius: 0 };
+    this.wave = {
+      start: now,
+      x: origin.x,
+      y: origin.y,
+      reach,
+      distances,
+      targets,
+      late,
+      next: 0,
+      lateDone: false,
+      radius: 0,
+    };
     this.originFlash = now;
     this.dirty = true;
   }
@@ -1159,7 +1306,8 @@ class SessionsMap {
     }
 
     for (const point of this.points) {
-      if (settleSpring(point.highlight, point.id === this.previewId ? 1 : 0, delta, reduced, HIGHLIGHT_SPRING)) moving = true;
+      if (settleSpring(point.highlight, point.id === this.previewId ? 1 : 0, delta, reduced, HIGHLIGHT_SPRING))
+        moving = true;
     }
     if (this.wave && this.advanceWave(this.wave, now)) moving = true;
     if (this.arcs.length) {
@@ -1297,7 +1445,12 @@ class SessionsMap {
     context.fillStyle = this.landStyle;
     for (let i = 0; i < lattice.count; i++) {
       if (!this.land[i]) continue;
-      context.fillRect(Math.round((lattice.x[i] - s / 2) * dpr) / dpr, Math.round((lattice.y[i] - s / 2) * dpr) / dpr, s, s);
+      context.fillRect(
+        Math.round((lattice.x[i] - s / 2) * dpr) / dpr,
+        Math.round((lattice.y[i] - s / 2) * dpr) / dpr,
+        s,
+        s,
+      );
     }
   }
 
@@ -1418,7 +1571,13 @@ class SessionsMap {
           context.globalAlpha = (0.75 + 0.25 * highlight) * Math.min(1, scale);
           for (let i = 0; i < APPROX_DOTS; i++) {
             const angle = (i / APPROX_DOTS) * Math.PI * 2;
-            fillSquare(context, point.x + Math.cos(angle) * APPROX_RADIUS * scale, point.y + Math.sin(angle) * APPROX_RADIUS * scale, 1, dpr);
+            fillSquare(
+              context,
+              point.x + Math.cos(angle) * APPROX_RADIUS * scale,
+              point.y + Math.sin(angle) * APPROX_RADIUS * scale,
+              1,
+              dpr,
+            );
           }
           context.globalAlpha = 1;
         }
@@ -1461,7 +1620,13 @@ class SessionsMap {
       for (let i = 0; i < IMPLODE_DOTS; i++) {
         const angle = i * GOLDEN_ANGLE;
         const radius = IMPLODE_RADIUS * Math.sqrt((i + 0.5) / IMPLODE_DOTS) * (1 - k);
-        this.add(implosion.x + Math.cos(angle) * radius, implosion.y + Math.sin(angle) * radius, 1.25, 0.45 + 0.55 * k, 1);
+        this.add(
+          implosion.x + Math.cos(angle) * radius,
+          implosion.y + Math.sin(angle) * radius,
+          1.25,
+          0.45 + 0.55 * k,
+          1,
+        );
       }
       return;
     }

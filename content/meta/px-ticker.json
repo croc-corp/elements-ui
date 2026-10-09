@@ -4,9 +4,7 @@
   "events": [],
   "methods": [],
   "properties": [],
-  "keyboard": [
-    { "keys": "Space / Enter", "action": "Pause or resume the ticker." }
-  ],
+  "keyboard": [{ "keys": "Space / Enter", "action": "Pause or resume the ticker." }],
   "accessibility": [
     "The board is focusable with `role=\"marquee\"` and `aria-label=\"Status ticker\"`. The ticker items are text; the repeated copies that fill the loop are `aria-hidden`.",
     "Click or tap also toggles the pause; while paused the label reads \"Status ticker, paused\"."

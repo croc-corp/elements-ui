@@ -2,7 +2,11 @@
   "summary": "Paragraph with numbered citations; hovering or focusing one draws a dotted beam to its source chip and loads a preview card.",
   "attributes": [],
   "events": [
-    { "name": "open", "detail": "{ source: { t: string, d: string, s: string } }", "description": "Fires when a citation or source chip is clicked. `t` is the title, `d` the domain and `s` the snippet." }
+    {
+      "name": "open",
+      "detail": "{ source: { t: string, d: string, s: string } }",
+      "description": "Fires when a citation or source chip is clicked. `t` is the title, `d` the domain and `s` the snippet."
+    }
   ],
   "methods": [],
   "properties": [],

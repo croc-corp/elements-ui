@@ -2,10 +2,25 @@
   "kind": "react",
   "summary": "Pagination with previous and next buttons, page numbers and ellipses, where a pixel block slides to the page you pick.",
   "props": [
-    { "name": "total", "type": "number", "default": "-", "description": "Number of pages. Rounded down; a value below 1, or not a number, shows one page." },
-    { "name": "page", "type": "number", "default": "-", "description": "Controlled current page, from 1. Rounded and clamped to 1 to `total`. Use with `onPageChange`." },
+    {
+      "name": "total",
+      "type": "number",
+      "default": "-",
+      "description": "Number of pages. Rounded down; a value below 1, or not a number, shows one page."
+    },
+    {
+      "name": "page",
+      "type": "number",
+      "default": "-",
+      "description": "Controlled current page, from 1. Rounded and clamped to 1 to `total`. Use with `onPageChange`."
+    },
     { "name": "defaultPage", "type": "number", "default": "1", "description": "Initial page when uncontrolled." },
-    { "name": "onPageChange", "type": "(page: number) => void", "default": "-", "description": "Called when the user picks a page. Changing `page` from code does not call it." }
+    {
+      "name": "onPageChange",
+      "type": "(page: number) => void",
+      "default": "-",
+      "description": "Called when the user picks a page. Changing `page` from code does not call it."
+    }
   ],
   "extends": "nav",
   "ref": { "type": "HTMLElement", "methods": [] },

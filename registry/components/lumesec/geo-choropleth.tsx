@@ -371,7 +371,13 @@ export function GeoChoropleth({
   function handleListKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
     if (!options.length) return;
     const current = active ? options.findIndex((entry) => entry.code === active.code) : -1;
-    const start = current >= 0 ? current : Math.max(0, options.findIndex((entry) => entry.code === selected));
+    const start =
+      current >= 0
+        ? current
+        : Math.max(
+            0,
+            options.findIndex((entry) => entry.code === selected),
+          );
     let next = -1;
     if (event.key === "ArrowDown") next = current < 0 ? start : Math.min(options.length - 1, current + 1);
     else if (event.key === "ArrowUp") next = current < 0 ? start : Math.max(0, current - 1);
@@ -409,7 +415,8 @@ export function GeoChoropleth({
   }
 
   const optionId = (code: string) => `${baseId}-row-${code}`;
-  const activeOption = active && options.some((entry) => entry.code === active.code) ? optionId(active.code) : undefined;
+  const activeOption =
+    active && options.some((entry) => entry.code === active.code) ? optionId(active.code) : undefined;
   const legendLevels = Array.from({ length: classCount }, (_, i) => (i + 1) / classCount);
 
   return (
@@ -436,7 +443,7 @@ export function GeoChoropleth({
           onKeyDown={handleMapKeyDown}
           onBlur={handleMapBlur}
           data-hover={chipAtPointer ? "" : undefined}
-          className="relative w-full touch-manipulation rounded-lg outline-none select-none [-webkit-tap-highlight-color:transparent] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-solid focus-visible:outline-lumesec data-[hover]:cursor-pointer"
+          className="relative w-full touch-manipulation rounded-lg outline-none select-none [-webkit-tap-highlight-color:transparent] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lumesec focus-visible:outline-solid data-[hover]:cursor-pointer"
           style={{ aspectRatio: aspect }}
         >
           <svg
@@ -459,7 +466,9 @@ export function GeoChoropleth({
           />
           {!entries.length ? (
             <div className="pointer-events-none absolute inset-0 grid place-items-center">
-              <span className="rounded-md border border-border bg-card px-2 py-0.5 text-[12px] text-muted-foreground">No data</span>
+              <span className="rounded-md border border-border bg-card px-2 py-0.5 text-[12px] text-muted-foreground">
+                No data
+              </span>
             </div>
           ) : null}
           <div
@@ -502,7 +511,7 @@ export function GeoChoropleth({
               onFocus={handleListFocus}
               onBlur={handleListBlur}
               onPointerLeave={handleListPointerLeave}
-              className="grid rounded-lg outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+              className="grid rounded-lg outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
             >
               {rows.length ? (
                 <RankedRows
@@ -571,7 +580,18 @@ interface RankedRowsProps {
 }
 
 /** The ranked rows. Rows that change rank slide to their new place on a spring (FLIP). */
-function RankedRows({ entries, extra, textOf, optionId, activeCode, selectedCode, reducedMotion, unit, onHover, onChoose }: RankedRowsProps) {
+function RankedRows({
+  entries,
+  extra,
+  textOf,
+  optionId,
+  activeCode,
+  selectedCode,
+  reducedMotion,
+  unit,
+  onHover,
+  onChoose,
+}: RankedRowsProps) {
   const nodes = React.useRef(new Map<string, HTMLDivElement>());
   const tops = React.useRef(new Map<string, number>());
   const order = entries.map((entry) => entry.code).join(",");
@@ -624,21 +644,28 @@ function RankedRows({ entries, extra, textOf, optionId, activeCode, selectedCode
         onClick={() => onChoose(entry.code)}
         className={cn(
           "relative grid h-6 cursor-pointer grid-cols-[14px_minmax(0,1fr)_auto_14px] items-center gap-x-1.5 rounded-md pr-1.5 pl-1 transition-colors duration-150 data-[active]:bg-muted motion-reduce:transition-none",
-          isExtra && "mt-[5px] before:pointer-events-none before:absolute before:inset-x-1 before:-top-[3px] before:border-t before:border-dashed before:border-border",
+          isExtra &&
+            "mt-[5px] before:pointer-events-none before:absolute before:inset-x-1 before:-top-[3px] before:border-t before:border-dashed before:border-border",
         )}
       >
         <span
           className={cn(
-            "text-right font-mono text-[10.5px] tabular-nums text-muted-foreground",
+            "text-right font-mono text-[10.5px] text-muted-foreground tabular-nums",
             isSelected && "font-medium text-lumesec",
           )}
         >
           {entry.rank}
         </span>
-        <span className={cn("truncate text-[12.5px]", isSelected ? "font-medium text-foreground" : "text-foreground/85")}>
+        <span
+          className={cn("truncate text-[12.5px]", isSelected ? "font-medium text-foreground" : "text-foreground/85")}
+        >
           {entry.name}
         </span>
-        <ValueRoll value={entry.value} text={textOf(entry)} className="justify-self-end font-mono text-[12px] tabular-nums" />
+        <ValueRoll
+          value={entry.value}
+          text={textOf(entry)}
+          className="justify-self-end font-mono text-[12px] tabular-nums"
+        />
         <DitherTile level={entry.level} columns={4} rows={4} />
       </div>
     );
@@ -702,7 +729,17 @@ function Legend({ levels, breaks }: { levels: readonly number[]; breaks: readonl
  * A tile of dots lit in the same 4×4 ordered-dither pattern as the map. When the level changes, dots switch one after
  * another in dither order (rising) or in reverse order (falling), like a country on the map.
  */
-function DitherTile({ level, columns, rows, offset = 0 }: { level: number | null; columns: number; rows: number; offset?: number }) {
+function DitherTile({
+  level,
+  columns,
+  rows,
+  offset = 0,
+}: {
+  level: number | null;
+  columns: number;
+  rows: number;
+  offset?: number;
+}) {
   const [state, setState] = React.useState({ level, direction: 1 });
   if (state.level !== level) setState({ level, direction: (level ?? 0) >= (state.level ?? 0) ? 1 : -1 });
   const width = columns * DOT_PITCH;
@@ -734,7 +771,14 @@ function DitherTile({ level, columns, rows, offset = 0 }: { level: number | null
     }
   }
   return (
-    <svg aria-hidden="true" width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="block flex-none" shapeRendering="crispEdges">
+    <svg
+      aria-hidden="true"
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      className="block flex-none"
+      shapeRendering="crispEdges"
+    >
       {dots}
     </svg>
   );
@@ -860,7 +904,8 @@ function classifier(values: readonly number[], classes: number, scale: GeoChorop
     const breaks = Array.from({ length: classes + 1 }, (_, i) => Math.exp(low + ((high - low) * i) / classes));
     return { classOf, breaks: positive.length ? breaks : breaks.map(() => 0) };
   }
-  const classOf = (value: number) => (max <= min ? top : Math.min(top, Math.floor(((value - min) / (max - min)) * classes)));
+  const classOf = (value: number) =>
+    max <= min ? top : Math.min(top, Math.floor(((value - min) / (max - min)) * classes));
   const breaks = Array.from({ length: classes + 1 }, (_, i) => min + ((max - min) * i) / classes);
   return { classOf, breaks };
 }
@@ -1168,7 +1213,11 @@ function nearbyCountry(projection: MapProjection, x: number, y: number) {
 function rebuildScene(state: Engine, surface: CanvasSurface) {
   // the intro ends with the first frame the loop draws (not here: effects may run twice while developing)
   const animate = state.intro && !prefersReducedMotion();
-  state.scene = layoutDots(buildBase(surface.width, surface.height, surface.dpr, state.projection), state.hasData, null);
+  state.scene = layoutDots(
+    buildBase(surface.width, surface.height, surface.dpr, state.projection),
+    state.hasData,
+    null,
+  );
   state.running.clear();
   scheduleTransitions(state, !animate, true);
   state.fullPaint = true;
@@ -1548,7 +1597,14 @@ function outlineOf(state: Engine, scene: Scene, country: number) {
  * The overlay: a 0.75px accent outline for the selected and the active country, and the border light, a short bright
  * dash that runs once around the shown country. Returns whether the light is still running.
  */
-function paintOverlay(surface: CanvasSurface, scene: Scene | null, state: Engine, ink: GeoInk, time: number, reduced: boolean) {
+function paintOverlay(
+  surface: CanvasSurface,
+  scene: Scene | null,
+  state: Engine,
+  ink: GeoInk,
+  time: number,
+  reduced: boolean,
+) {
   const { context, width, height } = surface;
   context.clearRect(0, 0, width, height);
   if (!scene) return false;
@@ -1631,7 +1687,11 @@ function moveChip(element: HTMLDivElement | null, scene: Scene | null, state: En
     springStep(chip.y, ty, delta, 700, 0.9);
   }
   element.style.transform = `translate3d(${chip.x.position.toFixed(1)}px,${chip.y.position.toFixed(1)}px,0)`;
-  return Math.abs(chip.x.position - tx) > 0.1 || Math.abs(chip.y.position - ty) > 0.1 || Math.abs(chip.x.velocity) + Math.abs(chip.y.velocity) > 1;
+  return (
+    Math.abs(chip.x.position - tx) > 0.1 ||
+    Math.abs(chip.y.position - ty) > 0.1 ||
+    Math.abs(chip.x.velocity) + Math.abs(chip.y.velocity) > 1
+  );
 }
 
 /** The country with data under (x, y): the owner of the nearest dot, else the country whose outline holds the point. */

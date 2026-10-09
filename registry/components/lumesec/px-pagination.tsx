@@ -31,9 +31,20 @@ type Slot = number | "gap-start" | "gap-end";
  * const [page, setPage] = React.useState(5);
  * <PxPagination total={24} page={page} onPageChange={setPage} />
  */
-export function PxPagination({ total: totalProp, page: pageProp, defaultPage = 1, onPageChange, className, ...props }: PxPaginationProps) {
+export function PxPagination({
+  total: totalProp,
+  page: pageProp,
+  defaultPage = 1,
+  onPageChange,
+  className,
+  ...props
+}: PxPaginationProps) {
   const total = Number.isFinite(totalProp) ? Math.max(1, Math.floor(totalProp)) : 1;
-  const [rawPage, setPage] = useControllableState({ value: pageProp, defaultValue: defaultPage, onChange: onPageChange });
+  const [rawPage, setPage] = useControllableState({
+    value: pageProp,
+    defaultValue: defaultPage,
+    onChange: onPageChange,
+  });
   const page = Number.isFinite(rawPage) ? clamp(Math.round(rawPage), 1, total) : 1;
 
   const currentRef = React.useRef<HTMLButtonElement | null>(null);
@@ -77,7 +88,8 @@ export function PxPagination({ total: totalProp, page: pageProp, defaultPage = 1
     if (next === page) return;
     const current = currentRef.current;
     // the block leaves from the button that was current, even if it had not settled yet
-    if (current) block.current = { position: current.offsetLeft, velocity: block.current?.velocity ?? 0, y: current.offsetTop };
+    if (current)
+      block.current = { position: current.offsetLeft, velocity: block.current?.velocity ?? 0, y: current.offsetTop };
     pressed.current = from;
     setPage(next);
   };
@@ -89,7 +101,13 @@ export function PxPagination({ total: totalProp, page: pageProp, defaultPage = 1
       className={cn("relative flex flex-wrap items-center gap-1", className)}
       {...props}
     >
-      <button type="button" aria-label="Previous page" disabled={page === 1} className={cn(BUTTON, HOVER)} onClick={(event) => go(page - 1, event.currentTarget)}>
+      <button
+        type="button"
+        aria-label="Previous page"
+        disabled={page === 1}
+        className={cn(BUTTON, HOVER)}
+        onClick={(event) => go(page - 1, event.currentTarget)}
+      >
         <svg viewBox="0 0 14 14" aria-hidden="true" className={ARROW}>
           <path d="M8.5 3L4.5 7l4 4" />
         </svg>
@@ -113,12 +131,22 @@ export function PxPagination({ total: totalProp, page: pageProp, defaultPage = 1
           </span>
         ),
       )}
-      <button type="button" aria-label="Next page" disabled={page === total} className={cn(BUTTON, HOVER)} onClick={(event) => go(page + 1, event.currentTarget)}>
+      <button
+        type="button"
+        aria-label="Next page"
+        disabled={page === total}
+        className={cn(BUTTON, HOVER)}
+        onClick={(event) => go(page + 1, event.currentTarget)}
+      >
         <svg viewBox="0 0 14 14" aria-hidden="true" className={ARROW}>
           <path d="M5.5 3l4 4-4 4" />
         </svg>
       </button>
-      <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute inset-0 block size-full [image-rendering:pixelated]" />
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 block size-full [image-rendering:pixelated]"
+      />
     </nav>
   );
 }

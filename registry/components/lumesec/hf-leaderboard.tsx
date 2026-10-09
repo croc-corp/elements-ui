@@ -22,10 +22,5 @@ export interface HfLeaderboardProps extends Omit<LumesecElementProps<HfLeaderboa
  * @see https://elements.lumesec.ai/components/pixel-hd/leaderboard
  */
 export function HfLeaderboard({ label, data, ...props }: HfLeaderboardProps) {
-  return useLumesecElement(
-    "hf-leaderboard",
-    props,
-    { "label": label, "data": data },
-    {},
-  );
+  return useLumesecElement("hf-leaderboard", props, { label: label, data: data }, {});
 }

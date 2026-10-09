@@ -312,20 +312,23 @@ function ThreatsPanel({
   const effectsSurface = useCanvas(effectsRef, () => loop.kick(), { maxDpr: 2 });
 
   /** Recounts the window. The top list re-sorts only when `reorder` is set (once a second), so rows do not flicker. */
-  const refresh = React.useCallback((reorder: boolean) => {
-    const run = runtimeRef.current;
-    const { windowMs: span, site, phrase: windowText } = latest.current;
-    const now = Date.now();
-    const next = aggregate(run, now, span, reorder);
-    run.top = next.top.map((row) => row.name);
-    setSnapshot((previous) => (sameSnapshot(previous, next) ? previous : next));
-    const key = `${site.label}\n${windowText}`;
-    if (now - run.summaryTime >= SUMMARY_INTERVAL_MS || run.summaryKey !== key) {
-      run.summaryTime = now;
-      run.summaryKey = key;
-      setSummary(summaryText(site.label, windowText, next));
-    }
-  }, [runtimeRef]);
+  const refresh = React.useCallback(
+    (reorder: boolean) => {
+      const run = runtimeRef.current;
+      const { windowMs: span, site, phrase: windowText } = latest.current;
+      const now = Date.now();
+      const next = aggregate(run, now, span, reorder);
+      run.top = next.top.map((row) => row.name);
+      setSnapshot((previous) => (sameSnapshot(previous, next) ? previous : next));
+      const key = `${site.label}\n${windowText}`;
+      if (now - run.summaryTime >= SUMMARY_INTERVAL_MS || run.summaryKey !== key) {
+        run.summaryTime = now;
+        run.summaryKey = key;
+        setSummary(summaryText(site.label, windowText, next));
+      }
+    },
+    [runtimeRef],
+  );
 
   const scheduleRefresh = React.useCallback(() => {
     const run = runtimeRef.current;
@@ -581,7 +584,13 @@ function ThreatsPanel({
                 strokeWidth={1}
                 vectorEffect="non-scaling-stroke"
               />
-              <path d={graticule} fill="none" className="stroke-border" strokeWidth={1} vectorEffect="non-scaling-stroke" />
+              <path
+                d={graticule}
+                fill="none"
+                className="stroke-border"
+                strokeWidth={1}
+                vectorEffect="non-scaling-stroke"
+              />
             </svg>
             <svg
               viewBox={`${-ringRadius - 2} ${-ringRadius - 2} ${ringRadius * 2 + 4} ${ringRadius * 2 + 4}`}
@@ -760,7 +769,17 @@ function OriginList({ rows, total, phrase, reducedMotion }: OriginListProps) {
  * The region's share of all requests in the window as a strip of dots: blocked dots first, then allowed ones, on a
  * track of dim dots. Lengths snap to whole dots once the strip is measured.
  */
-function DotBar({ blocked, allowed, total, columns }: { blocked: number; allowed: number; total: number; columns: number }) {
+function DotBar({
+  blocked,
+  allowed,
+  total,
+  columns,
+}: {
+  blocked: number;
+  allowed: number;
+  total: number;
+  columns: number;
+}) {
   const share = total > 0 ? (blocked + allowed) / total : 0;
   const blockedShare = total > 0 ? blocked / total : 0;
   let blockedWidth: string | number;
@@ -795,7 +814,15 @@ const CHART_HEIGHT = 44;
  * Requests per second over the window as columns of dots, newest on the right: blocked dots stacked first, allowed
  * ones on top, on a matrix of dim dots. A flood shows as a spike. The peak is real text.
  */
-function RateChart({ blocked, allowed, peak }: { blocked: readonly number[]; allowed: readonly number[]; peak: number }) {
+function RateChart({
+  blocked,
+  allowed,
+  peak,
+}: {
+  blocked: readonly number[];
+  allowed: readonly number[];
+  peak: number;
+}) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [version, setVersion] = React.useState(0);
   const surface = useCanvas(canvasRef, () => setVersion((value) => value + 1));
@@ -833,7 +860,10 @@ function drawRate(
   context.clearRect(0, 0, width, height);
   const seconds = blocked.length;
   if (!seconds) return;
-  const perColumn = Math.max(1, Math.ceil(seconds / Math.max(1, Math.floor((width + BAR_PITCH - BAR_DOT) / BAR_PITCH))));
+  const perColumn = Math.max(
+    1,
+    Math.ceil(seconds / Math.max(1, Math.floor((width + BAR_PITCH - BAR_DOT) / BAR_PITCH))),
+  );
   const columns = Math.ceil(seconds / perColumn);
   const pitch = (width - BAR_DOT) / Math.max(1, columns - 1);
   const rows = Math.max(1, Math.floor((height + BAR_PITCH - BAR_DOT) / BAR_PITCH));
@@ -1937,7 +1967,13 @@ function drawShield(run: Runtime, ring: Record<ThreatVerdict, DotBatch>, ox: num
     const heat = dot.heat;
     const tone = Math.min(1, heat * 1.3) * 0.5 + dot.glint * 0.5;
     const alpha = Math.min(1, SHIELD_REST_ALPHA + 0.9 * heat);
-    ring[heat > 0 ? dot.verdict : "blocked"].add(ox + dot.cos * r, oy + dot.sin * r, SHIELD_DOT + heat * 0.75, tone, alpha);
+    ring[heat > 0 ? dot.verdict : "blocked"].add(
+      ox + dot.cos * r,
+      oy + dot.sin * r,
+      SHIELD_DOT + heat * 0.75,
+      tone,
+      alpha,
+    );
   }
 }
 
@@ -1966,7 +2002,12 @@ function landingLattice(reach: number): LandingDot[] {
     const offset = hash(ring + 0.5) * TAU;
     for (let k = 0; k < count; k++) {
       const angle = offset + (k / count) * TAU;
-      dots.push({ x: Math.cos(angle) * radius, y: Math.sin(angle) * radius, distance: radius, jitter: hash(ring * 97 + k) });
+      dots.push({
+        x: Math.cos(angle) * radius,
+        y: Math.sin(angle) * radius,
+        distance: radius,
+        jitter: hash(ring * 97 + k),
+      });
     }
   }
   return dots;

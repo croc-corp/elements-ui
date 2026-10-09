@@ -181,7 +181,11 @@ export function GeoResidency({
     setCache(model);
   }
 
-  const [selection, setSelection] = useControllableState<string | null>({ value, defaultValue, onChange: onValueChange });
+  const [selection, setSelection] = useControllableState<string | null>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
   const selectedIndex = selection === null ? -1 : (model.indexById.get(selection) ?? -1);
   const selectedId = selectedIndex >= 0 ? model.sites[selectedIndex].site.id : null;
   const reducedMotion = useReducedMotion();
@@ -320,7 +324,9 @@ export function GeoResidency({
   React.useEffect(() => {
     if (!model.skipped || warnedRef.current === model.skipped || process.env.NODE_ENV === "production") return;
     warnedRef.current = model.skipped;
-    console.warn(`GeoResidency: skipped entries with a missing or repeated id, an invalid position or an unknown site: ${model.skipped}.`);
+    console.warn(
+      `GeoResidency: skipped entries with a missing or repeated id, an invalid position or an unknown site: ${model.skipped}.`,
+    );
   }, [model.skipped]);
 
   function step(time: number, delta: number) {
@@ -395,7 +401,10 @@ export function GeoResidency({
     setSelection(null);
   }
 
-  const placements = React.useMemo(() => placeSiteLabels(model, boxWidth, selectedIndex), [model, boxWidth, selectedIndex]);
+  const placements = React.useMemo(
+    () => placeSiteLabels(model, boxWidth, selectedIndex),
+    [model, boxWidth, selectedIndex],
+  );
   const related = relatedSites(model, selectedIndex);
   const tabStop = focusIndex >= 0 && focusIndex < model.sites.length ? focusIndex : Math.max(0, selectedIndex);
   const shownChip = reducedMotion ? model.chip : chip;
@@ -419,7 +428,10 @@ export function GeoResidency({
         <StatusChip chip={shownChip} animate={!reducedMotion} />
       </div>
 
-      <div ref={cardRef} className="relative rounded-xl border border-border bg-card [-webkit-tap-highlight-color:transparent]">
+      <div
+        ref={cardRef}
+        className="relative rounded-xl border border-border bg-card [-webkit-tap-highlight-color:transparent]"
+      >
         {model.outline ? (
           <svg
             aria-hidden="true"
@@ -427,7 +439,12 @@ export function GeoResidency({
             preserveAspectRatio="none"
             className="pointer-events-none absolute inset-0 block size-full overflow-visible"
           >
-            <path d={model.outline} vectorEffect="non-scaling-stroke" strokeWidth={1} className="fill-muted/35 stroke-border" />
+            <path
+              d={model.outline}
+              vectorEffect="non-scaling-stroke"
+              strokeWidth={1}
+              className="fill-muted/35 stroke-border"
+            />
           </svg>
         ) : null}
         <div
@@ -487,7 +504,9 @@ export function GeoResidency({
             })}
           </div>
           {model.sites.length === 0 ? (
-            <p className="absolute inset-0 m-0 grid place-items-center text-[12.5px] leading-5 text-muted-foreground">No sites</p>
+            <p className="absolute inset-0 m-0 grid place-items-center text-[12.5px] leading-5 text-muted-foreground">
+              No sites
+            </p>
           ) : null}
         </div>
         <canvas
@@ -500,7 +519,11 @@ export function GeoResidency({
       <Legend />
 
       <ul aria-label="Transfers" className="sr-only">
-        {model.transfers.length === 0 ? <li>No transfers</li> : model.transfers.map((transfer) => <li key={transfer.key}>{transfer.description}</li>)}
+        {model.transfers.length === 0 ? (
+          <li>No transfers</li>
+        ) : (
+          model.transfers.map((transfer) => <li key={transfer.key}>{transfer.description}</li>)
+        )}
       </ul>
     </div>
   );
@@ -519,7 +542,9 @@ function ZoneSwatch() {
   );
 }
 
-const SWATCH_DOTS: readonly (readonly [number, number])[] = [1.5, 5, 8.5].flatMap((x) => [1.5, 5, 8.5].map((y) => [x, y] as const));
+const SWATCH_DOTS: readonly (readonly [number, number])[] = [1.5, 5, 8.5].flatMap((x) =>
+  [1.5, 5, 8.5].map((y) => [x, y] as const),
+);
 
 /**
  * The residency status as a polite live region: success when every transfer stays in the zone, a warning with the
@@ -559,7 +584,12 @@ function StatusChip({ chip, animate }: { chip: ChipState; animate: boolean }) {
         <span className="truncate">All data stays in {chip.zoneName}</span>
       ) : chip.tone === "warn" ? (
         <span className="inline-flex min-w-0 items-center gap-[0.3em]">
-          <RollText text={String(chip.count)} direction={roll.direction} animate={animate} className="font-mono tabular-nums" />
+          <RollText
+            text={String(chip.count)}
+            direction={roll.direction}
+            animate={animate}
+            className="font-mono tabular-nums"
+          />
           <span className="truncate">
             {chip.count === 1 ? "transfer leaves" : "transfers leave"} {chip.zoneName}
           </span>
@@ -574,7 +604,16 @@ function StatusChip({ chip, animate }: { chip: ChipState; animate: boolean }) {
 function ChipIcon({ tone }: { tone: ChipTone }) {
   if (tone === "ok") {
     return (
-      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-3 shrink-0 text-lumesec-success">
+      <svg
+        viewBox="0 0 12 12"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        className="size-3 shrink-0 text-lumesec-success"
+      >
         <path d="M2.5 6.25 5 8.75l4.5-5.5" />
       </svg>
     );
@@ -582,13 +621,30 @@ function ChipIcon({ tone }: { tone: ChipTone }) {
   if (tone === "warn") {
     // a line leaving a box: data on its way out of the zone
     return (
-      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-3 shrink-0 text-lumesec-warning">
+      <svg
+        viewBox="0 0 12 12"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        className="size-3 shrink-0 text-lumesec-warning"
+      >
         <path d="M6.5 2H2.5v8h4M5 6h5.5M8.5 4l2 2-2 2" />
       </svg>
     );
   }
   return (
-    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth={1.4} strokeDasharray="2 2" aria-hidden="true" className="size-3 shrink-0 text-lumesec-warning">
+    <svg
+      viewBox="0 0 12 12"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.4}
+      strokeDasharray="2 2"
+      aria-hidden="true"
+      className="size-3 shrink-0 text-lumesec-warning"
+    >
       <circle cx="6" cy="6" r="4.25" />
     </svg>
   );
@@ -643,7 +699,7 @@ function SiteMarker({
       onFocus={onFocus}
       onKeyDown={onKeyDown}
       className={cn(
-        "group/site absolute -mt-3 -ml-3 grid size-6 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 font-[inherit] text-foreground outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-lumesec",
+        "group/site absolute -mt-3 -ml-3 grid size-6 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 font-[inherit] text-foreground outline-none focus-visible:outline-2 focus-visible:outline-lumesec focus-visible:outline-solid",
         selected && "z-[2]",
       )}
       style={{ left: percent(placed.x), top: percent(placed.y) }}
@@ -706,7 +762,7 @@ function PinnedSite({
       onFocus={onFocus}
       onKeyDown={onKeyDown}
       className={cn(
-        "absolute z-[3] inline-flex h-[22px] max-w-[45%] cursor-pointer items-center gap-1.5 rounded-full border bg-card px-2 font-[inherit] text-[11px] leading-none whitespace-nowrap text-foreground shadow-[0_1px_2px_rgb(0_0_0/0.06)] outline-none transition-[border-color,box-shadow,opacity] duration-300 hover:border-[color-mix(in_srgb,var(--lumesec-warning)_80%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec motion-reduce:transition-none",
+        "absolute z-[3] inline-flex h-[22px] max-w-[45%] cursor-pointer items-center gap-1.5 rounded-full border bg-card px-2 font-[inherit] text-[11px] leading-none whitespace-nowrap text-foreground shadow-[0_1px_2px_rgb(0_0_0/0.06)] transition-[border-color,box-shadow,opacity] duration-300 outline-none hover:border-[color-mix(in_srgb,var(--lumesec-warning)_80%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid motion-reduce:transition-none",
         selected
           ? "border-lumesec shadow-[0_0_0_1px_var(--lumesec)] hover:border-lumesec"
           : "border-[color-mix(in_srgb,var(--lumesec-warning)_55%,var(--border))]",
@@ -775,10 +831,16 @@ function GateMark({
 
   return (
     <span
-      className={cn("absolute size-0 transition-opacity duration-300 motion-reduce:transition-none", dimmed && "opacity-30")}
+      className={cn(
+        "absolute size-0 transition-opacity duration-300 motion-reduce:transition-none",
+        dimmed && "opacity-30",
+      )}
       style={{ left: percent(gate.x), top: percent(gate.y) }}
     >
-      <span className="absolute -top-1.5 -left-1.5 block size-3" style={{ transform: `rotate(${gate.angle.toFixed(3)}rad)` }}>
+      <span
+        className="absolute -top-1.5 -left-1.5 block size-3"
+        style={{ transform: `rotate(${gate.angle.toFixed(3)}rad)` }}
+      >
         <span ref={pulseRef} className="absolute inset-0 block">
           <span className="absolute top-0.5 left-[3px] h-2 w-[1.5px] rounded-[1px] bg-lumesec-warning shadow-[0_0_0_1px_var(--card)]" />
           <span className="absolute top-0.5 left-[7.5px] h-2 w-[1.5px] rounded-[1px] bg-lumesec-warning shadow-[0_0_0_1px_var(--card)]" />
@@ -793,7 +855,10 @@ function GateMark({
 /** The three role marks, and the two line styles: dotted inside the zone, dashed outside it. */
 function Legend() {
   return (
-    <div aria-hidden="true" className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-0.5 text-[12px] leading-4 text-muted-foreground">
+    <div
+      aria-hidden="true"
+      className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-0.5 text-[12px] leading-4 text-muted-foreground"
+    >
       {ROLE_ORDER.map((role) => (
         <span key={role} className="inline-flex items-center gap-1.5">
           <span className="grid size-3 place-items-center text-foreground">
@@ -818,7 +883,11 @@ function Legend() {
 
 function LineSample({ dashed }: { dashed: boolean }) {
   return (
-    <svg viewBox="0 0 19 4" aria-hidden="true" className={cn("h-1 w-[19px] shrink-0", dashed ? "text-lumesec-warning" : "text-foreground/45")}>
+    <svg
+      viewBox="0 0 19 4"
+      aria-hidden="true"
+      className={cn("h-1 w-[19px] shrink-0", dashed ? "text-lumesec-warning" : "text-foreground/45")}
+    >
       {LINE_SAMPLE_DOTS.map((x, i) =>
         dashed && i % 4 >= 2 ? null : <rect key={x} x={x} y={1.25} width={1.5} height={1.5} fill="currentColor" />,
       )}
@@ -916,14 +985,26 @@ const LABEL_STYLES: Record<LabelPlacement["side"], React.CSSProperties> = {
 };
 const HIDDEN_LABEL: LabelPlacement = { visible: false, x: 0, y: 0, side: "right" };
 
-const MARKER_POP: Keyframe[] = [{ transform: "scale(.55)" }, { transform: "scale(1.45)", offset: 0.38 }, { transform: "scale(1)" }];
-const CHIP_POP: Keyframe[] = [{ transform: "scale(.8)" }, { transform: "scale(1.08)", offset: 0.55 }, { transform: "scale(1)" }];
+const MARKER_POP: Keyframe[] = [
+  { transform: "scale(.55)" },
+  { transform: "scale(1.45)", offset: 0.38 },
+  { transform: "scale(1)" },
+];
+const CHIP_POP: Keyframe[] = [
+  { transform: "scale(.8)" },
+  { transform: "scale(1.08)", offset: 0.55 },
+  { transform: "scale(1)" },
+];
 const GATE_ENTER: Keyframe[] = [
   { transform: "scale(.3)", opacity: 0 },
   { transform: "scale(1.6)", opacity: 1, offset: 0.4 },
   { transform: "scale(1)", opacity: 1 },
 ];
-const GATE_PULSE: Keyframe[] = [{ transform: "scale(1)" }, { transform: "scale(1.6)", offset: 0.35 }, { transform: "scale(1)" }];
+const GATE_PULSE: Keyframe[] = [
+  { transform: "scale(1)" },
+  { transform: "scale(1.6)", offset: 0.35 },
+  { transform: "scale(1)" },
+];
 const GATE_PULSE_TIMING = { duration: 600, easing: "cubic-bezier(.2,.8,.2,1)" };
 
 /** Demo data: the zone Germany, three sites inside it, one in Dublin and one in a us-east region. */
@@ -1078,14 +1159,21 @@ interface ResidencyModel {
 }
 
 /** A string that changes exactly when the rendered result can change. */
-function modelKey(zone: ResidencyZone, sites: readonly ResidencySite[], transfers: readonly ResidencyTransfer[], focus: GeoResidencyFocus) {
+function modelKey(
+  zone: ResidencyZone,
+  sites: readonly ResidencySite[],
+  transfers: readonly ResidencyTransfer[],
+  focus: GeoResidencyFocus,
+) {
   const zonePart = [
     zone.label,
     (zone.countries ?? []).join(","),
     (zone.polygon ?? []).map((point) => `${point.lat},${point.lon}`).join(";"),
   ].join("|");
   const sitePart = sites.map((site) => `${site.id}:${site.label}:${site.lat}:${site.lon}:${site.role}`).join("|");
-  const transferPart = transfers.map((transfer) => `${transfer.id}:${transfer.from}:${transfer.to}:${transfer.volume ?? ""}`).join("|");
+  const transferPart = transfers
+    .map((transfer) => `${transfer.id}:${transfer.from}:${transfer.to}:${transfer.volume ?? ""}`)
+    .join("|");
   return `${focus}#${zonePart}#${sitePart}#${transferPart}`;
 }
 
@@ -1113,10 +1201,7 @@ function buildModel(
   const entries: { site: ResidencySite; point: LatLon }[] = [];
   const indexById = new Map<string, number>();
   for (const site of siteList) {
-    const valid =
-      typeof site.id === "string" &&
-      !indexById.has(site.id) &&
-      isValidLatLon(site);
+    const valid = typeof site.id === "string" && !indexById.has(site.id) && isValidLatLon(site);
     if (!valid) {
       skipped.push(`site ${String(site.id)}`);
       continue;
@@ -1152,7 +1237,9 @@ function buildModel(
     const repeat = repeats.get(transfer.id) ?? 0;
     repeats.set(transfer.id, repeat + 1);
     const transferKey = repeat > 0 ? `${transfer.id}#${repeat}` : transfer.id;
-    transfers.push(traceTransfer(projection, shape, sites[from], sites[to], transfer, transferKey, zoneName, geometryKey));
+    transfers.push(
+      traceTransfer(projection, shape, sites[from], sites[to], transfer, transferKey, zoneName, geometryKey),
+    );
   }
 
   const violating = transfers.filter((transfer) => transfer.violates);
@@ -1216,7 +1303,13 @@ function frameView(focus: GeoResidencyFocus, zoneBox: GeoBounds | null, points: 
   const box = zoneBox ?? (points.length > 0 ? boundsOf(points, 0, 0) : null);
   if (focus === "world" || !box) {
     const centerLon = box ? Math.round(wrapLongitude((box.west + box.east) / 2) * 100) / 100 : 0;
-    return { kind: "equalEarth", latRange: MAP_LAT_RANGE, lonRange: null, center: { lat: 0, lon: centerLon }, key: `world|${centerLon}` };
+    return {
+      kind: "equalEarth",
+      latRange: MAP_LAT_RANGE,
+      lonRange: null,
+      center: { lat: 0, lon: centerLon },
+      key: `world|${centerLon}`,
+    };
   }
   let west = box.west;
   let east = box.east >= west ? box.east : box.east + 360;
@@ -1304,7 +1397,8 @@ function spreadPins(pins: SitePin[]) {
     const gap = side === "left" || side === "right" ? PIN_GAP_SIDE : PIN_GAP_TOP;
     for (let i = 1; i < group.length; i++) group[i].along = Math.max(group[i].along, group[i - 1].along + gap);
     group[group.length - 1].along = Math.min(group[group.length - 1].along, 1);
-    for (let i = group.length - 2; i >= 0; i--) group[i].along = Math.max(0, Math.min(group[i].along, group[i + 1].along - gap));
+    for (let i = group.length - 2; i >= 0; i--)
+      group[i].along = Math.max(0, Math.min(group[i].along, group[i + 1].along - gap));
   }
 }
 
@@ -1495,7 +1589,8 @@ function gateView(crossing: CrossingGeometry, transfer: TransferGeometry, fresh:
   };
 }
 
-const gateStateKey = (list: readonly GateView[]) => list.map((gate) => `${gate.key}@${gate.x.toFixed(4)},${gate.y.toFixed(4)}`).join("|");
+const gateStateKey = (list: readonly GateView[]) =>
+  list.map((gate) => `${gate.key}@${gate.x.toFixed(4)},${gate.y.toFixed(4)}`).join("|");
 
 /** The selected site and every site it exchanges data with. */
 function relatedSites(model: ResidencyModel, selectedIndex: number) {
@@ -1926,7 +2021,9 @@ function buildPathTables(engine: ResidencyEngine, path: LivePath) {
 function advancePaths(engine: ResidencyEngine, delta: number, reduced: boolean, time: number) {
   let moving = false;
   for (const path of engine.paths.values()) {
-    moving = settleSpring(path.emphasis, emphasisFor(path.geometry, engine.selected), delta, reduced, EMPHASIS_SPRING) || moving;
+    moving =
+      settleSpring(path.emphasis, emphasisFor(path.geometry, engine.selected), delta, reduced, EMPHASIS_SPRING) ||
+      moving;
     moving = settleSpring(path.presence, path.removed ? 0 : 1, delta, reduced, GROW_SPRING) || moving;
     const presence = clamp(path.presence.position, 0, 1);
     for (const crossing of path.crossings) {
@@ -1935,7 +2032,8 @@ function advancePaths(engine: ResidencyEngine, delta: number, reduced: boolean, 
       crossing.shown = shown;
       crossing.fresh = shown && !reduced;
       engine.gatesStale = true;
-      if (shown && !reduced && path.tables && crossing.geometry.direction === "out") breach(engine, path, crossing, time);
+      if (shown && !reduced && path.tables && crossing.geometry.direction === "out")
+        breach(engine, path, crossing, time);
     }
   }
   return moving;
@@ -1965,7 +2063,8 @@ function flareAt(engine: ResidencyEngine, path: LivePath, crossing: LiveCrossing
 }
 
 /** Whether a packet at `s` has already been outside the zone. */
-const taintedAt = (path: LivePath, s: number) => path.geometry.startsOutside || path.crossings.some((crossing) => crossing.s <= s);
+const taintedAt = (path: LivePath, s: number) =>
+  path.geometry.startsOutside || path.crossings.some((crossing) => crossing.s <= s);
 
 function spawnPackets(engine: ResidencyEngine, delta: number) {
   for (const path of engine.paths.values()) {
@@ -2143,9 +2242,16 @@ function drawPackets(engine: ResidencyEngine, batch: DotBatch, width: number, he
         const along = s - k * TAIL_GAP;
         if (along < 0) break;
         pointAtDistance(table, along, packetPoint);
-        if (packetPoint.x < -4 || packetPoint.y < -4 || packetPoint.x > width + 4 || packetPoint.y > height + 4) continue;
+        if (packetPoint.x < -4 || packetPoint.y < -4 || packetPoint.x > width + 4 || packetPoint.y > height + 4)
+          continue;
         const dot = k === 0 ? HEAD_SIZE : TAIL_SIZE;
-        batch.add(snapCenter(packetPoint.x, dot, dpr), snapCenter(packetPoint.y, dot, dpr), dot, tone, alpha * TAIL_ALPHA[k]);
+        batch.add(
+          snapCenter(packetPoint.x, dot, dpr),
+          snapCenter(packetPoint.y, dot, dpr),
+          dot,
+          tone,
+          alpha * TAIL_ALPHA[k],
+        );
       }
     }
   }

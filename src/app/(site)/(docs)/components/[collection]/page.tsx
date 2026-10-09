@@ -22,7 +22,12 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     title: `${c.title} components`,
     description: `${c.description} ${c.count} ${runsOn}, installable with the shadcn CLI.`,
     alternates: { canonical: `/components/${c.slug}`, types: { "text/markdown": `/components/${c.slug}.md` } },
-    openGraph: { title: `${c.title} components`, description: c.summary, url: `/components/${c.slug}`, images: ogImage(`/components/${c.slug}`, c.title) },
+    openGraph: {
+      title: `${c.title} components`,
+      description: c.summary,
+      url: `/components/${c.slug}`,
+      images: ogImage(`/components/${c.slug}`, c.title),
+    },
     twitter: { card: "summary_large_image", images: ogImage(`/components/${c.slug}`, c.title) },
   };
 }

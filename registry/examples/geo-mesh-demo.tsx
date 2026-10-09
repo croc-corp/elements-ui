@@ -24,7 +24,14 @@ const RELAYS: readonly MeshRelay[] = [
   { id: "waw", label: "Warsaw", lat: 52.2297, lon: 21.0122 },
 ];
 
-const TRAFFIC: Readonly<Record<string, number>> = { build: 0.8, nas: 0.45, phone: 0.2, desktop: 0.35, ci: 0.65, staging: 0.3 };
+const TRAFFIC: Readonly<Record<string, number>> = {
+  build: 0.8,
+  nas: 0.45,
+  phone: 0.2,
+  desktop: 0.35,
+  ci: 0.65,
+  staging: 0.3,
+};
 
 /** The order the peers open direct paths in. The phone's network never allows one, so it stays relayed. */
 const UPGRADES = ["desktop", "build", "staging", "ci", "nas"];
@@ -58,7 +65,11 @@ function directAt(time: number): ReadonlySet<string> {
 /** The next time after `time` at which a path changes. */
 function nextChange(time: number) {
   const round = Math.floor(time / ROUND_MS);
-  const events = [...UPGRADES.map((_, i) => FIRST_MS + i * STEP_MS), round * ROUND_MS + FALLBACK_MS, (round + 1) * ROUND_MS];
+  const events = [
+    ...UPGRADES.map((_, i) => FIRST_MS + i * STEP_MS),
+    round * ROUND_MS + FALLBACK_MS,
+    (round + 1) * ROUND_MS,
+  ];
   return Math.min(...events.filter((event) => event > time));
 }
 
@@ -87,7 +98,7 @@ export default function GeoMeshDemo() {
         <button
           type="button"
           onClick={() => setTime(0)}
-          className="h-[30px] cursor-pointer rounded-lg border border-border bg-card px-[11px] font-[inherit] text-[12.5px] font-medium text-foreground outline-none transition-colors hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec motion-reduce:transition-none"
+          className="h-[30px] cursor-pointer rounded-lg border border-border bg-card px-[11px] font-[inherit] text-[12.5px] font-medium text-foreground transition-colors outline-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid motion-reduce:transition-none"
         >
           Reconnect all
         </button>

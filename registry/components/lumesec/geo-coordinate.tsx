@@ -361,7 +361,7 @@ export function GeoCoordinate({
             aria-describedby={invalid ? errorId : readoutId}
             onChange={(event) => applyText(event.target.value)}
             onBlur={handleBlur}
-            className="h-9 w-full min-w-0 rounded-lg border border-input bg-background px-3 font-mono text-[13px] text-foreground tabular-nums outline-none transition-[border-color,box-shadow] duration-200 placeholder:text-muted-foreground focus-visible:border-[color-mix(in_srgb,var(--lumesec)_65%,var(--border))] focus-visible:ring-[3px] focus-visible:ring-lumesec/14 disabled:cursor-not-allowed aria-invalid:border-[color-mix(in_srgb,var(--destructive)_65%,var(--border))] aria-invalid:ring-[3px] aria-invalid:ring-destructive/12 motion-reduce:transition-none"
+            className="h-9 w-full min-w-0 rounded-lg border border-input bg-background px-3 font-mono text-[13px] text-foreground tabular-nums transition-[border-color,box-shadow] duration-200 outline-none placeholder:text-muted-foreground focus-visible:border-[color-mix(in_srgb,var(--lumesec)_65%,var(--border))] focus-visible:ring-[3px] focus-visible:ring-lumesec/14 disabled:cursor-not-allowed aria-invalid:border-[color-mix(in_srgb,var(--destructive)_65%,var(--border))] aria-invalid:ring-[3px] aria-invalid:ring-destructive/12 motion-reduce:transition-none"
           />
         </div>
 
@@ -419,7 +419,7 @@ export function GeoCoordinate({
                 disabled={disabled || !reading.full}
                 data-copied={copied ? "" : undefined}
                 onClick={handleCopy}
-                className="inline-flex h-6 shrink-0 cursor-pointer items-center gap-1 rounded-md border-0 bg-transparent px-1.5 font-[inherit] text-[12px] text-muted-foreground outline-none transition-colors duration-150 hover:bg-foreground/6 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-solid focus-visible:outline-lumesec disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground data-[copied]:text-foreground motion-reduce:transition-none"
+                className="inline-flex h-6 shrink-0 cursor-pointer items-center gap-1 rounded-md border-0 bg-transparent px-1.5 font-[inherit] text-[12px] text-muted-foreground transition-colors duration-150 outline-none hover:bg-foreground/6 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground data-[copied]:text-foreground motion-reduce:transition-none"
               >
                 <svg
                   viewBox="0 0 16 16"
@@ -758,7 +758,15 @@ function createTrail(): Trail {
 }
 
 function createLine(): AxisLine {
-  return { known: false, degrees: 0, target: 0, spring: { position: 0, velocity: 0 }, alpha: 0, enter: false, trail: createTrail() };
+  return {
+    known: false,
+    degrees: 0,
+    target: 0,
+    spring: { position: 0, velocity: 0 },
+    alpha: 0,
+    enter: false,
+    trail: createTrail(),
+  };
 }
 
 function createEngine(): Engine {
@@ -900,7 +908,9 @@ function advanceLine(engine: Engine, line: AxisLine, vertical: boolean, now: num
 }
 
 const readyToLock = (line: AxisLine) =>
-  line.alpha >= 0.99 && Math.abs(line.spring.velocity) < LOCK_SPEED && Math.abs(line.spring.position - line.target) < LOCK_DISTANCE;
+  line.alpha >= 0.99 &&
+  Math.abs(line.spring.velocity) < LOCK_SPEED &&
+  Math.abs(line.spring.position - line.target) < LOCK_DISTANCE;
 
 /** Advances the lines, the ghost and the lock by one frame. Returns true when the crossing locked loudly this frame. */
 function advance(engine: Engine, now: number, delta: number, reduced: boolean) {
@@ -913,7 +923,9 @@ function advance(engine: Engine, now: number, delta: number, reduced: boolean) {
   const both = parallel.known && meridian.known;
   if (
     engine.locked &&
-    (!both || Math.abs(parallel.target - engine.lockY) > RELOCK_PX || Math.abs(meridian.target - engine.lockX) > RELOCK_PX)
+    (!both ||
+      Math.abs(parallel.target - engine.lockY) > RELOCK_PX ||
+      Math.abs(meridian.target - engine.lockX) > RELOCK_PX)
   ) {
     engine.locked = false;
   }
@@ -950,7 +962,13 @@ function lock(engine: Engine, now: number, reduced: boolean) {
   engine.lockAt = now;
   const ink = engine.ink;
   if (loud && ink) {
-    engine.sparks.add(engine.lockX + engine.fxX, engine.lockY + engine.fxY, SPARK_COUNT, [ink.accent, ink.hot, ink.soft], SPARK_OPTIONS);
+    engine.sparks.add(
+      engine.lockX + engine.fxX,
+      engine.lockY + engine.fxY,
+      SPARK_COUNT,
+      [ink.accent, ink.hot, ink.soft],
+      SPARK_OPTIONS,
+    );
   }
   return loud;
 }
@@ -1017,7 +1035,14 @@ function drawGhost(context: CanvasRenderingContext2D, engine: Engine, ink: GeoIn
 }
 
 /** The positions a fast line held a moment ago, fainter with age. */
-function drawAfterimages(context: CanvasRenderingContext2D, engine: Engine, line: AxisLine, vertical: boolean, now: number, dpr: number) {
+function drawAfterimages(
+  context: CanvasRenderingContext2D,
+  engine: Engine,
+  line: AxisLine,
+  vertical: boolean,
+  now: number,
+  dpr: number,
+) {
   const strength = smoothstep(AFTERIMAGE_SPEED, AFTERIMAGE_SPEED * 1.8, Math.abs(line.spring.velocity)) * line.alpha;
   if (strength <= 0) return;
   for (let k = 0; k < AFTERIMAGE_ALPHAS.length; k++) {

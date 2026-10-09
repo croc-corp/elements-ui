@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-pin.element";
 /** The `<hf-pin>` element, with its properties and methods. */
 export type HfPinElement = ElementModule.HPin;
 
-export interface HfPinProps extends Omit<LumesecElementProps<HfPinElement>, "code" | "label" | "hint" | "success" | "onUnlock" | "onError"> {
+export interface HfPinProps extends Omit<
+  LumesecElementProps<HfPinElement>,
+  "code" | "label" | "hint" | "success" | "onUnlock" | "onError"
+> {
   /** The expected PIN. Its length sets the number of dots. Compared in the browser. Default: `2468`. */
   code?: string;
   /** Title above the dots. Read once on connect. Default: `Enter your PIN`. */
@@ -31,7 +34,7 @@ export function HfPin({ code, label, hint, success, onUnlock, onError, ...props 
   return useLumesecElement(
     "hf-pin",
     props,
-    { "code": code, "label": label, "hint": hint, "success": success },
-    { "unlock": onUnlock, "error": onError },
+    { code: code, label: label, hint: hint, success: success },
+    { unlock: onUnlock, error: onError },
   );
 }

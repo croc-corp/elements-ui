@@ -24,10 +24,5 @@ export interface HfDonutProps extends Omit<LumesecElementProps<HfDonutElement>, 
  * @see https://elements.lumesec.ai/components/pixel-hd/donut
  */
 export function HfDonut({ data, label, total, ...props }: HfDonutProps) {
-  return useLumesecElement(
-    "hf-donut",
-    props,
-    { "data": data, "label": label, "total": total },
-    {},
-  );
+  return useLumesecElement("hf-donut", props, { data: data, label: label, total: total }, {});
 }

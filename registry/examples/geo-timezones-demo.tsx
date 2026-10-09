@@ -31,18 +31,15 @@ export default function GeoTimezonesDemo() {
             key={city.id}
             type="button"
             disabled={cities.some((entry) => entry.id === city.id)}
-            onClick={() => setCities((current) => (current.some((entry) => entry.id === city.id) ? current : [...current, city]))}
+            onClick={() =>
+              setCities((current) => (current.some((entry) => entry.id === city.id) ? current : [...current, city]))
+            }
             className={BUTTON}
           >
             Add {city.label}
           </button>
         ))}
-        <button
-          type="button"
-          disabled={cities === CITIES}
-          onClick={() => setCities(CITIES)}
-          className={BUTTON}
-        >
+        <button type="button" disabled={cities === CITIES} onClick={() => setCities(CITIES)} className={BUTTON}>
           Reset
         </button>
       </div>

@@ -20,10 +20,5 @@ export interface HfDiffProps extends Omit<LumesecElementProps<HfDiffElement>, "o
  * @see https://elements.lumesec.ai/components/pixel-hd/diff
  */
 export function HfDiff({ onResolve, ...props }: HfDiffProps) {
-  return useLumesecElement(
-    "hf-diff",
-    props,
-    {},
-    { "resolve": onResolve },
-  );
+  return useLumesecElement("hf-diff", props, {}, { resolve: onResolve });
 }

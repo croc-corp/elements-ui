@@ -1,15 +1,30 @@
 {
   "summary": "Pixel metronome with a swinging pendulum whose weight slides with tempo, four beat lamps, tap tempo and optional click sound.",
   "attributes": [
-    { "name": "bpm", "type": "number", "default": "96", "description": "Tempo, clamped to 40 to 208 and rounded. Changing it updates the tempo without firing `change`." }
+    {
+      "name": "bpm",
+      "type": "number",
+      "default": "96",
+      "description": "Tempo, clamped to 40 to 208 and rounded. Changing it updates the tempo without firing `change`."
+    }
   ],
   "events": [
-    { "name": "change", "detail": "{ bpm: number }", "description": "Fires whenever the tempo is set by the buttons, tap tempo or `setBpm()`. It does not fire when the element first connects or when the `bpm` attribute changes." }
+    {
+      "name": "change",
+      "detail": "{ bpm: number }",
+      "description": "Fires whenever the tempo is set by the buttons, tap tempo or `setBpm()`. It does not fire when the element first connects or when the `bpm` attribute changes."
+    }
   ],
   "methods": [
-    { "signature": "setBpm(bpm: number)", "description": "Sets the tempo, rounded and clamped to 40 to 208, and fires `change`. A value that is not a finite number is ignored." },
+    {
+      "signature": "setBpm(bpm: number)",
+      "description": "Sets the tempo, rounded and clamped to 40 to 208, and fires `change`. A value that is not a finite number is ignored."
+    },
     { "signature": "toggle()", "description": "Starts or stops the metronome from beat one." },
-    { "signature": "tap()", "description": "Registers a tap; from the second tap on, the tempo is set from the average interval of the last five taps." }
+    {
+      "signature": "tap()",
+      "description": "Registers a tap; from the second tap on, the tempo is set from the average interval of the last five taps."
+    }
   ],
   "properties": [],
   "keyboard": [],

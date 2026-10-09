@@ -1,0 +1,59 @@
+name: Deploy a release
+
+# Points the production branch at an existing release tag, for example to roll back to the previous release.
+# New releases reach production through the Release workflow; use this one for rollbacks and re-deploys.
+# See RELEASING.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release tag to deploy, for example v0.4.0
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: production
+      url: https://elements.lumesec.ai
+    permissions:
+      contents: write
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      # credentials are kept: this job pushes the production branch
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Resolve the release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::'$VERSION' is not a release tag such as v0.4.0."
+            exit 1
+          fi
+          # only published releases can be deployed, not arbitrary tags or commits
+          gh release view "$VERSION" > /dev/null
+          echo "sha=$(git rev-list -n 1 "refs/tags/$VERSION")" >> "$GITHUB_OUTPUT"
+
+      # a rollback moves production backwards, so this push is forced; the Release workflow fast-forwards again
+      - name: Move production to the release
+        run: git push --force origin "${{ steps.release.outputs.sha }}:refs/heads/production"
+
+      - name: Summary
+        run: echo "### Deployed $VERSION (\`${{ steps.release.outputs.sha }}\`) to production" >> "$GITHUB_STEP_SUMMARY"

@@ -1,12 +1,12 @@
 ---
 title: Changelog
 description: New collections, components and changes to the registry, newest first.
-updated: "2026-10-09"
+updated: "2026-10-10"
 ---
 
-## Unreleased
+## 0.4.0 · 2026-10-10
 
-The source is public, and the site no longer has accounts.
+The source is public, every component went through an accessibility and robustness review, and the site no longer has accounts.
 
 - **Public repository.** The components, the registry scripts and this site are on [GitHub](https://github.com/lumesec/elements-ui) under the MIT license, with contributor guides, issue templates and CI.
 - **No accounts.** Sign-in, accounts and the waitlist are removed. The site sets no cookies.
@@ -15,6 +15,13 @@ The source is public, and the site no longer has accounts.
 - **Neutral demo copy.** Demos and demo data use invented names and values.
 - **Your data.** Each component page says whether the component takes your records or only shows demo data. `hf-area`, `hf-candles`, `hf-leaderboard` and `px-uptime` take records through `data`, read by the new `lumesec-data` module.
 - **Lint.** The registry passes the ESLint config of a stock `create-next-app` project, and `pnpm verify` checks it.
+- **Forms.** Form-associated custom elements restore their value on form reset and follow a disabled `<fieldset>`.
+- **Keyboard and screen readers.** Radio groups move focus with the arrow keys, buttons that disable themselves keep focus, dismissing a toast moves focus to the next one, and live regions announce results instead of every intermediate value.
+- **Live attributes.** Pixel Lab and most Pixel HD attributes now update a connected element; properties set before an element is defined are applied when it upgrades.
+- **Zoom.** Pointer positions are correct inside CSS-zoomed or scaled containers.
+- **Maps.** Countries that cross the antimeridian (Russia, Fiji, the United States) are found correctly, and every country label lies inside its country.
+- **Tests.** Unit tests for the shared modules, the statistics endpoints and the catalog run in CI, together with a check that the Docker image builds and starts.
+- **Breaking.** `px-pagination` requires `total`. The `px-react` element class is now `Reactions` (the tag is unchanged). `hf-number` and `hf-wheel` no longer fire `input` or `change` when `value` is set from code, like native inputs. The default name of the `hf-split` menu button is "More options"; set `menu-label` to change it.
 
 ## 0.3.0 · 2026-10-03
 

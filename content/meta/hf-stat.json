@@ -65,9 +65,7 @@
   ],
   "motion": "With reduced motion the number and sparkline appear at once without counting or the shimmer behind the number.",
   "slots": [],
-  "notes": [
-    "Hovering the sparkline shows the raw series value rounded to one decimal, without `prefix` or `suffix`."
-  ],
+  "notes": ["Hovering the sparkline shows the raw series value rounded to one decimal, without `prefix` or `suffix`."],
   "data": {
     "kind": "input",
     "note": "Set `value`, `delta` and the sparkline `data`. Without them the tile shows a demo number, a demo delta and a generated sparkline."

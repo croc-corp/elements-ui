@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-wheel.element";
 /** The `<hf-wheel>` element, with its properties and methods. */
 export type HfWheelElement = ElementModule.HWheel;
 
-export interface HfWheelProps extends Omit<LumesecElementProps<HfWheelElement>, "value" | "step" | "label" | "name" | "disabled" | "onChange"> {
+export interface HfWheelProps extends Omit<
+  LumesecElementProps<HfWheelElement>,
+  "value" | "step" | "label" | "name" | "disabled" | "onChange"
+> {
   /** Selected time as `HH:MM` (24-hour). Hours clamp to 0–23 and minutes round to the nearest `step`. Observed: a change animates both columns to the new time without firing `change`. Reflects the current selection. Default: `09:30`. */
   value?: string;
   /** Minute increment, rounded and clamped to 1–30. The minute column shows multiples of `step` below 60. Observed: the minute column is rebuilt and the time rounded to the new step. Default: `5`. */
@@ -31,7 +34,7 @@ export function HfWheel({ value, step, label, name, disabled, onChange, ...props
   return useLumesecElement(
     "hf-wheel",
     props,
-    { "value": value, "step": step, "label": label, "name": name, "disabled": disabled },
-    { "change": onChange },
+    { value: value, step: step, label: label, name: name, disabled: disabled },
+    { change: onChange },
   );
 }

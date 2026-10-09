@@ -75,7 +75,13 @@ const APPROVALS: readonly HApproveRequest[] = [
   },
 ];
 
-const RISK_LABEL: Readonly<Record<HApproveRisk, string>> = { 1: "Low", 2: "Low", 3: "Medium", 4: "High", 5: "Critical" };
+const RISK_LABEL: Readonly<Record<HApproveRisk, string>> = {
+  1: "Low",
+  2: "Low",
+  3: "Medium",
+  4: "High",
+  5: "Critical",
+};
 
 /** Keyboard shortcuts for the three answers. */
 const DECISION_KEYS: Partial<Record<string, HApproveDecision>> = { 1: "once", 2: "always", 3: "deny" };

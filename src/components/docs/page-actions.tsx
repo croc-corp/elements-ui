@@ -72,10 +72,20 @@ export function PageActions({ url, markdownPath, registryUrl, item }: Props) {
   const mdUrl = `${new URL(url).origin}${markdownPath}`;
   const prompt = `Read ${mdUrl} so I can ask questions about it.`;
   const targets = [
-    { id: "chatgpt", label: "Open in ChatGPT", href: `https://chatgpt.com/?hints=search&q=${encodeURIComponent(prompt)}` },
+    {
+      id: "chatgpt",
+      label: "Open in ChatGPT",
+      href: `https://chatgpt.com/?hints=search&q=${encodeURIComponent(prompt)}`,
+    },
     { id: "claude", label: "Open in Claude", href: `https://claude.ai/new?q=${encodeURIComponent(prompt)}` },
-    { id: "perplexity", label: "Open in Perplexity", href: `https://www.perplexity.ai/search?q=${encodeURIComponent(prompt)}` },
-    ...(registryUrl ? [{ id: "v0", label: "Open in v0", href: `https://v0.dev/chat/api/open?url=${encodeURIComponent(registryUrl)}` }] : []),
+    {
+      id: "perplexity",
+      label: "Open in Perplexity",
+      href: `https://www.perplexity.ai/search?q=${encodeURIComponent(prompt)}`,
+    },
+    ...(registryUrl
+      ? [{ id: "v0", label: "Open in v0", href: `https://v0.dev/chat/api/open?url=${encodeURIComponent(registryUrl)}` }]
+      : []),
   ];
 
   return (
@@ -88,7 +98,10 @@ export function PageActions({ url, markdownPath, registryUrl, item }: Props) {
         {copied ? <CheckIcon size={13} className="text-success" /> : <CopyIcon size={13} />}
         {copied ? "Copied" : "Copy page"}
       </button>
-      <a href={markdownPath} className="inline-flex h-7 items-center gap-1.5 rounded-md px-2 text-[12.5px] text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground">
+      <a
+        href={markdownPath}
+        className="inline-flex h-7 items-center gap-1.5 rounded-md px-2 text-[12.5px] text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+      >
         <MarkdownIcon size={13} />
         View as Markdown
       </a>
@@ -106,7 +119,10 @@ export function PageActions({ url, markdownPath, registryUrl, item }: Props) {
           <ChevronDownIcon size={13} className={cn("transition-transform duration-300", open && "rotate-180")} />
         </button>
         {open && (
-          <ul id={listId} className="absolute top-8 left-0 z-50 w-52 rounded-xl border border-border bg-card p-1 shadow-[var(--shadow-pop)] animate-[sl-fade-up_.2s_var(--ease-expo)]">
+          <ul
+            id={listId}
+            className="absolute top-8 left-0 z-50 w-52 animate-[sl-fade-up_.2s_var(--ease-expo)] rounded-xl border border-border bg-card p-1 shadow-[var(--shadow-pop)]"
+          >
             {targets.map((t) => (
               <li key={t.id}>
                 <a

@@ -11,7 +11,10 @@ export function ViewFrame({ e }: { e: ElementMeta }) {
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="flex h-11 items-center justify-between border-b border-border px-3">
-        <Link href={elementHref(e)} className="flex items-center gap-2 rounded-md px-2 py-1 text-[13px] text-muted-foreground transition-colors hover:text-foreground">
+        <Link
+          href={elementHref(e)}
+          className="flex items-center gap-2 rounded-md px-2 py-1 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+        >
           <ArrowLeftIcon size={14} />
           <LumeSecMark className="h-[13px] w-auto" />
           <span className="font-medium text-foreground">{e.title}</span>

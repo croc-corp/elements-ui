@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-stat.element";
 /** The `<hf-stat>` element, with its properties and methods. */
 export type HfStatElement = ElementModule.HStat;
 
-export interface HfStatProps extends Omit<LumesecElementProps<HfStatElement>, "value" | "decimals" | "prefix" | "suffix" | "label" | "delta" | "data"> {
+export interface HfStatProps extends Omit<
+  LumesecElementProps<HfStatElement>,
+  "value" | "decimals" | "prefix" | "suffix" | "label" | "delta" | "data"
+> {
   /** Displayed value. Observed: a change counts up from the number currently shown. Default: `48210`. */
   value?: number;
   /** Decimal places. With 0 the number uses en-US thousands separators. Observed. Default: `0`. */
@@ -35,7 +38,7 @@ export function HfStat({ value, decimals, prefix, suffix, label, delta, data, ..
   return useLumesecElement(
     "hf-stat",
     props,
-    { "value": value, "decimals": decimals, "prefix": prefix, "suffix": suffix, "label": label, "delta": delta, "data": data },
+    { value: value, decimals: decimals, prefix: prefix, suffix: suffix, label: label, delta: delta, data: data },
     {},
   );
 }

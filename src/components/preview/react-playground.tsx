@@ -65,7 +65,9 @@ function toJsx(component: string, props: Record<string, unknown>) {
     .map(([k, v]) => attribute(k, v));
   const inline = attrs.join(" ");
   const multiline = attrs.length > 0 && (inline.length >= 60 || inline.includes("\n"));
-  const open = multiline ? `<${component}\n${attrs.map((a) => `  ${a}`).join("\n")}\n` : `<${component}${attrs.length ? ` ${inline}` : ""}`;
+  const open = multiline
+    ? `<${component}\n${attrs.map((a) => `  ${a}`).join("\n")}\n`
+    : `<${component}${attrs.length ? ` ${inline}` : ""}`;
   if (typeof children === "string" && children) return `${open}>${children}</${component}>`;
   return multiline ? `${open}/>` : `${open} />`;
 }
@@ -86,7 +88,8 @@ export function ReactPlayground({ tag, component, controls, baseProps, layout }:
       .then((module) => {
         const exported = module[component];
         // function components, and memo or forwardRef objects
-        if (live && (typeof exported === "function" || (typeof exported === "object" && exported !== null))) setComponent(() => exported as AnyComponent);
+        if (live && (typeof exported === "function" || (typeof exported === "object" && exported !== null)))
+          setComponent(() => exported as AnyComponent);
       })
       .catch((error: unknown) => console.error("[playground] failed to load", tag, error));
     return () => {
@@ -106,17 +109,32 @@ export function ReactPlayground({ tag, component, controls, baseProps, layout }:
     <div ref={frameRef} className="not-prose overflow-hidden rounded-xl border border-border">
       <div className="grid lg:grid-cols-[minmax(0,1fr)_300px]">
         <div className="sl-dot-grid relative min-h-[320px] bg-background">
-          <div data-layout={layout} data-kind="react" data-ready={Component ? true : undefined} className="stage elements-stage min-h-[320px]">
+          <div
+            data-layout={layout}
+            data-kind="react"
+            data-ready={Component ? true : undefined}
+            className="stage elements-stage min-h-[320px]"
+          >
             {Component && (
               <DemoBoundary tag={tag}>
                 {/* block components (div, nav, section roots) fill the demo width; inline ones stay centred */}
-                <div className={layout === "center" ? "flex w-full max-w-[380px] justify-center [&>:is(div,nav,section,form)]:w-full" : "w-full"}>
+                <div
+                  className={
+                    layout === "center"
+                      ? "flex w-full max-w-[380px] justify-center [&>:is(div,nav,section,form)]:w-full"
+                      : "w-full"
+                  }
+                >
                   <Component key={remountKey} {...props} />
                 </div>
               </DemoBoundary>
             )}
           </div>
-          {!Component && <span className="absolute inset-0 grid place-items-center font-mono text-[11px] text-muted-foreground">Loading &lt;{component} /&gt;</span>}
+          {!Component && (
+            <span className="absolute inset-0 grid place-items-center font-mono text-[11px] text-muted-foreground">
+              Loading &lt;{component} /&gt;
+            </span>
+          )}
         </div>
         <div className="border-t border-border bg-surface/50 lg:border-t-0 lg:border-l">
           <div className="flex h-10 items-center justify-between border-b border-border px-3.5">
@@ -138,9 +156,15 @@ export function ReactPlayground({ tag, component, controls, baseProps, layout }:
               <div key={c.name} className="flex items-center justify-between gap-3 px-3.5 py-2.5">
                 <span className="min-w-0">
                   <span className="block truncate font-mono text-[12px]">{c.name}</span>
-                  <span className="block font-mono text-[10.5px] text-muted-foreground">{/^default[A-Z]/.test(c.name) ? "remounts" : "live"}</span>
+                  <span className="block font-mono text-[10.5px] text-muted-foreground">
+                    {/^default[A-Z]/.test(c.name) ? "remounts" : "live"}
+                  </span>
                 </span>
-                <ControlInput control={c} value={values[c.name]} onChange={(v) => setValues((current) => ({ ...current, [c.name]: v }))} />
+                <ControlInput
+                  control={c}
+                  value={values[c.name]}
+                  onChange={(v) => setValues((current) => ({ ...current, [c.name]: v }))}
+                />
               </div>
             ))}
           </div>
@@ -161,7 +185,9 @@ export function ReactPlayground({ tag, component, controls, baseProps, layout }:
             {copied ? <CheckIcon size={14} className="text-success" /> : <CopyIcon size={14} />}
           </button>
         </div>
-        <pre className="overflow-x-auto px-4 py-3 font-mono text-[12.5px] leading-[1.7] whitespace-pre text-foreground/90">{code}</pre>
+        <pre className="overflow-x-auto px-4 py-3 font-mono text-[12.5px] leading-[1.7] whitespace-pre text-foreground/90">
+          {code}
+        </pre>
       </div>
     </div>
   );

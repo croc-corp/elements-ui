@@ -183,7 +183,9 @@ export function GeoMarkerMap({
   const placedIds = new Set(placed.map((entry) => entry.marker.id));
   const shownSelection = selected !== null && placedIds.has(selected) ? selected : null;
   const tabStop =
-    active !== null && placedIds.has(active) ? active : (shownSelection ?? (placed.length ? placed[0].marker.id : null));
+    active !== null && placedIds.has(active)
+      ? active
+      : (shownSelection ?? (placed.length ? placed[0].marker.id : null));
   const labelMode: GeoMarkerMapLabels = labels ?? (size && size.width < NARROW_WIDTH ? "selected" : "all");
   const maxValue = placed.reduce((best, entry) => Math.max(best, positive(entry.marker.value)), 0);
 
@@ -212,7 +214,8 @@ export function GeoMarkerMap({
         y: entry.y,
         // clear of the dot, and of the 2 px ring (plus its 2 px inset) on the selected one
         gap: DOT_SIZE[marker.size ?? "md"] / 2 + (isSelected ? 9 : 6),
-        priority: (isSelected ? 2 * FORCED_PRIORITY : 0) + (isPointed ? FORCED_PRIORITY : 0) + share * 1000 - order * 0.01,
+        priority:
+          (isSelected ? 2 * FORCED_PRIORITY : 0) + (isPointed ? FORCED_PRIORITY : 0) + share * 1000 - order * 0.01,
         marker,
         selected: isSelected,
       });
@@ -345,7 +348,8 @@ export function GeoMarkerMap({
     // markers without a chip join as empty anchors, so chips steer clear of their dots too
     const chipCount = anchors.length;
     for (const entry of placed) {
-      if (!chipRefs.current.has(entry.marker.id)) anchors.push({ x: entry.x, y: entry.y, width: 0, height: 0, priority: -1 });
+      if (!chipRefs.current.has(entry.marker.id))
+        anchors.push({ x: entry.x, y: entry.y, width: 0, height: 0, priority: -1 });
     }
     const placements = placeLabels(anchors, size.width, size.height);
     for (let i = 0; i < chipCount; i++) {
@@ -412,7 +416,8 @@ export function GeoMarkerMap({
     const emphasisFocus = engine.selected;
     for (const halo of engine.halos.values()) {
       if (!halo.open && halo.live) {
-        const reach = reveal.state === "running" ? markerThreshold(engine, halo) : reveal.state === "pending" ? Infinity : -1;
+        const reach =
+          reveal.state === "running" ? markerThreshold(engine, halo) : reveal.state === "pending" ? Infinity : -1;
         if (front > reach) {
           halo.open = true;
           halo.growth.target = 1;
@@ -503,7 +508,12 @@ export function GeoMarkerMap({
           preserveAspectRatio="none"
           className="pointer-events-none absolute inset-0 block size-full overflow-visible"
         >
-          <path d={layout.outline} vectorEffect="non-scaling-stroke" className="fill-muted/35 stroke-border" strokeWidth={1} />
+          <path
+            d={layout.outline}
+            vectorEffect="non-scaling-stroke"
+            className="fill-muted/35 stroke-border"
+            strokeWidth={1}
+          />
         </svg>
         <canvas ref={baseRef} aria-hidden="true" className="absolute inset-0 block size-full" />
         <canvas ref={liveRef} aria-hidden="true" className="absolute inset-0 block size-full" />
@@ -535,7 +545,8 @@ export function GeoMarkerMap({
             const { marker } = entry;
             const isSelected = marker.id === shownSelection;
             const tone = marker.tone ?? "accent";
-            const valueText = marker.value !== undefined && Number.isFinite(marker.value) ? `, ${format(marker.value)}` : "";
+            const valueText =
+              marker.value !== undefined && Number.isFinite(marker.value) ? `, ${format(marker.value)}` : "";
             return (
               <button
                 key={marker.id}
@@ -563,7 +574,7 @@ export function GeoMarkerMap({
                   if (event.pointerType === "mouse") setHovered(marker.id);
                 }}
                 onPointerLeave={() => setHovered((current) => (current === marker.id ? null : current))}
-                className="group/marker absolute -mt-3 -ml-3 grid size-6 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-solid focus-visible:outline-lumesec"
+                className="group/marker absolute -mt-3 -ml-3 grid size-6 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-lumesec focus-visible:outline-solid"
                 style={{ left: percent(entry.left), top: percent(entry.top) }}
               >
                 <span
@@ -596,7 +607,13 @@ function ChipValue({ value, text }: { value: number; text: string }) {
   // derived state: which way the figures roll
   const [shown, setShown] = React.useState({ value, direction: 1 });
   if (shown.value !== value) setShown({ value, direction: value >= shown.value ? 1 : -1 });
-  return <RollText text={text} direction={shown.direction} className="font-mono text-[11px] text-muted-foreground tabular-nums" />;
+  return (
+    <RollText
+      text={text}
+      direction={shown.direction}
+      className="font-mono text-[11px] text-muted-foreground tabular-nums"
+    />
+  );
 }
 
 /* Constants ------------------------------------------------------------------------------------------ */
@@ -695,7 +712,8 @@ interface ChipEntry {
   selected: boolean;
 }
 
-const positive = (value: number | undefined) => (value !== undefined && Number.isFinite(value) && value > 0 ? value : 0);
+const positive = (value: number | undefined) =>
+  value !== undefined && Number.isFinite(value) && value > 0 ? value : 0;
 const round2 = (value: number) => Math.round(value * 100) / 100;
 
 /** Whether a placed chip box covers the dot of any other anchor. */
@@ -716,7 +734,13 @@ function coversMarker(placement: LabelPlacement, anchors: readonly LabelAnchor[]
 }
 
 /** Writes a placement to a chip, anchored on the marker's side so later width changes keep it attached. */
-function placeChip(chip: HTMLSpanElement, placement: LabelPlacement, anchor: LabelAnchor, width: number, height: number) {
+function placeChip(
+  chip: HTMLSpanElement,
+  placement: LabelPlacement,
+  anchor: LabelAnchor,
+  width: number,
+  height: number,
+) {
   const style = chip.style;
   if (!placement.visible) {
     style.opacity = "0";
@@ -755,7 +779,8 @@ function settle(state: TargetSpring) {
   state.velocity = 0;
 }
 
-const isMoving = (state: TargetSpring) => Math.abs(state.position - state.target) > 0.002 || Math.abs(state.velocity) > 0.01;
+const isMoving = (state: TargetSpring) =>
+  Math.abs(state.position - state.target) > 0.002 || Math.abs(state.velocity) > 0.01;
 
 /** The latest props the drawing code needs. */
 interface MapConfig {
@@ -876,7 +901,17 @@ function createEngine(): Engine {
     geometry: "",
     ink: null,
     halos: new Map(),
-    reveal: { state: "init", triggered: false, start: -1, duration: REVEAL_SECONDS, fadeEnd: 0, x: 0, y: 0, reach: 1, from: undefined },
+    reveal: {
+      state: "init",
+      triggered: false,
+      start: -1,
+      duration: REVEAL_SECONDS,
+      fadeEnd: 0,
+      x: 0,
+      y: 0,
+      reach: 1,
+      from: undefined,
+    },
     pings: [],
     sparks: new Sparks(),
     fxDirty: false,
@@ -891,7 +926,17 @@ function createEngine(): Engine {
     baseDirty: true,
     frame: 0,
     touchedCount: 0,
-    visit: { kind: "halo", tone: 0, radius: 1, growth: 0, emphasis: 1, activity: 0, ringWidth: 5, ringAlpha: 1, unevenness: 4 },
+    visit: {
+      kind: "halo",
+      tone: 0,
+      radius: 1,
+      growth: 0,
+      emphasis: 1,
+      activity: 0,
+      ringWidth: 5,
+      ringAlpha: 1,
+      unevenness: 4,
+    },
     visitDot: () => {},
   };
   engine.visitDot = createVisitor(engine, engine.visit);
@@ -940,7 +985,10 @@ function syncHalos(engine: Engine, config: MapConfig, jump: boolean) {
     seen.add(marker.id);
     const inside = map.project(marker.lat, marker.lon, point);
     const amount = positive(marker.value);
-    const target = inside && maxValue > 0 && amount > 0 ? Math.max(minimum, config.maxHalo * Math.sqrt(amount / maxValue) * scale) : 0;
+    const target =
+      inside && maxValue > 0 && amount > 0
+        ? Math.max(minimum, config.maxHalo * Math.sqrt(amount / maxValue) * scale)
+        : 0;
     const tone = Math.max(0, TONES.indexOf(marker.tone ?? "accent"));
     let halo = engine.halos.get(marker.id);
     if (!halo) {
@@ -1051,7 +1099,10 @@ function rebuild(
 ) {
   if (!config || !width || !height) return;
   const map = createProjection(config.projection, { width, height, latRange: [config.south, config.north] });
-  const lattice = mapLattice(map, { pitch: config.pitch, layout: config.grid === "honeycomb" ? "honeycomb" : "square" });
+  const lattice = mapLattice(map, {
+    pitch: config.pitch,
+    layout: config.grid === "honeycomb" ? "honeycomb" : "square",
+  });
   const geometry = `${config.projection}|${config.grid}|${config.pitch}|${config.south}|${config.north}`;
   const resized = engine.width !== width || engine.height !== height;
   const replay = engine.geometry !== "" && engine.geometry !== geometry && engine.reveal.state === "done";
@@ -1192,7 +1243,8 @@ function drawLive(engine: Engine, surface: CanvasSurface, time: number, front: n
   if (!lattice || !buffers) return false;
   context.clearRect(0, 0, width, height);
 
-  if (engine.reveal.state === "running" || engine.reveal.state === "fading") drawReveal(engine, context, lattice, front, dpr);
+  if (engine.reveal.state === "running" || engine.reveal.state === "fading")
+    drawReveal(engine, context, lattice, front, dpr);
 
   const { visit, visitDot } = engine;
   engine.frame = (engine.frame + 1) >>> 0 || 1;
@@ -1210,7 +1262,9 @@ function drawLive(engine: Engine, surface: CanvasSurface, time: number, front: n
       visit.radius = radius;
       visit.growth = growth;
       visit.emphasis = halo.emphasis.position;
-      visit.activity = reduced ? 0 : clamp(Math.abs(halo.growth.velocity) * 0.35 + Math.abs(halo.radius.velocity) / 24, 0, 1);
+      visit.activity = reduced
+        ? 0
+        : clamp(Math.abs(halo.growth.velocity) * 0.35 + Math.abs(halo.radius.velocity) / 24, 0, 1);
       lattice.grid.query(halo.x, halo.y, radius / 0.82 + 1, visitDot);
     }
     if (halo.pulse && halo.open) {
@@ -1267,7 +1321,13 @@ function drawLive(engine: Engine, surface: CanvasSurface, time: number, front: n
 }
 
 /** The land prints itself outward from the origin behind a bright, uneven front. */
-function drawReveal(engine: Engine, context: CanvasRenderingContext2D, lattice: DotLattice, front: number, dpr: number) {
+function drawReveal(
+  engine: Engine,
+  context: CanvasRenderingContext2D,
+  lattice: DotLattice,
+  front: number,
+  dpr: number,
+) {
   const { x: ox, y: oy, reach } = engine.reveal;
   const batch = engine.landBatch;
   for (let i = 0; i < lattice.count; i++) {
@@ -1277,7 +1337,13 @@ function drawReveal(engine: Engine, context: CanvasRenderingContext2D, lattice: 
     if (lead <= 0) continue;
     const flash = lead < REVEAL_BAND ? 1 - lead / REVEAL_BAND : 0;
     const size = flash > 0.4 ? LIT_DOT : LAND_DOT;
-    batch.add(snapCenter(lattice.x[i], size, dpr), snapCenter(lattice.y[i], size, dpr), size, flash, Math.min(1, lead / 0.025));
+    batch.add(
+      snapCenter(lattice.x[i], size, dpr),
+      snapCenter(lattice.y[i], size, dpr),
+      size,
+      flash,
+      Math.min(1, lead / 0.025),
+    );
   }
   batch.flush(context);
 }

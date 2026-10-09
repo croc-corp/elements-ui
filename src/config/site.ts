@@ -1,3 +1,5 @@
+import { version } from "../../package.json";
+
 /** The public origin, without a trailing slash. Set `NEXT_PUBLIC_SITE_URL` when self-hosting. */
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://elements.lumesec.ai").replace(/\/$/, "");
 
@@ -18,7 +20,8 @@ export const site = {
     url: "https://github.com/lumesec/elements-ui",
     branch: "main",
   },
-  version: "0.3.0",
+  /** The release, from package.json. */
+  version,
   company: {
     name: "LumeSec Technologies GmbH",
     url: "https://lumesec.ai",
@@ -93,11 +96,27 @@ const LS = "https://lumesec.ai";
 export const lumesecPages = {
   solutions: [
     { label: "Platform", href: `${LS}/solutions/platform`, note: "The AI Operating Platform" },
-    { label: "Document Understanding", href: `${LS}/solutions/document-understanding`, note: "Signed, auditable extraction." },
-    { label: "Process Automation", href: `${LS}/solutions/process-automation`, note: "Managed agents bound to identity." },
-    { label: "Financial Document Analysis", href: `${LS}/solutions/financial-document-analysis`, note: "Numbers with a chain of custody." },
+    {
+      label: "Document Understanding",
+      href: `${LS}/solutions/document-understanding`,
+      note: "Signed, auditable extraction.",
+    },
+    {
+      label: "Process Automation",
+      href: `${LS}/solutions/process-automation`,
+      note: "Managed agents bound to identity.",
+    },
+    {
+      label: "Financial Document Analysis",
+      href: `${LS}/solutions/financial-document-analysis`,
+      note: "Numbers with a chain of custody.",
+    },
     { label: "Knowledge Management", href: `${LS}/solutions/knowledge-management`, note: "Scoped omniscience." },
-    { label: "Risk / Compliance", href: `${LS}/solutions/risk-compliance-classification`, note: "Map AI systems to regulations." },
+    {
+      label: "Risk / Compliance",
+      href: `${LS}/solutions/risk-compliance-classification`,
+      note: "Map AI systems to regulations.",
+    },
     { label: "Identity", href: `${LS}/solutions/identity`, note: "One identity surface. Yours or ours." },
   ],
   company: [

@@ -130,7 +130,9 @@ export function GeoDaynight({
   // The pinned instant, or null while following the clock. Controlled through `value`; a parent that sets `value`
   // back to undefined hands the globe back to the clock rather than to an older uncontrolled state.
   const controlled = value !== undefined;
-  const [internal, setInternal] = React.useState<number | null>(() => (defaultValue === undefined ? null : toEpochMs(defaultValue)));
+  const [internal, setInternal] = React.useState<number | null>(() =>
+    defaultValue === undefined ? null : toEpochMs(defaultValue),
+  );
   const [wasControlled, setWasControlled] = React.useState(controlled);
   if (wasControlled !== controlled) {
     setWasControlled(controlled);
@@ -176,8 +178,18 @@ export function GeoDaynight({
   const thumbRef = React.useRef<HTMLDivElement>(null);
 
   // the view and the scene below are created on first use, not on each of the clock's frequent re-renders
-  const motionRef = useLazyRef(() => createGlobeMotion({ lat: 0, stiffness: VIEW_STIFFNESS, damping: 1, latLimit: LAT_LIMIT }));
-  const thumb = React.useRef<ThumbMotion>({ position: 0, velocity: 0, target: 0, dragging: false, glide: false, steps: 0, placed: false });
+  const motionRef = useLazyRef(() =>
+    createGlobeMotion({ lat: 0, stiffness: VIEW_STIFFNESS, damping: 1, latLimit: LAT_LIMIT }),
+  );
+  const thumb = React.useRef<ThumbMotion>({
+    position: 0,
+    velocity: 0,
+    target: 0,
+    dragging: false,
+    glide: false,
+    steps: 0,
+    placed: false,
+  });
   const glide = React.useRef<TimeGlide>({ shown: null, position: 0, velocity: 0 });
   const sceneRef = useLazyRef(createScene);
   const placed = React.useRef(false);
@@ -290,7 +302,8 @@ export function GeoDaynight({
     const ink = inkFor(cache, palette);
 
     const trackSurface = track.current;
-    if (trackSurface) drawTrack(trackSurface, cache.trackDots, ink, thumbX(thumb.current.position, current.range, trackSurface.width));
+    if (trackSurface)
+      drawTrack(trackSurface, cache.trackDots, ink, thumbX(thumb.current.position, current.range, trackSurface.width));
 
     const surface = globe.current;
     if (!surface || timeGlide.shown === null || cache.layout.radius <= 0) return active;
@@ -305,7 +318,13 @@ export function GeoDaynight({
     }
     if (land.shadedAt !== sky) shadeLand(land, sky);
     if (lights.updatedAt !== sky) {
-      const mode: LightMode = reduced ? "instant" : !lights.started ? (cache.introPlayed ? "instant" : "intro") : "live";
+      const mode: LightMode = reduced
+        ? "instant"
+        : !lights.started
+          ? cache.introPlayed
+            ? "instant"
+            : "intro"
+          : "live";
       updateLights(lights, sky, time, mode);
       lights.started = true;
       if (mode === "intro") cache.introPlayed = true;
@@ -466,7 +485,11 @@ export function GeoDaynight({
   }
 
   return (
-    <div data-slot="geo-daynight" className={cn("grid w-full max-w-[400px] gap-3 text-foreground", className)} {...props}>
+    <div
+      data-slot="geo-daynight"
+      className={cn("grid w-full max-w-[400px] gap-3 text-foreground", className)}
+      {...props}
+    >
       <div
         ref={stageRef}
         role="img"
@@ -482,7 +505,14 @@ export function GeoDaynight({
           viewBox="0 0 400 300"
           className="absolute inset-0 size-full transition-opacity duration-500 group-data-[ready]/stage:opacity-0 motion-reduce:transition-none"
         >
-          <circle cx="200" cy="150" r="132" strokeWidth="1" vectorEffect="non-scaling-stroke" className="fill-foreground/[0.03] stroke-border" />
+          <circle
+            cx="200"
+            cy="150"
+            r="132"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+            className="fill-foreground/[0.03] stroke-border"
+          />
         </svg>
         <canvas
           ref={globeCanvasRef}
@@ -503,7 +533,12 @@ export function GeoDaynight({
           <span className="font-mono text-[15px] leading-[22px] font-medium tracking-[-0.01em] tabular-nums">
             {clock ? (
               <>
-                <RollText text={clock.hours} direction={direction} animate={!reducedMotion} reserve={hour12 ? HOUR12_RESERVE : undefined} />
+                <RollText
+                  text={clock.hours}
+                  direction={direction}
+                  animate={!reducedMotion}
+                  reserve={hour12 ? HOUR12_RESERVE : undefined}
+                />
                 :
                 <RollText text={clock.minutes} direction={direction} animate={!reducedMotion} />
                 {clock.suffix ? (
@@ -529,7 +564,8 @@ export function GeoDaynight({
             <RollText text={chipText} direction={direction} animate={!reducedMotion} />
           </span>
           <span className="w-full text-[12px] leading-[22px] whitespace-nowrap text-muted-foreground @min-[380px]:ml-auto @min-[380px]:w-auto">
-            Sun over <span className="font-mono text-[11.5px] tabular-nums">{sun ? formatLatLon(sun, "decimal", 1) : "–"}</span>
+            Sun over{" "}
+            <span className="font-mono text-[11.5px] tabular-nums">{sun ? formatLatLon(sun, "decimal", 1) : "–"}</span>
           </span>
         </div>
       </div>
@@ -569,11 +605,13 @@ export function GeoDaynight({
               className="pointer-events-none absolute top-0 z-[2] h-6 w-4 will-change-transform"
               style={{ left: `calc((100% - ${THUMB_WIDTH}px) * ${thumbOrigin})` }}
             >
-              <div className="absolute inset-0 rounded-md bg-white shadow-[0_1px_2px_rgba(0,0,0,.28),0_0_0_.5px_rgba(0,0,0,.18)] [transition:transform_.18s_cubic-bezier(.2,.8,.2,1)] group-data-[dragging]/track:[transform:scale(.9,.94)] motion-reduce:transition-none"
-              />
+              <div className="absolute inset-0 rounded-md bg-white shadow-[0_1px_2px_rgba(0,0,0,.28),0_0_0_.5px_rgba(0,0,0,.18)] [transition:transform_.18s_cubic-bezier(.2,.8,.2,1)] group-data-[dragging]/track:[transform:scale(.9,.94)] motion-reduce:transition-none" />
             </div>
           </div>
-          <div aria-hidden="true" className="relative h-3.5 text-[11px] leading-[14px] text-muted-foreground tabular-nums">
+          <div
+            aria-hidden="true"
+            className="relative h-3.5 text-[11px] leading-[14px] text-muted-foreground tabular-nums"
+          >
             <span className="absolute left-0">
               {MINUS}
               {endLabel} h
@@ -782,7 +820,9 @@ function isValidCity(city: DaylightCity) {
 
 /** Changes only when a city's identity, place or weight changes, so an inline array does not rebuild the lights. */
 function citySignature(places: readonly DaylightCity[]) {
-  return places.map((city) => `${city.id}:${city.lat.toFixed(4)}:${city.lon.toFixed(4)}:${weightOf(city).toFixed(3)}`).join("|");
+  return places
+    .map((city) => `${city.id}:${city.lat.toFixed(4)}:${city.lon.toFixed(4)}:${weightOf(city).toFixed(3)}`)
+    .join("|");
 }
 
 const weightOf = (city: DaylightCity) => clamp(Number.isFinite(city.weight) ? city.weight : 0.5, 0, 1);
@@ -896,7 +936,8 @@ function describeNight(places: readonly DaylightCity[], sun: LatLon) {
     .map(({ city }) => city.name);
   if (dark.length === 0) return "Daylight in every city";
   if (dark.length === places.length) return "Night in every city";
-  if (dark.length <= 3) return `Night in ${dark.length === 1 ? dark[0] : `${dark.slice(0, -1).join(", ")} and ${dark[dark.length - 1]}`}`;
+  if (dark.length <= 3)
+    return `Night in ${dark.length === 1 ? dark[0] : `${dark.slice(0, -1).join(", ")} and ${dark[dark.length - 1]}`}`;
   return `Night in ${dark[0]}, ${dark[1]} and ${dark.length - 2} more`;
 }
 
@@ -905,7 +946,11 @@ function describeNight(places: readonly DaylightCity[], sun: LatLon) {
 function layoutFor(surface: CanvasSurface): GlobeLayout {
   const stageWidth = surface.width - 2 * OUTSET;
   const stageHeight = surface.height - 2 * OUTSET;
-  return { cx: surface.width / 2, cy: surface.height / 2, radius: Math.max(0, RADIUS_SHARE * Math.min(stageWidth, stageHeight)) };
+  return {
+    cx: surface.width / 2,
+    cy: surface.height / 2,
+    radius: Math.max(0, RADIUS_SHARE * Math.min(stageWidth, stageHeight)),
+  };
 }
 
 /** Drawing colours for the current palette; the dot batches are kept and only re-tinted on a theme change. */
@@ -947,7 +992,12 @@ function landFor(cache: Scene): LandField {
   return land;
 }
 
-function lightsFor(cache: Scene, lattice: SphereLattice, places: readonly DaylightCity[], signature: string): LightField {
+function lightsFor(
+  cache: Scene,
+  lattice: SphereLattice,
+  places: readonly DaylightCity[],
+  signature: string,
+): LightField {
   const known = cache.lights;
   if (known && known.signature === signature && known.lattice === lattice) return known;
   // a rebuilt field (new cities, or a resize) starts without the intro: its first update is instant
@@ -1002,7 +1052,8 @@ function buildLights(places: readonly DaylightCity[], lattice: SphereLattice, si
     strength[i] = 0.5 + 0.5 * Math.min(1, lights / 4);
     i++;
   };
-  for (const [index, dot] of dots) add(lattice.xyz[index * 3], lattice.xyz[index * 3 + 1], lattice.xyz[index * 3 + 2], dot.jitter, dot.count);
+  for (const [index, dot] of dots)
+    add(lattice.xyz[index * 3], lattice.xyz[index * 3 + 1], lattice.xyz[index * 3 + 2], dot.jitter, dot.count);
   for (const light of loose) add(light.vector[0], light.vector[1], light.vector[2], light.jitter, 1);
   return {
     signature,
@@ -1036,7 +1087,8 @@ function createDotFinder(lattice: SphereLattice) {
   let spacing = 2;
   for (let i = 1; i < lattice.count; i++) {
     if (lattice.row[i] !== lattice.row[i - 1]) {
-      spacing = Math.abs(lattice.lat[i] - lattice.lat[i - 1]) / Math.max(1, Math.abs(lattice.row[i] - lattice.row[i - 1]));
+      spacing =
+        Math.abs(lattice.lat[i] - lattice.lat[i - 1]) / Math.max(1, Math.abs(lattice.row[i] - lattice.row[i - 1]));
       break;
     }
   }
@@ -1050,7 +1102,8 @@ function createDotFinder(lattice: SphereLattice) {
       const span = rows.get(row);
       if (!span) continue;
       for (let i = span[0]; i < span[1]; i++) {
-        const dot = lattice.xyz[i * 3] * vector[0] + lattice.xyz[i * 3 + 1] * vector[1] + lattice.xyz[i * 3 + 2] * vector[2];
+        const dot =
+          lattice.xyz[i * 3] * vector[0] + lattice.xyz[i * 3 + 1] * vector[1] + lattice.xyz[i * 3 + 2] * vector[2];
         if (dot > bestDot) {
           bestDot = dot;
           best = i;
@@ -1194,7 +1247,14 @@ function drawLand(context: CanvasRenderingContext2D, view: GlobeView, land: Land
 }
 
 /** City lights with their ignition flash. Returns whether any light is still flashing, fading or waiting to ignite. */
-function drawLights(context: CanvasRenderingContext2D, view: GlobeView, lights: LightField, ink: SceneInk, clock: number, reduced: boolean) {
+function drawLights(
+  context: CanvasRenderingContext2D,
+  view: GlobeView,
+  lights: LightField,
+  ink: SceneInk,
+  clock: number,
+  reduced: boolean,
+) {
   const { cx, cy, radius, rotation: m } = view;
   const { xyz, elevation, on, changedAt, strength } = lights;
   let busy = false;

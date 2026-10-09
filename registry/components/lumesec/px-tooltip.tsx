@@ -227,7 +227,11 @@ export function PxTooltip({
         )}
         style={layout.shift ? { marginLeft: layout.shift } : undefined}
       >
-        <canvas ref={canvasRef} aria-hidden="true" className="absolute -top-2 left-0 block h-[calc(100%+16px)] w-full [image-rendering:pixelated]" />
+        <canvas
+          ref={canvasRef}
+          aria-hidden="true"
+          className="absolute -top-2 left-0 block h-[calc(100%+16px)] w-full [image-rendering:pixelated]"
+        />
         <span className={cn("relative [transition:opacity_.15s]", ready ? "opacity-100" : "opacity-0")}>{content}</span>
       </span>
     </span>

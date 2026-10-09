@@ -2,27 +2,96 @@
   "kind": "react",
   "summary": "Which point of presence serves which part of the world, as a dot map. Turn a site off and its neighbours flood the hole from their own side.",
   "props": [
-    { "name": "sites", "type": "readonly CatchmentSite[]", "default": "CATCHMENT_DEMO_SITES", "description": "The points of presence: `{ id, label, lat, lon, stretch? }`. `stretch` is how much longer the network path is than the great circle (default 1.5); it scales the round-trip estimates and decides the owner with `metric=\"latency\"`. Sites without a finite position and repeated ids are skipped. Default: ten demo sites. An empty array shows the plain map and 'No sites'." },
-    { "name": "active", "type": "readonly string[]", "default": "-", "description": "Ids of the sites in service (controlled). Use with `onActiveChange`." },
-    { "name": "defaultActive", "type": "readonly string[]", "default": "all sites", "description": "Sites in service when uncontrolled." },
-    { "name": "onActiveChange", "type": "(active: readonly string[]) => void", "default": "-", "description": "Called with the new list of ids, in `sites` order, when a switch turns a site on or off." },
-    { "name": "value", "type": "string | null", "default": "-", "description": "The selected site id (controlled), or null for none. Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "string | null", "default": "first site", "description": "The selected site when uncontrolled." },
-    { "name": "onValueChange", "type": "(value: string | null) => void", "default": "-", "description": "Called when a marker or a list row selects a site, and with null when the selected site is pressed again." },
-    { "name": "clients", "type": "readonly CatchmentClient[]", "default": "demo traffic", "description": "Request sources `{ lat, lon, weight }`, assigned to sites like the map. `weight` is the request rate in `unit`; entries with a weight of 0 or less are skipped. Default: the 60 demo cities, each sending its demo weight × 1,000, but only while `sites` is also undefined. With your sites and no clients, the share, request and round-trip values show '–'." },
-    { "name": "metric", "type": "\"distance\" | \"latency\"", "default": "\"distance\"", "description": "`distance`: the nearest site in service serves a place. `latency`: the site with the lowest estimated round trip (great-circle distance × the site's `stretch`) serves it." },
-    { "name": "unit", "type": "string", "default": "\"req/s\"", "description": "Unit of the request numbers, shown in the list header and the readout." },
-    { "name": "projection", "type": "\"equalEarth\" | \"equirectangular\"", "default": "\"equalEarth\"", "description": "Map projection. Both crop the map to 56° S to 76° N; the map keeps the projection's aspect ratio." },
-    { "name": "pitch", "type": "number", "default": "4", "description": "Spacing of the land dots in CSS px, clamped to 2 to 12." }
+    {
+      "name": "sites",
+      "type": "readonly CatchmentSite[]",
+      "default": "CATCHMENT_DEMO_SITES",
+      "description": "The points of presence: `{ id, label, lat, lon, stretch? }`. `stretch` is how much longer the network path is than the great circle (default 1.5); it scales the round-trip estimates and decides the owner with `metric=\"latency\"`. Sites without a finite position and repeated ids are skipped. Default: ten demo sites. An empty array shows the plain map and 'No sites'."
+    },
+    {
+      "name": "active",
+      "type": "readonly string[]",
+      "default": "-",
+      "description": "Ids of the sites in service (controlled). Use with `onActiveChange`."
+    },
+    {
+      "name": "defaultActive",
+      "type": "readonly string[]",
+      "default": "all sites",
+      "description": "Sites in service when uncontrolled."
+    },
+    {
+      "name": "onActiveChange",
+      "type": "(active: readonly string[]) => void",
+      "default": "-",
+      "description": "Called with the new list of ids, in `sites` order, when a switch turns a site on or off."
+    },
+    {
+      "name": "value",
+      "type": "string | null",
+      "default": "-",
+      "description": "The selected site id (controlled), or null for none. Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string | null",
+      "default": "first site",
+      "description": "The selected site when uncontrolled."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string | null) => void",
+      "default": "-",
+      "description": "Called when a marker or a list row selects a site, and with null when the selected site is pressed again."
+    },
+    {
+      "name": "clients",
+      "type": "readonly CatchmentClient[]",
+      "default": "demo traffic",
+      "description": "Request sources `{ lat, lon, weight }`, assigned to sites like the map. `weight` is the request rate in `unit`; entries with a weight of 0 or less are skipped. Default: the 60 demo cities, each sending its demo weight × 1,000, but only while `sites` is also undefined. With your sites and no clients, the share, request and round-trip values show '–'."
+    },
+    {
+      "name": "metric",
+      "type": "\"distance\" | \"latency\"",
+      "default": "\"distance\"",
+      "description": "`distance`: the nearest site in service serves a place. `latency`: the site with the lowest estimated round trip (great-circle distance × the site's `stretch`) serves it."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "default": "\"req/s\"",
+      "description": "Unit of the request numbers, shown in the list header and the readout."
+    },
+    {
+      "name": "projection",
+      "type": "\"equalEarth\" | \"equirectangular\"",
+      "default": "\"equalEarth\"",
+      "description": "Map projection. Both crop the map to 56° S to 76° N; the map keeps the projection's aspect ratio."
+    },
+    {
+      "name": "pitch",
+      "type": "number",
+      "default": "4",
+      "description": "Spacing of the land dots in CSS px, clamped to 2 to 12."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
   "subcomponents": [],
   "keyboard": [
-    { "keys": "Tab", "action": "Moves to the map's site markers (one tab stop, on the selected site), then through the list's switches." },
-    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "action": "On a marker: moves focus to the nearest marker in that direction on the map." },
+    {
+      "keys": "Tab",
+      "action": "Moves to the map's site markers (one tab stop, on the selected site), then through the list's switches."
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown",
+      "action": "On a marker: moves focus to the nearest marker in that direction on the map."
+    },
     { "keys": "Home / End", "action": "On a marker: moves focus to the first or last site." },
-    { "keys": "Enter / Space", "action": "On a marker: selects the site, or clears the selection when it is already selected. On a switch: turns the site on or off." }
+    {
+      "keys": "Enter / Space",
+      "action": "On a marker: selects the site, or clears the selection when it is already selected. On a switch: turns the site on or off."
+    }
   ],
   "accessibility": [
     "Site markers are native buttons in a group labelled \"Sites on the map\", with one roving tab stop. `aria-pressed` marks the selected site; each label gives the site and its share, for example \"Frankfurt, serves 17%\", or \"Frankfurt, off\".",

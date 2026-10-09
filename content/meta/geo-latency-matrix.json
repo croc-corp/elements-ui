@@ -2,21 +2,64 @@
   "kind": "react",
   "summary": "Round-trip times between regions as dot blocks that fill with latency; a map beside the grid slides the measured route from pair to pair.",
   "props": [
-    { "name": "regions", "type": "readonly LatencyRegion[]", "default": "8 demo regions", "description": "Rows and columns, in order: `{ id, label?, city?, lat, lon }`. `label` is the header text (default: the id), `city` the place name in the detail panel and the accessible names (default: the label). A `GeoRegion` from `@/lib/lumesec/geo-data` fits. Regions with a repeated id, a latitude outside ±90° or a non-finite coordinate are skipped." },
-    { "name": "measurements", "type": "readonly LatencyMeasurement[]", "default": "demo latencies", "description": "Round-trip times `{ from, to, ms }` with region ids: `from` is the row, `to` the column. Entries with an unknown id or without a finite, non-negative `ms` are skipped; the last entry for a direction wins. Pairs without a measurement show \"no data\"." },
-    { "name": "symmetric", "type": "boolean", "default": "true", "description": "Uses a measurement for both directions when only one direction is given. A measurement given for a direction always wins over its mirror." },
-    { "name": "value", "type": "LatencyPair | null", "default": "-", "description": "Selected pair `{ from, to }` (controlled), or null for none. Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "LatencyPair | null", "default": "first off-diagonal pair", "description": "Selected pair when uncontrolled." },
-    { "name": "onValueChange", "type": "(value: LatencyPair | null) => void", "default": "-", "description": "Called with the new pair when the user selects a different cell: click, tap, Enter or Space." },
-    { "name": "slowMs", "type": "number", "default": "250", "description": "Pairs at or above this round-trip time in ms get a warning mark in their cell, a Slow badge in the detail panel and \"slow\" in their accessible name." },
-    { "name": "label", "type": "string", "default": "\"Latency between regions\"", "description": "Accessible name of the grid." }
+    {
+      "name": "regions",
+      "type": "readonly LatencyRegion[]",
+      "default": "8 demo regions",
+      "description": "Rows and columns, in order: `{ id, label?, city?, lat, lon }`. `label` is the header text (default: the id), `city` the place name in the detail panel and the accessible names (default: the label). A `GeoRegion` from `@/lib/lumesec/geo-data` fits. Regions with a repeated id, a latitude outside ±90° or a non-finite coordinate are skipped."
+    },
+    {
+      "name": "measurements",
+      "type": "readonly LatencyMeasurement[]",
+      "default": "demo latencies",
+      "description": "Round-trip times `{ from, to, ms }` with region ids: `from` is the row, `to` the column. Entries with an unknown id or without a finite, non-negative `ms` are skipped; the last entry for a direction wins. Pairs without a measurement show \"no data\"."
+    },
+    {
+      "name": "symmetric",
+      "type": "boolean",
+      "default": "true",
+      "description": "Uses a measurement for both directions when only one direction is given. A measurement given for a direction always wins over its mirror."
+    },
+    {
+      "name": "value",
+      "type": "LatencyPair | null",
+      "default": "-",
+      "description": "Selected pair `{ from, to }` (controlled), or null for none. Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "LatencyPair | null",
+      "default": "first off-diagonal pair",
+      "description": "Selected pair when uncontrolled."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: LatencyPair | null) => void",
+      "default": "-",
+      "description": "Called with the new pair when the user selects a different cell: click, tap, Enter or Space."
+    },
+    {
+      "name": "slowMs",
+      "type": "number",
+      "default": "250",
+      "description": "Pairs at or above this round-trip time in ms get a warning mark in their cell, a Slow badge in the detail panel and \"slow\" in their accessible name."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Latency between regions\"",
+      "description": "Accessible name of the grid."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
   "subcomponents": [],
   "keyboard": [
     { "keys": "Tab", "action": "Moves into the grid, to the selected cell (one roving tab stop), and out again." },
-    { "keys": "ArrowUp / ArrowDown / ArrowLeft / ArrowRight", "action": "Moves one cell. The detail panel and the map follow the focused cell." },
+    {
+      "keys": "ArrowUp / ArrowDown / ArrowLeft / ArrowRight",
+      "action": "Moves one cell. The detail panel and the map follow the focused cell."
+    },
     { "keys": "Home / End", "action": "Moves to the first or last cell of the row." },
     { "keys": "Ctrl+Home / Ctrl+End", "action": "Moves to the first or last cell of the grid." },
     { "keys": "Enter / Space", "action": "Selects the focused pair." }
@@ -43,7 +86,16 @@
     "kind": "input",
     "note": "Pass your regions as `regions` and your round-trip times as `measurements`. Without either the component shows eight demo regions with demo latencies (the fibre minimum times a seeded stretch of 1.3 to 1.9); `regions` alone shows every pair as \"no data\"."
   },
-  "tokens": ["--lumesec", "--lumesec-shine", "--lumesec-warning", "--foreground", "--muted-foreground", "--muted", "--card", "--border"],
+  "tokens": [
+    "--lumesec",
+    "--lumesec-shine",
+    "--lumesec-warning",
+    "--foreground",
+    "--muted-foreground",
+    "--muted",
+    "--card",
+    "--border"
+  ],
   "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { GeoLatencyMatrix, type LatencyMeasurement, type LatencyPair, type LatencyRegion } from \"@/components/lumesec/geo-latency-matrix\";\n\nconst regions: LatencyRegion[] = [\n  { id: \"eu-central\", city: \"Frankfurt\", lat: 50.11, lon: 8.68 },\n  { id: \"us-east\", city: \"Ashburn\", lat: 39.04, lon: -77.49 },\n  { id: \"ap-southeast\", city: \"Singapore\", lat: 1.35, lon: 103.82 },\n];\n\nexport function Example({ measurements }: { measurements: LatencyMeasurement[] }) {\n  const [pair, setPair] = React.useState<LatencyPair | null>({ from: \"eu-central\", to: \"ap-southeast\" });\n  return <GeoLatencyMatrix regions={regions} measurements={measurements} value={pair} onValueChange={setPair} slowMs={200} />;\n}\n",
   "playground": {
     "props": {},

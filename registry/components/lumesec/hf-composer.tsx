@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-composer.element";
 /** The `<hf-composer>` element, with its properties and methods. */
 export type HfComposerElement = ElementModule.HComposer;
 
-export interface HfComposerProps extends Omit<LumesecElementProps<HfComposerElement>, "placeholder" | "model" | "effort" | "onSend" | "onEffort"> {
+export interface HfComposerProps extends Omit<
+  LumesecElementProps<HfComposerElement>,
+  "placeholder" | "model" | "effort" | "onSend" | "onEffort"
+> {
   /** Textarea placeholder. Observed. Default: `Reply to the agent…`. */
   placeholder?: string;
   /** Model name shown as plain text in the toolbar. Observed. Default: `Large`. */
@@ -29,7 +32,7 @@ export function HfComposer({ placeholder, model, effort, onSend, onEffort, ...pr
   return useLumesecElement(
     "hf-composer",
     props,
-    { "placeholder": placeholder, "model": model, "effort": effort },
-    { "send": onSend, "effort": onEffort },
+    { placeholder: placeholder, model: model, effort: effort },
+    { send: onSend, effort: onEffort },
   );
 }

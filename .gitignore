@@ -22,6 +22,7 @@ next-env.d.ts
 .DS_Store
 .vercel
 
-# local tooling and notes
-.claude/
+# local tooling and notes; the shared agent skills in .claude/skills are tracked
+.claude/*
+!.claude/skills/
 .local/

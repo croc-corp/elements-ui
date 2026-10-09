@@ -38,9 +38,14 @@ export function Faq() {
           <summary className="flex cursor-pointer list-none items-center gap-6 px-4 py-6 transition-colors hover:bg-surface/50 sm:px-8 [&::-webkit-details-marker]:hidden">
             <span className="tabular w-6 shrink-0 font-mono text-[12px] text-muted-foreground">{pad2(i + 1)}</span>
             <span className="flex-1 text-[18px] font-medium tracking-[-0.01em] sm:text-[20px]">{f.q}</span>
-            <ChevronDownIcon size={16} className="shrink-0 text-muted-foreground transition-transform duration-500 ease-[var(--ease-expo)] group-open/faq:rotate-180" />
+            <ChevronDownIcon
+              size={16}
+              className="shrink-0 text-muted-foreground transition-transform duration-500 ease-[var(--ease-expo)] group-open/faq:rotate-180"
+            />
           </summary>
-          <p className="max-w-[70ch] px-4 pb-7 pl-16 text-[15.5px] leading-[1.75] text-muted-foreground sm:px-8 sm:pl-20">{f.a}</p>
+          <p className="max-w-[70ch] px-4 pb-7 pl-16 text-[15.5px] leading-[1.75] text-muted-foreground sm:px-8 sm:pl-20">
+            {f.a}
+          </p>
         </details>
       ))}
     </div>

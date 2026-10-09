@@ -17,10 +17,5 @@ export type PxActivityProps = LumesecElementProps<PxActivityElement>;
  * @see https://elements.lumesec.ai/components/pixel-lab/activity
  */
 export function PxActivity({ ...props }: PxActivityProps) {
-  return useLumesecElement(
-    "px-activity",
-    props,
-    {},
-    {},
-  );
+  return useLumesecElement("px-activity", props, {}, {});
 }

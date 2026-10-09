@@ -5,8 +5,15 @@ type Json = Record<string, unknown>;
 
 /** Serialises JSON-LD into a script tag; `<` is escaped so no value can close the tag. */
 export function JsonLd({ data }: { data: Json | Json[] }) {
-  const graph = Array.isArray(data) ? { "@context": "https://schema.org", "@graph": data } : { "@context": "https://schema.org", ...data };
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph).replace(/</g, "\\u003c") }} />;
+  const graph = Array.isArray(data)
+    ? { "@context": "https://schema.org", "@graph": data }
+    : { "@context": "https://schema.org", ...data };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(graph).replace(/</g, "\\u003c") }}
+    />
+  );
 }
 
 /** The company behind the site. */
@@ -39,7 +46,12 @@ export const websiteJsonLd = (): Json => ({
 /** The breadcrumb trail of a page. */
 export const breadcrumbJsonLd = (items: { name: string; path: string }[]): Json => ({
   "@type": "BreadcrumbList",
-  itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, item: absoluteUrl(it.path) })),
+  itemListElement: items.map((it, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: it.name,
+    item: absoluteUrl(it.path),
+  })),
 });
 
 /** A component page as source code, part of its collection. */
@@ -56,7 +68,11 @@ export const componentJsonLd = (e: ElementMeta, url: string, collectionTitle: st
   isAccessibleForFree: true,
   dateModified: e.added,
   keywords: [e.tag, e.title, collectionTitle, "shadcn", "web component", "react component"].join(", "),
-  isPartOf: { "@type": "CreativeWorkSeries", name: `${collectionTitle} · ${site.name}`, url: absoluteUrl(`/components/${e.collection}`) },
+  isPartOf: {
+    "@type": "CreativeWorkSeries",
+    name: `${collectionTitle} · ${site.name}`,
+    url: absoluteUrl(`/components/${e.collection}`),
+  },
   author: { "@id": `${site.company.url}/#organization` },
   publisher: { "@id": `${site.company.url}/#organization` },
 });
@@ -79,7 +95,12 @@ export const itemListJsonLd = (name: string, items: { name: string; path: string
   "@type": "ItemList",
   name,
   numberOfItems: items.length,
-  itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, url: absoluteUrl(it.path) })),
+  itemListElement: items.map((it, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: it.name,
+    url: absoluteUrl(it.path),
+  })),
 });
 
 /** Questions and answers. */

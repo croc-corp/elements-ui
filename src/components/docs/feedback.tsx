@@ -13,7 +13,11 @@ const JSON_HEADERS = { "content-type": "application/json" };
 /** Saves the vote and resolves to the token that lets this browser add a note, or null. */
 async function saveVote(path: string, helpful: boolean): Promise<string | null> {
   try {
-    const response = await fetch("/api/feedback", { method: "POST", headers: JSON_HEADERS, body: JSON.stringify({ path, helpful }) });
+    const response = await fetch("/api/feedback", {
+      method: "POST",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({ path, helpful }),
+    });
     if (!response.ok) return null;
     const body: unknown = await response.json();
     return body && typeof body === "object" && "token" in body && typeof body.token === "string" ? body.token : null;
@@ -47,7 +51,11 @@ export function Feedback({ path, className }: { path: string; className?: string
     if (!text) return;
     const token = await vote.current;
     if (!token) return;
-    fetch("/api/feedback", { method: "PATCH", headers: JSON_HEADERS, body: JSON.stringify({ token, note: text }) }).catch(() => {});
+    fetch("/api/feedback", {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({ token, note: text }),
+    }).catch(() => {});
   };
 
   const prompt = answer ? "What helped? (optional)" : "What was missing or wrong? (optional)";
@@ -56,7 +64,7 @@ export function Feedback({ path, className }: { path: string; className?: string
     <div className={className}>
       <p className="mb-2.5 font-mono text-[11px] text-muted-foreground">Was this page helpful?</p>
       {stage === "done" ? (
-        <p className="flex items-center gap-2 text-[13px] text-muted-foreground page-enter" role="status">
+        <p className="page-enter flex items-center gap-2 text-[13px] text-muted-foreground" role="status">
           <CheckIcon size={14} className="text-success" />
           Thank you. It goes straight to the team.
         </p>
@@ -85,7 +93,7 @@ export function Feedback({ path, className }: { path: string; className?: string
           </div>
           {stage === "note" && (
             <form
-              className="mt-3 grid gap-2 page-enter"
+              className="page-enter mt-3 grid gap-2"
               onSubmit={(e) => {
                 e.preventDefault();
                 void sendNote();
@@ -103,7 +111,10 @@ export function Feedback({ path, className }: { path: string; className?: string
                 className="resize-none rounded-lg border border-border bg-surface/60 px-2.5 py-2 text-[13px] outline-none focus:border-ring"
               />
               <div className="flex items-center gap-2">
-                <button type="submit" className="h-8 rounded-lg bg-primary px-3 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90">
+                <button
+                  type="submit"
+                  className="h-8 rounded-lg bg-primary px-3 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                >
                   {note.trim() ? "Send" : "Done"}
                 </button>
                 <span className="text-[12px] text-muted-foreground">Your vote is already saved.</span>

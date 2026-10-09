@@ -66,12 +66,31 @@ function Drawer({ nav, onClose }: { nav: Nav; onClose: () => void }) {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[60] lg:hidden" role="dialog" aria-modal="true" aria-label="Documentation navigation">
-      <button type="button" aria-label="Close navigation" tabIndex={-1} className="absolute inset-0 bg-background/70 backdrop-blur-sm animate-[sl-fade_.2s_ease]" onClick={onClose} />
-      <div ref={panelRef} className="absolute inset-y-0 left-0 flex w-[min(320px,86vw)] flex-col border-r border-border bg-background shadow-[var(--shadow-pop)] animate-[sl-fade-up_.3s_var(--ease-expo)]">
+    <div
+      className="fixed inset-0 z-[60] lg:hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Documentation navigation"
+    >
+      <button
+        type="button"
+        aria-label="Close navigation"
+        tabIndex={-1}
+        className="absolute inset-0 animate-[sl-fade_.2s_ease] bg-background/70 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      <div
+        ref={panelRef}
+        className="absolute inset-y-0 left-0 flex w-[min(320px,86vw)] animate-[sl-fade-up_.3s_var(--ease-expo)] flex-col border-r border-border bg-background shadow-[var(--shadow-pop)]"
+      >
         <div className="flex h-12 items-center justify-between border-b border-border px-4">
           <span className="font-mono text-[12px] text-muted-foreground">Navigation</span>
-          <button type="button" aria-label="Close navigation" onClick={onClose} className="inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted/60">
+          <button
+            type="button"
+            aria-label="Close navigation"
+            onClick={onClose}
+            className="inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted/60"
+          >
             <CloseIcon />
           </button>
         </div>

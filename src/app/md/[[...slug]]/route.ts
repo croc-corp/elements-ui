@@ -14,7 +14,8 @@ export function generateStaticParams() {
   ];
 }
 
-const md = (text: string) => new Response(text, { headers: { "Content-Type": "text/markdown; charset=utf-8", "X-Robots-Tag": "noindex" } });
+const md = (text: string) =>
+  new Response(text, { headers: { "Content-Type": "text/markdown; charset=utf-8", "X-Robots-Tag": "noindex" } });
 
 /** The Markdown twin of every page (rewritten from /<path>.md). */
 export async function GET(_req: Request, ctx: { params: Promise<{ slug?: string[] }> }) {

@@ -21,7 +21,8 @@ type HeaderProps = {
   collections: NavCollection[];
 };
 
-const isActive = (pathname: string, href: string) => (href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`));
+const isActive = (pathname: string, href: string) =>
+  href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
 /** Pill navigation with a highlight that glides to the hovered item and rests on the active one. */
 function PillNav({ items }: { items: { href: string; label: string; count?: number; Icon: typeof GridIcon }[] }) {
@@ -72,7 +73,9 @@ function PillNav({ items }: { items: { href: string; label: string; count?: numb
               <item.Icon size={15} />
               {item.label}
               {item.count !== undefined && (
-                <span className="tabular rounded-[5px] bg-foreground px-1.5 py-px font-mono text-[10px] leading-4 text-background">{item.count}</span>
+                <span className="tabular rounded-[5px] bg-foreground px-1.5 py-px font-mono text-[10px] leading-4 text-background">
+                  {item.count}
+                </span>
               )}
             </Link>
           );
@@ -141,7 +144,10 @@ export function Banner() {
         <span className="font-mono text-[11px] opacity-60">New</span>
         <span className="h-3 w-px bg-background/25" aria-hidden />
         <span className="truncate">Your data: charts, lists and meters that take your records</span>
-        <ArrowRightIcon size={14} className="shrink-0 transition-transform duration-300 ease-[var(--ease-expo)] group-hover:translate-x-1" />
+        <ArrowRightIcon
+          size={14}
+          className="shrink-0 transition-transform duration-300 ease-[var(--ease-expo)] group-hover:translate-x-1"
+        />
       </Link>
     </div>
   );
@@ -162,7 +168,7 @@ export function Header({ total, collections }: HeaderProps) {
   return (
     <>
       <header className="sticky top-0 z-40 bg-background/80 px-2 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70">
-        <div className="relative mx-auto grid h-[var(--header-height)] max-w-[calc(var(--container)-16px)] grid-cols-[1fr_auto] items-center gap-4 border-x border-border pr-2 pl-4 before:pointer-events-none before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-border after:pointer-events-none after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-border lg:grid-cols-[1fr_auto_1fr] in-data-[layout=full]:max-w-none">
+        <div className="relative mx-auto grid h-[var(--header-height)] max-w-[calc(var(--container)-16px)] grid-cols-[1fr_auto] items-center gap-4 border-x border-border pr-2 pl-4 before:pointer-events-none before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-border after:pointer-events-none after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-border in-data-[layout=full]:max-w-none lg:grid-cols-[1fr_auto_1fr]">
           <BrandMenu onCompactOpen={openSheet} />
           <PillNav items={items} />
           <div className="flex items-center justify-end gap-1">

@@ -315,7 +315,8 @@ class HNumber extends FormMixin(HF) {
     // the number itself is text; heat tints it toward the accent, a limit hit flashes it red
     const num = this.$(".num");
     num.style.color = css(err > 0 ? mix(P.fg, P.danger, err) : mix(P.fg, P.accent, heat * 0.55));
-    num.style.textShadow = heat > 0.02 && this.dark ? `0 0 ${(4 + heat * 8).toFixed(1)}px ${css(P.accent, heat)}` : "none";
+    num.style.textShadow =
+      heat > 0.02 && this.dark ? `0 0 ${(4 + heat * 8).toFixed(1)}px ${css(P.accent, heat)}` : "none";
     const ctx = this.ctx;
     const sparking = ctx ? this.sparks.step(ctx, dt) : false;
     return e < 1 || this.heat > 0 || err > 0 || sparking || this.holding !== 0;

@@ -20,10 +20,5 @@ export interface HfRadialProps extends Omit<LumesecElementProps<HfRadialElement>
  * @see https://elements.lumesec.ai/components/pixel-hd/radial
  */
 export function HfRadial({ label, ...props }: HfRadialProps) {
-  return useLumesecElement(
-    "hf-radial",
-    props,
-    { "label": label },
-    {},
-  );
+  return useLumesecElement("hf-radial", props, { label: label }, {});
 }

@@ -16,11 +16,17 @@ export default function NotFound() {
               <span className="text-muted-foreground">Yet.</span>
             </h1>
             <div className="mt-10 flex items-center justify-center gap-3">
-              <Link href="/components" className="group/b inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-4 text-[14px] font-medium text-primary-foreground hover:opacity-90">
+              <Link
+                href="/components"
+                className="group/b inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-4 text-[14px] font-medium text-primary-foreground hover:opacity-90"
+              >
                 Browse components
                 <ArrowRightIcon size={14} className="transition-transform group-hover/b:translate-x-0.5" />
               </Link>
-              <Link href="/docs" className="inline-flex h-10 items-center rounded-lg px-4 text-[14px] font-medium text-muted-foreground hover:text-foreground">
+              <Link
+                href="/docs"
+                className="inline-flex h-10 items-center rounded-lg px-4 text-[14px] font-medium text-muted-foreground hover:text-foreground"
+              >
                 Read the docs
               </Link>
             </div>

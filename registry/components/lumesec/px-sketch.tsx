@@ -20,10 +20,5 @@ export interface PxSketchProps extends Omit<LumesecElementProps<PxSketchElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/sketch
  */
 export function PxSketch({ onChange, onClear, ...props }: PxSketchProps) {
-  return useLumesecElement(
-    "px-sketch",
-    props,
-    {},
-    { "change": onChange, "clear": onClear },
-  );
+  return useLumesecElement("px-sketch", props, {}, { change: onChange, clear: onClear });
 }

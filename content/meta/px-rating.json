@@ -2,13 +2,25 @@
   "summary": "Five pixel stars that fill like liquid as you hover; picking one pops it with sparks and rolls the label.",
   "attributes": [],
   "events": [
-    { "name": "change", "detail": "{ value: number }", "description": "Fires when a new rating from 1 to 5 is picked by pointer, keyboard or `pick()`; a key that leaves the rating unchanged fires nothing." }
+    {
+      "name": "change",
+      "detail": "{ value: number }",
+      "description": "Fires when a new rating from 1 to 5 is picked by pointer, keyboard or `pick()`; a key that leaves the rating unchanged fires nothing."
+    }
   ],
   "methods": [
-    { "signature": "pick(value: number)", "description": "Sets the rating to 1 to 5 (rounded), pops the star, updates the label and ARIA values and fires `change`. Other values are ignored." }
+    {
+      "signature": "pick(value: number)",
+      "description": "Sets the rating to 1 to 5 (rounded), pops the star, updates the label and ARIA values and fires `change`. Other values are ignored."
+    }
   ],
   "properties": [
-    { "name": "value", "type": "number", "readonly": false, "description": "Current rating from 1 to 5, or `0` before one is picked. Setting it (0 to 5) updates the stars, the label and the ARIA values without firing `change`." }
+    {
+      "name": "value",
+      "type": "number",
+      "readonly": false,
+      "description": "Current rating from 1 to 5, or `0` before one is picked. Setting it (0 to 5) updates the stars, the label and the ARIA values without firing `change`."
+    }
   ],
   "keyboard": [
     { "keys": "ArrowRight / ArrowUp", "action": "Raise the rating by one star." },

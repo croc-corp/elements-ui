@@ -2,10 +2,30 @@
   "kind": "react",
   "summary": "Inline pixel sparkline with a dithered area, coloured green or red by trend unless a colour is set; hovering shows the value.",
   "props": [
-    { "name": "data", "type": "readonly number[]", "default": "[4, 6, 5, 8, 7, 9, 8, 12, 10, 13]", "description": "The series. Non-finite entries (`NaN`, `Infinity`) are dropped, and fewer than two values draw nothing. A change replays the draw-in." },
-    { "name": "label", "type": "string", "default": "\"Trend\"", "description": "Start of the canvas `aria-label`, followed by the first, last, lowest and highest value." },
-    { "name": "color", "type": "\"accent\" | \"success\" | \"destructive\" | \"warning\" | \"info\" | \"foreground\" | \"muted\"", "default": "-", "description": "Line colour. Without it the line is `success` when the last value is at least the first, otherwise `destructive`." },
-    { "name": "unit", "type": "string", "default": "\"\"", "description": "Text appended to every value as written, in the hover value and the `aria-label`; include a leading space for a spaced unit such as `\" ms\"`." },
+    {
+      "name": "data",
+      "type": "readonly number[]",
+      "default": "[4, 6, 5, 8, 7, 9, 8, 12, 10, 13]",
+      "description": "The series. Non-finite entries (`NaN`, `Infinity`) are dropped, and fewer than two values draw nothing. A change replays the draw-in."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Trend\"",
+      "description": "Start of the canvas `aria-label`, followed by the first, last, lowest and highest value."
+    },
+    {
+      "name": "color",
+      "type": "\"accent\" | \"success\" | \"destructive\" | \"warning\" | \"info\" | \"foreground\" | \"muted\"",
+      "default": "-",
+      "description": "Line colour. Without it the line is `success` when the last value is at least the first, otherwise `destructive`."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "default": "\"\"",
+      "description": "Text appended to every value as written, in the hover value and the `aria-label`; include a leading space for a spaced unit such as `\" ms\"`."
+    },
     { "name": "width", "type": "number", "default": "140", "description": "Width in pixels." },
     { "name": "height", "type": "number", "default": "32", "description": "Height in pixels." }
   ],
@@ -26,12 +46,27 @@
     "kind": "input",
     "note": "Pass your series as `data`. Without it the sparkline shows an invented sample series."
   },
-  "tokens": ["--lumesec", "--lumesec-shine", "--lumesec-success", "--lumesec-warning", "--lumesec-info", "--destructive", "--foreground", "--muted-foreground", "--card"],
+  "tokens": [
+    "--lumesec",
+    "--lumesec-shine",
+    "--lumesec-success",
+    "--lumesec-warning",
+    "--lumesec-info",
+    "--destructive",
+    "--foreground",
+    "--muted-foreground",
+    "--card"
+  ],
   "usage": "import { PxSparkline } from \"@/components/lumesec/px-sparkline\";\n\nexport function Example() {\n  return <PxSparkline data={[180, 176, 190, 184, 200, 196, 210, 205, 214, 222]} unit=\" ms\" label=\"Latency\" />;\n}\n",
   "playground": {
     "props": { "data": [31, 35, 33, 40, 38, 44, 47, 45, 52, 58] },
     "controls": [
-      { "name": "color", "kind": "enum", "options": ["accent", "success", "destructive", "warning", "info", "foreground", "muted"], "default": "-" },
+      {
+        "name": "color",
+        "kind": "enum",
+        "options": ["accent", "success", "destructive", "warning", "info", "foreground", "muted"],
+        "default": "-"
+      },
       { "name": "unit", "kind": "string", "options": null, "default": "" },
       { "name": "width", "kind": "number", "options": null, "default": "140" },
       { "name": "height", "kind": "number", "options": null, "default": "32" }

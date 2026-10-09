@@ -20,7 +20,10 @@ export interface PxOtpHandle {
 }
 
 /** Props of `PxOtp`. Other `div` props go to the root. */
-export interface PxOtpProps extends Omit<React.ComponentProps<"div">, "ref" | "children" | "defaultValue" | "onChange"> {
+export interface PxOtpProps extends Omit<
+  React.ComponentProps<"div">,
+  "ref" | "children" | "defaultValue" | "onChange"
+> {
   /** Controlled digits entered so far. Use with `onValueChange`. */
   value?: string;
   /** Initial digits when uncontrolled. */
@@ -248,13 +251,20 @@ export function PxOtp({
       data-slot="px-otp"
       data-state={status === "idle" ? undefined : status}
       data-disabled={disabled ? "" : undefined}
-      className={cn("group/otp block leading-[1.5] text-foreground", disabled && "pointer-events-none opacity-55", className)}
+      className={cn(
+        "group/otp block leading-[1.5] text-foreground",
+        disabled && "pointer-events-none opacity-55",
+        className,
+      )}
       {...props}
     >
       <div ref={wrapRef} className="relative mx-auto w-[300px] max-w-full">
         <canvas ref={canvasRef} aria-hidden="true" className="block h-16 w-full [image-rendering:pixelated]" />
         {/* the digits are text over the drawn boxes; the input below holds the accessible value */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-1 grid h-14 grid-cols-6 gap-[9px]">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-1 grid h-14 grid-cols-6 gap-[9px]"
+        >
           {Array.from({ length: LENGTH }, (_, i) => (
             <span key={i} className="grid place-items-center">
               <span
@@ -292,7 +302,7 @@ export function PxOtp({
           }}
           onFocus={redraw}
           onBlur={redraw}
-          className="absolute inset-0 size-full cursor-text border-0 bg-transparent p-0 font-[inherit] text-[16px] text-transparent opacity-0 outline-none [caret-color:transparent]"
+          className="absolute inset-0 size-full cursor-text border-0 bg-transparent p-0 font-[inherit] text-[16px] text-transparent [caret-color:transparent] opacity-0 outline-none"
         />
       </div>
       <span
@@ -303,7 +313,12 @@ export function PxOtp({
           status === "error" && "text-destructive",
         )}
       >
-        <RollText text={notice ?? hint} direction={notice === null ? -1 : 1} className="justify-items-center" aria-live="polite" />
+        <RollText
+          text={notice ?? hint}
+          direction={notice === null ? -1 : 1}
+          className="justify-items-center"
+          aria-live="polite"
+        />
       </span>
     </div>
   );

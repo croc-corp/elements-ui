@@ -23,9 +23,24 @@ const C = {
 let fonts: Promise<{ name: string; data: Buffer; weight: 400 | 500; style: "normal" }[]> | null = null;
 function loadFonts() {
   fonts ??= Promise.all([
-    readFile(join(process.cwd(), "src/assets/fonts/Geist-Regular.ttf")).then((data) => ({ name: "Geist", data, weight: 400 as const, style: "normal" as const })),
-    readFile(join(process.cwd(), "src/assets/fonts/Geist-Medium.ttf")).then((data) => ({ name: "Geist", data, weight: 500 as const, style: "normal" as const })),
-    readFile(join(process.cwd(), "src/assets/fonts/GeistMono-Regular.ttf")).then((data) => ({ name: "Geist Mono", data, weight: 400 as const, style: "normal" as const })),
+    readFile(join(process.cwd(), "src/assets/fonts/Geist-Regular.ttf")).then((data) => ({
+      name: "Geist",
+      data,
+      weight: 400 as const,
+      style: "normal" as const,
+    })),
+    readFile(join(process.cwd(), "src/assets/fonts/Geist-Medium.ttf")).then((data) => ({
+      name: "Geist",
+      data,
+      weight: 500 as const,
+      style: "normal" as const,
+    })),
+    readFile(join(process.cwd(), "src/assets/fonts/GeistMono-Regular.ttf")).then((data) => ({
+      name: "Geist Mono",
+      data,
+      weight: 400 as const,
+      style: "normal" as const,
+    })),
   ]);
   return fonts;
 }
@@ -77,78 +92,135 @@ export async function renderOg(input: OgInput) {
   const motif = input.motif ?? "default";
   const grid = MOTIFS[motif] ?? MOTIFS.default;
   const titleSize = title.length > 28 ? 64 : title.length > 18 ? 78 : 92;
-  const desc = description && description.length > 150 ? `${description.slice(0, 147).replace(/\s+\S*$/, "")}…` : description;
+  const desc =
+    description && description.length > 150 ? `${description.slice(0, 147).replace(/\s+\S*$/, "")}…` : description;
 
   return new ImageResponse(
-    (
-      <div style={{ width: W, height: H, display: "flex", position: "relative", background: C.bg, color: C.fg, fontFamily: "Geist" }}>
-        {/* rails and hairlines */}
-        <div style={{ position: "absolute", top: 0, bottom: 0, left: RAIL, width: 1, background: C.line }} />
-        <div style={{ position: "absolute", top: 0, bottom: 0, right: RAIL, width: 1, background: C.line }} />
-        <div style={{ position: "absolute", left: 0, right: 0, top: 96, height: 1, background: C.line }} />
-        <div style={{ position: "absolute", left: 0, right: 0, bottom: 84, height: 1, background: C.line }} />
-        {/* hatch in the bottom band */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: 84,
-            backgroundImage: `repeating-linear-gradient(315deg, ${C.dot} 0px, ${C.dot} 1px, transparent 1px, transparent 9px)`,
-          }}
-        />
+    <div
+      style={{
+        width: W,
+        height: H,
+        display: "flex",
+        position: "relative",
+        background: C.bg,
+        color: C.fg,
+        fontFamily: "Geist",
+      }}
+    >
+      {/* rails and hairlines */}
+      <div style={{ position: "absolute", top: 0, bottom: 0, left: RAIL, width: 1, background: C.line }} />
+      <div style={{ position: "absolute", top: 0, bottom: 0, right: RAIL, width: 1, background: C.line }} />
+      <div style={{ position: "absolute", left: 0, right: 0, top: 96, height: 1, background: C.line }} />
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 84, height: 1, background: C.line }} />
+      {/* hatch in the bottom band */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 84,
+          backgroundImage: `repeating-linear-gradient(315deg, ${C.dot} 0px, ${C.dot} 1px, transparent 1px, transparent 9px)`,
+        }}
+      />
 
-        {/* header */}
-        <div style={{ position: "absolute", left: RAIL + 40, right: RAIL + 40, top: 0, height: 96, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <svg width="30" height="31" viewBox="0 0 83 85" fill={C.fg}>
-              {MARK_PATHS.map((d) => (
-                <path key={d.slice(0, 12)} d={d} />
-              ))}
-            </svg>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span style={{ fontSize: 24, fontWeight: 500, letterSpacing: -0.5 }}>Elements</span>
-              <span style={{ fontFamily: "Geist Mono", fontSize: 12, color: C.muted, marginTop: 2 }}>by LumeSec Technologies</span>
-            </div>
+      {/* header */}
+      <div
+        style={{
+          position: "absolute",
+          left: RAIL + 40,
+          right: RAIL + 40,
+          top: 0,
+          height: 96,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <svg width="30" height="31" viewBox="0 0 83 85" fill={C.fg}>
+            {MARK_PATHS.map((d) => (
+              <path key={d.slice(0, 12)} d={d} />
+            ))}
+          </svg>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span style={{ fontSize: 24, fontWeight: 500, letterSpacing: -0.5 }}>Elements</span>
+            <span style={{ fontFamily: "Geist Mono", fontSize: 12, color: C.muted, marginTop: 2 }}>
+              by LumeSec Technologies
+            </span>
           </div>
-          <span style={{ fontFamily: "Geist Mono", fontSize: 16, color: C.muted }}>{new URL(site.url).host}</span>
         </div>
-
-        {/* body */}
-        <div style={{ position: "absolute", left: RAIL + 40, top: 140, width: 720, display: "flex", flexDirection: "column" }}>
-          <span style={{ fontFamily: "Geist Mono", fontSize: 18, color: C.muted }}>{eyebrow}</span>
-          <span style={{ marginTop: 22, fontSize: titleSize, fontWeight: 500, letterSpacing: -titleSize * 0.05, lineHeight: 1 }}>{title}</span>
-          {desc && <span style={{ marginTop: 26, fontSize: 25, lineHeight: 1.45, color: C.muted }}>{desc}</span>}
-        </div>
-
-        {/* dot motif */}
-        <div style={{ position: "absolute", right: RAIL + 48, top: 168, display: "flex", flexDirection: "column", gap: 14 }}>
-          {grid.map((row, j) => (
-            <div key={j} style={{ display: "flex", gap: 14 }}>
-              {row.split("").map((v, i) => (
-                <div
-                  key={i}
-                  style={{
-                    width: 22,
-                    height: 22,
-                    borderRadius: 3,
-                    background: v === "1" ? ((i + j) % 5 === 0 ? C.electric : C.fg) : C.dot,
-                    opacity: v === "1" ? 0.92 : 1,
-                  }}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-
-        {/* footer */}
-        <div style={{ position: "absolute", left: RAIL + 40, right: RAIL + 40, bottom: 0, height: 84, display: "flex", alignItems: "center", justifyContent: "space-between", fontFamily: "Geist Mono", fontSize: 17, color: C.muted }}>
-          <span>{totalComponents} components · shadcn registry · MIT</span>
-          {footer && <span style={{ color: C.fg }}>{footer}</span>}
-        </div>
+        <span style={{ fontFamily: "Geist Mono", fontSize: 16, color: C.muted }}>{new URL(site.url).host}</span>
       </div>
-    ),
+
+      {/* body */}
+      <div
+        style={{
+          position: "absolute",
+          left: RAIL + 40,
+          top: 140,
+          width: 720,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <span style={{ fontFamily: "Geist Mono", fontSize: 18, color: C.muted }}>{eyebrow}</span>
+        <span
+          style={{
+            marginTop: 22,
+            fontSize: titleSize,
+            fontWeight: 500,
+            letterSpacing: -titleSize * 0.05,
+            lineHeight: 1,
+          }}
+        >
+          {title}
+        </span>
+        {desc && <span style={{ marginTop: 26, fontSize: 25, lineHeight: 1.45, color: C.muted }}>{desc}</span>}
+      </div>
+
+      {/* dot motif */}
+      <div
+        style={{ position: "absolute", right: RAIL + 48, top: 168, display: "flex", flexDirection: "column", gap: 14 }}
+      >
+        {grid.map((row, j) => (
+          <div key={j} style={{ display: "flex", gap: 14 }}>
+            {row.split("").map((v, i) => (
+              <div
+                key={i}
+                style={{
+                  width: 22,
+                  height: 22,
+                  borderRadius: 3,
+                  background: v === "1" ? ((i + j) % 5 === 0 ? C.electric : C.fg) : C.dot,
+                  opacity: v === "1" ? 0.92 : 1,
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* footer */}
+      <div
+        style={{
+          position: "absolute",
+          left: RAIL + 40,
+          right: RAIL + 40,
+          bottom: 0,
+          height: 84,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          fontFamily: "Geist Mono",
+          fontSize: 17,
+          color: C.muted,
+        }}
+      >
+        <span>{totalComponents} components · shadcn registry · MIT</span>
+        {footer && <span style={{ color: C.fg }}>{footer}</span>}
+      </div>
+    </div>,
     { width: W, height: H, fonts: await loadFonts() },
   );
 }

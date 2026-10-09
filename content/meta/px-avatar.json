@@ -2,10 +2,30 @@
   "kind": "react",
   "summary": "Avatar with initials on a pixel field coloured from the name, a status dot that pulses when online and a hover ripple.",
   "props": [
-    { "name": "name", "type": "string", "default": "\"Guest\"", "description": "Source of the initials (first letters of the first two words), the colour and the accessible name. An empty or blank name shows \"Guest\"." },
-    { "name": "size", "type": "number", "default": "40", "description": "Size of the avatar in pixels. The canvas is 6px larger, so the online pulse has room." },
-    { "name": "status", "type": "\"online\" | \"away\" | \"busy\" | \"offline\"", "default": "-", "description": "Adds a coloured dot in the lower right corner; `online` pulses." },
-    { "name": "shape", "type": "\"circle\" | \"square\"", "default": "\"circle\"", "description": "`square` gives rounded-square corners." }
+    {
+      "name": "name",
+      "type": "string",
+      "default": "\"Guest\"",
+      "description": "Source of the initials (first letters of the first two words), the colour and the accessible name. An empty or blank name shows \"Guest\"."
+    },
+    {
+      "name": "size",
+      "type": "number",
+      "default": "40",
+      "description": "Size of the avatar in pixels. The canvas is 6px larger, so the online pulse has room."
+    },
+    {
+      "name": "status",
+      "type": "\"online\" | \"away\" | \"busy\" | \"offline\"",
+      "default": "-",
+      "description": "Adds a coloured dot in the lower right corner; `online` pulses."
+    },
+    {
+      "name": "shape",
+      "type": "\"circle\" | \"square\"",
+      "default": "\"circle\"",
+      "description": "`square` gives rounded-square corners."
+    }
   ],
   "extends": "span",
   "ref": { "type": "HTMLSpanElement", "methods": [] },

@@ -1,0 +1,28 @@
+# The site as one container, built from this checkout. The production deployment builds the `production`
+# branch with this file (see RELEASING.md); it works the same for self-hosting:
+#
+#   NEXT_PUBLIC_SITE_URL=https://elements.example.com docker compose up -d --build
+#
+# Put a reverse proxy with TLS in front. The port is published on 127.0.0.1 by default, so only a proxy on the
+# same host can reach it; set BIND_ADDRESS and HOST_PORT when the proxy runs elsewhere, and keep the port closed
+# to everyone else, because the rate limits trust the X-Forwarded-For header that the proxy sets.
+services:
+  elements:
+    build:
+      context: .
+      args:
+        # compiled into the bundles and the registry, so it is a build argument as well as a runtime variable
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?Set NEXT_PUBLIC_SITE_URL to the public URL of the site}
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${HOST_PORT:-3000}:3000"
+    environment:
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+      # optional: a Postgres connection string turns on the anonymous statistics
+      DATABASE_URL: ${DATABASE_URL:-}
+      DATABASE_POOL_MAX: ${DATABASE_POOL_MAX:-}
+      # optional: proxies in front of the app outside the private ranges, comma-separated
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-}

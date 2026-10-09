@@ -410,14 +410,14 @@ export function GeoIp({
               if (invalid) setInvalid(false);
             }}
             onKeyDown={handleKeyDown}
-            className="h-9 min-w-0 flex-1 rounded-lg border border-input bg-background px-3 font-mono text-[13px] text-foreground tabular-nums outline-none transition-[border-color,box-shadow] duration-200 placeholder:font-sans placeholder:text-muted-foreground focus-visible:border-[color-mix(in_srgb,var(--lumesec)_65%,var(--border))] focus-visible:ring-[3px] focus-visible:ring-lumesec/14 disabled:cursor-not-allowed aria-invalid:border-[color-mix(in_srgb,var(--destructive)_65%,var(--border))] aria-invalid:ring-[3px] aria-invalid:ring-destructive/12 motion-reduce:transition-none"
+            className="h-9 min-w-0 flex-1 rounded-lg border border-input bg-background px-3 font-mono text-[13px] text-foreground tabular-nums transition-[border-color,box-shadow] duration-200 outline-none placeholder:font-sans placeholder:text-muted-foreground focus-visible:border-[color-mix(in_srgb,var(--lumesec)_65%,var(--border))] focus-visible:ring-[3px] focus-visible:ring-lumesec/14 disabled:cursor-not-allowed aria-invalid:border-[color-mix(in_srgb,var(--destructive)_65%,var(--border))] aria-invalid:ring-[3px] aria-invalid:ring-destructive/12 motion-reduce:transition-none"
           />
           <button
             type="button"
             disabled={disabled}
             aria-busy={busy || undefined}
             onClick={() => lookup()}
-            className="group/button inline-flex h-9 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-card px-3 font-[inherit] text-[13px] font-medium text-foreground outline-none transition-[border-color] duration-200 hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec disabled:cursor-not-allowed aria-busy:cursor-progress aria-busy:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))]"
+            className="group/button inline-flex h-9 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border border-border bg-card px-3 font-[inherit] text-[13px] font-medium text-foreground transition-[border-color] duration-200 outline-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid disabled:cursor-not-allowed aria-busy:cursor-progress aria-busy:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))]"
           >
             <svg
               viewBox="0 0 16 16"
@@ -456,7 +456,11 @@ export function GeoIp({
             <span
               className={cn(
                 "min-w-0 flex-1 text-[14px] leading-5",
-                state === "result" ? "font-medium text-foreground" : state === "empty" ? "text-destructive" : "text-muted-foreground",
+                state === "result"
+                  ? "font-medium text-foreground"
+                  : state === "empty"
+                    ? "text-destructive"
+                    : "text-muted-foreground",
               )}
             >
               <RollText text={placeText} className={TRUNCATE} />
@@ -629,7 +633,14 @@ const optionalText = (value: unknown) => (typeof value === "string" && value.tri
 
 /* Demo resolver ------------------------------------------------------------------------------------ */
 
-const DEMO_NETWORKS = ["Example Transit", "Example Hosting", "Example Broadband", "Example Mobile", "Example Fibre", "Example Cloud"];
+const DEMO_NETWORKS = [
+  "Example Transit",
+  "Example Hosting",
+  "Example Broadband",
+  "Example Mobile",
+  "Example Fibre",
+  "Example Cloud",
+];
 
 /**
  * Invents a location for demos: a hash of the address picks a demo city, the point lands 5 to 40 km from it, the
@@ -884,7 +895,8 @@ function layoutMap(engine: Engine, width: number, height: number) {
 }
 
 function startHunt(engine: Engine, request: number, seed: string, now: number, reduced: boolean) {
-  const shown = engine.alpha > 0.5 && (engine.mode === "locked" || engine.mode === "hunting" || engine.mode === "homing");
+  const shown =
+    engine.alpha > 0.5 && (engine.mode === "locked" || engine.mode === "hunting" || engine.mode === "homing");
   engine.requestId = request;
   engine.random = createRandom(seed);
   engine.target = null;
@@ -954,7 +966,14 @@ function lock(engine: Engine, now: number, animate: boolean) {
   engine.lockAt = now;
   engine.pingAt = now;
   const ink = engine.ink;
-  if (ink) engine.sparks.add(target.x + engine.fxX, target.y + engine.fxY, SPARK_COUNT, [ink.accent, ink.hot, ink.soft], SPARK_OPTIONS);
+  if (ink)
+    engine.sparks.add(
+      target.x + engine.fxX,
+      target.y + engine.fxY,
+      SPARK_COUNT,
+      [ink.accent, ink.hot, ink.soft],
+      SPARK_OPTIONS,
+    );
 }
 
 function hopTo(engine: Engine, x: number, y: number, index: number, now: number) {
@@ -1058,7 +1077,10 @@ function advance(engine: Engine, now: number, delta: number, reduced: boolean) {
       springStep(engine.x, target.x, delta);
       springStep(engine.y, target.y, delta);
     }
-    if (engine.mode === "homing" && Math.hypot(engine.x.position - target.x, engine.y.position - target.y) < LOCK_DISTANCE) {
+    if (
+      engine.mode === "homing" &&
+      Math.hypot(engine.x.position - target.x, engine.y.position - target.y) < LOCK_DISTANCE
+    ) {
       lock(engine, now, !reduced);
       locked = true;
     }
@@ -1075,7 +1097,8 @@ function advance(engine: Engine, now: number, delta: number, reduced: boolean) {
   return locked;
 }
 
-const settled = (spring: Spring, target: number) => Math.abs(spring.position - target) < 0.01 && Math.abs(spring.velocity) < 0.05;
+const settled = (spring: Spring, target: number) =>
+  Math.abs(spring.position - target) < 0.01 && Math.abs(spring.velocity) < 0.05;
 
 function isAnimating(engine: Engine, now: number) {
   if (engine.mode === "hunting" || engine.mode === "homing" || engine.mode === "failing") return true;
@@ -1137,7 +1160,10 @@ function drawAccuracyRing(context: CanvasRenderingContext2D, engine: Engine, ink
   // equirectangular: degrees of latitude are square, degrees of longitude shrink with cos(lat)
   const pxPerDegree = projection.scale * DEG;
   const radiusY = Math.max(RING_MIN_PX, (ring.km / KM_PER_DEGREE) * pxPerDegree);
-  const radiusX = Math.max(RING_MIN_PX, ((ring.km / KM_PER_DEGREE) * pxPerDegree) / Math.max(0.2, Math.cos(ring.lat * DEG)));
+  const radiusX = Math.max(
+    RING_MIN_PX,
+    ((ring.km / KM_PER_DEGREE) * pxPerDegree) / Math.max(0.2, Math.cos(ring.lat * DEG)),
+  );
   const count = clamp(Math.round((TAU * (radiusX + radiusY)) / 2 / RING_SPACING), 10, 180);
   context.fillStyle = rgba(ink.accent);
   for (let k = 0; k < count; k++) {
@@ -1148,7 +1174,12 @@ function drawAccuracyRing(context: CanvasRenderingContext2D, engine: Engine, ink
     if (alpha < 0.02) continue;
     const angle = share * TAU;
     context.globalAlpha = alpha;
-    context.fillRect(cx + Math.sin(angle) * radiusX - RING_DOT / 2, cy - Math.cos(angle) * radiusY - RING_DOT / 2, RING_DOT, RING_DOT);
+    context.fillRect(
+      cx + Math.sin(angle) * radiusX - RING_DOT / 2,
+      cy - Math.cos(angle) * radiusY - RING_DOT / 2,
+      RING_DOT,
+      RING_DOT,
+    );
   }
   context.globalAlpha = 1;
 }
@@ -1163,7 +1194,9 @@ function drawOverlay(surface: CanvasSurface, engine: Engine, now: number) {
   const failing = engine.mode === "failing";
   const failAge = now - engine.failAt;
   const alpha = failing ? engine.alpha * (1 - smoothstep(100, FAIL_MS, failAge)) : engine.alpha;
-  const offset = failing ? SHAKE_PX * Math.sin((failAge / 1000) * TAU * SHAKE_HZ) * (1 - smoothstep(0, SHAKE_MS, failAge)) : 0;
+  const offset = failing
+    ? SHAKE_PX * Math.sin((failAge / 1000) * TAU * SHAKE_HZ) * (1 - smoothstep(0, SHAKE_MS, failAge))
+    : 0;
   const cx = engine.x.position + offset;
   const cy = engine.y.position;
   const size = Math.max(2, engine.bracket.position);

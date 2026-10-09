@@ -2,12 +2,19 @@
   "summary": "Weekly usage shown as a pixel battery; spending knocks cells loose and resetting runs current along the cable until it is full.",
   "attributes": [],
   "events": [
-    { "name": "use", "detail": "{ left: number }", "description": "Fires after usage is spent. `left` is the remaining fraction from 0 to 1." },
+    {
+      "name": "use",
+      "detail": "{ left: number }",
+      "description": "Fires after usage is spent. `left` is the remaining fraction from 0 to 1."
+    },
     { "name": "full", "detail": "{}", "description": "Fires when a reset finishes and the battery is full." }
   ],
   "methods": [
     { "signature": "use()", "description": "Spends 15% and fires `use`. Ignored while resetting or when empty." },
-    { "signature": "charge()", "description": "Refills the battery over about 2.4 seconds, then fires `full`. Ignored when already full or resetting." }
+    {
+      "signature": "charge()",
+      "description": "Refills the battery over about 2.4 seconds, then fires `full`. Ignored when already full or resetting."
+    }
   ],
   "properties": [],
   "keyboard": [],

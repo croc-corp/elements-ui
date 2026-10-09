@@ -83,7 +83,11 @@ export function PxAccordion({
         const headerId = `${baseId}-header-${index}`;
         const panelId = `${baseId}-panel-${index}`;
         return (
-          <div key={itemValue} data-state={isOpen ? "open" : "closed"} className="group border-b border-border first:border-t">
+          <div
+            key={itemValue}
+            data-state={isOpen ? "open" : "closed"}
+            className="group border-b border-border first:border-t"
+          >
             <h3 className="m-0">
               <button
                 ref={(node) => {
@@ -93,13 +97,15 @@ export function PxAccordion({
                 type="button"
                 aria-expanded={isOpen}
                 aria-controls={panelId}
-                className="flex w-full cursor-pointer select-none items-center gap-3 border-0 bg-transparent px-1 py-3.5 text-left text-[14px] leading-normal font-semibold outline-none hover:text-lumesec focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+                className="flex w-full cursor-pointer items-center gap-3 border-0 bg-transparent px-1 py-3.5 text-left text-[14px] leading-normal font-semibold outline-none select-none hover:text-lumesec focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
                 onClick={() => toggle(itemValue)}
                 onKeyDown={(event) => onKeyDown(event, index)}
               >
                 <PlusMinus open={isOpen} />
                 <span>{item.title}</span>
-                {item.summary && <span className="ml-auto text-[12px] font-normal text-muted-foreground">{item.summary}</span>}
+                {item.summary && (
+                  <span className="ml-auto text-[12px] font-normal text-muted-foreground">{item.summary}</span>
+                )}
               </button>
             </h3>
             <div
@@ -110,7 +116,7 @@ export function PxAccordion({
               className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[350ms] ease-[cubic-bezier(.2,.8,.2,1)] group-data-[state=open]:grid-rows-[1fr] motion-reduce:transition-none"
             >
               <div className="overflow-hidden">
-                <div className="relative mb-4 ml-1.5 -translate-y-1 pl-5 text-[13.5px] leading-[1.6] text-[color-mix(in_srgb,var(--foreground)_82%,var(--muted-foreground))] opacity-0 transition-[opacity,translate] duration-300 ease-[ease] group-data-[state=open]:translate-y-0 group-data-[state=open]:opacity-100 group-data-[state=open]:delay-[80ms] motion-reduce:transition-none before:absolute before:top-1 before:bottom-1 before:left-0 before:w-0.5 before:bg-[image:radial-gradient(var(--lumesec)_1px,transparent_1.4px)] before:bg-[length:3px_4px] before:bg-repeat-y before:content-['']">
+                <div className="relative mb-4 ml-1.5 -translate-y-1 pl-5 text-[13.5px] leading-[1.6] text-[color-mix(in_srgb,var(--foreground)_82%,var(--muted-foreground))] opacity-0 transition-[opacity,translate] duration-300 ease-[ease] group-data-[state=open]:translate-y-0 group-data-[state=open]:opacity-100 group-data-[state=open]:delay-[80ms] before:absolute before:top-1 before:bottom-1 before:left-0 before:w-0.5 before:bg-[image:radial-gradient(var(--lumesec)_1px,transparent_1.4px)] before:bg-[length:3px_4px] before:bg-repeat-y before:content-[''] motion-reduce:transition-none">
                   {item.content}
                 </div>
               </div>
@@ -138,7 +144,9 @@ function PlusMinus({ open }: { open: boolean }) {
   const progress = React.useRef(open ? 1 : 0);
   const { ref, redraw } = usePixelCanvas(({ context, palette, delta, clear }) => {
     const target = open ? 1 : 0;
-    progress.current = prefersReducedMotion() ? target : progress.current + clamp(target - progress.current, -delta * 5, delta * 5);
+    progress.current = prefersReducedMotion()
+      ? target
+      : progress.current + clamp(target - progress.current, -delta * 5, delta * 5);
     const v = progress.current;
     clear();
     context.fillStyle = rgba(mixRgb(palette.foreground, palette.accent, v));

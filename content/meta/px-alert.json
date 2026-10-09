@@ -2,13 +2,38 @@
   "kind": "react",
   "summary": "Inline alert in four tones with a pixel icon and a glowing stripe; dismissing scatters the stripe and collapses the alert.",
   "props": [
-    { "name": "open", "type": "boolean", "default": "-", "description": "Controlled visibility. Use with `onOpenChange`; turning it off plays the dismiss animation before the alert hides." },
-    { "name": "defaultOpen", "type": "boolean", "default": "true", "description": "Initial visibility when uncontrolled." },
-    { "name": "type", "type": "\"info\" | \"success\" | \"warning\" | \"error\"", "default": "\"info\"", "description": "Colour, icon and ARIA role." },
-    { "name": "heading", "type": "React.ReactNode", "default": "-", "description": "Bold title above the message; left out when empty." },
+    {
+      "name": "open",
+      "type": "boolean",
+      "default": "-",
+      "description": "Controlled visibility. Use with `onOpenChange`; turning it off plays the dismiss animation before the alert hides."
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "default": "true",
+      "description": "Initial visibility when uncontrolled."
+    },
+    {
+      "name": "type",
+      "type": "\"info\" | \"success\" | \"warning\" | \"error\"",
+      "default": "\"info\"",
+      "description": "Colour, icon and ARIA role."
+    },
+    {
+      "name": "heading",
+      "type": "React.ReactNode",
+      "default": "-",
+      "description": "Bold title above the message; left out when empty."
+    },
     { "name": "children", "type": "React.ReactNode", "default": "-", "description": "The message." },
     { "name": "dismissible", "type": "boolean", "default": "false", "description": "Shows a dismiss button." },
-    { "name": "onOpenChange", "type": "(open: boolean) => void", "default": "-", "description": "Called with `false` when the dismiss button is pressed." }
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "default": "-",
+      "description": "Called with `false` when the dismiss button is pressed."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -26,10 +51,25 @@
     "Uncontrolled alerts stay hidden after dismissal; control `open` to show one again.",
     "The root carries `data-state=\"open\"` or `data-state=\"closed\"` and `data-type`."
   ],
-  "tokens": ["--lumesec", "--lumesec-shine", "--lumesec-success", "--lumesec-warning", "--destructive", "--border", "--card", "--foreground", "--muted-foreground"],
+  "tokens": [
+    "--lumesec",
+    "--lumesec-shine",
+    "--lumesec-success",
+    "--lumesec-warning",
+    "--destructive",
+    "--border",
+    "--card",
+    "--foreground",
+    "--muted-foreground"
+  ],
   "usage": "import { PxAlert } from \"@/components/lumesec/px-alert\";\n\nexport function Example() {\n  return (\n    <PxAlert type=\"warning\" heading=\"Usage at 85%\" dismissible>\n      You’ve used most of this week’s limit.\n    </PxAlert>\n  );\n}\n",
   "playground": {
-    "props": { "type": "warning", "heading": "Usage at 85%", "dismissible": true, "children": "You’ve used most of this week’s limit." },
+    "props": {
+      "type": "warning",
+      "heading": "Usage at 85%",
+      "dismissible": true,
+      "children": "You’ve used most of this week’s limit."
+    },
     "controls": [
       { "name": "type", "kind": "enum", "options": ["info", "success", "warning", "error"], "default": "warning" },
       { "name": "heading", "kind": "string", "options": null, "default": "Usage at 85%" },

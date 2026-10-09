@@ -20,10 +20,5 @@ export interface PxStorageProps extends Omit<LumesecElementProps<PxStorageElemen
  * @see https://elements.lumesec.ai/components/pixel-lab/storage
  */
 export function PxStorage({ onSelect, ...props }: PxStorageProps) {
-  return useLumesecElement(
-    "px-storage",
-    props,
-    {},
-    { "select": onSelect },
-  );
+  return useLumesecElement("px-storage", props, {}, { select: onSelect });
 }

@@ -22,10 +22,5 @@ export interface PxPlayerProps extends Omit<LumesecElementProps<PxPlayerElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/player
  */
 export function PxPlayer({ onPlay, onPause, ...props }: PxPlayerProps) {
-  return useLumesecElement(
-    "px-player",
-    props,
-    {},
-    { "play": onPlay, "pause": onPause },
-  );
+  return useLumesecElement("px-player", props, {}, { play: onPlay, pause: onPause });
 }

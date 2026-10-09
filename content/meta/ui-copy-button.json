@@ -2,10 +2,25 @@
   "kind": "react",
   "summary": "Copy-to-clipboard button whose icon turns into a drawn check as the label rolls to \"Copied\"; it says so when the browser refuses.",
   "props": [
-    { "name": "text", "type": "string", "default": "\"\"", "description": "Text written to the clipboard. Read on each click." },
+    {
+      "name": "text",
+      "type": "string",
+      "default": "\"\"",
+      "description": "Text written to the clipboard. Read on each click."
+    },
     { "name": "label", "type": "string", "default": "\"Copy\"", "description": "Idle label." },
-    { "name": "doneLabel", "type": "string", "default": "\"Copied\"", "description": "Label shown for 1.8 s after a successful copy." },
-    { "name": "onCopy", "type": "(ok: boolean, text: string) => void", "default": "-", "description": "Called after each copy attempt; `ok` is false when the clipboard write was rejected." }
+    {
+      "name": "doneLabel",
+      "type": "string",
+      "default": "\"Copied\"",
+      "description": "Label shown for 1.8 s after a successful copy."
+    },
+    {
+      "name": "onCopy",
+      "type": "(ok: boolean, text: string) => void",
+      "default": "-",
+      "description": "Called after each copy attempt; `ok` is false when the clipboard write was rejected."
+    }
   ],
   "extends": "button",
   "ref": { "type": "HTMLButtonElement", "methods": [] },
@@ -23,7 +38,16 @@
     "The button keeps the width of its longest label, so it does not change size as the label rolls.",
     "`onCopy` replaces the native clipboard `copy` event handler of the same name."
   ],
-  "tokens": ["--card", "--muted", "--border", "--foreground", "--lumesec-success", "--destructive", "--lumesec", "--lumesec-glint"],
+  "tokens": [
+    "--card",
+    "--muted",
+    "--border",
+    "--foreground",
+    "--lumesec-success",
+    "--destructive",
+    "--lumesec",
+    "--lumesec-glint"
+  ],
   "usage": "import { UiCopyButton } from \"@/components/lumesec/ui-copy-button\";\n\nexport function Example() {\n  return <UiCopyButton text=\"npx shadcn@latest add @lumesec/ui-copy-button\" />;\n}\n",
   "playground": {
     "props": { "text": "npx shadcn@latest add @lumesec/ui-copy-button" },

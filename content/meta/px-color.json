@@ -2,10 +2,17 @@
   "summary": "Colour picker made of pixel cells with a fisheye under the pointer; a new hue ripples across the grid from where you clicked.",
   "attributes": [],
   "events": [
-    { "name": "change", "detail": "{ hex: string }", "description": "Fires when the selected cell or the hue changes, with the colour as lowercase `#rrggbb`." }
+    {
+      "name": "change",
+      "detail": "{ hex: string }",
+      "description": "Fires when the selected cell or the hue changes, with the colour as lowercase `#rrggbb`."
+    }
   ],
   "methods": [
-    { "signature": "setHue(hue: number)", "description": "Sets the hue in degrees (rounded and wrapped to 0 to 359), ripples it across the grid and fires `change`. A value that is not a finite number is ignored." }
+    {
+      "signature": "setHue(hue: number)",
+      "description": "Sets the hue in degrees (rounded and wrapped to 0 to 359), ripples it across the grid and fires `change`. A value that is not a finite number is ignored."
+    }
   ],
   "properties": [
     { "name": "hex", "type": "string", "readonly": true, "description": "Current colour as lowercase `#rrggbb`." }

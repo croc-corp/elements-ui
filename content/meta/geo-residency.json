@@ -114,10 +114,7 @@
       {
         "name": "focus",
         "kind": "enum",
-        "options": [
-          "zone",
-          "world"
-        ],
+        "options": ["zone", "world"],
         "default": "zone"
       }
     ]

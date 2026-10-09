@@ -2,20 +2,61 @@
   "kind": "react",
   "summary": "Context-window meter that fills a pixel strip behind a glowing front, turns amber at 80% and red at 95%, and animates compaction.",
   "props": [
-    { "name": "value", "type": "number", "default": "-", "description": "Controlled share of the context window in percent, clamped to 0–100. The strip animates to each new level. Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "number", "default": "0", "description": "Initial percentage when uncontrolled." },
-    { "name": "capacity", "type": "number", "default": "200000", "description": "Window size in tokens, used only for the \"used / total\" readout, which is shown in thousands." },
-    { "name": "label", "type": "string", "default": "\"Context\"", "description": "Caption before the percentage, and the meter's accessible name." },
-    { "name": "onValueChange", "type": "(value: number) => void", "default": "-", "description": "Called with the new percentage when `add()` or `compact()` changes it." },
-    { "name": "onCompact", "type": "(from: number, to: number) => void", "default": "-", "description": "Called when `compact()` runs, with the percentage before and after." },
-    { "name": "ref", "type": "React.Ref<UiContextMeterHandle>", "default": "-", "description": "Exposes `add()` and `compact()`." }
+    {
+      "name": "value",
+      "type": "number",
+      "default": "-",
+      "description": "Controlled share of the context window in percent, clamped to 0–100. The strip animates to each new level. Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "number",
+      "default": "0",
+      "description": "Initial percentage when uncontrolled."
+    },
+    {
+      "name": "capacity",
+      "type": "number",
+      "default": "200000",
+      "description": "Window size in tokens, used only for the \"used / total\" readout, which is shown in thousands."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Context\"",
+      "description": "Caption before the percentage, and the meter's accessible name."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: number) => void",
+      "default": "-",
+      "description": "Called with the new percentage when `add()` or `compact()` changes it."
+    },
+    {
+      "name": "onCompact",
+      "type": "(from: number, to: number) => void",
+      "default": "-",
+      "description": "Called when `compact()` runs, with the percentage before and after."
+    },
+    {
+      "name": "ref",
+      "type": "React.Ref<UiContextMeterHandle>",
+      "default": "-",
+      "description": "Exposes `add()` and `compact()`."
+    }
   ],
   "extends": "div",
   "ref": {
     "type": "UiContextMeterHandle",
     "methods": [
-      { "signature": "add(percent: number): void", "description": "Adds `percent` percentage points (negative to subtract), clamped to 0–100." },
-      { "signature": "compact(): void", "description": "Drops usage to 28% of its current value (at least 12%), runs a bright sweep and shows \"Compacting…\" for 1.5 s. Does nothing at 15% or below." }
+      {
+        "signature": "add(percent: number): void",
+        "description": "Adds `percent` percentage points (negative to subtract), clamped to 0–100."
+      },
+      {
+        "signature": "compact(): void",
+        "description": "Drops usage to 28% of its current value (at least 12%), runs a bright sweep and shows \"Compacting…\" for 1.5 s. Does nothing at 15% or below."
+      }
     ]
   },
   "subcomponents": [],
@@ -31,7 +72,14 @@
     "The root carries `data-zone` set to `ok`, `warn` (80% and up) or `full` (95% and up), which can be used for styling.",
     "The strip is 18 px tall and fills the available width. Its colours follow the theme and are re-read when it changes."
   ],
-  "tokens": ["--lumesec", "--lumesec-glint", "--lumesec-warning", "--destructive", "--foreground", "--muted-foreground"],
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--lumesec-warning",
+    "--destructive",
+    "--foreground",
+    "--muted-foreground"
+  ],
   "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { UiContextMeter, type UiContextMeterHandle } from \"@/components/lumesec/ui-context-meter\";\n\nexport function Example() {\n  const meter = React.useRef<UiContextMeterHandle>(null);\n  return (\n    <div className=\"grid gap-3\">\n      <UiContextMeter ref={meter} defaultValue={46} capacity={200000} />\n      <button type=\"button\" onClick={() => meter.current?.compact()}>\n        Compact\n      </button>\n    </div>\n  );\n}\n",
   "playground": {
     "props": { "defaultValue": 46, "capacity": 200000 },

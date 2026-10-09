@@ -159,13 +159,15 @@ export function GeoMiniMap({
   const now = useNow(60_000, open && zone !== null);
   const localTime = zone && now !== null ? formatZonedTime(zone, now) : null;
   const utcOffset = zone && now !== null ? formatUtcOffset(utcOffsetMinutes(zone, now)) : null;
-  const distance = from && point && Number.isFinite(from.lat) && Number.isFinite(from.lon) ? distanceKm(from, point) : null;
+  const distance =
+    from && point && Number.isFinite(from.lat) && Number.isFinite(from.lon) ? distanceKm(from, point) : null;
   const fromLabel = from?.label?.trim() ? `From ${from.label.trim()}` : "Distance";
 
   const accessibleName = ariaLabel ?? (point ? `${title ?? "Location"}, ${coordinates}` : (title ?? "Location"));
   const describedBy =
-    [ariaDescribedBy, detail ? detailId : null, zone || distance !== null ? readoutId : null].filter(Boolean).join(" ") ||
-    undefined;
+    [ariaDescribedBy, detail ? detailId : null, zone || distance !== null ? readoutId : null]
+      .filter(Boolean)
+      .join(" ") || undefined;
 
   const triggerRef = React.useRef<HTMLButtonElement | null>(null);
   const pointRef = React.useRef<HTMLSpanElement>(null);
@@ -305,7 +307,10 @@ export function GeoMiniMap({
     if (reduced) {
       // a short fade at full size, the map already zoomed in
       const amount = delta / REDUCED_FADE_SECONDS;
-      card.position = card.target > card.position ? Math.min(card.target, card.position + amount) : Math.max(card.target, card.position - amount);
+      card.position =
+        card.target > card.position
+          ? Math.min(card.target, card.position + amount)
+          : Math.max(card.target, card.position - amount);
       card.velocity = 0;
       dive.position = 1;
       dive.target = 1;
@@ -431,7 +436,7 @@ export function GeoMiniMap({
         aria-describedby={describedBy}
         disabled={disabled}
         className={cn(
-          "group/mini relative inline-flex shrink-0 cursor-pointer overflow-hidden rounded-md border border-border bg-card p-0 align-middle outline-none [-webkit-tap-highlight-color:transparent] [transition:border-color_.2s_ease] hover:border-[color-mix(in_srgb,var(--lumesec)_45%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec disabled:cursor-not-allowed disabled:opacity-50 data-[state=open]:border-[color-mix(in_srgb,var(--lumesec)_60%,var(--border))]",
+          "group/mini relative inline-flex shrink-0 cursor-pointer overflow-hidden rounded-md border border-border bg-card p-0 align-middle outline-none [-webkit-tap-highlight-color:transparent] [transition:border-color_.2s_ease] hover:border-[color-mix(in_srgb,var(--lumesec)_45%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid disabled:cursor-not-allowed disabled:opacity-50 data-[state=open]:border-[color-mix(in_srgb,var(--lumesec)_60%,var(--border))]",
           TONE_CLASSES[tone],
           className,
         )}
@@ -529,7 +534,9 @@ export function GeoMiniMap({
               aria-hidden="true"
               className="absolute bottom-1.5 left-1.5 flex flex-col items-start gap-[3px] rounded-[5px] bg-[color-mix(in_srgb,var(--popover)_86%,transparent)] px-1.5 pt-1 pb-1.5 opacity-0 [transition:opacity_.3s_ease_.12s] group-data-[ready]/popover:opacity-100 motion-reduce:transition-none"
             >
-              <span className="font-mono text-[10px] leading-none text-muted-foreground tabular-nums">{scaleBar.label}</span>
+              <span className="font-mono text-[10px] leading-none text-muted-foreground tabular-nums">
+                {scaleBar.label}
+              </span>
               <span
                 className="block h-[4px] border-x border-b border-[color-mix(in_srgb,var(--foreground)_45%,transparent)]"
                 style={{ width: scaleBar.width }}
@@ -540,7 +547,15 @@ export function GeoMiniMap({
             aria-hidden="true"
             className="absolute top-2 right-2 flex h-5 scale-90 items-center gap-1 rounded-md border border-border bg-popover px-1.5 text-[11px] leading-none font-medium text-foreground opacity-0 [transition:opacity_.18s_ease,transform_.3s_cubic-bezier(.2,1.4,.4,1)] group-data-[pinned]/popover:scale-100 group-data-[pinned]/popover:opacity-100 motion-reduce:transition-none"
           >
-            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" className="size-3 text-lumesec">
+            <svg
+              viewBox="0 0 12 12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="size-3 text-lumesec"
+            >
               <path d="M7.6 1.6 10.4 4.4 8.6 5.2 6.8 7 7 9 3 5 5 5.2 6.8 3.4z" />
               <path d="M4.6 7.4 1.8 10.2" />
             </svg>
@@ -549,18 +564,31 @@ export function GeoMiniMap({
         </span>
         <span className="block px-3 pt-2.5 pb-3">
           {title && (
-            <span className={cn(ROW_CLASS, "truncate text-[13px] leading-5 font-medium text-popover-foreground")}>{title}</span>
+            <span className={cn(ROW_CLASS, "truncate text-[13px] leading-5 font-medium text-popover-foreground")}>
+              {title}
+            </span>
           )}
           {detail && (
-            <span id={detailId} className={cn(ROW_CLASS, "truncate text-[12px] leading-4 text-muted-foreground [transition-delay:35ms]")}>
+            <span
+              id={detailId}
+              className={cn(ROW_CLASS, "truncate text-[12px] leading-4 text-muted-foreground [transition-delay:35ms]")}
+            >
               {detail}
             </span>
           )}
-          <span className={cn(ROW_CLASS, "mt-1 font-mono text-[12px] leading-4 text-muted-foreground tabular-nums [transition-delay:70ms]")}>
+          <span
+            className={cn(
+              ROW_CLASS,
+              "mt-1 font-mono text-[12px] leading-4 text-muted-foreground tabular-nums [transition-delay:70ms]",
+            )}
+          >
             <RollText text={coordinates} />
           </span>
           {(zone || distance !== null) && (
-            <span id={readoutId} className={cn(ROW_CLASS, "mt-2.5 grid gap-1.5 border-t border-border pt-2.5 [transition-delay:105ms]")}>
+            <span
+              id={readoutId}
+              className={cn(ROW_CLASS, "mt-2.5 grid gap-1.5 border-t border-border pt-2.5 [transition-delay:105ms]")}
+            >
               {zone && (
                 <span className="flex items-baseline justify-between gap-3 text-[12px] leading-4">
                   <span className="text-muted-foreground">Local time</span>
@@ -573,7 +601,10 @@ export function GeoMiniMap({
               {distance !== null && (
                 <span className="flex items-baseline justify-between gap-3 text-[12px] leading-4">
                   <span className="min-w-0 truncate text-muted-foreground">{fromLabel}</span>
-                  <RollText text={formatDistance(distance, unit)} className="shrink-0 font-mono text-popover-foreground tabular-nums" />
+                  <RollText
+                    text={formatDistance(distance, unit)}
+                    className="shrink-0 font-mono text-popover-foreground tabular-nums"
+                  />
                 </span>
               )}
             </span>
@@ -811,7 +842,12 @@ function thumbnailPoint(lat: number, lon: number, width: number, height: number)
 /** A 1-2-5 scale bar for the zoomed map at the point's latitude, at most 64 px long. */
 function scaleBarFor(lat: number, zoom: number, unit: "km" | "mi") {
   if (!Number.isFinite(lat)) return null;
-  const projection = createProjection("equirectangular", { width: MAP_WIDTH, height: MAP_HEIGHT, latRange: MAP_LAT_RANGE, zoom });
+  const projection = createProjection("equirectangular", {
+    width: MAP_WIDTH,
+    height: MAP_HEIGHT,
+    latRange: MAP_LAT_RANGE,
+    zoom,
+  });
   const kmPerDegree = 111.195 * Math.cos(clamp(lat, -80, 80) * DEG);
   const pxPerKm = (projection.scale * DEG) / kmPerDegree;
   const pxPerUnit = unit === "mi" ? pxPerKm * 1.609344 : pxPerKm;
@@ -831,7 +867,11 @@ function paintThumbnail(surface: CanvasSurface | null) {
   if (!surface) return;
   const { canvas, context, dpr } = surface;
   // the thumbnail's land is a touch stronger than the map lattice, since its dots are fewer and smaller
-  const color = mixRgb(readColor(canvas, "--muted-foreground", "#71717b"), readColor(canvas, "--card", "#ffffff"), 0.22);
+  const color = mixRgb(
+    readColor(canvas, "--muted-foreground", "#71717b"),
+    readColor(canvas, "--card", "#ffffff"),
+    0.22,
+  );
   const bake = thumbnailBake(surface.width, surface.height, dpr, color);
   context.setTransform(1, 0, 0, 1, 0, 0);
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -954,7 +994,13 @@ function buildScene(key: string, point: LatLon | null, zoom: number): MapScene {
   const country = countryAt(point.lat, point.lon);
   let finalProjection = world;
   for (let k = 1; k <= steps; k++) {
-    const projection = createProjection("equirectangular", { width, height, latRange: MAP_LAT_RANGE, zoom: zooms[k], focus: point });
+    const projection = createProjection("equirectangular", {
+      width,
+      height,
+      latRange: MAP_LAT_RANGE,
+      zoom: zooms[k],
+      focus: point,
+    });
     const lattice = mapLattice(projection, {
       pitch: MAP_PITCH,
       minCoverage: MAP_COVERAGE,
@@ -1093,7 +1139,8 @@ function drawScene(
   const height = MAP_HEIGHT;
   context.clearRect(0, 0, surface.width, surface.height);
   context.save();
-  if (surface.width !== width || surface.height !== height) context.scale(surface.width / width, surface.height / height);
+  if (surface.width !== width || surface.height !== height)
+    context.scale(surface.width / width, surface.height / height);
 
   const z = scene.zoom > 1 ? scene.zoom ** clamp(dive, 0, 1.15) : 1;
   const t = scene.zoom > 1 ? (z - 1) / (scene.zoom - 1) : 0;
@@ -1114,8 +1161,10 @@ function drawScene(
     const previous = k > 0 ? levels[k - 1].zoom : 0;
     const next = k < last ? levels[k + 1].zoom : Infinity;
     if (z <= previous || z >= next) continue;
-    const fadeIn = k > 0 && z < level.zoom ? (logZ - Math.log(previous)) / (Math.log(level.zoom) - Math.log(previous)) : -1;
-    const fadeOut = k < last && z > level.zoom ? (logZ - Math.log(level.zoom)) / (Math.log(next) - Math.log(level.zoom)) : -1;
+    const fadeIn =
+      k > 0 && z < level.zoom ? (logZ - Math.log(previous)) / (Math.log(level.zoom) - Math.log(previous)) : -1;
+    const fadeOut =
+      k < last && z > level.zoom ? (logZ - Math.log(level.zoom)) / (Math.log(next) - Math.log(level.zoom)) : -1;
     const factor = z / level.zoom;
     const size = snapSize(clamp(level.lattice.pitch * factor * 0.5, 1, 2), dpr);
     // one bright sweep: only the final level lights up as it resolves
@@ -1151,7 +1200,10 @@ function drawScene(
   // the coastline comes in with the final level, so the shape of a coast or an island reads at full zoom
   const final = levels[last];
   const previousZoom = last > 0 ? levels[last - 1].zoom : 1;
-  const resolved = last === 0 || z >= final.zoom ? 1 : clamp((logZ - Math.log(previousZoom)) / (Math.log(final.zoom) - Math.log(previousZoom)), 0, 1);
+  const resolved =
+    last === 0 || z >= final.zoom
+      ? 1
+      : clamp((logZ - Math.log(previousZoom)) / (Math.log(final.zoom) - Math.log(previousZoom)), 0, 1);
   const coastAlpha = smoothstep(0.35, 1, resolved);
   if (coastAlpha > 0.01) {
     const factor = z / final.zoom;
@@ -1187,7 +1239,13 @@ function drawScene(
         const value = Math.max(wave, halo);
         if (value < 0.06) continue;
         // the crest starts at the glint and cools to the tone as the ring spreads
-        batches.ring.add(snapCenter(x, size, dpr), snapCenter(y, size, dpr), size, wave * (1 - Math.max(0, ring)) ** 1.5, value);
+        batches.ring.add(
+          snapCenter(x, size, dpr),
+          snapCenter(y, size, dpr),
+          size,
+          wave * (1 - Math.max(0, ring)) ** 1.5,
+          value,
+        );
       }
       batches.ring.flush(context);
     }

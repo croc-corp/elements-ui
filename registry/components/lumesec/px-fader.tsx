@@ -20,10 +20,5 @@ export interface PxFaderProps extends Omit<LumesecElementProps<PxFaderElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/fader
  */
 export function PxFader({ onChange, ...props }: PxFaderProps) {
-  return useLumesecElement(
-    "px-fader",
-    props,
-    {},
-    { "change": onChange },
-  );
+  return useLumesecElement("px-fader", props, {}, { change: onChange });
 }

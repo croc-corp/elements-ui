@@ -2,20 +2,53 @@
   "kind": "react",
   "summary": "Six-digit one-time-code field backed by one real input, so typing, paste and code autofill work; a wrong code shakes and falls away.",
   "props": [
-    { "name": "value", "type": "string", "default": "-", "description": "Controlled digits entered so far. Use with `onValueChange`." },
+    {
+      "name": "value",
+      "type": "string",
+      "default": "-",
+      "description": "Controlled digits entered so far. Use with `onValueChange`."
+    },
     { "name": "defaultValue", "type": "string", "default": "\"\"", "description": "Initial digits when uncontrolled." },
-    { "name": "code", "type": "string", "default": "-", "description": "Expected code. When set, a complete entry is compared with it; when missing, any six digits are valid." },
-    { "name": "hint", "type": "string", "default": "\"Enter the 6-digit code\"", "description": "Message under the boxes until a code is checked, and again after `reset()`." },
+    {
+      "name": "code",
+      "type": "string",
+      "default": "-",
+      "description": "Expected code. When set, a complete entry is compared with it; when missing, any six digits are valid."
+    },
+    {
+      "name": "hint",
+      "type": "string",
+      "default": "\"Enter the 6-digit code\"",
+      "description": "Message under the boxes until a code is checked, and again after `reset()`."
+    },
     { "name": "name", "type": "string", "default": "-", "description": "Form field name; the digits submit under it." },
-    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the boxes and disables the input." },
-    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called with the digits entered so far on every change." },
-    { "name": "onComplete", "type": "(code: string, valid: boolean) => void", "default": "-", "description": "Called when the sixth digit is entered, with the code and whether it matched `code`." }
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Dims the boxes and disables the input."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "default": "-",
+      "description": "Called with the digits entered so far on every change."
+    },
+    {
+      "name": "onComplete",
+      "type": "(code: string, valid: boolean) => void",
+      "default": "-",
+      "description": "Called when the sixth digit is entered, with the code and whether it matched `code`."
+    }
   ],
   "extends": "div",
   "ref": {
     "type": "PxOtpHandle",
     "methods": [
-      { "signature": "reset(): void", "description": "Clears the digits and the result, cancels the pending clear after a wrong code, and shows the hint again." },
+      {
+        "signature": "reset(): void",
+        "description": "Clears the digits and the result, cancels the pending clear after a wrong code, and shows the hint again."
+      },
       { "signature": "focus(): void", "description": "Moves focus into the code input." }
     ]
   },
@@ -37,7 +70,14 @@
     "Non-digits are stripped and input stops at six digits, so a pasted or autofilled \"424 242\" completes. Messages are in English.",
     "The root carries `data-state=\"ok\"` or `data-state=\"error\"` while a result shows."
   ],
-  "tokens": ["--foreground", "--muted-foreground", "--lumesec", "--lumesec-shine", "--lumesec-success", "--destructive"],
+  "tokens": [
+    "--foreground",
+    "--muted-foreground",
+    "--lumesec",
+    "--lumesec-shine",
+    "--lumesec-success",
+    "--destructive"
+  ],
   "usage": "import { PxOtp } from \"@/components/lumesec/px-otp\";\n\nexport function Example() {\n  return (\n    <PxOtp\n      name=\"code\"\n      onComplete={(code, valid) => {\n        if (valid) console.log(\"verify\", code);\n      }}\n    />\n  );\n}\n",
   "playground": {
     "props": { "code": "424242", "hint": "Demo code: 424242" },

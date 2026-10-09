@@ -1,14 +1,26 @@
 {
   "summary": "XP bar with a hot leading edge; when it overflows the bar flashes and the level number bursts into pixels that reassemble as the next level.",
   "attributes": [
-    { "name": "level", "type": "number", "default": "7", "description": "Level, rounded to a whole number of at least 0. Changing it updates the number in place without firing `levelup`." }
+    {
+      "name": "level",
+      "type": "number",
+      "default": "7",
+      "description": "Level, rounded to a whole number of at least 0. Changing it updates the number in place without firing `levelup`."
+    }
   ],
   "events": [
     { "name": "gain", "detail": "{ xp: number }", "description": "Fires on each gain with the amount added." },
-    { "name": "levelup", "detail": "{ level: number }", "description": "Fires when the bar overflows, with the new level." }
+    {
+      "name": "levelup",
+      "detail": "{ level: number }",
+      "description": "Fires when the bar overflows, with the new level."
+    }
   ],
   "methods": [
-    { "signature": "gain(xp: number)", "description": "Adds XP, fires `gain` and animates the bar; overflow carries into the next level. A value that is not a positive number is ignored." }
+    {
+      "signature": "gain(xp: number)",
+      "description": "Adds XP, fires `gain` and animates the bar; overflow carries into the next level. A value that is not a positive number is ignored."
+    }
   ],
   "properties": [],
   "keyboard": [],

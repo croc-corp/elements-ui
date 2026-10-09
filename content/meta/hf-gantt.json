@@ -4,7 +4,11 @@
     { "name": "label", "type": "string", "default": "Q4 roadmap", "description": "Heading text. Observed." }
   ],
   "events": [
-    { "name": "change", "detail": "{ task: string, start: number, end: number }", "description": "Fires when a drag that moved or resized a bar ends, and on each arrow-key move or resize. `task` is the task name; `start` and `end` are day offsets from 5 October 2026, from 0 to 41." }
+    {
+      "name": "change",
+      "detail": "{ task: string, start: number, end: number }",
+      "description": "Fires when a drag that moved or resized a bar ends, and on each arrow-key move or resize. `task` is the task name; `start` and `end` are day offsets from 5 October 2026, from 0 to 41."
+    }
   ],
   "methods": [],
   "properties": [],

@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/px-launch.element";
 /** The `<px-launch>` element, with its properties and methods. */
 export type PxLaunchElement = ElementModule.Launch;
 
-export interface PxLaunchProps extends Omit<LumesecElementProps<PxLaunchElement>, "version" | "onLiftoff" | "onLaunched"> {
+export interface PxLaunchProps extends Omit<
+  LumesecElementProps<PxLaunchElement>,
+  "version" | "onLiftoff" | "onLaunched"
+> {
   /** Version shown in the "Launched · <version> is live" status. Read when the rocket leaves the frame. Default: `v2.14`. */
   version?: string;
   /** Fires when the countdown reaches zero and the rocket lifts off. */
@@ -24,10 +27,5 @@ export interface PxLaunchProps extends Omit<LumesecElementProps<PxLaunchElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/launch
  */
 export function PxLaunch({ version, onLiftoff, onLaunched, ...props }: PxLaunchProps) {
-  return useLumesecElement(
-    "px-launch",
-    props,
-    { "version": version },
-    { "liftoff": onLiftoff, "launched": onLaunched },
-  );
+  return useLumesecElement("px-launch", props, { version: version }, { liftoff: onLiftoff, launched: onLaunched });
 }

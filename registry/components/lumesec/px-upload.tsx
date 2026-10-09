@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/px-upload.element";
 /** The `<px-upload>` element, with its properties and methods. */
 export type PxUploadElement = ElementModule.Upload;
 
-export interface PxUploadProps extends Omit<LumesecElementProps<PxUploadElement>, "limitMb" | "onError" | "onUploaded"> {
+export interface PxUploadProps extends Omit<
+  LumesecElementProps<PxUploadElement>,
+  "limitMb" | "onError" | "onUploaded"
+> {
   /** Size limit in megabytes (1 MB = 1,000,000 bytes); a missing, invalid or non-positive value uses 30. Read each time a file is started. Default: `30`. */
   limitMb?: number;
   /** Fires when a file is over the limit. `size` is in bytes. Does not bubble, so it never reaches the window's global `error` handlers; listen on the element. */
@@ -24,10 +27,5 @@ export interface PxUploadProps extends Omit<LumesecElementProps<PxUploadElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/upload
  */
 export function PxUpload({ limitMb, onError, onUploaded, ...props }: PxUploadProps) {
-  return useLumesecElement(
-    "px-upload",
-    props,
-    { "limit-mb": limitMb },
-    { "error": onError, "uploaded": onUploaded },
-  );
+  return useLumesecElement("px-upload", props, { "limit-mb": limitMb }, { error: onError, uploaded: onUploaded });
 }

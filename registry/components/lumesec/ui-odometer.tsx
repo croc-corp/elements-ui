@@ -172,7 +172,11 @@ export function UiOdometer({
     const on = place < text.length;
     const digit = on ? Number(text[text.length - 1 - place]) : 0;
     wheels.push(
-      <span key={`digit-${place}`} aria-hidden="true" className={cn("h-[1.3em] w-[.62em] overflow-hidden", WIDTH_TRANSITION, !on && "w-0 opacity-0")}>
+      <span
+        key={`digit-${place}`}
+        aria-hidden="true"
+        className={cn("h-[1.3em] w-[.62em] overflow-hidden", WIDTH_TRANSITION, !on && "w-0 opacity-0")}
+      >
         <span
           className="flex flex-col [transition:transform_.6s_cubic-bezier(.3,1.25,.45,1)] motion-reduce:transition-none"
           // higher places start a little later, so a carry ripples leftward
@@ -188,7 +192,11 @@ export function UiOdometer({
     );
     if (place > 0 && place % 3 === 0) {
       wheels.push(
-        <span key={`sep-${place}`} aria-hidden="true" className={cn("w-[.3em] overflow-hidden text-center", WIDTH_TRANSITION, !on && "w-0 opacity-0")}>
+        <span
+          key={`sep-${place}`}
+          aria-hidden="true"
+          className={cn("w-[.3em] overflow-hidden text-center", WIDTH_TRANSITION, !on && "w-0 opacity-0")}
+        >
           ,
         </span>,
       );
@@ -214,7 +222,11 @@ export function UiOdometer({
           onPointerCancel={stopRepeat}
           onClick={(event) => stepByKey(event, -1)}
         >
-          <svg viewBox="0 0 14 14" aria-hidden="true" className="size-3.5 fill-none stroke-current [stroke-linecap:round] [stroke-width:2]">
+          <svg
+            viewBox="0 0 14 14"
+            aria-hidden="true"
+            className="size-3.5 fill-none stroke-current [stroke-width:2] [stroke-linecap:round]"
+          >
             <path d="M3 7h8" />
           </svg>
         </button>
@@ -228,7 +240,7 @@ export function UiOdometer({
           aria-valuemin={min}
           aria-valuemax={max}
           aria-label={label}
-          className="flex h-[1.3em] cursor-ew-resize touch-none items-center rounded-lg px-1.5 text-[32px] font-semibold tracking-[-.01em] text-foreground tabular-nums outline-none select-none [mask-image:linear-gradient(transparent,#000_14%,#000_86%,transparent)] focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+          className="flex h-[1.3em] cursor-ew-resize touch-none items-center rounded-lg [mask-image:linear-gradient(transparent,#000_14%,#000_86%,transparent)] px-1.5 text-[32px] font-semibold tracking-[-.01em] text-foreground tabular-nums outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
           onPointerDown={(event) => {
             if (event.button !== 0) return;
             event.currentTarget.setPointerCapture(event.pointerId);
@@ -267,7 +279,11 @@ export function UiOdometer({
           onPointerCancel={stopRepeat}
           onClick={(event) => stepByKey(event, 1)}
         >
-          <svg viewBox="0 0 14 14" aria-hidden="true" className="size-3.5 fill-none stroke-current [stroke-linecap:round] [stroke-width:2]">
+          <svg
+            viewBox="0 0 14 14"
+            aria-hidden="true"
+            className="size-3.5 fill-none stroke-current [stroke-width:2] [stroke-linecap:round]"
+          >
             <path d="M3 7h8M7 3v8" />
           </svg>
         </button>

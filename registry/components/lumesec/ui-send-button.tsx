@@ -183,7 +183,7 @@ export function UiSendButton({
       className={cn(
         "group relative grid size-10 cursor-pointer place-items-center rounded-full border-0 bg-lumesec p-0 font-[inherit] text-lumesec-foreground outline-none select-none",
         "[transition:background-color_.35s_ease,color_.35s_ease,transform_.2s_cubic-bezier(.2,.8,.2,1),box-shadow_.35s] active:[transform:scale(.9)] disabled:pointer-events-none disabled:opacity-50",
-        "focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
         "data-[state=running]:bg-muted data-[state=running]:text-foreground data-[state=running]:shadow-[inset_0_0_0_1px_var(--border)]",
         className,
       )}
@@ -195,18 +195,21 @@ export function UiSendButton({
       }}
       {...props}
     >
-      <span ref={arrowRef} className="col-start-1 row-start-1 grid place-items-center group-data-[state=running]:opacity-0">
+      <span
+        ref={arrowRef}
+        className="col-start-1 row-start-1 grid place-items-center group-data-[state=running]:opacity-0"
+      >
         <svg
           viewBox="0 0 18 18"
           aria-hidden="true"
-          className="size-[18px] fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:2.2]"
+          className="size-[18px] fill-none stroke-current [stroke-width:2.2] [stroke-linecap:round] [stroke-linejoin:round]"
         >
           <path d="M9 14.5V3.8M4.3 8.3L9 3.6l4.7 4.7" />
         </svg>
       </span>
       <span
         ref={stopRef}
-        className="col-start-1 row-start-1 grid place-items-center opacity-0 [transform:scale(0)] group-data-[state=running]:opacity-100 group-data-[state=running]:[transform:none]"
+        className="col-start-1 row-start-1 grid [transform:scale(0)] place-items-center opacity-0 group-data-[state=running]:[transform:none] group-data-[state=running]:opacity-100"
       >
         <span className="block size-3 rounded-[3px] bg-current" />
       </span>
@@ -224,7 +227,7 @@ export function UiSendButton({
           cy="24"
           r="22"
           className={cn(
-            "origin-[24px_24px] fill-none stroke-lumesec [stroke-dasharray:34_105] [stroke-linecap:round] [stroke-width:2.2]",
+            "origin-[24px_24px] fill-none stroke-lumesec [stroke-width:2.2] [stroke-dasharray:34_105] [stroke-linecap:round]",
             ring !== "idle" && "[stroke-dasharray:139_0] [transition:stroke-dasharray_.35s_cubic-bezier(.3,.7,.3,1)]",
           )}
         />

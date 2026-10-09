@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-knob.element";
 /** The `<hf-knob>` element, with its properties and methods. */
 export type HfKnobElement = ElementModule.HKnob;
 
-export interface HfKnobProps extends Omit<LumesecElementProps<HfKnobElement>, "value" | "min" | "max" | "step" | "unit" | "label" | "name" | "disabled" | "onInput" | "onChange"> {
+export interface HfKnobProps extends Omit<
+  LumesecElementProps<HfKnobElement>,
+  "value" | "min" | "max" | "step" | "unit" | "label" | "name" | "disabled" | "onInput" | "onChange"
+> {
   /** Value, clamped to `min`–`max` and snapped to `step`. Observed: a change moves the knob without events. Also the value a form reset restores. Default: `50`. */
   value?: number;
   /** Lower bound. Observed. Default: `0`. */
@@ -35,11 +38,23 @@ export interface HfKnobProps extends Omit<LumesecElementProps<HfKnobElement>, "v
  * Form-associated rotary knob drawn as a dithered sphere with an arc of lit cells; set it by drag, scroll wheel or arrow keys.
  * @see https://elements.lumesec.ai/components/pixel-hd/knob
  */
-export function HfKnob({ value, min, max, step, unit, label, name, disabled, onInput, onChange, ...props }: HfKnobProps) {
+export function HfKnob({
+  value,
+  min,
+  max,
+  step,
+  unit,
+  label,
+  name,
+  disabled,
+  onInput,
+  onChange,
+  ...props
+}: HfKnobProps) {
   return useLumesecElement(
     "hf-knob",
     props,
-    { "value": value, "min": min, "max": max, "step": step, "unit": unit, "label": label, "name": name, "disabled": disabled },
-    { "input": onInput, "change": onChange },
+    { value: value, min: min, max: max, step: step, unit: unit, label: label, name: name, disabled: disabled },
+    { input: onInput, change: onChange },
   );
 }

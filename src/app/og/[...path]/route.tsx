@@ -10,7 +10,9 @@ export function generateStaticParams() {
     { path: ["home.png"] },
     { path: ["components.png"] },
     { path: ["collections.png"] },
-    ...docsSource.getPages().map((p) => ({ path: p.slugs.length ? ["docs", ...p.slugs.slice(0, -1), `${p.slugs.at(-1)}.png`] : ["docs.png"] })),
+    ...docsSource.getPages().map((p) => ({
+      path: p.slugs.length ? ["docs", ...p.slugs.slice(0, -1), `${p.slugs.at(-1)}.png`] : ["docs.png"],
+    })),
     ...collections.map((c) => ({ path: ["components", `${c.slug}.png`] })),
     ...elements.map((e) => ({ path: ["components", e.collection, `${e.slug}.png`] })),
   ];
@@ -32,18 +34,39 @@ export async function GET(_req: Request, ctx: { params: Promise<{ path: string[]
     });
   }
   if (key === "components") {
-    return renderOg({ eyebrow: `Components · ${totalComponents} live previews`, title: "Every component. Running, not pictured.", description: `${countWord(collections.length, true)} collections in one registry. Every preview is the real element.` });
+    return renderOg({
+      eyebrow: `Components · ${totalComponents} live previews`,
+      title: "Every component. Running, not pictured.",
+      description: `${countWord(collections.length, true)} collections in one registry. Every preview is the real element.`,
+    });
   }
   if (key === "collections") {
-    return renderOg({ eyebrow: "Collections", title: `${countWord(collections.length, true)} collections. One way of moving.`, description: collections.map((c) => c.title).join(" · ") });
+    return renderOg({
+      eyebrow: "Collections",
+      title: `${countWord(collections.length, true)} collections. One way of moving.`,
+      description: collections.map((c) => c.title).join(" · "),
+    });
   }
   if (path[0] === "docs") {
     const page = docsSource.getPage(path.slice(1));
-    if (page) return renderOg({ eyebrow: "Docs", title: page.data.title, description: page.data.description, motif: "default" });
+    if (page)
+      return renderOg({
+        eyebrow: "Docs",
+        title: page.data.title,
+        description: page.data.description,
+        motif: "default",
+      });
   }
   if (path[0] === "components" && path.length === 2) {
     const c = getCollection(path[1]);
-    if (c) return renderOg({ eyebrow: `Collection · ${c.count} components`, title: c.title, description: c.summary, motif: c.slug, footer: c.kind === "react" ? `shadcn add @lumesec/${c.slug}` : `/cdn/${c.slug}.js` });
+    if (c)
+      return renderOg({
+        eyebrow: `Collection · ${c.count} components`,
+        title: c.title,
+        description: c.summary,
+        motif: c.slug,
+        footer: c.kind === "react" ? `shadcn add @lumesec/${c.slug}` : `/cdn/${c.slug}.js`,
+      });
   }
   if (path[0] === "components" && path.length === 3) {
     const e = getElementByPath(path[1], path[2]);

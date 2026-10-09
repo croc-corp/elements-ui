@@ -2,10 +2,30 @@
   "kind": "react",
   "summary": "Pixel progress bar: determinate with a hot leading edge and a green sweep at 100%, or an indeterminate comet when there is no value.",
   "props": [
-    { "name": "value", "type": "number | null", "default": "-", "description": "Progress from 0 to 100, clamped; the bar glides to it. `null` or leaving it out shows the indeterminate comet." },
-    { "name": "label", "type": "string", "default": "\"Uploading\"", "description": "Text above the bar, and the bar's accessible name." },
-    { "name": "doneLabel", "type": "string", "default": "\"Complete\"", "description": "Text shown once `value` reaches 100." },
-    { "name": "onComplete", "type": "() => void", "default": "-", "description": "Called when `value` reaches 100, including on mount when it starts there, and again each time it returns to 100." }
+    {
+      "name": "value",
+      "type": "number | null",
+      "default": "-",
+      "description": "Progress from 0 to 100, clamped; the bar glides to it. `null` or leaving it out shows the indeterminate comet."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Uploading\"",
+      "description": "Text above the bar, and the bar's accessible name."
+    },
+    {
+      "name": "doneLabel",
+      "type": "string",
+      "default": "\"Complete\"",
+      "description": "Text shown once `value` reaches 100."
+    },
+    {
+      "name": "onComplete",
+      "type": "() => void",
+      "default": "-",
+      "description": "Called when `value` reaches 100, including on mount when it starts there, and again each time it returns to 100."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },

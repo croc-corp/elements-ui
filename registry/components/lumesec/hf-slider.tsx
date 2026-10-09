@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-slider.element";
 /** The `<hf-slider>` element, with its properties and methods. */
 export type HfSliderElement = ElementModule.HSlider;
 
-export interface HfSliderProps extends Omit<LumesecElementProps<HfSliderElement>, "value" | "min" | "max" | "step" | "prefix" | "unit" | "label" | "name" | "disabled" | "onInput" | "onChange"> {
+export interface HfSliderProps extends Omit<
+  LumesecElementProps<HfSliderElement>,
+  "value" | "min" | "max" | "step" | "prefix" | "unit" | "label" | "name" | "disabled" | "onInput" | "onChange"
+> {
   /** Current value, clamped to `min`–`max` and snapped to `step`. Defaults to `min`. Observed and reflected back with the snapped value; changes from code fire no events. */
   value?: number;
   /** Lower bound. Observed. Default: `0`. */
@@ -37,11 +40,34 @@ export interface HfSliderProps extends Omit<LumesecElementProps<HfSliderElement>
  * Form-associated range slider with a dithered fill and a lens for a thumb that magnifies the dots beneath it.
  * @see https://elements.lumesec.ai/components/pixel-hd/slider
  */
-export function HfSlider({ value, min, max, step, prefix, unit, label, name, disabled, onInput, onChange, ...props }: HfSliderProps) {
+export function HfSlider({
+  value,
+  min,
+  max,
+  step,
+  prefix,
+  unit,
+  label,
+  name,
+  disabled,
+  onInput,
+  onChange,
+  ...props
+}: HfSliderProps) {
   return useLumesecElement(
     "hf-slider",
     props,
-    { "value": value, "min": min, "max": max, "step": step, "prefix": prefix, "unit": unit, "label": label, "name": name, "disabled": disabled },
-    { "input": onInput, "change": onChange },
+    {
+      value: value,
+      min: min,
+      max: max,
+      step: step,
+      prefix: prefix,
+      unit: unit,
+      label: label,
+      name: name,
+      disabled: disabled,
+    },
+    { input: onInput, change: onChange },
   );
 }

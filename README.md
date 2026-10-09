@@ -5,6 +5,11 @@
 [![TypeScript: strict](https://img.shields.io/badge/TypeScript-strict-3178c6)](tsconfig.json)
 [![shadcn registry](https://img.shields.io/badge/shadcn-registry-18181b)](https://elements.lumesec.ai/docs/installation)
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/components-dark.png">
+  <img src=".github/assets/components-light.png" alt="Seven Elements components running live: an effort slider, a pixel gauge, a dial, a candlestick chart, a thinking orb, a prompt composer and a context meter.">
+</picture>
+
 181 interactive components from the LumeSec design lab, published as a shadcn registry: controls, meters,
 charts, maps and globes, and dot-matrix displays. Every component is strict TypeScript, and the shadcn CLI
 copies its source into your project, so you can read and change every line.
@@ -166,6 +171,8 @@ shell environment, not from `.env.local`.
 | `pnpm start` | Serves the production build |
 | `pnpm check-types` | MDX collections, `next typegen`, then `tsc --noEmit` |
 | `pnpm lint` | ESLint (`eslint-config-next`) over the site and the scripts |
+| `pnpm format` | Prettier over code, JSON, CSS and YAML, with Tailwind classes sorted (`format:check` only checks) |
+| `pnpm test` | Unit tests (Vitest) in `tests/`: server helpers, the feedback route, shared modules, catalog consistency |
 | `pnpm stats [days]` | Prints the site statistics from `DATABASE_URL` (default: the last 30 days) |
 
 ### Repository layout
@@ -188,6 +195,7 @@ scripts/gen-docs.mjs              metadata + notes → content/components/{colle
 scripts/build-registry.mjs        registry.json → `shadcn build` → .registry/r, plus public/cdn/*.js
 scripts/verify.mjs                quality gates (see below)
 scripts/stats.mjs                 prints the optional statistics
+tests/                            unit tests (Vitest); not part of the registry
 src/app/(site)/                   landing, gallery, collections, docs and component pages
 src/app/r/[name]                  registry items, served with an ETag
 src/app/og, md, llms*.txt         Open Graph images, Markdown twins, LLM indexes
@@ -207,10 +215,12 @@ src/lib/server/                   the optional statistics database, rate limits,
 5. every usage snippet shown in the docs type-checks;
 6. the registry passes the ESLint config of a stock `create-next-app` project with no warnings.
 
-CI (`.github/workflows/ci.yml`) runs `pnpm catalog`, `pnpm lint`, `pnpm verify` and `pnpm build` on every push
-and pull request to `main`, then fails if `registry.json`, `registry/` or `src/generated/` differ from the commit: the
-generated files must be committed with the change that produced them. None of these steps needs a database
-or network access beyond the package registry.
+CI (`.github/workflows/ci.yml`) runs `pnpm catalog`, `pnpm lint`, `pnpm format:check`, `pnpm test`, `pnpm verify`
+and `pnpm build` on every push and pull request to `main`, then fails if `registry.json`, `registry/` or
+`src/generated/` differ from the commit: the generated files must be committed with the change that produced them.
+A second job builds the Docker image and checks that the container starts. None of these steps needs a database.
+CodeQL scans the code, and pull requests that add a vulnerable dependency or one with an incompatible licence fail
+the dependency review.
 
 Component findings that are not fixed yet are listed in [KNOWN_ISSUES.md](KNOWN_ISSUES.md).
 
@@ -233,11 +243,10 @@ Without `DATABASE_URL` the endpoints accept and discard everything.
 
 ### Self-hosting
 
-The `Dockerfile` builds a Next.js standalone server that listens on port 3000:
+The `Dockerfile` builds a Next.js standalone server that listens on port 3000, and `docker-compose.yml` runs it:
 
 ```bash
-docker build --build-arg NEXT_PUBLIC_SITE_URL=https://elements.example.com -t elements .
-docker run -p 3000:3000 elements
+NEXT_PUBLIC_SITE_URL=https://elements.example.com docker compose up -d --build
 ```
 
 - `NEXT_PUBLIC_SITE_URL` is compiled into the bundles and the registry, so it is a build argument as well as a
@@ -246,6 +255,13 @@ docker run -p 3000:3000 elements
 - The rate limits on the statistics endpoints use the client address from `X-Forwarded-For`, skipping proxies
   in private ranges. Every proxy in front of the app must pass the header on; list proxies outside the private
   ranges in `TRUSTED_PROXIES`, and do not expose the container port directly, or clients can forge the header.
+  Compose publishes the port on `127.0.0.1` unless you set `BIND_ADDRESS`.
+
+### Releases
+
+Releases are tagged from `main` and deployed from the `production` branch by GitHub Actions. Versions follow
+Semantic Versioning, and the changelog is `content/docs/changelog.mdx`. [RELEASING.md](RELEASING.md) describes
+the process, rollbacks and the one-time setup.
 
 ## Contributing
 
@@ -253,6 +269,11 @@ Bug reports, accessibility fixes, documentation corrections and new components a
 [CONTRIBUTING.md](CONTRIBUTING.md) for the setup and the pull request checklist, and the guides in
 [`contributing/`](contributing) for the conventions every component follows. Open an issue before you start
 on a new component. Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+Working with an AI coding assistant? [AGENTS.md](AGENTS.md) gives it the commands, the files it must not edit by
+hand and the rules for demo data, and `.claude/skills/` has step-by-step workflows for adding and reviewing a
+component. A [dev container](.devcontainer/devcontainer.json) sets up Node.js, pnpm and the editor extensions in
+one step.
 
 ## Security
 

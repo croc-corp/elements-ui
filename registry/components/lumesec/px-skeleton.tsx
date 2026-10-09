@@ -41,7 +41,14 @@ const BAR_WIDTHS = [1, 0.9, 0.62, 0.8, 0.5];
  *   <Profile data={data} />
  * </PxSkeleton>
  */
-export function PxSkeleton({ loading = false, lines = 3, avatar = false, children, className, ...props }: PxSkeletonProps) {
+export function PxSkeleton({
+  loading = false,
+  lines = 3,
+  avatar = false,
+  children,
+  className,
+  ...props
+}: PxSkeletonProps) {
   const reduced = useReducedMotion();
   /** When loading ended, in seconds; the dissolve runs for 0.55 s from there. */
   const fadeAt = React.useRef(-9);
@@ -83,10 +90,17 @@ export function PxSkeleton({ loading = false, lines = 3, avatar = false, childre
       {...props}
     >
       {/* hidden content is inert while loading, so it cannot be clicked or reached with Tab */}
-      <div inert={loading} className={cn("[transition:opacity_.45s_ease_.1s]", loading && "opacity-0 [transition:none]")}>
+      <div
+        inert={loading}
+        className={cn("[transition:opacity_.45s_ease_.1s]", loading && "opacity-0 [transition:none]")}
+      >
         {children}
       </div>
-      <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute inset-0 block h-full w-full [image-rendering:pixelated]" />
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 block h-full w-full [image-rendering:pixelated]"
+      />
     </div>
   );
 }

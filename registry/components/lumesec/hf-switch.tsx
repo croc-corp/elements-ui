@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-switch.element";
 /** The `<hf-switch>` element, with its properties and methods. */
 export type HfSwitchElement = ElementModule.HSwitch;
 
-export interface HfSwitchProps extends Omit<LumesecElementProps<HfSwitchElement>, "checked" | "value" | "name" | "disabled" | "onChange"> {
+export interface HfSwitchProps extends Omit<
+  LumesecElementProps<HfSwitchElement>,
+  "checked" | "value" | "name" | "disabled" | "onChange"
+> {
   /** Presence attribute. Observed: adding or removing it updates the switch, `aria-checked` and the form value. Default: `false`. */
   checked?: boolean;
   /** Value submitted with the form while checked. Observed. Default: `on`. */
@@ -29,7 +32,7 @@ export function HfSwitch({ checked, value, name, disabled, onChange, ...props }:
   return useLumesecElement(
     "hf-switch",
     props,
-    { "checked": checked, "value": value, "name": name, "disabled": disabled },
-    { "change": onChange },
+    { checked: checked, value: value, name: name, disabled: disabled },
+    { change: onChange },
   );
 }

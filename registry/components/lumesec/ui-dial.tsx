@@ -128,10 +128,13 @@ export function UiDial({
     if (!prefersReducedMotion()) {
       const line = tickRefs.current[nearestMajorTick(ticks, angle)];
       if (line) {
-        line.animate([{ stroke: rgba(resolveColor(line, "--lumesec-glint")), strokeWidth: "4" }, { strokeWidth: "2.2" }], {
-          duration: 450,
-          easing: "ease-out",
-        });
+        line.animate(
+          [{ stroke: rgba(resolveColor(line, "--lumesec-glint")), strokeWidth: "4" }, { strokeWidth: "2.2" }],
+          {
+            duration: 450,
+            easing: "ease-out",
+          },
+        );
       }
       knobRef.current?.animate([{ scale: "0.975" }, { scale: "1" }], { duration: 160, easing: "ease-out" });
     }
@@ -199,7 +202,11 @@ export function UiDial({
   const format = (v: number) => v.toFixed(decimals);
 
   return (
-    <div data-slot="ui-dial" className={cn("inline-grid justify-items-center gap-1.5 leading-normal", className)} {...props}>
+    <div
+      data-slot="ui-dial"
+      className={cn("inline-grid justify-items-center gap-1.5 leading-normal", className)}
+      {...props}
+    >
       <div
         ref={dialRef}
         role="slider"
@@ -209,7 +216,7 @@ export function UiDial({
         aria-valuemax={max}
         aria-label={label}
         data-dragging={dragging ? "" : undefined}
-        className="relative size-[148px] cursor-grab touch-none rounded-full outline-none select-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec data-[dragging]:cursor-grabbing"
+        className="relative size-[148px] cursor-grab touch-none rounded-full outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid data-[dragging]:cursor-grabbing"
         onPointerDown={(event) => {
           if (event.button !== 0) return;
           event.currentTarget.setPointerCapture(event.pointerId);
@@ -244,7 +251,7 @@ export function UiDial({
               // the render loop owns `data-lit` after the first paint
               data-lit={tick.degrees <= initialAngle + 0.6 ? "" : undefined}
               className={cn(
-                "stroke-foreground/22 [stroke-linecap:round] [stroke-width:1.5] [transition:stroke_.18s_ease] data-[lit]:stroke-lumesec",
+                "stroke-foreground/22 [stroke-width:1.5] [stroke-linecap:round] [transition:stroke_.18s_ease] data-[lit]:stroke-lumesec",
                 tick.major &&
                   "[stroke-width:2.2] data-[lit]:[filter:drop-shadow(0_0_3px_color-mix(in_srgb,var(--lumesec)_70%,transparent))]",
               )}
@@ -262,7 +269,10 @@ export function UiDial({
           <RollText text={format(value)} direction={shown.direction} />
         </div>
       </div>
-      <div aria-hidden="true" className="-mt-[18px] flex w-[120px] justify-between font-mono text-[11px] text-muted-foreground">
+      <div
+        aria-hidden="true"
+        className="-mt-[18px] flex w-[120px] justify-between font-mono text-[11px] text-muted-foreground"
+      >
         <span>{format(min)}</span>
         <span>{format(max)}</span>
       </div>
@@ -333,7 +343,8 @@ function buildTicks(min: number, max: number, step: number): Tick[] {
 function nearestMajorTick(ticks: readonly Tick[], degrees: number) {
   let nearest = -1;
   ticks.forEach((tick, i) => {
-    if (tick.major && (nearest < 0 || Math.abs(tick.degrees - degrees) < Math.abs(ticks[nearest].degrees - degrees))) nearest = i;
+    if (tick.major && (nearest < 0 || Math.abs(tick.degrees - degrees) < Math.abs(ticks[nearest].degrees - degrees)))
+      nearest = i;
   });
   return nearest;
 }

@@ -2,13 +2,20 @@
   "summary": "Image preview that resolves the way diffusion models do: noise and large blocks sharpen over 30 steps into a scene, different each variation.",
   "attributes": [],
   "events": [
-    { "name": "start", "detail": "{ prompt: string }", "description": "Fires when a generation starts, including the automatic first one. `prompt` is `Mountain dusk`, `Moonlit sea` or `Neon city`." },
+    {
+      "name": "start",
+      "detail": "{ prompt: string }",
+      "description": "Fires when a generation starts, including the automatic first one. `prompt` is `Mountain dusk`, `Moonlit sea` or `Neon city`."
+    },
     { "name": "done", "detail": "{}", "description": "Fires when the last denoising step completes." }
   ],
   "methods": [],
   "properties": [],
   "keyboard": [
-    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "action": "In the prompt chips: pick and focus the previous or next prompt, wrapping at the ends; each pick starts a new generation." }
+    {
+      "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown",
+      "action": "In the prompt chips: pick and focus the previous or next prompt, wrapping at the ends; each pick starts a new generation."
+    }
   ],
   "accessibility": [
     "The prompt chips sit in a `role=\"radiogroup\"` with `aria-label=\"Prompt\"`; each is a native button with `role=\"radio\"` and `aria-checked`, and the checked one is drawn in the accent. Only the checked prompt is in the tab order; arrow keys move the selection.",

@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-pricing.element";
 /** The `<hf-pricing>` element, with its properties and methods. */
 export type HfPricingElement = ElementModule.HPricing;
 
-export interface HfPricingProps extends Omit<LumesecElementProps<HfPricingElement>, "plan" | "monthly" | "yearly" | "period" | "currency" | "features" | "onChange"> {
+export interface HfPricingProps extends Omit<
+  LumesecElementProps<HfPricingElement>,
+  "plan" | "monthly" | "yearly" | "period" | "currency" | "features" | "onChange"
+> {
   /** Plan name above the price. Default: `Pro`. */
   plan?: string;
   /** Price per month on monthly billing. Default: `20`. */
@@ -35,7 +38,7 @@ export function HfPricing({ plan, monthly, yearly, period, currency, features, o
   return useLumesecElement(
     "hf-pricing",
     props,
-    { "plan": plan, "monthly": monthly, "yearly": yearly, "period": period, "currency": currency, "features": features },
-    { "change": onChange },
+    { plan: plan, monthly: monthly, yearly: yearly, period: period, currency: currency, features: features },
+    { change: onChange },
   );
 }

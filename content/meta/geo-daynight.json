@@ -133,20 +133,13 @@
       {
         "name": "twilight",
         "kind": "enum",
-        "options": [
-          "civil",
-          "nautical",
-          "astronomical"
-        ],
+        "options": ["civil", "nautical", "astronomical"],
         "default": "nautical"
       },
       {
         "name": "view",
         "kind": "enum",
-        "options": [
-          "terminator",
-          "subsolar"
-        ],
+        "options": ["terminator", "subsolar"],
         "default": "terminator"
       },
       {

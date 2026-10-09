@@ -59,7 +59,12 @@ function onClicks(root: HTMLElement, selector: string, handler: (button: DemoEle
 }
 
 /** Prints a message into the demo's output line whenever `target` fires one of `events`. */
-function echo(root: HTMLElement, target: string, output: string, events: Record<string, (detail: Record<string, unknown>) => string>): Cleanup {
+function echo(
+  root: HTMLElement,
+  target: string,
+  output: string,
+  events: Record<string, (detail: Record<string, unknown>) => string>,
+): Cleanup {
   const el = $(root, target);
   const out = $(root, output);
   const listeners = Object.entries(events).map(([type, format]) => {
@@ -77,7 +82,8 @@ const numberAttr = (el: Element, name: string) => Number(el.getAttribute(name) ?
 
 /** Setups by tag; tags without an entry need no wiring. */
 export const demoSetups: Record<string, Setup> = {
-  "hf-composer": (root) => echo(root, "#comp", "#compOut", { send: (d) => `send → “${String(d.text)}” at ${String(d.effort)}` }),
+  "hf-composer": (root) =>
+    echo(root, "#comp", "#compOut", { send: (d) => `send → “${String(d.text)}” at ${String(d.effort)}` }),
   "hf-progress": (root) => {
     let interval = 0;
     const run = () => {
@@ -102,7 +108,10 @@ export const demoSetups: Record<string, Setup> = {
       const gauge = $(root, "#gg");
       if (!gauge) return;
       const step = button.dataset.g;
-      gauge.value = step === "random" ? Math.round(Math.random() * 100) : Math.max(0, Math.min(100, numberAttr(gauge, "value") + Number(step ?? 0)));
+      gauge.value =
+        step === "random"
+          ? Math.round(Math.random() * 100)
+          : Math.max(0, Math.min(100, numberAttr(gauge, "value") + Number(step ?? 0)));
     }),
   "hf-countdown": (root) => onClicks(root, "#cdGo", () => $(root, "#cd")?.restart?.(12)),
   "hf-banner": (root) => onClicks(root, "#bnBack", () => $(root, "#bn")?.show?.()),
@@ -135,9 +144,13 @@ export const demoSetups: Record<string, Setup> = {
     }),
   "hf-dialog": (root) =>
     echo(root, "#dlg", "#dlgOut", {
-      close: (d) => (d.returnValue === "send" ? `send → ${String(d.emails || "(no emails)")} as ${String(d.role)}` : `closed (${String(d.returnValue || "dismissed")})`),
+      close: (d) =>
+        d.returnValue === "send"
+          ? `send → ${String(d.emails || "(no emails)")} as ${String(d.role)}`
+          : `closed (${String(d.returnValue || "dismissed")})`,
     }),
-  "hf-error": (root) => onClicks(root, "[data-err]", (button) => $(root, "#err")?.setAttribute("code", button.dataset.err ?? "")),
+  "hf-error": (root) =>
+    onClicks(root, "[data-err]", (button) => $(root, "#err")?.setAttribute("code", button.dataset.err ?? "")),
   "hf-graph": (root) => {
     const graph = $(root, "#gph");
     if (!graph) return;

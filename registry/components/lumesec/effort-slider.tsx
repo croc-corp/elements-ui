@@ -125,7 +125,10 @@ export function EffortSlider({
   const startGlow = React.useCallback((delay: number) => {
     glow.current?.cancel();
     const knob = knobRef.current;
-    glow.current = knob && typeof knob.animate === "function" ? knob.animate(GLOW_KEYFRAMES, { duration: 2600, iterations: Infinity, delay }) : null;
+    glow.current =
+      knob && typeof knob.animate === "function"
+        ? knob.animate(GLOW_KEYFRAMES, { duration: 2600, iterations: Infinity, delay })
+        : null;
   }, []);
 
   // A committed level that changes from outside (or is refused by a controlled parent) moves the thumb.
@@ -202,11 +205,15 @@ export function EffortSlider({
     const dotsSurface = dots.current;
     if (trail && dotsSurface) drawTrail(dotsSurface.context, track.current, trail, state, thumbX, now, reduced);
     const effectsSurface = effects.current;
-    const sparksLive = trail && effectsSurface ? drawEffects(effectsSurface, track.current, trail, state, thumbX, now, delta) : false;
+    const sparksLive =
+      trail && effectsSurface ? drawEffects(effectsSurface, track.current, trail, state, thumbX, now, delta) : false;
 
     const bursting = sparksLive || (state.burstStart > 0 && now - state.burstStart < 1300);
     const settled =
-      !state.dragging && Math.abs(state.position - state.target) < 0.0005 && Math.abs(state.velocity) < 0.001 && state.ultra === goal;
+      !state.dragging &&
+      Math.abs(state.position - state.target) < 0.0005 &&
+      Math.abs(state.velocity) < 0.001 &&
+      state.ultra === goal;
     const ambient = !reduced && state.ultra > 0;
     return !settled || ambient || bursting;
   }
@@ -224,7 +231,9 @@ export function EffortSlider({
       if (element && typeof element.animate === "function") played.push(element.animate(keyframes, options));
     };
     play(flashRef.current, FLASH_KEYFRAMES, { duration: 550, easing: "cubic-bezier(.1,.8,.3,1)" });
-    RING_TIMINGS.forEach((timing, i) => play(ringRefs.current[i], RING_KEYFRAMES, { ...timing, easing: "cubic-bezier(.1,.75,.3,1)" }));
+    RING_TIMINGS.forEach((timing, i) =>
+      play(ringRefs.current[i], RING_KEYFRAMES, { ...timing, easing: "cubic-bezier(.1,.75,.3,1)" }),
+    );
     play(knobRef.current, POP_KEYFRAMES, { duration: 550 });
     play(panelRef.current, PANEL_KEYFRAMES, { duration: 1000, easing: "cubic-bezier(.2,.8,.2,1)" });
     const word = levelRef.current?.lastElementChild;
@@ -320,7 +329,12 @@ export function EffortSlider({
       >
         <div className="flex min-h-[22px] items-center gap-1.5">
           <span className="text-muted-foreground">{strings.effort}</span>
-          <LevelName ref={levelRef} index={shownIndex} text={levelLabel(shownIndex, language)} reducedMotion={reducedMotion} />
+          <LevelName
+            ref={levelRef}
+            index={shownIndex}
+            text={levelLabel(shownIndex, language)}
+            reducedMotion={reducedMotion}
+          />
           <button
             type="button"
             aria-label={strings.help}
@@ -328,9 +342,17 @@ export function EffortSlider({
             aria-controls={noteId}
             disabled={disabled}
             onClick={() => setNoteOpen((open) => !open)}
-            className="ml-auto grid size-[22px] cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-muted-foreground outline-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-solid focus-visible:outline-lumesec aria-expanded:bg-foreground/8 aria-expanded:text-foreground"
+            className="ml-auto grid size-[22px] cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-muted-foreground outline-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid aria-expanded:bg-foreground/8 aria-expanded:text-foreground"
           >
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" aria-hidden="true" className="size-3.5">
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.3}
+              strokeLinecap="round"
+              aria-hidden="true"
+              className="size-3.5"
+            >
               <circle cx="8" cy="8" r="6.4" />
               <path d="M6.3 6.2a1.8 1.8 0 0 1 3.5.5c0 1.2-1.8 1.5-1.8 2.6" />
               <circle cx="8" cy="11.4" r=".5" fill="currentColor" stroke="none" />
@@ -408,7 +430,9 @@ export function EffortSlider({
           <span
             ref={captionRef}
             className="absolute top-0 -translate-x-1/2 text-[11.5px] whitespace-nowrap text-muted-foreground"
-            style={{ left: `clamp(${captionHalfWidth}px, ${stopOffset(recommendedIndex)}, calc(100% - ${captionHalfWidth}px))` }}
+            style={{
+              left: `clamp(${captionHalfWidth}px, ${stopOffset(recommendedIndex)}, calc(100% - ${captionHalfWidth}px))`,
+            }}
           >
             {strings.recommended}
           </span>
@@ -444,7 +468,17 @@ const LEVEL_MASK = "linear-gradient(to bottom, transparent 0, #000 6px, #000 cal
  * Picker-wheel label: names roll on a small drum. Ultracode does not roll; it materialises, shimmers, and pops
  * when the thumb lands. The current name is always the last child (the arrival burst animates it).
  */
-function LevelName({ index, text, reducedMotion, ref }: { index: number; text: string; reducedMotion: boolean; ref: React.Ref<HTMLSpanElement> }) {
+function LevelName({
+  index,
+  text,
+  reducedMotion,
+  ref,
+}: {
+  index: number;
+  text: string;
+  reducedMotion: boolean;
+  ref: React.Ref<HTMLSpanElement>;
+}) {
   const [state, setState] = React.useState<{ index: number; text: string; words: LevelWord[] }>(() => ({
     index,
     text,
@@ -455,7 +489,10 @@ function LevelName({ index, text, reducedMotion, ref }: { index: number; text: s
   if (state.text !== text) {
     const current = state.words[state.words.length - 1];
     // a language change swaps the name in place; reduced motion swaps it too
-    const change: WordMotion = { direction: index > state.index ? 1 : -1, animate: index !== state.index && !reducedMotion };
+    const change: WordMotion = {
+      direction: index > state.index ? 1 : -1,
+      animate: index !== state.index && !reducedMotion,
+    };
     const next: LevelWord = { key: current.key + 1, text, ultra: index === LAST, enter: change, exit: null };
     // keep at most two outgoing names when the level changes faster than the animation
     const words = change.animate ? [...state.words.slice(-2, -1), { ...current, exit: change }, next] : [next];
@@ -480,7 +517,15 @@ function LevelName({ index, text, reducedMotion, ref }: { index: number; text: s
   );
 }
 
-function LevelNameWord({ word, reducedMotion, onExited }: { word: LevelWord; reducedMotion: boolean; onExited: (key: number) => void }) {
+function LevelNameWord({
+  word,
+  reducedMotion,
+  onExited,
+}: {
+  word: LevelWord;
+  reducedMotion: boolean;
+  onExited: (key: number) => void;
+}) {
   const node = React.useRef<HTMLSpanElement>(null);
   const { key, ultra, enter, exit } = word;
 
@@ -522,9 +567,9 @@ function LevelNameWord({ word, reducedMotion, onExited }: { word: LevelWord; red
     <span
       ref={node}
       className={cn(
-        "col-start-1 row-start-1 inline-block whitespace-nowrap will-change-[transform,opacity] [backface-visibility:hidden] [transform-origin:50%_50%_-11px]",
+        "col-start-1 row-start-1 inline-block [transform-origin:50%_50%_-11px] whitespace-nowrap will-change-[transform,opacity] [backface-visibility:hidden]",
         ultra &&
-          "bg-[linear-gradient(100deg,var(--lumesec)_0%,var(--lumesec)_38%,var(--lumesec-glint)_50%,var(--lumesec)_62%,var(--lumesec)_100%)] bg-clip-text text-transparent [background-position:100%_0] [background-size:260%_100%]",
+          "bg-[linear-gradient(100deg,var(--lumesec)_0%,var(--lumesec)_38%,var(--lumesec-glint)_50%,var(--lumesec)_62%,var(--lumesec)_100%)] [background-size:260%_100%] bg-clip-text [background-position:100%_0] text-transparent",
       )}
     >
       {word.text}
@@ -592,7 +637,11 @@ const accentMix = (percent: number) => `color-mix(in srgb, var(--lumesec) ${perc
 
 const GLOW_KEYFRAMES: Keyframe[] = [
   { boxShadow: `${KNOB_DROP}, 0 0 0 1px ${accentMix(55)}, 0 0 10px 1px ${accentMix(40)}`, easing: "ease-in-out" },
-  { boxShadow: `${KNOB_DROP}, 0 0 0 1px ${accentMix(75)}, 0 0 18px 4px ${accentMix(60)}`, easing: "ease-in-out", offset: 0.5 },
+  {
+    boxShadow: `${KNOB_DROP}, 0 0 0 1px ${accentMix(75)}, 0 0 18px 4px ${accentMix(60)}`,
+    easing: "ease-in-out",
+    offset: 0.5,
+  },
   { boxShadow: `${KNOB_DROP}, 0 0 0 1px ${accentMix(55)}, 0 0 10px 1px ${accentMix(40)}` },
 ];
 
@@ -618,7 +667,10 @@ const FLASH_KEYFRAMES: Keyframe[] = [
   { opacity: 0, transform: "scale(1.9)" },
 ];
 const PANEL_KEYFRAMES: Keyframe[] = [
-  { borderColor: "var(--lumesec)", boxShadow: `${PANEL_SHADOW}, 0 0 0 1px ${accentMix(60)}, 0 0 48px 6px ${accentMix(38)}` },
+  {
+    borderColor: "var(--lumesec)",
+    boxShadow: `${PANEL_SHADOW}, 0 0 0 1px ${accentMix(60)}, 0 0 48px 6px ${accentMix(38)}`,
+  },
   { borderColor: "var(--border)", boxShadow: `${PANEL_SHADOW}, 0 0 0 0 transparent, 0 0 0 0 transparent` },
 ];
 const LEVEL_POP_KEYFRAMES: Keyframe[] = [

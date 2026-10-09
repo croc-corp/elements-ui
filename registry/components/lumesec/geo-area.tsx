@@ -122,7 +122,11 @@ export function GeoArea({
   // the demo opens with a selection; with real data the area starts empty unless a default is given
   const startValue = defaultValue !== undefined ? defaultValue : points === undefined ? DEMO_VALUE : null;
 
-  const [rawValue, setValue] = useControllableState<GeoBounds | null>({ value, defaultValue: startValue, onChange: onValueChange });
+  const [rawValue, setValue] = useControllableState<GeoBounds | null>({
+    value,
+    defaultValue: startValue,
+    onChange: onValueChange,
+  });
   const committed = React.useMemo(() => normalizeBounds(rawValue), [rawValue]);
   const committedCount = React.useMemo(() => countInside(committed, list), [committed, list]);
 
@@ -428,8 +432,10 @@ export function GeoArea({
     const dy = y - press.y;
     if (press.edges & WEST) west = clamp(start.west + deltaLon, start.east - 360, start.east - minimum);
     if (press.edges & EAST) east = clamp(start.east + deltaLon, start.west + minimum, start.west + 360);
-    if (press.edges & NORTH) north = clamp(engine.latAt(engine.yOf(start.north) + dy), start.south + minimum, CROP_NORTH);
-    if (press.edges & SOUTH) south = clamp(engine.latAt(engine.yOf(start.south) + dy), CROP_SOUTH, start.north - minimum);
+    if (press.edges & NORTH)
+      north = clamp(engine.latAt(engine.yOf(start.north) + dy), start.south + minimum, CROP_NORTH);
+    if (press.edges & SOUTH)
+      south = clamp(engine.latAt(engine.yOf(start.south) + dy), CROP_SOUTH, start.north - minimum);
     return { west, east, south, north };
   }
 
@@ -570,7 +576,12 @@ export function GeoArea({
         return;
     }
     event.preventDefault();
-    const next = nudgeEdge(committed ?? seedBounds(stepDeg), edge, delta * stepDeg * (event.shiftKey ? 10 : 1), stepDeg);
+    const next = nudgeEdge(
+      committed ?? seedBounds(stepDeg),
+      edge,
+      delta * stepDeg * (event.shiftKey ? 10 : 1),
+      stepDeg,
+    );
     if (!next) return;
     update(() => next, SNAP_SPRING);
     setDraft({ edge, text: editText(edgeOf(next, edge)) });
@@ -613,7 +624,7 @@ export function GeoArea({
               setDraft(null);
             }}
             onKeyDown={(event) => handleFieldKeyDown(edge, event)}
-            className="peer block size-full [appearance:textfield] rounded-md border border-border bg-card px-2 text-right font-mono text-[12.5px] text-transparent tabular-nums caret-foreground outline-none transition-[border-color,box-shadow] duration-150 focus:border-[color-mix(in_srgb,var(--lumesec)_65%,var(--border))] focus:text-foreground focus:ring-[3px] focus:ring-lumesec/14 disabled:cursor-not-allowed motion-reduce:transition-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            className="peer block size-full [appearance:textfield] rounded-md border border-border bg-card px-2 text-right font-mono text-[12.5px] text-transparent tabular-nums caret-foreground transition-[border-color,box-shadow] duration-150 outline-none focus:border-[color-mix(in_srgb,var(--lumesec)_65%,var(--border))] focus:text-foreground focus:ring-[3px] focus:ring-lumesec/14 disabled:cursor-not-allowed motion-reduce:transition-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           />
           <span
             aria-hidden="true"
@@ -671,11 +682,15 @@ export function GeoArea({
             if (pressRef.current) event.preventDefault();
           }}
           onKeyDown={handleStageKeyDown}
-          className="relative w-full cursor-crosshair touch-pan-y overflow-hidden rounded-lg outline-none select-none [-webkit-touch-callout:none] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+          className="relative w-full cursor-crosshair touch-pan-y overflow-hidden rounded-lg outline-none select-none [-webkit-touch-callout:none] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
           style={{ aspectRatio: projectionAspect(kind, CROP) }}
         >
           <canvas ref={baseRef} aria-hidden="true" className="pointer-events-none absolute inset-0 block size-full" />
-          <canvas ref={overlayRef} aria-hidden="true" className="pointer-events-none absolute inset-0 z-[1] block size-full" />
+          <canvas
+            ref={overlayRef}
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-[1] block size-full"
+          />
           {initialCopies.map((style, copy) => (
             <div
               key={copy}
@@ -702,7 +717,10 @@ export function GeoArea({
             </div>
           ))}
           {!committed && gesture === null ? (
-            <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-2 z-[3] flex justify-center px-2">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 bottom-2 z-[3] flex justify-center px-2"
+            >
               <span className="rounded-md border border-border bg-card/90 px-2 py-1 text-[12px] leading-4 text-muted-foreground shadow-[0_4px_12px_-8px_rgb(0_0_0/0.5)]">
                 <span className="pointer-coarse:hidden">Drag across the map to draw an area</span>
                 <span className="hidden pointer-coarse:inline">Press and hold, then drag to draw an area</span>
@@ -742,7 +760,8 @@ export function GeoArea({
                 )}
               </span>
               <span>
-                of <span className="font-mono tabular-nums">{formatNumber(total)}</span> {total === 1 ? "point" : "points"}
+                of <span className="font-mono tabular-nums">{formatNumber(total)}</span>{" "}
+                {total === 1 ? "point" : "points"}
               </span>
             </span>
           ) : null}
@@ -753,7 +772,7 @@ export function GeoArea({
               clearArea();
               stageRef.current?.focus({ preventScroll: true });
             }}
-            className="h-8 cursor-pointer rounded-md border-0 bg-transparent px-2.5 font-[inherit] text-[12.5px] font-medium text-muted-foreground outline-none transition-colors duration-150 hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-solid focus-visible:outline-lumesec disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground motion-reduce:transition-none"
+            className="h-8 cursor-pointer rounded-md border-0 bg-transparent px-2.5 font-[inherit] text-[12.5px] font-medium text-muted-foreground transition-colors duration-150 outline-none hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground motion-reduce:transition-none"
           >
             Clear
           </button>
@@ -1020,13 +1039,23 @@ function normalizeLive(bounds: GeoBounds): GeoBounds {
 const round2 = (value: number) => Math.round(value * 100) / 100 || 0;
 
 function roundBounds(bounds: GeoBounds): GeoBounds {
-  return { west: round2(bounds.west), south: round2(bounds.south), east: round2(bounds.east), north: round2(bounds.north) };
+  return {
+    west: round2(bounds.west),
+    south: round2(bounds.south),
+    east: round2(bounds.east),
+    north: round2(bounds.north),
+  };
 }
 
 /** A gesture's bounds as the fields show them: each edge rounded to the step it will snap to. */
 function snapLive(bounds: GeoBounds, step: number): GeoBounds {
   const live = normalizeLive(bounds);
-  return { west: snapEdge(live.west, step), south: snapEdge(live.south, step), east: snapEdge(live.east, step), north: snapEdge(live.north, step) };
+  return {
+    west: snapEdge(live.west, step),
+    south: snapEdge(live.south, step),
+    east: snapEdge(live.east, step),
+    north: snapEdge(live.north, step),
+  };
 }
 
 function sameBounds(a: GeoBounds | null, b: GeoBounds | null) {
@@ -1269,7 +1298,16 @@ function createTrack(count: number): FillTrack {
  * delay); its level ramps over RAMP_MS and it flashes for `flashMs`. A dot that leaves fades from the level it had
  * over FADE_MS. A negative delay lights it at once.
  */
-function shadeFill(track: FillTrack, i: number, inside: boolean, now: number, delay: number, flashMs: number, reduced: boolean, out: Shade) {
+function shadeFill(
+  track: FillTrack,
+  i: number,
+  inside: boolean,
+  now: number,
+  delay: number,
+  flashMs: number,
+  reduced: boolean,
+  out: Shade,
+) {
   out.level = 0;
   out.flash = 0;
   out.busy = false;
@@ -1485,7 +1523,12 @@ class AreaEngine {
   /** The box drawn now, in unwrapped degrees, or null when there is none (or it is collapsing). */
   bounds(): GeoBounds | null {
     if (!this.present || this.clearing) return null;
-    return { west: this.west.position, south: this.south.position, east: this.east.position, north: this.north.position };
+    return {
+      west: this.west.position,
+      south: this.south.position,
+      east: this.east.position,
+      north: this.north.position,
+    };
   }
 
   beginGesture() {
@@ -1707,7 +1750,8 @@ class AreaEngine {
       if (valid !== storedValid) return false;
       if (!valid) continue;
       // stored as float32, so compare at that precision
-      if (Math.fround(point.lat) !== this.pointLat[i] || Math.fround(wrapLongitude(point.lon)) !== this.pointLon[i]) return false;
+      if (Math.fround(point.lat) !== this.pointLat[i] || Math.fround(wrapLongitude(point.lon)) !== this.pointLon[i])
+        return false;
     }
     return true;
   }
@@ -1825,7 +1869,13 @@ class AreaEngine {
       shadeFill(this.pointTrack, i, inside, now, delay, POINT_FLASH_MS, reduced, shade);
       if (shade.busy) busy = true;
       if (shade.level <= 0 && shade.flash <= 0) continue;
-      pointBatch.add(x, this.pointY[i], POINT_INSIDE_DOT + shade.flash * 1.2, shade.flash, Math.min(1, shade.level + shade.flash * 0.5));
+      pointBatch.add(
+        x,
+        this.pointY[i],
+        POINT_INSIDE_DOT + shade.flash * 1.2,
+        shade.flash,
+        Math.min(1, shade.level + shade.flash * 0.5),
+      );
     }
     pointBatch.flush(context);
     this.insideCount = present && !this.clearing ? insideCount : 0;

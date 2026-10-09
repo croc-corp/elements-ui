@@ -95,8 +95,16 @@ export function PxSelect({
   const popRef = React.useRef<HTMLDivElement>(null);
   const listRef = React.useRef<HTMLUListElement>(null);
   const itemRefs = React.useRef<(HTMLLIElement | null)[]>([]);
-  const [value, setValue] = useControllableState({ value: valueProp, defaultValue: initialValue, onChange: onValueChange });
-  const [openState, setOpen] = useControllableState({ value: openProp, defaultValue: defaultOpen, onChange: onOpenChange });
+  const [value, setValue] = useControllableState({
+    value: valueProp,
+    defaultValue: initialValue,
+    onChange: onValueChange,
+  });
+  const [openState, setOpen] = useControllableState({
+    value: openProp,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
   // a disabled or empty select never shows its menu, even when `open` asks for it
   const open = openState && !disabled && options.length > 0;
   const selectedIndex = Math.max(0, values.indexOf(value));
@@ -237,7 +245,7 @@ export function PxSelect({
             }
           }}
           className={cn(
-            "flex h-[42px] w-full cursor-pointer select-none items-center gap-2.5 rounded-[10px] border bg-card px-3 text-left font-[inherit] text-[14px] text-inherit outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec",
+            "flex h-[42px] w-full cursor-pointer items-center gap-2.5 rounded-[10px] border bg-card px-3 text-left font-[inherit] text-[14px] text-inherit outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
             open
               ? "border-[color-mix(in_srgb,var(--lumesec)_65%,var(--border))] ring-[3px] ring-lumesec/14"
               : "border-border hover:border-[color-mix(in_srgb,var(--foreground)_25%,var(--border))]",
@@ -290,7 +298,7 @@ export function PxSelect({
               if (next instanceof Node && !anchorRef.current?.contains(next)) setOpen(false);
             }}
             onScroll={redraw}
-            className="relative m-0 max-h-[240px] list-none overflow-auto p-0 outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+            className="relative m-0 max-h-[240px] list-none overflow-auto p-0 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
           >
             {options.map((option, index) => (
               <li
@@ -306,7 +314,9 @@ export function PxSelect({
                 className="grid cursor-pointer gap-px rounded-lg py-2 pr-8 pl-3 text-[13.5px]"
               >
                 {option.label}
-                {option.description ? <small className="text-[12px] text-muted-foreground">{option.description}</small> : null}
+                {option.description ? (
+                  <small className="text-[12px] text-muted-foreground">{option.description}</small>
+                ) : null}
               </li>
             ))}
           </ul>

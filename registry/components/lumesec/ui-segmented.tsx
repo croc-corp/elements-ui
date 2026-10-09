@@ -153,7 +153,11 @@ export function UiSegmented({
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     const offset =
-      event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 0;
+      event.key === "ArrowRight" || event.key === "ArrowDown"
+        ? 1
+        : event.key === "ArrowLeft" || event.key === "ArrowUp"
+          ? -1
+          : 0;
     if (!offset) return;
     event.preventDefault();
     const next = (indexRef.current + offset + options.length) % options.length;
@@ -193,7 +197,7 @@ export function UiSegmented({
             onKeyDown={onKeyDown}
             className={cn(
               OPTION_CLASS,
-              "cursor-pointer text-muted-foreground outline-none hover:text-[color-mix(in_srgb,var(--foreground)_75%,var(--muted-foreground))] focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec",
+              "cursor-pointer text-muted-foreground outline-none hover:text-[color-mix(in_srgb,var(--foreground)_75%,var(--muted-foreground))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
             )}
           >
             {option}

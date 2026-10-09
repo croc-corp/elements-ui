@@ -114,8 +114,7 @@ class Tuner extends PxBase {
         e.preventDefault();
         const upward = e.key === "PageUp";
         const list = upward ? STATIONS : [...STATIONS].reverse();
-        const next =
-          list.find((s) => (upward ? s.freq > this.freq + 0.05 : s.freq < this.freq - 0.05)) || list[0];
+        const next = list.find((s) => (upward ? s.freq > this.freq + 0.05 : s.freq < this.freq - 0.05)) || list[0];
         this.targetFreq = next.freq;
         this.kick();
       }
@@ -219,7 +218,8 @@ class Tuner extends PxBase {
     }
     for (let k = 0; k < 5; k++) {
       const on = k < Math.round(sig * 5);
-      for (let r = 0; r <= k; r++) this.dot(w - 34 + k * 5, screenH - 10 - r * 4, on ? P.accent : P.fg, on ? 1 : 0.2, 3);
+      for (let r = 0; r <= k; r++)
+        this.dot(w - 34 + k * 5, screenH - 10 - r * 4, on ? P.accent : P.fg, on ? 1 : 0.2, 3);
     }
     ctx.restore();
 

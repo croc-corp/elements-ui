@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-reveal.element";
 /** The `<hf-reveal>` element, with its properties and methods. */
 export type HfRevealElement = ElementModule.HReveal;
 
-export interface HfRevealProps extends Omit<LumesecElementProps<HfRevealElement>, "secret" | "hint" | "onToggle" | "onCopy"> {
+export interface HfRevealProps extends Omit<
+  LumesecElementProps<HfRevealElement>,
+  "secret" | "hint" | "onToggle" | "onCopy"
+> {
   /** Value to hide, reveal and copy. The default is a demo key. Observed: a change replaces the displayed value. Default: `sk-demo-Px9Qz7R4mW2vL8kT5nB1cJ6hD3fY0sA`. */
   secret?: string;
   /** Text beside the `API key` label while the secret is hidden. Observed. Default: `Hidden`. */
@@ -26,10 +29,5 @@ export interface HfRevealProps extends Omit<LumesecElementProps<HfRevealElement>
  * @see https://elements.lumesec.ai/components/pixel-hd/reveal
  */
 export function HfReveal({ secret, hint, onToggle, onCopy, ...props }: HfRevealProps) {
-  return useLumesecElement(
-    "hf-reveal",
-    props,
-    { "secret": secret, "hint": hint },
-    { "toggle": onToggle, "copy": onCopy },
-  );
+  return useLumesecElement("hf-reveal", props, { secret: secret, hint: hint }, { toggle: onToggle, copy: onCopy });
 }

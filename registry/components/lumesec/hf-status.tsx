@@ -24,10 +24,5 @@ export interface HfStatusProps extends Omit<LumesecElementProps<HfStatusElement>
  * @see https://elements.lumesec.ai/components/pixel-hd/status
  */
 export function HfStatus({ name, incidents, state, ...props }: HfStatusProps) {
-  return useLumesecElement(
-    "hf-status",
-    props,
-    { "name": name, "incidents": incidents, "state": state },
-    {},
-  );
+  return useLumesecElement("hf-status", props, { name: name, incidents: incidents, state: state }, {});
 }

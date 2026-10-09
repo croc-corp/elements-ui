@@ -66,9 +66,7 @@ export const mix = (a: RGB, b: RGB, t: number): RGB => [
 
 /** CSS `rgb()` for a colour, or `rgba()` when an alpha is given. */
 export const css = (c: RGB, alpha?: number | null): string =>
-  alpha == null
-    ? `rgb(${c[0] | 0},${c[1] | 0},${c[2] | 0})`
-    : `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${alpha})`;
+  alpha == null ? `rgb(${c[0] | 0},${c[1] | 0},${c[2] | 0})` : `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${alpha})`;
 
 /** 32-bit FNV-1a hash of a string, for stable per-label variation. */
 export const strHash = (s: string): number => {
@@ -744,7 +742,14 @@ export function hsl(h: number, s: number, l: number): RGB {
 
 /** `#rrggbb` for a colour; channels are rounded and clamped. */
 export const toHex = (c: RGB): string =>
-  "#" + c.map((v) => Math.round(clamp(v, 0, 255)).toString(16).padStart(2, "0")).join("");
+  "#" +
+  c
+    .map((v) =>
+      Math.round(clamp(v, 0, 255))
+        .toString(16)
+        .padStart(2, "0"),
+    )
+    .join("");
 
 /** Begin a rounded-rectangle path, or a plain rectangle where `roundRect` is unsupported. */
 export function rrect(g: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number): void {

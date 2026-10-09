@@ -2,22 +2,71 @@
   "kind": "react",
   "summary": "Round send button that turns into a stop button with an orbiting ring while a reply streams, then closes the ring with sparks on completion.",
   "props": [
-    { "name": "running", "type": "boolean", "default": "-", "description": "Controlled running state. Use with `onRunningChange`. Setting it from outside switches the look with the icon animation but calls no event callback." },
-    { "name": "defaultRunning", "type": "boolean", "default": "false", "description": "Initial running state when uncontrolled." },
-    { "name": "demoDuration", "type": "number", "default": "0", "description": "Seconds after which a send completes on its own, for demos. `0` means the button waits for `complete()` or a stop. Read on each send." },
-    { "name": "onRunningChange", "type": "(running: boolean) => void", "default": "-", "description": "Called when a send, stop or completion changes the running state." },
-    { "name": "onSend", "type": "() => void", "default": "-", "description": "Called when the idle button is pressed or `send()` is called." },
-    { "name": "onStop", "type": "() => void", "default": "-", "description": "Called when a running send is stopped with the button or `stop()`." },
-    { "name": "onComplete", "type": "() => void", "default": "-", "description": "Called when a running send completes, after the ring has closed (about 380 ms after `complete()`)." },
-    { "name": "ref", "type": "React.Ref<UiSendButtonHandle>", "default": "-", "description": "Exposes `send()`, `stop()` and `complete()`." }
+    {
+      "name": "running",
+      "type": "boolean",
+      "default": "-",
+      "description": "Controlled running state. Use with `onRunningChange`. Setting it from outside switches the look with the icon animation but calls no event callback."
+    },
+    {
+      "name": "defaultRunning",
+      "type": "boolean",
+      "default": "false",
+      "description": "Initial running state when uncontrolled."
+    },
+    {
+      "name": "demoDuration",
+      "type": "number",
+      "default": "0",
+      "description": "Seconds after which a send completes on its own, for demos. `0` means the button waits for `complete()` or a stop. Read on each send."
+    },
+    {
+      "name": "onRunningChange",
+      "type": "(running: boolean) => void",
+      "default": "-",
+      "description": "Called when a send, stop or completion changes the running state."
+    },
+    {
+      "name": "onSend",
+      "type": "() => void",
+      "default": "-",
+      "description": "Called when the idle button is pressed or `send()` is called."
+    },
+    {
+      "name": "onStop",
+      "type": "() => void",
+      "default": "-",
+      "description": "Called when a running send is stopped with the button or `stop()`."
+    },
+    {
+      "name": "onComplete",
+      "type": "() => void",
+      "default": "-",
+      "description": "Called when a running send completes, after the ring has closed (about 380 ms after `complete()`)."
+    },
+    {
+      "name": "ref",
+      "type": "React.Ref<UiSendButtonHandle>",
+      "default": "-",
+      "description": "Exposes `send()`, `stop()` and `complete()`."
+    }
   ],
   "extends": "button",
   "ref": {
     "type": "UiSendButtonHandle",
     "methods": [
-      { "signature": "send(): void", "description": "Switches to the running state and calls `onSend`. Ignored while running." },
-      { "signature": "stop(): void", "description": "Returns to idle and calls `onStop`. Ignored when idle and while the ring is closing." },
-      { "signature": "complete(): void", "description": "Closes the ring, bursts sparks, returns to idle and calls `onComplete`. Ignored when idle or already completing." }
+      {
+        "signature": "send(): void",
+        "description": "Switches to the running state and calls `onSend`. Ignored while running."
+      },
+      {
+        "signature": "stop(): void",
+        "description": "Returns to idle and calls `onStop`. Ignored when idle and while the ring is closing."
+      },
+      {
+        "signature": "complete(): void",
+        "description": "Closes the ring, bursts sparks, returns to idle and calls `onComplete`. Ignored when idle or already completing."
+      }
     ]
   },
   "subcomponents": [],

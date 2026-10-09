@@ -19,8 +19,14 @@ function drift(metric: Metric, low: number, spread: number, scale: number): Metr
 }
 
 export default function PxKpiDemo() {
-  const [revenue, setRevenue] = React.useState<Metric>({ value: 48210, data: [30, 32, 31, 35, 38, 36, 40, 44, 43, 48] });
-  const [latency, setLatency] = React.useState<Metric>({ value: 182, data: [230, 226, 214, 220, 207, 201, 196, 190, 186, 182] });
+  const [revenue, setRevenue] = React.useState<Metric>({
+    value: 48210,
+    data: [30, 32, 31, 35, 38, 36, 40, 44, 43, 48],
+  });
+  const [latency, setLatency] = React.useState<Metric>({
+    value: 182,
+    data: [230, 226, 214, 220, 207, 201, 196, 190, 186, 182],
+  });
 
   const refresh = () => {
     setRevenue(drift(revenue, 0.94, 0.14, 1000));

@@ -1,14 +1,32 @@
 {
   "summary": "Numeric PIN pad with rippling keys and dot feedback: a wrong code shakes into red static, the right one sends a green wave.",
   "attributes": [
-    { "name": "code", "type": "string", "default": "2468", "description": "The expected PIN. Its length sets the number of dots. Compared in the browser." },
-    { "name": "label", "type": "string", "default": "Enter your PIN", "description": "Title above the dots. Read once on connect." },
-    { "name": "hint", "type": "string", "description": "Status text under the title. Defaults to `<n> digits`, where `<n>` is the length of `code`." },
+    {
+      "name": "code",
+      "type": "string",
+      "default": "2468",
+      "description": "The expected PIN. Its length sets the number of dots. Compared in the browser."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Enter your PIN",
+      "description": "Title above the dots. Read once on connect."
+    },
+    {
+      "name": "hint",
+      "type": "string",
+      "description": "Status text under the title. Defaults to `<n> digits`, where `<n>` is the length of `code`."
+    },
     { "name": "success", "type": "string", "default": "Unlocked", "description": "Status text after a correct PIN." }
   ],
   "events": [
     { "name": "unlock", "detail": "{}", "description": "Fires when the entered digits match `code`." },
-    { "name": "error", "detail": "{ tries: number }", "description": "Fires on a wrong PIN. `tries` is the number of attempts left: 2, 1, then 0. Does not bubble and is not composed: listen on the element itself, as the React `onError` prop does." }
+    {
+      "name": "error",
+      "detail": "{ tries: number }",
+      "description": "Fires on a wrong PIN. `tries` is the number of attempts left: 2, 1, then 0. Does not bubble and is not composed: listen on the element itself, as the React `onError` prop does."
+    }
   ],
   "methods": [],
   "properties": [

@@ -20,10 +20,5 @@ export interface HfCompareProps extends Omit<LumesecElementProps<HfCompareElemen
  * @see https://elements.lumesec.ai/components/pixel-hd/compare
  */
 export function HfCompare({ onInput, ...props }: HfCompareProps) {
-  return useLumesecElement(
-    "hf-compare",
-    props,
-    {},
-    { "input": onInput },
-  );
+  return useLumesecElement("hf-compare", props, {}, { input: onInput });
 }

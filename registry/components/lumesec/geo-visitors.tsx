@@ -143,7 +143,10 @@ function VisitorsPanel({
     return { visits, reference: demo ? 0 : newestTime(visits) };
   });
 
-  const [feed, setFeed] = React.useState<FeedState>(() => ({ limit: maxFeed, rows: newestRows(initial.visits, maxFeed) }));
+  const [feed, setFeed] = React.useState<FeedState>(() => ({
+    limit: maxFeed,
+    rows: newestRows(initial.visits, maxFeed),
+  }));
   if (feed.limit !== maxFeed) setFeed(resizeFeed(feed, maxFeed));
 
   // The clock starts after mount, so the server and the first client render show the same relative times.
@@ -183,7 +186,9 @@ function VisitorsPanel({
     return createFeedQueue(
       (change) =>
         setFeed((state) =>
-          change.kind === "add" ? insertRow(state, change.event, prefersReducedMotion()) : replaceRows(state, change.events),
+          change.kind === "add"
+            ? insertRow(state, change.event, prefersReducedMotion())
+            : replaceRows(state, change.events),
         ),
       () => feedLimit.current,
     );
@@ -193,24 +198,37 @@ function VisitorsPanel({
   function measureEffects() {
     const map = baseRef.current;
     const layer = effectsRef.current;
-    if (map && layer) mapRef.current.setEffectsOffset(map.offsetLeft - layer.offsetLeft, map.offsetTop - layer.offsetTop);
+    if (map && layer)
+      mapRef.current.setEffectsOffset(map.offsetLeft - layer.offsetLeft, map.offsetTop - layer.offsetTop);
   }
 
   const loop = useAnimationLoop(rootRef, step);
   const palette = usePalette(rootRef, GEO_TOKENS, applyTheme);
-  const base = useCanvas(baseRef, (surface) => {
-    mapRef.current.layout(surface.width, surface.height, surface.dpr);
-    measureEffects();
-    loop.kick();
-  }, MAP_CANVAS);
-  const heat = useCanvas(heatRef, () => {
-    mapRef.current.invalidate();
-    loop.kick();
-  }, MAP_CANVAS);
-  const effects = useCanvas(effectsRef, () => {
-    measureEffects();
-    loop.kick();
-  }, MAP_CANVAS);
+  const base = useCanvas(
+    baseRef,
+    (surface) => {
+      mapRef.current.layout(surface.width, surface.height, surface.dpr);
+      measureEffects();
+      loop.kick();
+    },
+    MAP_CANVAS,
+  );
+  const heat = useCanvas(
+    heatRef,
+    () => {
+      mapRef.current.invalidate();
+      loop.kick();
+    },
+    MAP_CANVAS,
+  );
+  const effects = useCanvas(
+    effectsRef,
+    () => {
+      measureEffects();
+      loop.kick();
+    },
+    MAP_CANVAS,
+  );
 
   function step(_time: number, delta: number) {
     return mapRef.current.step(base.current, heat.current, effects.current, delta);
@@ -281,12 +299,15 @@ function VisitorsPanel({
     const random = createRandom(Date.now());
     let timer = 0;
     const next = () => {
-      timer = window.setTimeout(() => {
-        const visit = demoVisit(random, Date.now(), `v${streamCount.current++}`);
-        mapRef.current.addVisits([visit], { animate: canDrop(onScreen.current), announce: true }, visit.time);
-        loop.kick();
-        next();
-      }, 600 + random() * 1600);
+      timer = window.setTimeout(
+        () => {
+          const visit = demoVisit(random, Date.now(), `v${streamCount.current++}`);
+          mapRef.current.addVisits([visit], { animate: canDrop(onScreen.current), announce: true }, visit.time);
+          loop.kick();
+          next();
+        },
+        600 + random() * 1600,
+      );
     };
     next();
     return () => window.clearTimeout(timer);
@@ -401,7 +422,9 @@ function VisitorsPanel({
       {...props}
     >
       <div className="flex h-11 items-center gap-3 border-b border-border px-4">
-        <div className="min-w-0 truncate text-[13.5px] leading-5 font-medium tracking-[-0.005em] text-foreground">{title}</div>
+        <div className="min-w-0 truncate text-[13.5px] leading-5 font-medium tracking-[-0.005em] text-foreground">
+          {title}
+        </div>
         <div className="ml-auto flex shrink-0 items-center gap-2 text-[12.5px] leading-5">
           <LiveDot paused={!streaming} />
           <span className="font-mono text-[13px] text-foreground tabular-nums">
@@ -432,7 +455,12 @@ function VisitorsPanel({
               preserveAspectRatio="none"
               className="pointer-events-none absolute inset-0 block size-full overflow-visible"
             >
-              <path d={outline} vectorEffect="non-scaling-stroke" strokeWidth={1} className="fill-muted/35 stroke-border" />
+              <path
+                d={outline}
+                vectorEffect="non-scaling-stroke"
+                strokeWidth={1}
+                className="fill-muted/35 stroke-border"
+              />
             </svg>
             <canvas ref={baseRef} aria-hidden="true" className="absolute inset-0 block size-full" />
             <canvas ref={heatRef} aria-hidden="true" className="absolute inset-0 block size-full" />
@@ -524,7 +552,10 @@ function FeedRow({ row, now, active, onPoint, onActivate, onExited }: FeedRowPro
     const item = itemRef.current;
     if (phase !== "enter" || !item || typeof item.animate !== "function" || prefersReducedMotion()) return;
     const entering = item.animate(ROW_ENTER_KEYFRAMES, ROW_TIMING);
-    const flash = markerRef.current?.animate(MARKER_FLASH_KEYFRAMES, { duration: 2400, easing: "cubic-bezier(.2,.8,.2,1)" });
+    const flash = markerRef.current?.animate(MARKER_FLASH_KEYFRAMES, {
+      duration: 2400,
+      easing: "cubic-bezier(.2,.8,.2,1)",
+    });
     return () => {
       entering.cancel();
       flash?.cancel();
@@ -558,12 +589,12 @@ function FeedRow({ row, now, active, onPoint, onActivate, onExited }: FeedRowPro
           onFocus={() => onPoint(id)}
           onBlur={() => onPoint(null)}
           onClick={() => onActivate(event)}
-          className="group/row flex h-[36px] w-full cursor-pointer items-center gap-2.5 rounded-md border-0 bg-transparent px-2 text-left font-[inherit] text-inherit outline-none transition-colors duration-150 hover:bg-muted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec data-[active]:bg-muted motion-reduce:transition-none"
+          className="group/row flex h-[36px] w-full cursor-pointer items-center gap-2.5 rounded-md border-0 bg-transparent px-2 text-left font-[inherit] text-inherit transition-colors duration-150 outline-none hover:bg-muted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid data-[active]:bg-muted motion-reduce:transition-none"
         >
           <span
             ref={markerRef}
             aria-hidden="true"
-            className="size-[5px] shrink-0 self-start rounded-[1px] bg-foreground/20 [margin-top:9px] transition-colors duration-200 group-data-[active]/row:bg-lumesec motion-reduce:transition-none"
+            className="[margin-top:9px] size-[5px] shrink-0 self-start rounded-[1px] bg-foreground/20 transition-colors duration-200 group-data-[active]/row:bg-lumesec motion-reduce:transition-none"
           />
           <span className="grid min-w-0 flex-1">
             <span className="flex min-w-0 items-baseline gap-2">
@@ -603,8 +634,14 @@ function LiveDot({ paused }: { paused: boolean }) {
 
   return (
     <span aria-hidden="true" className="relative grid size-1.5 shrink-0 place-items-center">
-      <span ref={haloRef} className={cn("absolute inset-0 rounded-full opacity-0", paused ? "bg-muted-foreground" : "bg-lumesec-success")} />
-      <span ref={dotRef} className={cn("size-1.5 rounded-full", paused ? "bg-muted-foreground/60" : "bg-lumesec-success")} />
+      <span
+        ref={haloRef}
+        className={cn("absolute inset-0 rounded-full opacity-0", paused ? "bg-muted-foreground" : "bg-lumesec-success")}
+      />
+      <span
+        ref={dotRef}
+        className={cn("size-1.5 rounded-full", paused ? "bg-muted-foreground/60" : "bg-lumesec-success")}
+      />
     </span>
   );
 }
@@ -641,7 +678,10 @@ interface MapHover {
 /** The colour scale of the afterglow and its time window, under the map. */
 function Legend({ decay }: { decay: number }) {
   return (
-    <div aria-hidden="true" className="flex items-center gap-1.5 font-mono text-[10.5px] leading-3 text-muted-foreground">
+    <div
+      aria-hidden="true"
+      className="flex items-center gap-1.5 font-mono text-[10.5px] leading-3 text-muted-foreground"
+    >
       <span className="flex gap-[2px]">
         {LEGEND_SWATCHES.map((swatch) => (
           <span key={swatch} className={cn("size-1 rounded-[0.5px]", swatch)} />
@@ -993,7 +1033,9 @@ class VisitorMap {
         top = place;
       }
     }
-    return total === 1 ? `1 visit in the last 15 seconds, from ${top}.` : `${total} visits in the last 15 seconds, most from ${top}.`;
+    return total === 1
+      ? `1 visit in the last 15 seconds, from ${top}.`
+      : `${total} visits in the last 15 seconds, most from ${top}.`;
   }
 
   /** The 250 ms tick: fades the afterglow by the time since the last tick and lets go of visits nobody needs. */
@@ -1170,7 +1212,13 @@ class VisitorMap {
     if (ink) {
       // the glint is near white: on a light card the soft accent carries the third tone instead
       const third = ink.dark ? ink.glint : ink.soft;
-      this.sparks.add(visit.x + this.effectsX, visit.y + this.effectsY, 12, [ink.accent, ink.shine, third], LANDING_SPARKS);
+      this.sparks.add(
+        visit.x + this.effectsX,
+        visit.y + this.effectsY,
+        12,
+        [ink.accent, ink.shine, third],
+        LANDING_SPARKS,
+      );
     }
     this.onLand(visit.event);
   }
@@ -1189,7 +1237,12 @@ class VisitorMap {
         break;
       }
     }
-    const reach = Math.max(Math.hypot(ox, oy), Math.hypot(box.width - ox, oy), Math.hypot(ox, box.height - oy), Math.hypot(box.width - ox, box.height - oy));
+    const reach = Math.max(
+      Math.hypot(ox, oy),
+      Math.hypot(box.width - ox, oy),
+      Math.hypot(ox, box.height - oy),
+      Math.hypot(box.width - ox, box.height - oy),
+    );
     for (let i = 0; i < lattice.count; i++) {
       const n = Math.hypot(lattice.x[i] - ox, lattice.y[i] - oy) / reach;
       this.threshold[i] = n * 0.82 + lattice.jitter[i] * 0.18;
@@ -1217,7 +1270,12 @@ class VisitorMap {
     const s = Math.max(1, Math.round(DOT_SIZE * dpr)) / dpr;
     context.fillStyle = this.colors.land;
     for (let i = 0; i < lattice.count; i++) {
-      context.fillRect(Math.round((lattice.x[i] - s / 2) * dpr) / dpr, Math.round((lattice.y[i] - s / 2) * dpr) / dpr, s, s);
+      context.fillRect(
+        Math.round((lattice.x[i] - s / 2) * dpr) / dpr,
+        Math.round((lattice.y[i] - s / 2) * dpr) / dpr,
+        s,
+        s,
+      );
     }
   }
 
@@ -1268,7 +1326,8 @@ class VisitorMap {
     for (const ping of this.pings) {
       for (let k = 0; k < 2; k++) {
         const t = (now - ping.start - k * PING_GAP_MS) / PING_MS;
-        if (t >= 0 && t < 1) this.ring(ping.visit, 3 + 28 * easeOutCubic(t), 3.5, 3, Math.pow(1 - t, 1.2) * (k ? 0.75 : 1), 0.55);
+        if (t >= 0 && t < 1)
+          this.ring(ping.visit, 3 + 28 * easeOutCubic(t), 3.5, 3, Math.pow(1 - t, 1.2) * (k ? 0.75 : 1), 0.55);
       }
     }
     // the marked visit: a still, uneven ring around its point
@@ -1463,7 +1522,9 @@ function insertRow(state: FeedState, event: VisitorEvent, reduced: boolean): Fee
 }
 
 function dropRow(state: FeedState, id: string): FeedState {
-  return state.rows.some((row) => row.event.id === id) ? { ...state, rows: state.rows.filter((row) => row.event.id !== id) } : state;
+  return state.rows.some((row) => row.event.id === id)
+    ? { ...state, rows: state.rows.filter((row) => row.event.id !== id) }
+    : state;
 }
 
 /** Rows for a new list of newest visits, without animation. */
@@ -1478,7 +1539,10 @@ function resizeFeed(state: FeedState, limit: number): FeedState {
 
 /** Moves the demo history's relative times to the clock. */
 function shiftRows(state: FeedState, shift: number): FeedState {
-  return { ...state, rows: state.rows.map((row) => ({ ...row, event: { ...row.event, time: row.event.time + shift } })) };
+  return {
+    ...state,
+    rows: state.rows.map((row) => ({ ...row, event: { ...row.event, time: row.event.time + shift } })),
+  };
 }
 
 /* Data helpers ---------------------------------------------------------------------------------------- */

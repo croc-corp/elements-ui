@@ -43,7 +43,11 @@ function subscribeToUrl(onChange: () => void) {
  * The page is static: it renders the defaults on the server and reads the URL once hydrated.
  */
 function useExplorerState(collections: Col[]) {
-  const search = React.useSyncExternalStore(subscribeToUrl, () => window.location.search, () => "");
+  const search = React.useSyncExternalStore(
+    subscribeToUrl,
+    () => window.location.search,
+    () => "",
+  );
   const params = new URLSearchParams(search);
   const collection = params.get("c");
   const order = params.get("sort");
@@ -104,12 +108,21 @@ export function ComponentsExplorer({ cards, collections }: { cards: ExplorerCard
               className="min-w-0 flex-1 bg-transparent text-[13.5px] text-foreground outline-none placeholder:text-muted-foreground"
             />
             {q && (
-              <button type="button" aria-label="Clear the filter" onClick={() => setQ("")} className="hover:text-foreground">
+              <button
+                type="button"
+                aria-label="Clear the filter"
+                onClick={() => setQ("")}
+                className="hover:text-foreground"
+              >
                 <CloseIcon size={13} />
               </button>
             )}
           </label>
-          <div role="group" aria-label="Collection" className="-mx-1 flex items-center gap-1 overflow-x-auto px-1 [scrollbar-width:none]">
+          <div
+            role="group"
+            aria-label="Collection"
+            className="-mx-1 flex [scrollbar-width:none] items-center gap-1 overflow-x-auto px-1"
+          >
             <Chip active={col === "all"} onClick={() => setCol("all")} count={total}>
               All
             </Chip>
@@ -120,7 +133,10 @@ export function ComponentsExplorer({ cards, collections }: { cards: ExplorerCard
             ))}
           </div>
           <div className="flex items-center gap-3 lg:ml-auto">
-            <span className="tabular font-mono text-[11.5px] whitespace-nowrap text-muted-foreground" aria-live="polite">
+            <span
+              className="tabular font-mono text-[11.5px] whitespace-nowrap text-muted-foreground"
+              aria-live="polite"
+            >
               {list.length} of {total}
             </span>
             <select
@@ -142,7 +158,10 @@ export function ComponentsExplorer({ cards, collections }: { cards: ExplorerCard
       {list.length === 0 ? (
         <div className="grid place-items-center px-6 py-28 text-center">
           <p className="font-mono text-[12px] text-muted-foreground">No match</p>
-          <p className="mt-3 max-w-sm text-[15px] text-muted-foreground">Nothing matches “{q}”. Try a shorter word, a tag such as <code className="font-mono text-foreground">gauge</code>, or another collection.</p>
+          <p className="mt-3 max-w-sm text-[15px] text-muted-foreground">
+            Nothing matches “{q}”. Try a shorter word, a tag such as{" "}
+            <code className="font-mono text-foreground">gauge</code>, or another collection.
+          </p>
           <button
             type="button"
             onClick={() => update({ q: "", col: "all" })}
@@ -161,13 +180,19 @@ export function ComponentsExplorer({ cards, collections }: { cards: ExplorerCard
                   <span data-sep />
                   <span>{c.count} components</span>
                 </p>
-                <h2 id={`col-${c.slug}`} className="mt-3 flex items-center gap-3 text-[28px] font-medium tracking-[-0.03em]">
+                <h2
+                  id={`col-${c.slug}`}
+                  className="mt-3 flex items-center gap-3 text-[28px] font-medium tracking-[-0.03em]"
+                >
                   <CollectionGlyph slug={c.slug} size={20} className="text-muted-foreground" />
                   {c.title}
                 </h2>
                 <p className="mt-1.5 max-w-xl text-[14.5px] text-muted-foreground">{c.summary}</p>
               </div>
-              <Link href={`/components/${c.slug}`} className="group/l flex items-center gap-1.5 text-[13.5px] font-medium whitespace-nowrap">
+              <Link
+                href={`/components/${c.slug}`}
+                className="group/l flex items-center gap-1.5 text-[13.5px] font-medium whitespace-nowrap"
+              >
                 Open collection
                 <ArrowRightIcon size={14} className="transition-transform duration-300 group-hover/l:translate-x-0.5" />
               </Link>
@@ -196,7 +221,19 @@ function Grid({ items }: { items: ExplorerCard[] }) {
   );
 }
 
-function Chip({ active, onClick, count, glyph, children }: { active: boolean; onClick: () => void; count: number; glyph?: string; children: React.ReactNode }) {
+function Chip({
+  active,
+  onClick,
+  count,
+  glyph,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  count: number;
+  glyph?: string;
+  children: React.ReactNode;
+}) {
   return (
     <button
       type="button"
@@ -204,12 +241,16 @@ function Chip({ active, onClick, count, glyph, children }: { active: boolean; on
       onClick={onClick}
       className={cn(
         "flex h-8 shrink-0 items-center gap-1.5 rounded-full border px-3 text-[13px] whitespace-nowrap transition-colors",
-        active ? "border-foreground bg-foreground text-background" : "border-border text-muted-foreground hover:border-input hover:text-foreground",
+        active
+          ? "border-foreground bg-foreground text-background"
+          : "border-border text-muted-foreground hover:border-input hover:text-foreground",
       )}
     >
       {glyph && <CollectionGlyph slug={glyph} size={13} />}
       {children}
-      <span className={cn("tabular font-mono text-[10.5px]", active ? "text-background/70" : "text-muted-foreground")}>{count}</span>
+      <span className={cn("tabular font-mono text-[10.5px]", active ? "text-background/70" : "text-muted-foreground")}>
+        {count}
+      </span>
     </button>
   );
 }

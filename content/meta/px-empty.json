@@ -2,10 +2,30 @@
   "kind": "react",
   "summary": "Empty state with one of four pixel illustrations that drop into place and float, plus a title, a line of help and room for actions.",
   "props": [
-    { "name": "kind", "type": "\"inbox\" | \"search\" | \"error\" | \"done\"", "default": "\"inbox\"", "description": "Illustration and default copy. Changing it drops the new illustration in." },
-    { "name": "heading", "type": "React.ReactNode", "default": "per kind", "description": "Title. Defaults to \"No messages yet\", \"No results\", \"Something went wrong\" or \"All caught up\"." },
-    { "name": "description", "type": "React.ReactNode", "default": "per kind", "description": "Help line under the title. Defaults to a sentence for the kind." },
-    { "name": "children", "type": "React.ReactNode", "default": "-", "description": "Actions, such as buttons, centred under the text." }
+    {
+      "name": "kind",
+      "type": "\"inbox\" | \"search\" | \"error\" | \"done\"",
+      "default": "\"inbox\"",
+      "description": "Illustration and default copy. Changing it drops the new illustration in."
+    },
+    {
+      "name": "heading",
+      "type": "React.ReactNode",
+      "default": "per kind",
+      "description": "Title. Defaults to \"No messages yet\", \"No results\", \"Something went wrong\" or \"All caught up\"."
+    },
+    {
+      "name": "description",
+      "type": "React.ReactNode",
+      "default": "per kind",
+      "description": "Help line under the title. Defaults to a sentence for the kind."
+    },
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "default": "-",
+      "description": "Actions, such as buttons, centred under the text."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -20,7 +40,14 @@
     "`error` draws in the warning colour and `done` in the success colour; the other kinds use the accent.",
     "Without reduced motion the illustration animates continuously while it is on screen."
   ],
-  "tokens": ["--foreground", "--muted-foreground", "--lumesec", "--lumesec-shine", "--lumesec-warning", "--lumesec-success"],
+  "tokens": [
+    "--foreground",
+    "--muted-foreground",
+    "--lumesec",
+    "--lumesec-shine",
+    "--lumesec-warning",
+    "--lumesec-success"
+  ],
   "usage": "import { PxEmpty } from \"@/components/lumesec/px-empty\";\n\nexport function Example() {\n  return (\n    <PxEmpty kind=\"search\">\n      <button type=\"button\">Clear search</button>\n    </PxEmpty>\n  );\n}\n",
   "playground": {
     "props": { "kind": "search" },

@@ -10,7 +10,10 @@ import { useControllableState, useFormReset } from "@/lib/lumesec/use-controllab
 import { cn } from "@/lib/utils";
 
 /** Props of `PxSlider`. Other `div` props go to the root. */
-export interface PxSliderProps extends Omit<React.ComponentProps<"div">, "children" | "defaultValue" | "onChange" | "prefix"> {
+export interface PxSliderProps extends Omit<
+  React.ComponentProps<"div">,
+  "children" | "defaultValue" | "onChange" | "prefix"
+> {
   /** Controlled value. Use with `onValueChange`. Snapped to `step` and clamped to `min`..`max`. */
   value?: number;
   /** Initial value when uncontrolled; also restored on form reset. Defaults to `min`. */
@@ -82,7 +85,11 @@ export function PxSlider({
     `${prefix}${value.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}${unit}`;
 
   const resetValue = normalize(defaultValue ?? min);
-  const [rawValue, setValue] = useControllableState({ value: valueProp, defaultValue: resetValue, onChange: onValueChange });
+  const [rawValue, setValue] = useControllableState({
+    value: valueProp,
+    defaultValue: resetValue,
+    onChange: onValueChange,
+  });
   const value = normalize(rawValue);
   const fraction = fractionOf(value);
 
@@ -117,7 +124,13 @@ export function PxSlider({
       const on = x <= thumbX;
       const near = on && thumbX - x < 14;
       for (const dy of [-3, 1]) {
-        dot(x - 1.2, centerY + dy - 1.2, on ? mixRgb(palette.accent, palette.shine, near ? 0.5 : 0) : palette.foreground, on ? 0.95 : 0.14, 2.4);
+        dot(
+          x - 1.2,
+          centerY + dy - 1.2,
+          on ? mixRgb(palette.accent, palette.shine, near ? 0.5 : 0) : palette.foreground,
+          on ? 0.95 : 0.14,
+          2.4,
+        );
       }
     }
     if (ticks) {
@@ -129,7 +142,11 @@ export function PxSlider({
         }
       }
     }
-    return dragRef.current || Math.abs(fraction - thumb.current.position) > 0.0005 || Math.abs(thumb.current.velocity) > 0.001;
+    return (
+      dragRef.current ||
+      Math.abs(fraction - thumb.current.position) > 0.0005 ||
+      Math.abs(thumb.current.velocity) > 0.001
+    );
   });
 
   React.useEffect(redraw, [fraction, ticks, redraw]);
@@ -197,7 +214,11 @@ export function PxSlider({
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
       >
-        <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 block size-full [image-rendering:pixelated]" />
+        <canvas
+          ref={canvasRef}
+          aria-hidden="true"
+          className="absolute inset-0 block size-full [image-rendering:pixelated]"
+        />
         <span
           ref={thumbRef}
           role="slider"
@@ -223,7 +244,7 @@ export function PxSlider({
             onCommitRef.current?.(next);
           }}
           className={cn(
-            "absolute top-[3px] -ml-[9px] size-[18px] rounded-full bg-lumesec-foreground outline-none transition-[box-shadow] duration-200 ease-[ease]",
+            "absolute top-[3px] -ml-[9px] size-[18px] rounded-full bg-lumesec-foreground transition-[box-shadow] duration-200 ease-[ease] outline-none",
             dragging
               ? "shadow-[0_1px_4px_rgb(0_0_0/0.35),0_0_0_2px_var(--lumesec),0_0_0_7px_color-mix(in_srgb,var(--lumesec)_22%,transparent)]"
               : [

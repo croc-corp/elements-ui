@@ -91,7 +91,10 @@
   },
   "subcomponents": [],
   "keyboard": [
-    { "keys": "Tab", "action": "Moves from the field to the copy button, which is in the tab order once the text reads as a point." },
+    {
+      "keys": "Tab",
+      "action": "Moves from the field to the copy button, which is in the tab order once the text reads as a point."
+    },
     { "keys": "Enter / Space", "action": "On the copy button: copies the coordinates as the readout shows them." }
   ],
   "accessibility": [

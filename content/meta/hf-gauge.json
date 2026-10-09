@@ -85,9 +85,7 @@
   ],
   "motion": "With reduced motion the pointer jumps without the spring, the shimmer and the critical pulse are off, and the number and zone word swap without rolling.",
   "slots": [],
-  "notes": [
-    "All attributes are observed; a change animates the pointer to the new position."
-  ],
+  "notes": ["All attributes are observed; a change animates the pointer to the new position."],
   "data": {
     "kind": "input",
     "note": "Set `value` (with `min`, `max` and `zones`). Without it the gauge shows a demo value."

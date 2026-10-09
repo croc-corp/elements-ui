@@ -178,7 +178,11 @@ export function PxTextarea({
         )}
       />
       <div className="mt-2 flex items-center gap-2.5">
-        <canvas ref={canvasRef} aria-hidden="true" className="block h-[10px] w-full min-w-0 flex-1 [image-rendering:pixelated]" />
+        <canvas
+          ref={canvasRef}
+          aria-hidden="true"
+          className="block h-[10px] w-full min-w-0 flex-1 [image-rendering:pixelated]"
+        />
         <span
           id={counterId}
           className={cn(

@@ -29,7 +29,9 @@ export default function ComponentsPage() {
     group: e.group,
     isNew: fresh.has(e.tag),
     demo: e.data === "demo",
-    keywords: [e.title, e.tag, e.group, ...e.attributes.map((a) => a.name), ...e.events.map((v) => v.name)].join(" ").toLowerCase(),
+    keywords: [e.title, e.tag, e.group, ...e.attributes.map((a) => a.name), ...e.events.map((v) => v.name)]
+      .join(" ")
+      .toLowerCase(),
   }));
   const cols = collections.map((c) => ({ slug: c.slug, title: c.title, count: c.count, summary: c.summary }));
 
@@ -55,13 +57,14 @@ export default function ComponentsPage() {
               <span data-sep />
               <span>MIT</span>
             </p>
-            <h1 className="mt-6 text-[clamp(40px,7vw,88px)] leading-[0.95] font-medium tracking-[-0.05em] page-enter">
+            <h1 className="page-enter mt-6 text-[clamp(40px,7vw,88px)] leading-[0.95] font-medium tracking-[-0.05em]">
               Every component.
               <br />
               <span className="text-muted-foreground">Running, not pictured.</span>
             </h1>
-            <p className="mt-6 max-w-[54ch] text-[17px] leading-[1.65] text-muted-foreground page-enter">
-              Each card below is the real element, loaded when it scrolls into view. Click, drag and type in any of them, then open the page to install it.
+            <p className="page-enter mt-6 max-w-[54ch] text-[17px] leading-[1.65] text-muted-foreground">
+              Each card below is the real element, loaded when it scrolls into view. Click, drag and type in any of
+              them, then open the page to install it.
             </p>
           </div>
         </section>

@@ -2,7 +2,11 @@
   "summary": "Three-column kanban board: a dragged card leaves a dot trail, the target column lights up and a bar marks where it will land.",
   "attributes": [],
   "events": [
-    { "name": "move", "detail": "{ card: string, from: string, to: string }", "description": "Fires after a card is dropped or moved by keyboard, including reorders within one column. `card` is the card title; `from` and `to` are column names." }
+    {
+      "name": "move",
+      "detail": "{ card: string, from: string, to: string }",
+      "description": "Fires after a card is dropped or moved by keyboard, including reorders within one column. `card` is the card title; `from` and `to` are column names."
+    }
   ],
   "methods": [],
   "properties": [],

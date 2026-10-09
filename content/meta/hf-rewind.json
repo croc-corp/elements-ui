@@ -1,11 +1,24 @@
 {
   "summary": "Checkpoint scrubber for a coding session: each jump runs a rewind glitch over the code, and changed lines get a green bar.",
   "attributes": [
-    { "name": "label", "type": "string", "default": "Checkpoints", "description": "Heading text. Read once on connect." }
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Checkpoints",
+      "description": "Heading text. Read once on connect."
+    }
   ],
   "events": [
-    { "name": "preview", "detail": "{ index: number, name: string }", "description": "Fires when the head moves to another checkpoint by drag, click or key." },
-    { "name": "restore", "detail": "{ index: number, name: string }", "description": "Fires when Restore is pressed, including on the latest checkpoint." }
+    {
+      "name": "preview",
+      "detail": "{ index: number, name: string }",
+      "description": "Fires when the head moves to another checkpoint by drag, click or key."
+    },
+    {
+      "name": "restore",
+      "detail": "{ index: number, name: string }",
+      "description": "Fires when Restore is pressed, including on the latest checkpoint."
+    }
   ],
   "methods": [],
   "properties": [],

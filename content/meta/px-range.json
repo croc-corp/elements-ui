@@ -2,10 +2,17 @@
   "summary": "Two-thumb response-time filter over a pixel histogram; columns fill as they enter the range and the run count rolls as you drag.",
   "attributes": [],
   "events": [
-    { "name": "change", "detail": "{ min: number, max: number }", "description": "Fires when a drag ends and on each handled key press. Values are in milliseconds, in steps of 100; `max` of 4000 means open-ended (4,000+ ms)." }
+    {
+      "name": "change",
+      "detail": "{ min: number, max: number }",
+      "description": "Fires when a drag ends and on each handled key press. Values are in milliseconds, in steps of 100; `max` of 4000 means open-ended (4,000+ ms)."
+    }
   ],
   "methods": [
-    { "signature": "set(which: \"lo\" | \"hi\", index: number)", "description": "Moves a thumb to bucket `index` (0 to 40, 100 ms each), rounded and clamped so the thumbs never cross. Does not fire `change`. An unknown thumb or an index that is not a finite number is ignored." }
+    {
+      "signature": "set(which: \"lo\" | \"hi\", index: number)",
+      "description": "Moves a thumb to bucket `index` (0 to 40, 100 ms each), rounded and clamped so the thumbs never cross. Does not fire `change`. An unknown thumb or an index that is not a finite number is ignored."
+    }
   ],
   "properties": [],
   "keyboard": [

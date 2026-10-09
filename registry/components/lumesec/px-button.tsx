@@ -28,7 +28,10 @@ export interface PxButtonHandle {
 }
 
 /** Props of `PxButton`. Other `button` props go to the native button. */
-export interface PxButtonProps extends Omit<React.ComponentProps<"button">, "ref" | "children" | "onClick" | "onError"> {
+export interface PxButtonProps extends Omit<
+  React.ComponentProps<"button">,
+  "ref" | "children" | "onClick" | "onError"
+> {
   /** Handle with `run()` and `focus()`. */
   ref?: React.Ref<PxButtonHandle>;
   /** The label. */
@@ -211,12 +214,13 @@ export function PxButton({
         "inline-flex h-10 cursor-pointer items-center justify-center gap-0 rounded-[10px] border border-transparent bg-lumesec px-[18px] align-middle font-[inherit] text-[14px] font-semibold text-lumesec-foreground select-none",
         "[transition:transform_.15s_cubic-bezier(.2,.8,.2,1),filter_.2s,gap_.25s,background-color_.25s,color_.25s,border-color_.25s]",
         "hover:brightness-[1.06] active:[transform:scale(.96)]",
-        "outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec",
+        "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
         "disabled:cursor-not-allowed disabled:opacity-50",
         variant === "secondary" && "border-border bg-card text-foreground",
         variant === "danger" && "bg-destructive text-lumesec-foreground",
         // light text on the success green stays below 4.5:1, so the label turns a near-black shade of it
-        status === "success" && "border-transparent bg-lumesec-success text-[color-mix(in_srgb,var(--lumesec-success)_15%,black)]",
+        status === "success" &&
+          "border-transparent bg-lumesec-success text-[color-mix(in_srgb,var(--lumesec-success)_15%,black)]",
         status === "error" && "border-transparent bg-destructive text-lumesec-foreground",
         status !== "idle" && "gap-2",
         className,
@@ -232,7 +236,12 @@ export function PxButton({
       >
         <canvas ref={canvasRef} className="block size-[14px] [image-rendering:pixelated]" />
       </span>
-      <RollText text={label} direction={status === "idle" ? -1 : 1} aria-live="polite" className="justify-items-center" />
+      <RollText
+        text={label}
+        direction={status === "idle" ? -1 : 1}
+        aria-live="polite"
+        className="justify-items-center"
+      />
     </button>
   );
 }

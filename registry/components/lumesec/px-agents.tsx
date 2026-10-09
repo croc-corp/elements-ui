@@ -22,10 +22,5 @@ export interface PxAgentsProps extends Omit<LumesecElementProps<PxAgentsElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/agents
  */
 export function PxAgents({ onRun, onDone, ...props }: PxAgentsProps) {
-  return useLumesecElement(
-    "px-agents",
-    props,
-    {},
-    { "run": onRun, "done": onDone },
-  );
+  return useLumesecElement("px-agents", props, {}, { run: onRun, done: onDone });
 }

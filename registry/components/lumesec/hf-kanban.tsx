@@ -20,10 +20,5 @@ export interface HfKanbanProps extends Omit<LumesecElementProps<HfKanbanElement>
  * @see https://elements.lumesec.ai/components/pixel-hd/kanban
  */
 export function HfKanban({ onMove, ...props }: HfKanbanProps) {
-  return useLumesecElement(
-    "hf-kanban",
-    props,
-    {},
-    { "move": onMove },
-  );
+  return useLumesecElement("hf-kanban", props, {}, { move: onMove });
 }

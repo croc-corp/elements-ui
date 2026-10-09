@@ -1,17 +1,34 @@
 {
   "summary": "Release animation with a pixel rocket: a three-second countdown, smoke on the pad, then liftoff while the stars streak past.",
   "attributes": [
-    { "name": "version", "type": "string", "default": "v2.14", "description": "Version shown in the \"Launched · <version> is live\" status. Read when the rocket leaves the frame." }
+    {
+      "name": "version",
+      "type": "string",
+      "default": "v2.14",
+      "description": "Version shown in the \"Launched · <version> is live\" status. Read when the rocket leaves the frame."
+    }
   ],
   "events": [
-    { "name": "liftoff", "detail": "{}", "description": "Fires when the countdown reaches zero and the rocket lifts off." },
+    {
+      "name": "liftoff",
+      "detail": "{}",
+      "description": "Fires when the countdown reaches zero and the rocket lifts off."
+    },
     { "name": "launched", "detail": "{}", "description": "Fires when the rocket has left the frame." }
   ],
   "methods": [
-    { "signature": "go()", "description": "Starts the countdown when the rocket is on the pad, or lands it again after a launch. Ignored mid-flight." }
+    {
+      "signature": "go()",
+      "description": "Starts the countdown when the rocket is on the pad, or lands it again after a launch. Ignored mid-flight."
+    }
   ],
   "properties": [
-    { "name": "version", "type": "string", "readonly": false, "description": "Version shown in the Live status; reflects the `version` attribute, or `v2.14` when it is missing." }
+    {
+      "name": "version",
+      "type": "string",
+      "readonly": false,
+      "description": "Version shown in the Live status; reflects the `version` attribute, or `v2.14` when it is missing."
+    }
   ],
   "keyboard": [],
   "accessibility": [

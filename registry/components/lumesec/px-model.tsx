@@ -20,10 +20,5 @@ export interface PxModelProps extends Omit<LumesecElementProps<PxModelElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/model
  */
 export function PxModel({ onChange, ...props }: PxModelProps) {
-  return useLumesecElement(
-    "px-model",
-    props,
-    {},
-    { "change": onChange },
-  );
+  return useLumesecElement("px-model", props, {}, { change: onChange });
 }

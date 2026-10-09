@@ -10,19 +10,7 @@
  * six invented teams receive random score increases; with it nothing is simulated.
  */
 import { finite, isRecord, readJson, rows, text } from "@/lib/lumesec/data";
-import {
-  HF,
-  bayer,
-  clamp,
-  define,
-  fmtInt,
-  h2,
-  inRR,
-  mix,
-  now,
-  reduced,
-  rollText,
-} from "@/lib/lumesec/pixel";
+import { HF, bayer, clamp, define, fmtInt, h2, inRR, mix, now, reduced, rollText } from "@/lib/lumesec/pixel";
 
 /** One row of the leaderboard; rows are matched across updates by `name`. */
 export type HfLeaderboardDatum = {

@@ -24,7 +24,10 @@ export function MdxPre({ title, children, ...props }: Props) {
           <CopyButton getText={getText} />
         </figcaption>
       ) : (
-        <CopyButton getText={getText} className="absolute top-1.5 right-1.5 z-10 bg-[var(--code-bg)] opacity-0 transition-opacity group-hover/code:opacity-100 focus-visible:opacity-100" />
+        <CopyButton
+          getText={getText}
+          className="absolute top-1.5 right-1.5 z-10 bg-[var(--code-bg)] opacity-0 transition-opacity group-hover/code:opacity-100 focus-visible:opacity-100"
+        />
       )}
       <div className="code-scroll">
         <pre ref={ref} {...props}>

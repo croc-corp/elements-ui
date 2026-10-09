@@ -50,7 +50,7 @@ export default function GeoDaynightDemo() {
         type="button"
         onClick={play}
         aria-pressed={playing}
-        className="absolute top-0 right-0 h-[30px] min-w-[84px] cursor-pointer rounded-lg border border-border bg-card px-[11px] font-[inherit] text-[12.5px] font-medium text-foreground outline-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+        className="absolute top-0 right-0 h-[30px] min-w-[84px] cursor-pointer rounded-lg border border-border bg-card px-[11px] font-[inherit] text-[12.5px] font-medium text-foreground outline-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
       >
         {playing ? "Stop" : "Play 24 h"}
       </button>

@@ -22,10 +22,5 @@ export interface HfContextProps extends Omit<LumesecElementProps<HfContextElemen
  * @see https://elements.lumesec.ai/components/pixel-hd/context
  */
 export function HfContext({ onChange, onCompact, ...props }: HfContextProps) {
-  return useLumesecElement(
-    "hf-context",
-    props,
-    {},
-    { "change": onChange, "compact": onCompact },
-  );
+  return useLumesecElement("hf-context", props, {}, { change: onChange, compact: onCompact });
 }

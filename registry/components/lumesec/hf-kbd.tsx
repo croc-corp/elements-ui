@@ -22,10 +22,5 @@ export interface HfKbdProps extends Omit<LumesecElementProps<HfKbdElement>, "key
  * @see https://elements.lumesec.ai/components/pixel-hd/kbd
  */
 export function HfKbd({ keys, label, onTrigger, ...props }: HfKbdProps) {
-  return useLumesecElement(
-    "hf-kbd",
-    props,
-    { "keys": keys, "label": label },
-    { "trigger": onTrigger },
-  );
+  return useLumesecElement("hf-kbd", props, { keys: keys, label: label }, { trigger: onTrigger });
 }

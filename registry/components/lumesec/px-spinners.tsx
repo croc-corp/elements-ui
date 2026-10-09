@@ -18,10 +18,5 @@ export interface PxSpinnersProps extends Omit<LumesecElementProps<PxSpinnersElem
  * @see https://elements.lumesec.ai/components/pixel-lab/spinners
  */
 export function PxSpinners({ onFinish, ...props }: PxSpinnersProps) {
-  return useLumesecElement(
-    "px-spinners",
-    props,
-    {},
-    { "finish": onFinish },
-  );
+  return useLumesecElement("px-spinners", props, {}, { finish: onFinish });
 }

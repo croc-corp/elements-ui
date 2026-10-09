@@ -181,7 +181,11 @@ export const CollectionGlyph = ({ slug, size = 16, ...props }: IconProps & { slu
     case "pixel-lab":
       return (
         <svg {...b} stroke="none" fill="currentColor">
-          {[3, 6.5, 10].flatMap((x) => [3, 6.5, 10].map((y) => <rect key={`${x}-${y}`} x={x} y={y} width="2.5" height="2.5" rx="0.4" opacity={x + y > 12 ? 1 : 0.45} />))}
+          {[3, 6.5, 10].flatMap((x) =>
+            [3, 6.5, 10].map((y) => (
+              <rect key={`${x}-${y}`} x={x} y={y} width="2.5" height="2.5" rx="0.4" opacity={x + y > 12 ? 1 : 0.45} />
+            )),
+          )}
         </svg>
       );
     case "pixel-ui":

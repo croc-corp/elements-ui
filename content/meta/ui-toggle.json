@@ -2,11 +2,36 @@
   "kind": "react",
   "summary": "Switch with a label and hint whose thumb stretches as it travels and pops a few pixel sparks when it turns on.",
   "props": [
-    { "name": "checked", "type": "boolean", "default": "-", "description": "Controlled state. Use with `onCheckedChange`." },
-    { "name": "defaultChecked", "type": "boolean", "default": "false", "description": "Initial state when uncontrolled." },
-    { "name": "children", "type": "React.ReactNode", "default": "\"Extended thinking\"", "description": "Label text. It is also the switch's accessible name." },
-    { "name": "hint", "type": "React.ReactNode", "default": "-", "description": "Secondary text under the label, linked to the switch with `aria-describedby`." },
-    { "name": "onCheckedChange", "type": "(checked: boolean) => void", "default": "-", "description": "Called when the user toggles the switch. Changing `checked` from outside does not call it." }
+    {
+      "name": "checked",
+      "type": "boolean",
+      "default": "-",
+      "description": "Controlled state. Use with `onCheckedChange`."
+    },
+    {
+      "name": "defaultChecked",
+      "type": "boolean",
+      "default": "false",
+      "description": "Initial state when uncontrolled."
+    },
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "default": "\"Extended thinking\"",
+      "description": "Label text. It is also the switch's accessible name."
+    },
+    {
+      "name": "hint",
+      "type": "React.ReactNode",
+      "default": "-",
+      "description": "Secondary text under the label, linked to the switch with `aria-describedby`."
+    },
+    {
+      "name": "onCheckedChange",
+      "type": "(checked: boolean) => void",
+      "default": "-",
+      "description": "Called when the user toggles the switch. Changing `checked` from outside does not call it."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },

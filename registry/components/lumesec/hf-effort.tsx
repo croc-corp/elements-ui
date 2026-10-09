@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-effort.element";
 /** The `<hf-effort>` element, with its properties and methods. */
 export type HfEffortElement = ElementModule.HEffort;
 
-export interface HfEffortProps extends Omit<LumesecElementProps<HfEffortElement>, "value" | "recommended" | "name" | "disabled" | "onInput" | "onChange" | "onUltracode"> {
+export interface HfEffortProps extends Omit<
+  LumesecElementProps<HfEffortElement>,
+  "value" | "recommended" | "name" | "disabled" | "onInput" | "onChange" | "onUltracode"
+> {
   /** Selected level. Observed and reflected; a value set by markup or code is also the level a form reset restores. An unknown value on connect selects `ultracode`; unknown values set later are ignored. Default: `ultracode`. */
   value?: "low" | "medium" | "high" | "xhigh" | "max" | "ultracode";
   /** Level marked `Recommended` under the track. Any other value hides the marker. Observed. Default: `medium`. */
@@ -29,11 +32,20 @@ export interface HfEffortProps extends Omit<LumesecElementProps<HfEffortElement>
  * Six-level effort slider; reaching Ultracode bursts and grows a trail of light behind the thumb. Form-associated.
  * @see https://elements.lumesec.ai/components/pixel-hd/effort
  */
-export function HfEffort({ value, recommended, name, disabled, onInput, onChange, onUltracode, ...props }: HfEffortProps) {
+export function HfEffort({
+  value,
+  recommended,
+  name,
+  disabled,
+  onInput,
+  onChange,
+  onUltracode,
+  ...props
+}: HfEffortProps) {
   return useLumesecElement(
     "hf-effort",
     props,
-    { "value": value, "recommended": recommended, "name": name, "disabled": disabled },
-    { "input": onInput, "change": onChange, "ultracode": onUltracode },
+    { value: value, recommended: recommended, name: name, disabled: disabled },
+    { input: onInput, change: onChange, ultracode: onUltracode },
   );
 }

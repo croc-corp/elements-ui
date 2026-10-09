@@ -1,7 +1,12 @@
 {
   "summary": "Error state with the code in large mono type over a dotted scanline halo that glitches now and then; Try again reassembles it.",
   "attributes": [
-    { "name": "code", "type": "string", "default": "404", "description": "Error code to show. `404`, `500` and `offline` (any case) have built-in titles and messages; any other value shows `Something went wrong`. Observed: a change updates the text and replays the assembly." }
+    {
+      "name": "code",
+      "type": "string",
+      "default": "404",
+      "description": "Error code to show. `404`, `500` and `offline` (any case) have built-in titles and messages; any other value shows `Something went wrong`. Observed: a change updates the text and replays the assembly."
+    }
   ],
   "events": [
     { "name": "retry", "detail": "{}", "description": "Fires when Try again is pressed." },

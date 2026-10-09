@@ -30,8 +30,17 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: ogImage("/", site.title),
   },
-  twitter: { card: "summary_large_image", title: site.title, description: site.description, images: ogImage("/", site.title) },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
+    images: ogImage("/", site.title),
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
   formatDetection: { telephone: false, email: false, address: false },
 };
 
@@ -46,7 +55,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="dark" className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      data-theme="dark"
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />

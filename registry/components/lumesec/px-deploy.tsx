@@ -24,10 +24,5 @@ export interface PxDeployProps extends Omit<LumesecElementProps<PxDeployElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/deploy
  */
 export function PxDeploy({ version, onDeploy, onLive, ...props }: PxDeployProps) {
-  return useLumesecElement(
-    "px-deploy",
-    props,
-    { "version": version },
-    { "deploy": onDeploy, "live": onLive },
-  );
+  return useLumesecElement("px-deploy", props, { version: version }, { deploy: onDeploy, live: onLive });
 }

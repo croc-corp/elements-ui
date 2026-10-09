@@ -151,7 +151,8 @@ export function PxToaster({ ref, position, max = 4, onShow, onDismiss, className
     if (!nodes.current.get(id)?.contains(document.activeElement)) return;
     const others = list.current.filter((item) => !item.leaving && item.id !== id);
     const neighbour = others.find((item) => item.id > id) ?? others.filter((item) => item.id < id).pop();
-    const close = neighbour && nodes.current.get(neighbour.id)?.querySelector<HTMLElement>('[data-slot="px-toaster-close"]');
+    const close =
+      neighbour && nodes.current.get(neighbour.id)?.querySelector<HTMLElement>('[data-slot="px-toaster-close"]');
     (close || regionRef.current)?.focus();
   }, []);
 
@@ -199,7 +200,10 @@ export function PxToaster({ ref, position, max = 4, onShow, onDismiss, className
       const id = ++sequence.current;
       const duration = options.duration ?? DEFAULT_DURATION;
       timers.current.set(id, { duration, remaining: duration, startedAt: null, timeout: 0 });
-      commit([...list.current, { id, type, title: options.title, description: options.description, action: options.action, leaving: false }]);
+      commit([
+        ...list.current,
+        { id, type, title: options.title, description: options.description, action: options.action, leaving: false },
+      ]);
       if (!hovered.current && !focused.current) startTimer(id);
       const live = list.current.filter((item) => !item.leaving);
       if (live.length > Math.max(1, settings.current.max)) dismiss(live[0].id);
@@ -260,7 +264,8 @@ export function PxToaster({ ref, position, max = 4, onShow, onDismiss, className
         const running = timer.startedAt !== null;
         if (running) draining = true;
         const share = clamp(timeLeft(timer, now) / timer.duration, 0, 1);
-        for (let x = x0 + 6; x < x0 + 6 + (width - 12) * share; x += 3) dot(x, y0 + height - 5, color, running ? 0.8 : 0.35, 2);
+        for (let x = x0 + 6; x < x0 + 6 + (width - 12) * share; x += 3)
+          dot(x, y0 + height - 5, color, running ? 0.8 : 0.35, 2);
       }
     }
     return draining || now < settleUntil.current;
@@ -354,7 +359,8 @@ function Toast({
     const element = node.current;
     if (!element) return;
     register(id, element);
-    if (!prefersReducedMotion()) element.animate(ENTER_KEYFRAMES, { duration: 320, easing: "cubic-bezier(.2,.9,.3,1.15)" });
+    if (!prefersReducedMotion())
+      element.animate(ENTER_KEYFRAMES, { duration: 320, easing: "cubic-bezier(.2,.9,.3,1.15)" });
     return () => register(id, null);
   }, [id, register]);
 
@@ -367,7 +373,7 @@ function Toast({
       className={cn(
         "pointer-events-auto grid max-h-[140px] grid-cols-[20px_1fr_auto] items-start gap-2.5 overflow-hidden rounded-xl border border-border bg-card pt-3 pr-2.5 pb-3.5 pl-3 shadow-[0_12px_28px_-16px_rgba(0,0,0,.5)]",
         "[transition:opacity_.25s,transform_.3s,margin_.3s,max-height_.3s,padding_.3s] motion-reduce:transition-none",
-        leaving && "-mb-2 max-h-0 pt-0 pb-0 opacity-0 [transform:translateX(24px)]",
+        leaving && "-mb-2 max-h-0 [transform:translateX(24px)] pt-0 pb-0 opacity-0",
       )}
     >
       <span />
@@ -386,7 +392,7 @@ function Toast({
             className={cn(
               "inline-flex h-[26px] cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-[9px] font-[inherit] text-[12px] font-medium whitespace-nowrap text-foreground select-none hover:bg-muted",
               "[transition:transform_.15s_cubic-bezier(.2,.8,.2,1),background-color_.2s,border-color_.2s,color_.2s] active:[transform:scale(.95)]",
-              "outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec",
+              "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
             )}
           >
             {action.label}
@@ -397,9 +403,13 @@ function Toast({
           data-slot="px-toaster-close"
           aria-label="Dismiss"
           onClick={() => onDismiss(id)}
-          className="grid size-6 cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-muted-foreground outline-none select-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+          className="grid size-6 cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-muted-foreground outline-none select-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
         >
-          <svg viewBox="0 0 12 12" aria-hidden="true" className="size-[11px] fill-none stroke-current [stroke-linecap:round] [stroke-width:1.8]">
+          <svg
+            viewBox="0 0 12 12"
+            aria-hidden="true"
+            className="size-[11px] fill-none stroke-current [stroke-width:1.8] [stroke-linecap:round]"
+          >
             <path d="M3 3l6 6M9 3l-6 6" />
           </svg>
         </button>

@@ -20,10 +20,5 @@ export interface PxFlameProps extends Omit<LumesecElementProps<PxFlameElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/flame
  */
 export function PxFlame({ value, onChange, ...props }: PxFlameProps) {
-  return useLumesecElement(
-    "px-flame",
-    props,
-    { "value": value },
-    { "change": onChange },
-  );
+  return useLumesecElement("px-flame", props, { value: value }, { change: onChange });
 }

@@ -1,9 +1,7 @@
 {
   "summary": "Sweeping pixel radar where each service node lights up as the beam passes; Ping sends out a ring that flashes every node it touches.",
   "attributes": [],
-  "events": [
-    { "name": "ping", "detail": "{}", "description": "Fires when the Ping button is pressed." }
-  ],
+  "events": [{ "name": "ping", "detail": "{}", "description": "Fires when the Ping button is pressed." }],
   "methods": [],
   "properties": [],
   "keyboard": [

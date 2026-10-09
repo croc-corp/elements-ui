@@ -2,31 +2,110 @@
   "kind": "react",
   "summary": "A meeting planner: one row of hour blocks per city, dense for working hours, with the hours every city shares lit as an accent band.",
   "props": [
-    { "name": "cities", "type": "readonly TimeZoneCity[]", "default": "-", "description": "Rows (controlled): `{ id, label, timeZone }` with an IANA zone. Use with `onCitiesChange`. Rows with a repeated id are skipped; an unknown zone reads as UTC and the row shows \"(UTC)\". An empty array shows \"No cities to compare\"." },
-    { "name": "defaultCities", "type": "readonly TimeZoneCity[]", "default": "London, Berlin, New York, São Paulo", "description": "Rows when uncontrolled. The built-in four are used only while neither `cities` nor `defaultCities` is set." },
-    { "name": "onCitiesChange", "type": "(cities: readonly TimeZoneCity[]) => void", "default": "-", "description": "Called with the remaining rows when the user removes one." },
-    { "name": "value", "type": "number", "default": "-", "description": "Cursor instant in epoch ms (controlled). Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "number", "default": "now, after mount", "description": "Cursor instant when uncontrolled. Without it the cursor starts at the current time rounded to `step`, read once after mount; until then the rows show `--:--`." },
-    { "name": "onValueChange", "type": "(value: number) => void", "default": "-", "description": "Called with the new instant in epoch ms as the cursor moves: on press, while dragging (snapped to `step`), on release and on each key press." },
-    { "name": "reference", "type": "string", "default": "first city", "description": "Id of the city whose local midnight starts the window and whose hours label the axis. An unknown id falls back to the first city." },
-    { "name": "workHours", "type": "readonly [number, number]", "default": "[9, 17]", "description": "Working hours in local time, `[from, to)`. A range may wrap past midnight; equal ends mean none." },
-    { "name": "sleepHours", "type": "readonly [number, number]", "default": "[23, 7]", "description": "Sleeping hours in local time, `[from, to)`; may wrap past midnight. Working hours win where both apply." },
-    { "name": "step", "type": "number", "default": "15", "description": "Cursor step in minutes, rounded and clamped to 1 to 180." },
-    { "name": "hour12", "type": "boolean", "default": "false", "description": "Shows times and axis labels on a 12-hour clock. The left column widens from 132 to 150 px." },
-    { "name": "removable", "type": "boolean", "default": "false", "description": "Shows a remove button on every row. It appears on hover or focus, and always on touch screens." },
-    { "name": "locale", "type": "string", "default": "\"en-US\"", "description": "BCP 47 locale for the weekday names. Times always use Latin digits." },
-    { "name": "label", "type": "string", "default": "\"Meeting time\"", "description": "Accessible name of the time cursor." }
+    {
+      "name": "cities",
+      "type": "readonly TimeZoneCity[]",
+      "default": "-",
+      "description": "Rows (controlled): `{ id, label, timeZone }` with an IANA zone. Use with `onCitiesChange`. Rows with a repeated id are skipped; an unknown zone reads as UTC and the row shows \"(UTC)\". An empty array shows \"No cities to compare\"."
+    },
+    {
+      "name": "defaultCities",
+      "type": "readonly TimeZoneCity[]",
+      "default": "London, Berlin, New York, São Paulo",
+      "description": "Rows when uncontrolled. The built-in four are used only while neither `cities` nor `defaultCities` is set."
+    },
+    {
+      "name": "onCitiesChange",
+      "type": "(cities: readonly TimeZoneCity[]) => void",
+      "default": "-",
+      "description": "Called with the remaining rows when the user removes one."
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "default": "-",
+      "description": "Cursor instant in epoch ms (controlled). Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "number",
+      "default": "now, after mount",
+      "description": "Cursor instant when uncontrolled. Without it the cursor starts at the current time rounded to `step`, read once after mount; until then the rows show `--:--`."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: number) => void",
+      "default": "-",
+      "description": "Called with the new instant in epoch ms as the cursor moves: on press, while dragging (snapped to `step`), on release and on each key press."
+    },
+    {
+      "name": "reference",
+      "type": "string",
+      "default": "first city",
+      "description": "Id of the city whose local midnight starts the window and whose hours label the axis. An unknown id falls back to the first city."
+    },
+    {
+      "name": "workHours",
+      "type": "readonly [number, number]",
+      "default": "[9, 17]",
+      "description": "Working hours in local time, `[from, to)`. A range may wrap past midnight; equal ends mean none."
+    },
+    {
+      "name": "sleepHours",
+      "type": "readonly [number, number]",
+      "default": "[23, 7]",
+      "description": "Sleeping hours in local time, `[from, to)`; may wrap past midnight. Working hours win where both apply."
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "default": "15",
+      "description": "Cursor step in minutes, rounded and clamped to 1 to 180."
+    },
+    {
+      "name": "hour12",
+      "type": "boolean",
+      "default": "false",
+      "description": "Shows times and axis labels on a 12-hour clock. The left column widens from 132 to 150 px."
+    },
+    {
+      "name": "removable",
+      "type": "boolean",
+      "default": "false",
+      "description": "Shows a remove button on every row. It appears on hover or focus, and always on touch screens."
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "default": "\"en-US\"",
+      "description": "BCP 47 locale for the weekday names. Times always use Latin digits."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Meeting time\"",
+      "description": "Accessible name of the time cursor."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
   "subcomponents": [],
   "keyboard": [
-    { "keys": "ArrowRight / ArrowUp", "action": "Moves the cursor one step later. An off-step time first moves to the next step." },
+    {
+      "keys": "ArrowRight / ArrowUp",
+      "action": "Moves the cursor one step later. An off-step time first moves to the next step."
+    },
     { "keys": "ArrowLeft / ArrowDown", "action": "Moves the cursor one step earlier." },
     { "keys": "Shift + Arrow", "action": "Moves by one hour." },
     { "keys": "PageUp / PageDown", "action": "Moves by three hours." },
-    { "keys": "Home / End", "action": "Moves to the start of the window or to its last step (23:45 with 15-minute steps)." },
-    { "keys": "Tab", "action": "Moves through the remove buttons, row by row, when `removable` is set, then to the cursor." }
+    {
+      "keys": "Home / End",
+      "action": "Moves to the start of the window or to its last step (23:45 with 15-minute steps)."
+    },
+    {
+      "keys": "Tab",
+      "action": "Moves through the remove buttons, row by row, when `removable` is set, then to the cursor."
+    }
   ],
   "accessibility": [
     "The cursor is a `role=\"slider\"` named by `label`. `aria-valuenow` is the minute of the window and `aria-valuetext` lists every city's local time, for example \"15:30 London, 16:30 Berlin, 10:30 New York, 11:30 São Paulo\".",

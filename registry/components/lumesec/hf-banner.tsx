@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-banner.element";
 /** The `<hf-banner>` element, with its properties and methods. */
 export type HfBannerElement = ElementModule.HBanner;
 
-export interface HfBannerProps extends Omit<LumesecElementProps<HfBannerElement>, "action" | "variant" | "onAction" | "onDismiss"> {
+export interface HfBannerProps extends Omit<
+  LumesecElementProps<HfBannerElement>,
+  "action" | "variant" | "onAction" | "onDismiss"
+> {
   /** Label of the action button. An empty value hides the button. Observed. Default: `Try it`. */
   action?: string;
   /** Colour scheme: `ok` (green) or `warn` (amber). Without it the accent colour is used. Observed. */
@@ -27,7 +30,7 @@ export function HfBanner({ action, variant, onAction, onDismiss, ...props }: HfB
   return useLumesecElement(
     "hf-banner",
     props,
-    { "action": action, "variant": variant },
-    { "action": onAction, "dismiss": onDismiss },
+    { action: action, variant: variant },
+    { action: onAction, dismiss: onDismiss },
   );
 }

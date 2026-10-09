@@ -1,0 +1,98 @@
+name: Release
+
+# A release is a version bump in package.json with a matching "## x.y.z · date" section in
+# content/docs/changelog.mdx, merged to main. Once CI has passed on that exact commit, this workflow tags it,
+# publishes the GitHub release with the changelog section as notes, and moves the production branch to it.
+# The deployment builds the production branch with docker-compose.yml. See RELEASING.md.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check for a new version
+    # only commits pushed to main whose CI passed; pull request runs never release
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      release: ${{ steps.version.outputs.release }}
+    steps:
+      - name: Check out the tested commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Read the version
+        id: version
+        run: |
+          version="$(node -p 'require("./package.json").version')"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if git rev-parse -q --verify "refs/tags/v$version" > /dev/null; then
+            echo "v$version is already released; nothing to do."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  release:
+    name: Release v${{ needs.check.outputs.version }}
+    needs: check
+    if: ${{ needs.check.outputs.release == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # required reviewers on this environment turn every release into an approved deployment
+    environment:
+      name: production
+      url: https://elements.lumesec.ai
+    permissions:
+      contents: write
+    env:
+      VERSION: ${{ needs.check.outputs.version }}
+      SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      # credentials are kept in this job only: it pushes the production branch
+      - name: Check out the tested commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+
+      # fails when the changelog has no section for this version
+      - name: Write the release notes
+        run: node scripts/release-notes.mjs "$VERSION" > "$RUNNER_TEMP/notes.md"
+
+      - name: Tag and publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "v$VERSION" --target "$SHA" --title "v$VERSION" --notes-file "$RUNNER_TEMP/notes.md"
+
+      # fast-forward only: production never moves to a commit that is not a descendant of the last release
+      - name: Move production to the release
+        run: git push origin "$SHA:refs/heads/production"
+
+      - name: Summary
+        run: |
+          {
+            echo "### Released v$VERSION"
+            echo
+            echo "Commit \`$SHA\` is tagged \`v$VERSION\` and is now on the \`production\` branch."
+          } >> "$GITHUB_STEP_SUMMARY"

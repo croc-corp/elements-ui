@@ -2,7 +2,11 @@
   "summary": "Live token view: typed text splits into tinted spans and a strip of pixels where new tokens drop in, using a rough tokenizer.",
   "attributes": [],
   "events": [
-    { "name": "change", "detail": "{ tokens: number }", "description": "Fires on every edit with the token count. It does not fire when the element first connects." }
+    {
+      "name": "change",
+      "detail": "{ tokens: number }",
+      "description": "Fires on every edit with the token count. It does not fire when the element first connects."
+    }
   ],
   "methods": [],
   "properties": [],

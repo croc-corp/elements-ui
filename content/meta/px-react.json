@@ -1,14 +1,29 @@
 {
   "summary": "Pixel like button whose heart explodes and snaps back filled; press and hold opens four more reactions that the same pixels fly into.",
   "attributes": [
-    { "name": "count", "type": "number", "default": "128", "description": "Reaction count, rounded to a whole number of at least 0. Changing it updates the count; liking adds one to it." }
+    {
+      "name": "count",
+      "type": "number",
+      "default": "128",
+      "description": "Reaction count, rounded to a whole number of at least 0. Changing it updates the count; liking adds one to it."
+    }
   ],
   "events": [
-    { "name": "react", "detail": "{ liked: boolean, reaction: string }", "description": "Fires on like, unlike and when a reaction is picked. `reaction` is `Love`, `Star`, `Zap`, `Fire` or `Spark`." }
+    {
+      "name": "react",
+      "detail": "{ liked: boolean, reaction: string }",
+      "description": "Fires on like, unlike and when a reaction is picked. `reaction` is `Love`, `Star`, `Zap`, `Fire` or `Spark`."
+    }
   ],
   "methods": [
-    { "signature": "toggle()", "description": "Likes or unlikes with the current reaction and adjusts the count by one." },
-    { "signature": "pick(index: number)", "description": "Selects reaction 0 to 4 (`Love`, `Star`, `Zap`, `Fire`, `Spark`), marks it liked and moves focus to the button. Other values are ignored." }
+    {
+      "signature": "toggle()",
+      "description": "Likes or unlikes with the current reaction and adjusts the count by one."
+    },
+    {
+      "signature": "pick(index: number)",
+      "description": "Selects reaction 0 to 4 (`Love`, `Star`, `Zap`, `Fire`, `Spark`), marks it liked and moves focus to the button. Other values are ignored."
+    }
   ],
   "properties": [],
   "keyboard": [

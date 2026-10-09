@@ -45,7 +45,8 @@ export const text = (value: unknown, fallback = ""): string =>
 
 /** A `Date` from a `Date`, an ISO string or epoch milliseconds; `null` when it does not parse. */
 export function toDate(value: unknown): Date | null {
-  const d = value instanceof Date ? value : typeof value === "string" || typeof value === "number" ? new Date(value) : null;
+  const d =
+    value instanceof Date ? value : typeof value === "string" || typeof value === "number" ? new Date(value) : null;
   return d && Number.isFinite(d.getTime()) ? d : null;
 }
 

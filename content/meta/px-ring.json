@@ -2,10 +2,25 @@
   "kind": "react",
   "summary": "Circular pixel progress ring with the percentage counting up in its centre; it turns green and throws a few sparks when it reaches 100%.",
   "props": [
-    { "name": "value", "type": "number | null", "default": "-", "description": "Progress from 0 to 100, clamped; the ring animates to it. `null` or leaving it out shows a spinning arc." },
+    {
+      "name": "value",
+      "type": "number | null",
+      "default": "-",
+      "description": "Progress from 0 to 100, clamped; the ring animates to it. `null` or leaving it out shows a spinning arc."
+    },
     { "name": "size", "type": "number", "default": "120", "description": "Diameter in pixels." },
-    { "name": "children", "type": "React.ReactNode", "default": "-", "description": "Caption under the ring; it also labels the progress bar." },
-    { "name": "onComplete", "type": "() => void", "default": "-", "description": "Called when `value` reaches 100, and again each time it drops below 100 and returns, also while the ring is off screen. Not called when the ring starts at 100." }
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "default": "-",
+      "description": "Caption under the ring; it also labels the progress bar."
+    },
+    {
+      "name": "onComplete",
+      "type": "() => void",
+      "default": "-",
+      "description": "Called when `value` reaches 100, and again each time it drops below 100 and returns, also while the ring is off screen. Not called when the ring starts at 100."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },

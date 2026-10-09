@@ -12,7 +12,13 @@ export default function PxToasterDemo() {
 
   React.useEffect(() => {
     const timer = window.setTimeout(
-      () => toaster.current?.show({ title: "Changes saved", description: "Your settings are up to date.", type: "success", duration: 0 }),
+      () =>
+        toaster.current?.show({
+          title: "Changes saved",
+          description: "Your settings are up to date.",
+          type: "success",
+          duration: 0,
+        }),
       300,
     );
     return () => window.clearTimeout(timer);
@@ -25,14 +31,26 @@ export default function PxToasterDemo() {
         <button
           type="button"
           className={controlButton}
-          onClick={() => toaster.current?.show({ title: "Changes saved", description: "Your settings are up to date.", type: "success" })}
+          onClick={() =>
+            toaster.current?.show({
+              title: "Changes saved",
+              description: "Your settings are up to date.",
+              type: "success",
+            })
+          }
         >
           Saved
         </button>
         <button
           type="button"
           className={controlButton}
-          onClick={() => toaster.current?.show({ title: "Upload failed", description: "report.pdf is over the 30 MB limit.", type: "error" })}
+          onClick={() =>
+            toaster.current?.show({
+              title: "Upload failed",
+              description: "report.pdf is over the 30 MB limit.",
+              type: "error",
+            })
+          }
         >
           Failed
         </button>
@@ -44,7 +62,10 @@ export default function PxToasterDemo() {
               title: "3 files deleted",
               type: "info",
               duration: 6000,
-              action: { label: "Undo", onClick: () => toaster.current?.show({ title: "Files restored", type: "success" }) },
+              action: {
+                label: "Undo",
+                onClick: () => toaster.current?.show({ title: "Files restored", type: "success" }),
+              },
             })
           }
         >

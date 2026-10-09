@@ -22,10 +22,5 @@ export interface PxVoiceProps extends Omit<LumesecElementProps<PxVoiceElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/voice
  */
 export function PxVoice({ text, onTranscript, ...props }: PxVoiceProps) {
-  return useLumesecElement(
-    "px-voice",
-    props,
-    { "text": text },
-    { "transcript": onTranscript },
-  );
+  return useLumesecElement("px-voice", props, { text: text }, { transcript: onTranscript });
 }

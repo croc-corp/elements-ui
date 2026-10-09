@@ -28,8 +28,7 @@ export default function GeoAreaDemo() {
         <span className="ml-auto text-[12px] text-muted-foreground">Demo data</span>
       </div>
       <p className="m-0 min-w-0 truncate text-[12.5px] leading-5 text-muted-foreground">
-        Committed:{" "}
-        <span className="font-mono text-foreground tabular-nums">{area ? formatArea(area) : "no area"}</span>
+        Committed: <span className="font-mono text-foreground tabular-nums">{area ? formatArea(area) : "no area"}</span>
       </p>
     </div>
   );

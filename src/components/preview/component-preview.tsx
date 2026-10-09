@@ -69,9 +69,12 @@ export function useNearViewport<T extends Element>(ref: React.RefObject<T | null
   const [near, setNear] = React.useState(eager);
   React.useEffect(() => {
     if (near || !ref.current) return;
-    const observer = new IntersectionObserver((entries) => {
-      if (entries.some((e) => e.isIntersecting)) setNear(true);
-    }, { rootMargin: margin });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) setNear(true);
+      },
+      { rootMargin: margin },
+    );
     observer.observe(ref.current);
     return () => observer.disconnect();
   }, [near, ref, margin]);
@@ -79,7 +82,12 @@ export function useNearViewport<T extends Element>(ref: React.RefObject<T | null
 }
 
 /** Runs the demo wiring of the elements on a stage once they are defined, and again after every replay. */
-export function useDemoSetups(stageRef: React.RefObject<HTMLElement | null>, tags: string[], active: boolean, replay = 0) {
+export function useDemoSetups(
+  stageRef: React.RefObject<HTMLElement | null>,
+  tags: string[],
+  active: boolean,
+  replay = 0,
+) {
   React.useEffect(() => {
     const root = stageRef.current;
     if (!active || !root) return;
@@ -92,7 +100,20 @@ export function useDemoSetups(stageRef: React.RefObject<HTMLElement | null>, tag
 }
 
 /** A live component: a React demo or custom-element markup, loaded when it scrolls near. */
-export function ComponentPreview({ tag, html, layout, stageClass, tryText, variant = "page", minHeight, className, eager, kind, component, children }: PreviewProps) {
+export function ComponentPreview({
+  tag,
+  html,
+  layout,
+  stageClass,
+  tryText,
+  variant = "page",
+  minHeight,
+  className,
+  eager,
+  kind,
+  component,
+  children,
+}: PreviewProps) {
   const frameRef = React.useRef<HTMLDivElement>(null);
   const stageRef = React.useRef<HTMLDivElement>(null);
   const [replay, setReplay] = React.useState(0);
@@ -147,7 +168,13 @@ export function ComponentPreview({ tag, html, layout, stageClass, tryText, varia
       {toolbar && (
         <div className="relative z-10 flex h-10 items-center justify-between gap-2 border-b border-border bg-surface/70 pr-1.5 pl-3.5 backdrop-blur">
           <span className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
-            <span className={cn("size-1.5 rounded-full transition-colors duration-500", ready ? "bg-success" : "bg-muted-foreground/40")} aria-hidden />
+            <span
+              className={cn(
+                "size-1.5 rounded-full transition-colors duration-500",
+                ready ? "bg-success" : "bg-muted-foreground/40",
+              )}
+              aria-hidden
+            />
             {label}
             <span className="hidden sm:inline">{ready ? "· live" : "· loading"}</span>
           </span>
@@ -188,12 +215,20 @@ export function ComponentPreview({ tag, html, layout, stageClass, tryText, varia
           </div>
         </div>
       )}
-      <div className={cn("relative", variant !== "card" && "sl-dot-grid", variant === "view" && "min-h-[calc(100dvh-40px)] grid place-items-center")}>
+      <div
+        className={cn(
+          "relative",
+          variant !== "card" && "sl-dot-grid",
+          variant === "view" && "grid min-h-[calc(100dvh-40px)] place-items-center",
+        )}
+      >
         {variant === "page" && <Corners />}
         {isReact ? (
           // the key remounts the demo on replay
           <div key={replay} {...stageProps} data-kind="react">
-            <DemoBoundary tag={tag}>{children ?? (near ? <ReactDemo tag={tag} onReady={markDemoReady} /> : null)}</DemoBoundary>
+            <DemoBoundary tag={tag}>
+              {children ?? (near ? <ReactDemo tag={tag} onReady={markDemoReady} /> : null)}
+            </DemoBoundary>
           </div>
         ) : (
           // demo markup from the lab gallery: static, authored in this repository
@@ -201,7 +236,7 @@ export function ComponentPreview({ tag, html, layout, stageClass, tryText, varia
         )}
         {!ready && variant !== "card" && (
           <div className="pointer-events-none absolute inset-0 grid place-items-center" aria-hidden>
-            <span className="font-mono text-[11px] text-muted-foreground animate-pulse">Loading {label}</span>
+            <span className="animate-pulse font-mono text-[11px] text-muted-foreground">Loading {label}</span>
           </div>
         )}
       </div>
@@ -230,7 +265,12 @@ function TryText({ text }: { text: string }) {
             </code>
           );
         }
-        if (part.startsWith("**") && part.endsWith("**")) return <strong key={i} className="font-medium text-foreground">{part.slice(2, -2)}</strong>;
+        if (part.startsWith("**") && part.endsWith("**"))
+          return (
+            <strong key={i} className="font-medium text-foreground">
+              {part.slice(2, -2)}
+            </strong>
+          );
         return part;
       })}
     </>

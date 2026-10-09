@@ -22,10 +22,5 @@ export interface PxOrbProps extends Omit<LumesecElementProps<PxOrbElement>, "sta
  * @see https://elements.lumesec.ai/components/pixel-lab/orb
  */
 export function PxOrb({ state, onChange, ...props }: PxOrbProps) {
-  return useLumesecElement(
-    "px-orb",
-    props,
-    { "state": state },
-    { "change": onChange },
-  );
+  return useLumesecElement("px-orb", props, { state: state }, { change: onChange });
 }

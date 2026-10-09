@@ -15,7 +15,10 @@ function installMd(tag: string) {
     "",
     `First time with the ${site.registry.namespace} registry? Register it once, or install by URL:`,
     "",
-    fence("bash", `npx shadcn@latest registry add ${site.registry.namespace}=${site.registry.url}\nnpx shadcn@latest add ${site.url}/r/${tag}.json`),
+    fence(
+      "bash",
+      `npx shadcn@latest registry add ${site.registry.namespace}=${site.registry.url}\nnpx shadcn@latest add ${site.url}/r/${tag}.json`,
+    ),
   ].join("\n");
 }
 
@@ -97,7 +100,10 @@ export function collectionMarkdown(slug: string) {
   const c = getCollection(slug);
   if (!c) return null;
   const list = elementsIn(slug)
-    .map((e) => `- [${e.title}](${site.url}${elementHref(e)}.md) \`<${e.tag}>\`${demoMark(e)}: ${(e.description[0] ?? "").replace(/\s+/g, " ")}`)
+    .map(
+      (e) =>
+        `- [${e.title}](${site.url}${elementHref(e)}.md) \`<${e.tag}>\`${demoMark(e)}: ${(e.description[0] ?? "").replace(/\s+/g, " ")}`,
+    )
     .join("\n");
   return `# ${c.title}\n\n> ${c.description}\n\n${c.count} components.\n\n${list}\n`;
 }
@@ -115,7 +121,9 @@ export function indexMarkdown() {
     "",
     "## Collections",
     "",
-    ...collections.map((c) => `- [${c.title}](${site.url}/components/${c.slug}.md): ${c.summary} (${c.count} components)`),
+    ...collections.map(
+      (c) => `- [${c.title}](${site.url}/components/${c.slug}.md): ${c.summary} (${c.count} components)`,
+    ),
     "",
     ...collections.flatMap((c) => [
       `## ${c.title}`,

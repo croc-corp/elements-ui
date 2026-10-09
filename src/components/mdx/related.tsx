@@ -17,7 +17,16 @@ export function RelatedComponents({ tag }: { tag: string }) {
             key={r.tag}
             index={i}
             height={200}
-            data={{ tag: r.tag, title: r.title, collection: r.collection, href: elementHref(r), stage: r.stage, stageClass: r.stageClass, layout: r.layout, demo: r.data === "demo" }}
+            data={{
+              tag: r.tag,
+              title: r.title,
+              collection: r.collection,
+              href: elementHref(r),
+              stage: r.stage,
+              stageClass: r.stageClass,
+              layout: r.layout,
+              demo: r.data === "demo",
+            }}
           />
         ))}
       </div>

@@ -3,35 +3,102 @@
   "attributes": [
     { "name": "min", "type": "number", "default": "0", "description": "Lower bound of the scale. Observed." },
     { "name": "max", "type": "number", "default": "500", "description": "Upper bound of the scale. Observed." },
-    { "name": "step", "type": "number", "default": "5", "description": "Snap increment, counted from `min`. Also the arrow-key step and the minimum gap between the two thumbs. Values at or below 0 fall back to 5. Observed." },
-    { "name": "low", "type": "number", "description": "Lower value. Defaults to `min` plus 20% of the range, snapped to `step`. Observed: a change moves the thumb without firing events." },
-    { "name": "high", "type": "number", "description": "Upper value. Defaults to `min` plus 70% of the range, snapped to `step`. Observed: a change moves the thumb without firing events." },
-    { "name": "prefix", "type": "string", "default": "€", "description": "Text before values in the Min and Max fields and in `aria-valuetext`. An empty attribute removes it. Observed." },
-    { "name": "data", "type": "string", "description": "Comma-separated bar heights for the histogram, spread evenly from `min` to `max`. Needs at least four numbers; otherwise a built-in demo distribution of 44 bars is used. Observed." },
-    { "name": "scale", "type": "number", "default": "3", "description": "Multiplier from the summed heights of the bars in range to the result count in the header. Observed." },
+    {
+      "name": "step",
+      "type": "number",
+      "default": "5",
+      "description": "Snap increment, counted from `min`. Also the arrow-key step and the minimum gap between the two thumbs. Values at or below 0 fall back to 5. Observed."
+    },
+    {
+      "name": "low",
+      "type": "number",
+      "description": "Lower value. Defaults to `min` plus 20% of the range, snapped to `step`. Observed: a change moves the thumb without firing events."
+    },
+    {
+      "name": "high",
+      "type": "number",
+      "description": "Upper value. Defaults to `min` plus 70% of the range, snapped to `step`. Observed: a change moves the thumb without firing events."
+    },
+    {
+      "name": "prefix",
+      "type": "string",
+      "default": "€",
+      "description": "Text before values in the Min and Max fields and in `aria-valuetext`. An empty attribute removes it. Observed."
+    },
+    {
+      "name": "data",
+      "type": "string",
+      "description": "Comma-separated bar heights for the histogram, spread evenly from `min` to `max`. Needs at least four numbers; otherwise a built-in demo distribution of 44 bars is used. Observed."
+    },
+    {
+      "name": "scale",
+      "type": "number",
+      "default": "3",
+      "description": "Multiplier from the summed heights of the bars in range to the result count in the header. Observed."
+    },
     { "name": "label", "type": "string", "default": "Price", "description": "Heading text. Observed." },
-    { "name": "unit-label", "type": "string", "default": "results", "description": "Word after the result count. Observed." },
-    { "name": "name", "type": "string", "description": "Form field name. With a name, the form receives `<name>-min` and `<name>-max`." },
-    { "name": "disabled", "type": "boolean", "default": "false", "description": "Presence attribute. Disables both thumbs and fields; a disabled ancestor `<fieldset>` does the same." }
+    {
+      "name": "unit-label",
+      "type": "string",
+      "default": "results",
+      "description": "Word after the result count. Observed."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Form field name. With a name, the form receives `<name>-min` and `<name>-max`."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Disables both thumbs and fields; a disabled ancestor `<fieldset>` does the same."
+    }
   ],
   "events": [
-    { "name": "input", "detail": "{ min: number, max: number }", "description": "Fires on every value change by the user: while dragging, on key presses and when a Min or Max field is committed. Not fired for attribute changes." },
-    { "name": "change", "detail": "{ min: number, max: number }", "description": "Fires when a drag ends, after an arrow, Page, Home or End key press that moved a thumb, and when a Min or Max field is committed with a new value." }
+    {
+      "name": "input",
+      "detail": "{ min: number, max: number }",
+      "description": "Fires on every value change by the user: while dragging, on key presses and when a Min or Max field is committed. Not fired for attribute changes."
+    },
+    {
+      "name": "change",
+      "detail": "{ min: number, max: number }",
+      "description": "Fires when a drag ends, after an arrow, Page, Home or End key press that moved a thumb, and when a Min or Max field is committed with a new value."
+    }
   ],
   "methods": [],
   "properties": [
     { "name": "min", "type": "number", "readonly": true, "description": "The `min` attribute, or 0." },
     { "name": "max", "type": "number", "readonly": true, "description": "The `max` attribute, or 500." },
     { "name": "step", "type": "number", "readonly": true, "description": "The `step` attribute, or 5." },
-    { "name": "bins", "type": "number[]", "readonly": true, "description": "The histogram bar heights in use, from `data` or the demo distribution." },
-    { "name": "form", "type": "HTMLFormElement | null", "readonly": true, "description": "The owning form, from `ElementInternals`." },
-    { "name": "name", "type": "string | null", "readonly": true, "description": "The `name` attribute. There is no setter; set the attribute instead." }
+    {
+      "name": "bins",
+      "type": "number[]",
+      "readonly": true,
+      "description": "The histogram bar heights in use, from `data` or the demo distribution."
+    },
+    {
+      "name": "form",
+      "type": "HTMLFormElement | null",
+      "readonly": true,
+      "description": "The owning form, from `ElementInternals`."
+    },
+    {
+      "name": "name",
+      "type": "string | null",
+      "readonly": true,
+      "description": "The `name` attribute. There is no setter; set the attribute instead."
+    }
   ],
   "keyboard": [
     { "keys": "ArrowRight / ArrowUp", "action": "Raise the focused thumb by `step`." },
     { "keys": "ArrowLeft / ArrowDown", "action": "Lower the focused thumb by `step`." },
     { "keys": "PageUp / PageDown", "action": "Move the focused thumb by a tenth of the range." },
-    { "keys": "Home / End", "action": "Move the focused thumb to `min` or `max`, stopping one `step` from the other thumb." }
+    {
+      "keys": "Home / End",
+      "action": "Move the focused thumb to `min` or `max`, stopping one `step` from the other thumb."
+    }
   ],
   "accessibility": [
     "Both thumbs are focusable with `role=\"slider\"`, `aria-label` `Minimum` or `Maximum`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and an `aria-valuetext` that includes the prefix.",

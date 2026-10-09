@@ -133,12 +133,17 @@ export function PxConfirm({
         className={cn(
           "relative inline-flex h-10 cursor-pointer items-center overflow-hidden rounded-[10px] border border-[color-mix(in_srgb,var(--destructive)_40%,var(--border))] bg-card px-4 font-[inherit] text-[14px] font-semibold text-destructive select-none",
           "[transition:background-color_.2s,color_.2s,transform_.15s_cubic-bezier(.2,.8,.2,1)] active:[transform:scale(.96)]",
-          "outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec",
+          "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
           state === "armed" && "border-transparent bg-destructive text-lumesec-foreground",
           state === "done" && "border-border bg-card text-muted-foreground",
         )}
       >
-        <RollText text={label} direction={state === "idle" ? -1 : 1} aria-live="polite" className="justify-items-center" />
+        <RollText
+          text={label}
+          direction={state === "idle" ? -1 : 1}
+          aria-live="polite"
+          className="justify-items-center"
+        />
         <canvas
           ref={canvasRef}
           aria-hidden="true"

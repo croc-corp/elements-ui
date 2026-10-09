@@ -26,7 +26,10 @@ let failed = 0;
 
 /** What a failed check printed: a command's own output (tsc and ESLint report on stdout), else the error. */
 function failureOutput(error) {
-  const output = [error?.stdout, error?.stderr].map((s) => String(s ?? "").trim()).filter(Boolean).join("\n");
+  const output = [error?.stdout, error?.stderr]
+    .map((s) => String(s ?? "").trim())
+    .filter(Boolean)
+    .join("\n");
   const text = output || String(error?.message ?? error);
   return text.length > 4000 ? `${text.slice(0, 4000)}\n… (truncated)` : text;
 }
@@ -61,7 +64,8 @@ await step("no type escape hatches in the registry", async () => {
         // mixins need `any[]` constructor arguments (TS2545); the engines document that one use
         const isMixinConstructor = /new \(\.\.\.args: any\[\]\)/.test(code);
         const usesAny = /\bas any\b|:\s*any\b|<any>|any\[\]/.test(code) && !isMixinConstructor;
-        if (usesAny || /@ts-(ignore|nocheck|expect-error)/.test(line)) offenders.push(`${dir}/${file}:${i + 1}: ${line.trim()}`);
+        if (usesAny || /@ts-(ignore|nocheck|expect-error)/.test(line))
+          offenders.push(`${dir}/${file}:${i + 1}: ${line.trim()}`);
       });
     }
   }
@@ -71,7 +75,11 @@ await step("no type escape hatches in the registry", async () => {
 
 await step("server import of every custom element", async () => {
   await build({
-    stdin: { contents: elementTags.map((t) => `import "@/components/lumesec/${t}.element";`).join("\n"), resolveDir: ROOT, loader: "js" },
+    stdin: {
+      contents: elementTags.map((t) => `import "@/components/lumesec/${t}.element";`).join("\n"),
+      resolveDir: ROOT,
+      loader: "js",
+    },
     bundle: true,
     format: "esm",
     platform: "node",
@@ -126,11 +134,19 @@ await step("usage snippets type-check", async () => {
   const snippets = meta.filter((m) => m.usage?.react);
   for (const m of snippets) {
     const suffix = m.tag.replace(/-/g, "_");
-    const text = m.usage.react.replace(/export (default )?function (\w+)/, (_, isDefault, name) => `export ${isDefault ?? ""}function ${name}_${suffix}`);
+    const text = m.usage.react.replace(
+      /export (default )?function (\w+)/,
+      (_, isDefault, name) => `export ${isDefault ?? ""}function ${name}_${suffix}`,
+    );
     writeFileSync(join(dir, `${m.tag}.tsx`), text);
   }
   // `exclude` is reset: the root config excludes .data, which is where these files are written
-  const tsconfig = { extends: "../../../tsconfig.json", compilerOptions: { noEmit: true, incremental: false }, include: ["./*.tsx"], exclude: [] };
+  const tsconfig = {
+    extends: "../../../tsconfig.json",
+    compilerOptions: { noEmit: true, incremental: false },
+    include: ["./*.tsx"],
+    exclude: [],
+  };
   writeFileSync(join(dir, "tsconfig.json"), JSON.stringify(tsconfig));
   execBin("typescript", "tsc", ["-p", join(dir, "tsconfig.json")], { stdio: "pipe" });
   const missing = meta.length - snippets.length;
@@ -138,7 +154,15 @@ await step("usage snippets type-check", async () => {
 });
 
 await step("registry lint with the stock create-next-app config", async () => {
-  const args = ["--config", "scripts/lib/eslint.registry.mjs", "--max-warnings", "0", "--no-warn-ignored", "registry/components/lumesec", "registry/lib/lumesec"];
+  const args = [
+    "--config",
+    "scripts/lib/eslint.registry.mjs",
+    "--max-warnings",
+    "0",
+    "--no-warn-ignored",
+    "registry/components/lumesec",
+    "registry/lib/lumesec",
+  ];
   execBin("eslint", "eslint", args, { stdio: "pipe" });
   return "clean";
 });

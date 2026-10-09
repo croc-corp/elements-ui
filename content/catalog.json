@@ -1417,9 +1417,7 @@
     "collection": "pixel-ui",
     "slug": "pagination",
     "title": "Pagination",
-    "description": [
-      "Page buttons with ellipses, where the current-page block slides to the page you pick."
-    ],
+    "description": ["Page buttons with ellipses, where the current-page block slides to the page you pick."],
     "tryText": null,
     "group": "Navigation & data",
     "stage": "<px-pagination total=\"24\" page=\"5\"></px-pagination>",

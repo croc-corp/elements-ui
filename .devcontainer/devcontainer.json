@@ -1,0 +1,25 @@
+{
+  "name": "LumeSec Elements",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "Elements site", "onAutoForward": "openPreview" }
+  },
+  "containerEnv": {
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
+  "postCreateCommand": "sudo corepack enable && corepack install && pnpm install && cp -n .env.example .env.local",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "unifiedjs.vscode-mdx"
+      ]
+    }
+  }
+}

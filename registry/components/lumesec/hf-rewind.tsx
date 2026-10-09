@@ -24,10 +24,5 @@ export interface HfRewindProps extends Omit<LumesecElementProps<HfRewindElement>
  * @see https://elements.lumesec.ai/components/pixel-hd/rewind
  */
 export function HfRewind({ label, onPreview, onRestore, ...props }: HfRewindProps) {
-  return useLumesecElement(
-    "hf-rewind",
-    props,
-    { "label": label },
-    { "preview": onPreview, "restore": onRestore },
-  );
+  return useLumesecElement("hf-rewind", props, { label: label }, { preview: onPreview, restore: onRestore });
 }

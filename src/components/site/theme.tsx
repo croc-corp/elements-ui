@@ -13,7 +13,8 @@ type Resolved = "light" | "dark";
 const THEME_EVENT = "elements:theme";
 const DARK_QUERY = "(prefers-color-scheme: dark)";
 
-const isThemePref = (value: string | null): value is ThemePref => value === "system" || value === "light" || value === "dark";
+const isThemePref = (value: string | null): value is ThemePref =>
+  value === "system" || value === "light" || value === "dark";
 
 // the choice made on this page; it wins over storage, which can be blocked
 let chosen: ThemePref | null = null;
@@ -55,7 +56,11 @@ function subscribeResolved(onChange: () => void) {
 /** Runs before paint so the first frame already has the right theme. */
 export const themeScript = `(function(){try{var p=localStorage.getItem("theme")||"system";var d=p==="dark"||(p==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);var r=document.documentElement;r.classList.add("js");r.dataset.theme=d?"dark":"light";r.style.colorScheme=d?"dark":"light";if(localStorage.getItem("layout")==="full")r.dataset.layout="full"}catch(e){}})()`;
 
-const ThemeContext = React.createContext<{ pref: ThemePref; resolved: Resolved; setPref: (p: ThemePref) => void } | null>(null);
+const ThemeContext = React.createContext<{
+  pref: ThemePref;
+  resolved: Resolved;
+  setPref: (p: ThemePref) => void;
+} | null>(null);
 
 /** Sets the theme on <html>. */
 function apply(pref: ThemePref) {
@@ -113,8 +118,8 @@ export function ThemeToggle({ className }: { className?: string }) {
         className,
       )}
     >
-      <SunIcon className="absolute transition-all duration-500 ease-[var(--ease-expo)] [[data-theme=light]_&]:rotate-0 [[data-theme=light]_&]:opacity-100 [[data-theme=dark]_&]:-rotate-90 [[data-theme=dark]_&]:scale-50 [[data-theme=dark]_&]:opacity-0" />
-      <MoonIcon className="absolute transition-all duration-500 ease-[var(--ease-expo)] [[data-theme=dark]_&]:rotate-0 [[data-theme=dark]_&]:opacity-100 [[data-theme=light]_&]:rotate-90 [[data-theme=light]_&]:scale-50 [[data-theme=light]_&]:opacity-0" />
+      <SunIcon className="absolute transition-all duration-500 ease-[var(--ease-expo)] [[data-theme=dark]_&]:scale-50 [[data-theme=dark]_&]:-rotate-90 [[data-theme=dark]_&]:opacity-0 [[data-theme=light]_&]:rotate-0 [[data-theme=light]_&]:opacity-100" />
+      <MoonIcon className="absolute transition-all duration-500 ease-[var(--ease-expo)] [[data-theme=dark]_&]:rotate-0 [[data-theme=dark]_&]:opacity-100 [[data-theme=light]_&]:scale-50 [[data-theme=light]_&]:rotate-90 [[data-theme=light]_&]:opacity-0" />
     </button>
   );
 }
@@ -128,7 +133,11 @@ export function ThemeSegmented({ className }: { className?: string }) {
     { id: "dark", label: "Dark theme", Icon: MoonIcon },
   ];
   return (
-    <div role="group" aria-label="Theme" className={cn("inline-flex items-center gap-0.5 rounded-full border border-border p-0.5", className)}>
+    <div
+      role="group"
+      aria-label="Theme"
+      className={cn("inline-flex items-center gap-0.5 rounded-full border border-border p-0.5", className)}
+    >
       {options.map(({ id, label, Icon }) => (
         <button
           key={id}

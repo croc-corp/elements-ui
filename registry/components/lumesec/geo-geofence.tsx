@@ -185,7 +185,9 @@ export function GeoGeofence({
   const [fleet] = React.useState(() => createFleet(shownZones, view));
   const deviceList = devices ? sanitizeDevices(devices) : fleet.devices;
 
-  const [statuses, setStatuses] = React.useState<Record<string, DeviceStatus>>(() => computeStatuses(deviceList, shownZones));
+  const [statuses, setStatuses] = React.useState<Record<string, DeviceStatus>>(() =>
+    computeStatuses(deviceList, shownZones),
+  );
 
   // Pure layout: the server places handles and devices with a nominal 1000 px projection, the client with the measured
   // one. Percentages make both exact at any width.
@@ -356,7 +358,12 @@ export function GeoGeofence({
       const zone = current.find((entry) => entry.id === event.zoneId);
       const runtime = engine.devices.get(event.deviceId);
       if (!zone || !runtime) continue;
-      const device: TrackedDevice = { id: runtime.id, label: runtime.label, lat: runtime.lat, lon: wrapLongitude(runtime.lon) };
+      const device: TrackedDevice = {
+        id: runtime.id,
+        label: runtime.label,
+        lat: runtime.lat,
+        lon: wrapLongitude(runtime.lon),
+      };
       const payload: GeofenceEvent = { device, zone, point: event.point };
       if (event.kind === "breach") {
         const text = `${runtime.label} left ${zone.label}`;
@@ -494,7 +501,11 @@ export function GeoGeofence({
     while (relative < west) relative += 360;
     while (relative > west + 360) relative -= 360;
     if (east - west < 360) relative = clamp(relative, west, east);
-    commitZone({ ...zone, center: { lat, lon: wrapLongitude(relative) }, radiusKm: Math.min(zone.radiusKm, poleCap(lat)) });
+    commitZone({
+      ...zone,
+      center: { lat, lon: wrapLongitude(relative) },
+      radiusKm: Math.min(zone.radiusKm, poleCap(lat)),
+    });
   }
 
   function handleRadiusKey(event: React.KeyboardEvent<HTMLDivElement>, zone: GeofenceZone) {
@@ -586,7 +597,10 @@ export function GeoGeofence({
   return (
     <div
       data-slot="geo-geofence"
-      className={cn("grid w-full max-w-[660px] gap-3 text-foreground [-webkit-tap-highlight-color:transparent]", className)}
+      className={cn(
+        "grid w-full max-w-[660px] gap-3 text-foreground [-webkit-tap-highlight-color:transparent]",
+        className,
+      )}
       {...props}
     >
       <div className="relative select-none" style={{ aspectRatio: ASPECT }}>
@@ -639,7 +653,7 @@ export function GeoGeofence({
                       onBlur={() => setHotZone((current) => (current === zone.id ? null : current))}
                       onPointerEnter={() => setHotZone(zone.id)}
                       onPointerLeave={() => setHotZone((current) => (current === zone.id ? null : current))}
-                      className="group/center absolute z-[3] -mt-[7px] -ml-[7px] grid size-[14px] cursor-grab touch-none place-items-center rounded-full border-0 bg-transparent p-0 outline-none before:absolute before:-inset-2 before:rounded-full before:content-[''] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec data-[dragging]:cursor-grabbing"
+                      className="group/center absolute z-[3] -mt-[7px] -ml-[7px] grid size-[14px] cursor-grab touch-none place-items-center rounded-full border-0 bg-transparent p-0 outline-none before:absolute before:-inset-2 before:rounded-full before:content-[''] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid data-[dragging]:cursor-grabbing"
                       style={{ left: percent(placed.centerLeft), top: percent(placed.centerTop) }}
                     >
                       <span className="col-start-1 row-start-1 block size-[14px] rounded-full bg-lumesec shadow-[0_0_0_2px_var(--card),0_1px_4px_rgb(0_0_0/0.3)] transition-[scale] duration-150 ease-[cubic-bezier(.2,.8,.2,1)] group-hover/center:scale-110 group-data-[dragging]/center:scale-90 motion-reduce:transition-none" />
@@ -671,7 +685,7 @@ export function GeoGeofence({
                       }}
                       onPointerEnter={() => setHotZone(zone.id)}
                       onPointerLeave={() => setHotZone((current) => (current === zone.id ? null : current))}
-                      className="group/radius absolute z-[3] -mt-1.5 -ml-1.5 grid size-3 cursor-ew-resize touch-none place-items-center rounded-full outline-none before:absolute before:-inset-[9px] before:rounded-full before:content-[''] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+                      className="group/radius absolute z-[3] -mt-1.5 -ml-1.5 grid size-3 cursor-ew-resize touch-none place-items-center rounded-full outline-none before:absolute before:-inset-[9px] before:rounded-full before:content-[''] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
                       style={{ left: percent(placed.handleLeft), top: percent(placed.handleTop) }}
                     >
                       <span className="block size-3 rounded-full border-[1.5px] border-lumesec bg-card shadow-[0_1px_3px_rgb(0_0_0/0.25)] transition-[scale] duration-150 ease-[cubic-bezier(.2,.8,.2,1)] group-hover/radius:scale-115 group-data-[dragging]/radius:scale-90 motion-reduce:transition-none" />
@@ -679,7 +693,7 @@ export function GeoGeofence({
                         aria-hidden="true"
                         data-visible={showReadout ? "" : undefined}
                         className={cn(
-                          "pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-md border border-border bg-card/95 px-1.5 py-0.5 font-mono text-[11px] leading-4 whitespace-nowrap text-foreground tabular-nums shadow-[0_6px_16px_-8px_rgb(0_0_0/0.35)] opacity-0 transition-opacity duration-150 data-[visible]:opacity-100 motion-reduce:transition-none",
+                          "pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-md border border-border bg-card/95 px-1.5 py-0.5 font-mono text-[11px] leading-4 whitespace-nowrap text-foreground tabular-nums opacity-0 shadow-[0_6px_16px_-8px_rgb(0_0_0/0.35)] transition-opacity duration-150 data-[visible]:opacity-100 motion-reduce:transition-none",
                           placed.handleWest ? "right-[calc(100%+8px)]" : "left-[calc(100%+8px)]",
                         )}
                       >
@@ -725,7 +739,7 @@ export function GeoGeofence({
                   }}
                   onPointerLeave={() => setHoveredDevice((current) => (current === device.id ? null : current))}
                   className={cn(
-                    "group/device absolute z-[2] -mt-2.5 -ml-2.5 grid size-5 cursor-default place-items-center rounded-full border-0 bg-transparent p-0 outline-none will-change-transform focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-solid focus-visible:outline-lumesec",
+                    "group/device absolute z-[2] -mt-2.5 -ml-2.5 grid size-5 cursor-default place-items-center rounded-full border-0 bg-transparent p-0 will-change-transform outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-lumesec focus-visible:outline-solid",
                     showChip && "z-[5]",
                   )}
                   style={{ left: percent(placed.left), top: percent(placed.top) }}
@@ -747,9 +761,13 @@ export function GeoGeofence({
                     aria-hidden="true"
                     data-visible={showChip ? "" : undefined}
                     className={cn(
-                      "pointer-events-none absolute flex w-max flex-col rounded-md border border-border bg-card/95 px-2 py-1 text-left shadow-[0_6px_16px_-8px_rgb(0_0_0/0.35)] backdrop-blur-[2px] opacity-0 transition-opacity duration-150 data-[visible]:opacity-100 motion-reduce:transition-none",
+                      "pointer-events-none absolute flex w-max flex-col rounded-md border border-border bg-card/95 px-2 py-1 text-left opacity-0 shadow-[0_6px_16px_-8px_rgb(0_0_0/0.35)] backdrop-blur-[2px] transition-opacity duration-150 data-[visible]:opacity-100 motion-reduce:transition-none",
                       chip.below ? "top-[calc(100%+2px)]" : "bottom-[calc(100%+2px)]",
-                      chip.align === "start" ? "left-0" : chip.align === "end" ? "right-0" : "left-1/2 -translate-x-1/2",
+                      chip.align === "start"
+                        ? "left-0"
+                        : chip.align === "end"
+                          ? "right-0"
+                          : "left-1/2 -translate-x-1/2",
                     )}
                   >
                     <span className="text-[12px] leading-4 font-medium text-foreground">{name}</span>
@@ -858,14 +876,24 @@ function StatusLine({
     text = (
       <>
         {total > 1 && "All "}
-        <RollText text={formatNumber(total)} direction={insideDirection} animate={animate} className="font-mono tabular-nums" />{" "}
+        <RollText
+          text={formatNumber(total)}
+          direction={insideDirection}
+          animate={animate}
+          className="font-mono tabular-nums"
+        />{" "}
         {total === 1 ? "device" : "devices"} inside
       </>
     );
   } else {
     text = (
       <>
-        <RollText text={formatNumber(outside)} direction={outsideDirection} animate={animate} className="font-mono tabular-nums" />{" "}
+        <RollText
+          text={formatNumber(outside)}
+          direction={outsideDirection}
+          animate={animate}
+          className="font-mono tabular-nums"
+        />{" "}
         {outside === 1 ? "device" : "devices"} outside{!hasZones && ", no zones"}
       </>
     );
@@ -934,10 +962,20 @@ function ZoneRow({
         </span>
       </td>
       <td className="h-9 px-3 text-right font-mono text-[12.5px] tabular-nums">
-        <RollText text={formatDistance(radius)} direction={radiusDirection} animate={animate} className="justify-items-end" />
+        <RollText
+          text={formatDistance(radius)}
+          direction={radiusDirection}
+          animate={animate}
+          className="justify-items-end"
+        />
       </td>
       <td className="h-9 pl-3 text-right font-mono text-[12.5px] tabular-nums">
-        <RollText text={formatNumber(inside)} direction={insideDirection} animate={animate} className="justify-items-end" />
+        <RollText
+          text={formatNumber(inside)}
+          direction={insideDirection}
+          animate={animate}
+          className="justify-items-end"
+        />
       </td>
     </tr>
   );
@@ -1051,7 +1089,14 @@ const GLIDE_STIFFNESS = 90;
 /** Mean Earth km per degree of arc. */
 const KM_PER_DEGREE = (Math.PI / 180) * EARTH_RADIUS_KM;
 
-const SPARK_OPTIONS = { speed: [50, 200], life: [0.35, 0.8], size: [1.5, 2.5], spread: 1.5, drag: 3.2, jitter: 2 } as const;
+const SPARK_OPTIONS = {
+  speed: [50, 200],
+  life: [0.35, 0.8],
+  size: [1.5, 2.5],
+  spread: 1.5,
+  drag: 3.2,
+  jitter: 2,
+} as const;
 
 const WORLD: GeoBounds = { west: -180, south: -60, east: 180, north: 75 };
 
@@ -1072,7 +1117,8 @@ function effectiveRadius(zone: GeofenceZone) {
   return Math.max(1, Math.min(zone.radiusKm, poleCap(zone.center.lat)));
 }
 
-const validZone = (zone: GeofenceZone) => isValidLatLon(zone.center) && Number.isFinite(zone.radiusKm) && zone.radiusKm > 0;
+const validZone = (zone: GeofenceZone) =>
+  isValidLatLon(zone.center) && Number.isFinite(zone.radiusKm) && zone.radiusKm > 0;
 
 /** Drops zones with a repeated id or invalid numbers. Returns the input when it is already clean. */
 function sanitizeZones(list: readonly GeofenceZone[]): readonly GeofenceZone[] {
@@ -1113,7 +1159,8 @@ function sameZones(a: readonly GeofenceZone[], b: readonly GeofenceZone[]) {
 function fitView(zones: readonly GeofenceZone[], devices: readonly TrackedDevice[]): GeoBounds {
   const points: LatLon[] = [];
   for (const zone of zones) points.push(...geodesicCircle(zone.center, effectiveRadius(zone), 24));
-  if (points.length === 0) for (const device of devices) if (Number.isFinite(device.lat) && Number.isFinite(device.lon)) points.push(device);
+  if (points.length === 0)
+    for (const device of devices) if (Number.isFinite(device.lat) && Number.isFinite(device.lon)) points.push(device);
   if (points.length === 0) return WORLD;
   return boundsOf(points, 0.14, 24);
 }
@@ -1124,7 +1171,11 @@ function normaliseView(view: GeoBounds): GeoBounds {
   const north = clamp(Math.max(view.south, view.north), -89, 89);
   let east = view.east;
   if (east <= view.west) east += 360;
-  const fitted = fitBoundsToAspect({ west: view.west, south, east: Math.min(east, view.west + 360), north }, ASPECT, "equirectangular");
+  const fitted = fitBoundsToAspect(
+    { west: view.west, south, east: Math.min(east, view.west + 360), north },
+    ASPECT,
+    "equirectangular",
+  );
   return fitted;
 }
 
@@ -1243,7 +1294,9 @@ interface DeviceStatus {
 }
 
 function statusOf(device: LatLon, zones: readonly GeofenceZone[]): DeviceStatus {
-  const inside = zones.filter((zone) => distanceKm(device, zone.center) <= effectiveRadius(zone)).map((zone) => zone.id);
+  const inside = zones
+    .filter((zone) => distanceKm(device, zone.center) <= effectiveRadius(zone))
+    .map((zone) => zone.id);
   return { inside: inside.length > 0, zones: inside };
 }
 
@@ -1281,7 +1334,12 @@ function createFleet(zones: readonly GeofenceZone[], view: GeoBounds): Fleet {
   const homes =
     zones.length > 0
       ? zones.map((zone) => ({ anchor: zone.center, radiusKm: effectiveRadius(zone) }))
-      : [{ anchor: { lat: (view.south + view.north) / 2, lon: wrapLongitude((view.west + view.east) / 2) }, radiusKm: 800 }];
+      : [
+          {
+            anchor: { lat: (view.south + view.north) / 2, lon: wrapLongitude((view.west + view.east) / 2) },
+            radiusKm: 800,
+          },
+        ];
   const trackers: FleetTracker[] = [];
   for (let i = 0; i < 6; i++) {
     const home = homes[i % homes.length];
@@ -1875,7 +1933,8 @@ function stepZones(engine: Engine, config: Config, time: number, delta: number, 
             x += vx * dt;
             y += vy * dt;
           }
-          if (Math.abs(tx - x) > 0.03 || Math.abs(ty - y) > 0.03 || Math.abs(vx) > 0.4 || Math.abs(vy) > 0.4) moving = true;
+          if (Math.abs(tx - x) > 0.03 || Math.abs(ty - y) > 0.03 || Math.abs(vx) > 0.4 || Math.abs(vy) > 0.4)
+            moving = true;
           runtime.x[k] = x;
           runtime.y[k] = y;
           runtime.vx[k] = vx;
@@ -2172,10 +2231,16 @@ function fireEvent(engine: Engine, event: InternalEvent, time: number, reduced: 
   // sparks leave along the outward normal, the way the device went
   const k = Math.round(fraction * runtime.count) % runtime.count;
   const angle = Math.atan2(runtime.ny[k], runtime.nx[k]);
-  engine.sparks.add(point.x + engine.fxOffsetX, point.y + engine.fxOffsetY, 14, [ink.warning, ink.warning, ink.accent], {
-    ...SPARK_OPTIONS,
-    angle,
-  });
+  engine.sparks.add(
+    point.x + engine.fxOffsetX,
+    point.y + engine.fxOffsetY,
+    14,
+    [ink.warning, ink.warning, ink.accent],
+    {
+      ...SPARK_OPTIONS,
+      angle,
+    },
+  );
 }
 
 /* Drawing -------------------------------------------------------------------------------------------- */
@@ -2309,7 +2374,8 @@ function drawFence(engine: Engine, runtime: ZoneRuntime, time: number, dpr: numb
       const travel = PLUCK_SPEED * t;
       const ahead = loopDelta(s, origin + travel, length);
       const behind = loopDelta(s, origin - travel, length);
-      displacement += amplitude * (Math.exp(-(ahead * ahead) / twoSigmaSquared) + Math.exp(-(behind * behind) / twoSigmaSquared));
+      displacement +=
+        amplitude * (Math.exp(-(ahead * ahead) / twoSigmaSquared) + Math.exp(-(behind * behind) / twoSigmaSquared));
     }
     let warning = Math.min(1, Math.abs(displacement) / PLUCK_AMPLITUDE);
     for (const flash of runtime.flashes) {
@@ -2350,7 +2416,13 @@ function drawPing(engine: Engine, ping: Ping, time: number, dpr: number) {
       if (strength < 0.05) continue;
       const land = cells.land[index] === 1;
       const size = strength > 0.6 ? FENCE_DOT : LAND_DOT;
-      engine.pingBatch.add(snapCenter(x, size, dpr), snapCenter(y, size, dpr), size, 0.5 + 0.5 * strength, land ? strength : 0.6 * strength);
+      engine.pingBatch.add(
+        snapCenter(x, size, dpr),
+        snapCenter(y, size, dpr),
+        size,
+        0.5 + 0.5 * strength,
+        land ? strength : 0.6 * strength,
+      );
     }
   }
 }
@@ -2374,7 +2446,13 @@ function drawLive(engine: Engine, surface: CanvasSurface, time: number, reduced:
     const c = index - r * cells.columns;
     const x = cells.x0 + (c + 0.5) * PITCH;
     const y = cells.y0 + (r + 0.5) * PITCH;
-    engine.interiorBatch.add(snapCenter(x, LAND_DOT, dpr), snapCenter(y, LAND_DOT, dpr), LAND_DOT, cells.tone[index], Math.min(1, cells.alpha[index]));
+    engine.interiorBatch.add(
+      snapCenter(x, LAND_DOT, dpr),
+      snapCenter(y, LAND_DOT, dpr),
+      LAND_DOT,
+      cells.tone[index],
+      Math.min(1, cells.alpha[index]),
+    );
   }
   engine.interiorBatch.flush(context);
   if (!reduced) for (const ping of engine.pings) drawPing(engine, ping, time, dpr);

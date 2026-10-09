@@ -2,10 +2,17 @@
   "summary": "Chat list where deleting a row turns it into pixels sampled from its own text, which drift away left to right before the gap closes.",
   "attributes": [],
   "events": [
-    { "name": "delete", "detail": "{ title: string }", "description": "Fires when a row's delete button is pressed, with the chat title." }
+    {
+      "name": "delete",
+      "detail": "{ title: string }",
+      "description": "Fires when a row's delete button is pressed, with the chat title."
+    }
   ],
   "methods": [
-    { "signature": "restore()", "description": "Puts every deleted chat back in its original position, including rows still dissolving." }
+    {
+      "signature": "restore()",
+      "description": "Puts every deleted chat back in its original position, including rows still dissolving."
+    }
   ],
   "properties": [],
   "keyboard": [],

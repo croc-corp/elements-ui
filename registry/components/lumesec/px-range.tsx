@@ -20,10 +20,5 @@ export interface PxRangeProps extends Omit<LumesecElementProps<PxRangeElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/range
  */
 export function PxRange({ onChange, ...props }: PxRangeProps) {
-  return useLumesecElement(
-    "px-range",
-    props,
-    {},
-    { "change": onChange },
-  );
+  return useLumesecElement("px-range", props, {}, { change: onChange });
 }

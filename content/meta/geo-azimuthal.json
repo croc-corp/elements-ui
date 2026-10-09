@@ -134,19 +134,13 @@
       {
         "name": "defaultRings",
         "kind": "enum",
-        "options": [
-          "distance",
-          "latency"
-        ],
+        "options": ["distance", "latency"],
         "default": "distance"
       },
       {
         "name": "unit",
         "kind": "enum",
-        "options": [
-          "km",
-          "mi"
-        ],
+        "options": ["km", "mi"],
         "default": "km"
       },
       {

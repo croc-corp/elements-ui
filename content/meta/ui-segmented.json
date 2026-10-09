@@ -2,11 +2,36 @@
   "kind": "react",
   "summary": "Segmented control whose selection pill is driven by two springs, so it stretches between options and recolours labels exactly where it covers them.",
   "props": [
-    { "name": "value", "type": "string", "default": "-", "description": "Controlled selected label. Use with `onValueChange`. A label that is not in `options` selects the first option." },
-    { "name": "defaultValue", "type": "string", "default": "first option", "description": "Initially selected label when uncontrolled." },
-    { "name": "options", "type": "readonly string[]", "default": "[\"Chat\", \"Code\", \"Design\"]", "description": "Option labels. Each label is also the option's value." },
-    { "name": "label", "type": "string", "default": "\"Options\"", "description": "Accessible name of the radio group." },
-    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called when the user picks a different option by click or arrow key. Changing `value` from outside does not call it." }
+    {
+      "name": "value",
+      "type": "string",
+      "default": "-",
+      "description": "Controlled selected label. Use with `onValueChange`. A label that is not in `options` selects the first option."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "default": "first option",
+      "description": "Initially selected label when uncontrolled."
+    },
+    {
+      "name": "options",
+      "type": "readonly string[]",
+      "default": "[\"Chat\", \"Code\", \"Design\"]",
+      "description": "Option labels. Each label is also the option's value."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Options\"",
+      "description": "Accessible name of the radio group."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "default": "-",
+      "description": "Called when the user picks a different option by click or arrow key. Changing `value` from outside does not call it."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },

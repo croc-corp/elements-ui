@@ -22,10 +22,5 @@ export interface PxTasksProps extends Omit<LumesecElementProps<PxTasksElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/tasks
  */
 export function PxTasks({ items, onChange, ...props }: PxTasksProps) {
-  return useLumesecElement(
-    "px-tasks",
-    props,
-    { "items": items },
-    { "change": onChange },
-  );
+  return useLumesecElement("px-tasks", props, { items: items }, { change: onChange });
 }

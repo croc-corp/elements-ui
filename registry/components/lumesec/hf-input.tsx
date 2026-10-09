@@ -7,7 +7,27 @@ import type * as ElementModule from "@/components/lumesec/hf-input.element";
 /** The `<hf-input>` element, with its properties and methods. */
 export type HfInputElement = ElementModule.HInput;
 
-export interface HfInputProps extends Omit<LumesecElementProps<HfInputElement>, "label" | "value" | "hint" | "error" | "success" | "name" | "type" | "placeholder" | "required" | "pattern" | "minlength" | "maxlength" | "autocomplete" | "inputmode" | "spellcheck" | "disabled" | "onInput" | "onChange"> {
+export interface HfInputProps extends Omit<
+  LumesecElementProps<HfInputElement>,
+  | "label"
+  | "value"
+  | "hint"
+  | "error"
+  | "success"
+  | "name"
+  | "type"
+  | "placeholder"
+  | "required"
+  | "pattern"
+  | "minlength"
+  | "maxlength"
+  | "autocomplete"
+  | "inputmode"
+  | "spellcheck"
+  | "disabled"
+  | "onInput"
+  | "onChange"
+> {
   /** Visible label, linked to the inner input. Hidden when absent. */
   label?: string;
   /** Initial value, also restored on form reset. Not observed; use the `value` property to change the text. */
@@ -51,11 +71,48 @@ export interface HfInputProps extends Omit<LumesecElementProps<HfInputElement>, 
  * Form-associated text field with a comet of light on the border while focused; invalid values turn the border to static.
  * @see https://elements.lumesec.ai/components/pixel-hd/input
  */
-export function HfInput({ label, value, hint, error, success, name, type, placeholder, required, pattern, minlength, maxlength, autocomplete, inputmode, spellcheck, disabled, onInput, onChange, ...props }: HfInputProps) {
+export function HfInput({
+  label,
+  value,
+  hint,
+  error,
+  success,
+  name,
+  type,
+  placeholder,
+  required,
+  pattern,
+  minlength,
+  maxlength,
+  autocomplete,
+  inputmode,
+  spellcheck,
+  disabled,
+  onInput,
+  onChange,
+  ...props
+}: HfInputProps) {
   return useLumesecElement(
     "hf-input",
     props,
-    { "label": label, "value": value, "hint": hint, "error": error, "success": success, "name": name, "type": type, "placeholder": placeholder, "required": required, "pattern": pattern, "minlength": minlength, "maxlength": maxlength, "autocomplete": autocomplete, "inputmode": inputmode, "spellcheck": spellcheck, "disabled": disabled },
-    { "input": onInput, "change": onChange },
+    {
+      label: label,
+      value: value,
+      hint: hint,
+      error: error,
+      success: success,
+      name: name,
+      type: type,
+      placeholder: placeholder,
+      required: required,
+      pattern: pattern,
+      minlength: minlength,
+      maxlength: maxlength,
+      autocomplete: autocomplete,
+      inputmode: inputmode,
+      spellcheck: spellcheck,
+      disabled: disabled,
+    },
+    { input: onInput, change: onChange },
   );
 }

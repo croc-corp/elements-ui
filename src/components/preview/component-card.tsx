@@ -24,7 +24,19 @@ export type CardData = {
 };
 
 /** A live, lazily mounted component in a grid. The demo is interactive; the footer links to its page. */
-export function ComponentCard({ data, height = 248, className, index = 0, zoom }: { data: CardData; height?: number; className?: string; index?: number; zoom?: number }) {
+export function ComponentCard({
+  data,
+  height = 248,
+  className,
+  index = 0,
+  zoom,
+}: {
+  data: CardData;
+  height?: number;
+  className?: string;
+  index?: number;
+  zoom?: number;
+}) {
   const ref = React.useRef<HTMLDivElement>(null);
   const stageRef = React.useRef<HTMLDivElement>(null);
   const near = useNearViewport(ref, false, "200px");
@@ -47,11 +59,23 @@ export function ComponentCard({ data, height = 248, className, index = 0, zoom }
     <div
       ref={ref}
       style={{ "--i": index % 6 } as React.CSSProperties}
-      className={cn("group/card relative flex flex-col overflow-hidden bg-background transition-colors duration-300", className)}
+      className={cn(
+        "group/card relative flex flex-col overflow-hidden bg-background transition-colors duration-300",
+        className,
+      )}
     >
-      <div className="sl-dot-grid relative overflow-hidden" style={{ height, ...(zoom ? { "--card-zoom": zoom } : {}) } as React.CSSProperties}>
+      <div
+        className="sl-dot-grid relative overflow-hidden"
+        style={{ height, ...(zoom ? { "--card-zoom": zoom } : {}) } as React.CSSProperties}
+      >
         {near && isReact && (
-          <div ref={stageRef} data-layout={data.layout} data-kind="react" data-ready={ready || undefined} className={stageClass}>
+          <div
+            ref={stageRef}
+            data-layout={data.layout}
+            data-kind="react"
+            data-ready={ready || undefined}
+            className={stageClass}
+          >
             <DemoBoundary tag={data.tag}>
               <ReactDemo tag={data.tag} onReady={markDemoReady} />
             </DemoBoundary>
@@ -59,18 +83,41 @@ export function ComponentCard({ data, height = 248, className, index = 0, zoom }
         )}
         {near && !isReact && (
           // demo markup from the lab gallery: static, authored in this repository
-          <div ref={stageRef} data-layout={data.layout} data-ready={ready || undefined} className={stageClass} dangerouslySetInnerHTML={{ __html: data.stage }} />
+          <div
+            ref={stageRef}
+            data-layout={data.layout}
+            data-ready={ready || undefined}
+            className={stageClass}
+            dangerouslySetInnerHTML={{ __html: data.stage }}
+          />
         )}
-        {!ready && <span className="absolute inset-0 grid place-items-center font-mono text-[11px] text-muted-foreground/70">&lt;{data.tag}&gt;</span>}
-        <span className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-background to-transparent" aria-hidden />
+        {!ready && (
+          <span className="absolute inset-0 grid place-items-center font-mono text-[11px] text-muted-foreground/70">
+            &lt;{data.tag}&gt;
+          </span>
+        )}
+        <span
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-background to-transparent"
+          aria-hidden
+        />
       </div>
-      <Link href={data.href} className="relative flex items-center gap-3 border-t border-border px-4 py-3 transition-colors hover:bg-surface">
+      <Link
+        href={data.href}
+        className="relative flex items-center gap-3 border-t border-border px-4 py-3 transition-colors hover:bg-surface"
+      >
         <span className="min-w-0 flex-1">
           <span className="flex items-center gap-2 text-[14px] font-medium tracking-tight">
             <span className="truncate">{data.title}</span>
-            {data.isNew && <span className="rounded-[4px] border border-border px-1 font-mono text-[9.5px] leading-[15px] text-muted-foreground">new</span>}
+            {data.isNew && (
+              <span className="rounded-[4px] border border-border px-1 font-mono text-[9.5px] leading-[15px] text-muted-foreground">
+                new
+              </span>
+            )}
             {data.demo && (
-              <span title="Shows invented demo data and cannot show your own yet. Use it as a template." className="shrink-0 rounded-[4px] border border-dashed border-border px-1 font-mono text-[9.5px] leading-[15px] text-muted-foreground">
+              <span
+                title="Shows invented demo data and cannot show your own yet. Use it as a template."
+                className="shrink-0 rounded-[4px] border border-dashed border-border px-1 font-mono text-[9.5px] leading-[15px] text-muted-foreground"
+              >
                 demo data
               </span>
             )}
@@ -80,7 +127,10 @@ export function ComponentCard({ data, height = 248, className, index = 0, zoom }
             {data.tag}
           </span>
         </span>
-        <ArrowRightIcon size={14} className="shrink-0 -translate-x-1 text-muted-foreground opacity-0 transition-all duration-300 ease-[var(--ease-expo)] group-hover/card:translate-x-0 group-hover/card:opacity-100" />
+        <ArrowRightIcon
+          size={14}
+          className="shrink-0 -translate-x-1 text-muted-foreground opacity-0 transition-all duration-300 ease-[var(--ease-expo)] group-hover/card:translate-x-0 group-hover/card:opacity-100"
+        />
         <span className="sr-only">Open {data.title}</span>
       </Link>
     </div>

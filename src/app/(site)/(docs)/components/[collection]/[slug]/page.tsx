@@ -25,9 +25,24 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   return {
     title,
     description: page.data.description,
-    keywords: [e.title, e.tag, `${e.title} component`, `react ${e.title.toLowerCase()}`, `shadcn ${e.title.toLowerCase()}`, col.title, "web component"],
+    keywords: [
+      e.title,
+      e.tag,
+      `${e.title} component`,
+      `react ${e.title.toLowerCase()}`,
+      `shadcn ${e.title.toLowerCase()}`,
+      col.title,
+      "web component",
+    ],
     alternates: { canonical: url, types: { "text/markdown": `${url}.md` } },
-    openGraph: { type: "article", title, description: page.data.description, url, modifiedTime: e.added, images: ogImage(url, title) },
+    openGraph: {
+      type: "article",
+      title,
+      description: page.data.description,
+      url,
+      modifiedTime: e.added,
+      images: ogImage(url, title),
+    },
     twitter: { card: "summary_large_image", title, description: page.data.description, images: ogImage(url, title) },
   };
 }

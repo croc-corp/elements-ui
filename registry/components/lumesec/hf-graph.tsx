@@ -24,10 +24,5 @@ export interface HfGraphProps extends Omit<LumesecElementProps<HfGraphElement>, 
  * @see https://elements.lumesec.ai/components/pixel-hd/graph
  */
 export function HfGraph({ label, autoplay, onDone, ...props }: HfGraphProps) {
-  return useLumesecElement(
-    "hf-graph",
-    props,
-    { "label": label, "autoplay": autoplay },
-    { "done": onDone },
-  );
+  return useLumesecElement("hf-graph", props, { label: label, autoplay: autoplay }, { done: onDone });
 }

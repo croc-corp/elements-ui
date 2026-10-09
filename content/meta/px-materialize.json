@@ -1,16 +1,27 @@
 {
   "summary": "Streams a sentence word by word, each word condensing from particles sampled from its own glyphs before resolving into crisp text.",
   "attributes": [
-    { "name": "text", "type": "string", "default": "Ultracode runs at xhigh effort and lets the agent plan multi-agent workflows on its own, so big tasks fan out across parallel agents.", "description": "The text to stream; runs of whitespace count as one space. Changing it replays the stream with the new text, as do Replay, `restart()`, a width change and the fonts finishing loading." }
+    {
+      "name": "text",
+      "type": "string",
+      "default": "Ultracode runs at xhigh effort and lets the agent plan multi-agent workflows on its own, so big tasks fan out across parallel agents.",
+      "description": "The text to stream; runs of whitespace count as one space. Changing it replays the stream with the new text, as do Replay, `restart()`, a width change and the fonts finishing loading."
+    }
   ],
-  "events": [
-    { "name": "done", "detail": "{}", "description": "Fires once every word has settled into text." }
-  ],
+  "events": [{ "name": "done", "detail": "{}", "description": "Fires once every word has settled into text." }],
   "methods": [
-    { "signature": "restart()", "description": "Lays out the current `text` again and replays the stream from the first word." }
+    {
+      "signature": "restart()",
+      "description": "Lays out the current `text` again and replays the stream from the first word."
+    }
   ],
   "properties": [
-    { "name": "text", "type": "string", "readonly": false, "description": "The text to stream; reflects the `text` attribute, or the default sentence when it is missing." }
+    {
+      "name": "text",
+      "type": "string",
+      "readonly": false,
+      "description": "The text to stream; reflects the `text` attribute, or the default sentence when it is missing."
+    }
   ],
   "keyboard": [],
   "accessibility": [

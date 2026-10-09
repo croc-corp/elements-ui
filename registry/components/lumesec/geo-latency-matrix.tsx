@@ -391,7 +391,11 @@ export function GeoLatencyMatrix({
   const msText = Number.isFinite(detail.ms) ? formatMsNumber(detail.ms) : "";
 
   return (
-    <div data-slot="geo-latency-matrix" className={cn("@container w-full max-w-[660px] text-foreground", className)} {...props}>
+    <div
+      data-slot="geo-latency-matrix"
+      className={cn("@container w-full max-w-[660px] text-foreground", className)}
+      {...props}
+    >
       <div
         ref={cardRef}
         className="grid gap-4 rounded-xl border border-border bg-card p-3 [--cell:20px] [-webkit-tap-highlight-color:transparent] @min-[420px]:p-4 @min-[420px]:[--cell:24px] @min-[560px]:grid-cols-[auto_minmax(0,1fr)] @min-[560px]:gap-6"
@@ -488,18 +492,49 @@ export function GeoLatencyMatrix({
         <div className="grid min-w-0 content-start gap-3">
           <div className="flex min-h-10 items-start justify-between gap-3">
             {detail.kind === "none" ? (
-              <p className="m-0 text-[12.5px] leading-[19px] text-muted-foreground">Point at a cell to see the route between two regions.</p>
+              <p className="m-0 text-[12.5px] leading-[19px] text-muted-foreground">
+                Point at a cell to see the route between two regions.
+              </p>
             ) : (
               <div className="min-w-0">
-                <p className="sr-only">{detail.kind === "same" ? `${detail.fromText}, ${detail.fromPlace}, same region` : `From ${detail.fromText}, ${detail.fromPlace}, to ${detail.toText}, ${detail.toPlace}`}</p>
+                <p className="sr-only">
+                  {detail.kind === "same"
+                    ? `${detail.fromText}, ${detail.fromPlace}, same region`
+                    : `From ${detail.fromText}, ${detail.fromPlace}, to ${detail.toText}, ${detail.toPlace}`}
+                </p>
                 {/* one row per endpoint, with the map's endpoint colours; the id column keeps the longest label's
                     width, so nothing shifts while the rows roll */}
-                <div aria-hidden="true" className="grid grid-cols-[6px_auto_minmax(0,1fr)] items-center gap-x-2 text-[12.5px] leading-5">
+                <div
+                  aria-hidden="true"
+                  className="grid grid-cols-[6px_auto_minmax(0,1fr)] items-center gap-x-2 text-[12.5px] leading-5"
+                >
                   <span className="size-1.5 rounded-full bg-foreground" />
-                  <RollText text={detail.fromText} direction={rowDirection} animate={animate} reserve={labels} className="font-mono" />
-                  <RollText text={detail.fromPlace} direction={rowDirection} animate={animate} className="min-w-0 overflow-hidden text-muted-foreground" />
-                  <span className={cn("size-1.5 rounded-full bg-lumesec transition-opacity duration-200", detail.kind === "same" && "opacity-0")} />
-                  <RollText text={detail.toText} direction={columnDirection} animate={animate} reserve={labels} className="font-mono" />
+                  <RollText
+                    text={detail.fromText}
+                    direction={rowDirection}
+                    animate={animate}
+                    reserve={labels}
+                    className="font-mono"
+                  />
+                  <RollText
+                    text={detail.fromPlace}
+                    direction={rowDirection}
+                    animate={animate}
+                    className="min-w-0 overflow-hidden text-muted-foreground"
+                  />
+                  <span
+                    className={cn(
+                      "size-1.5 rounded-full bg-lumesec transition-opacity duration-200",
+                      detail.kind === "same" && "opacity-0",
+                    )}
+                  />
+                  <RollText
+                    text={detail.toText}
+                    direction={columnDirection}
+                    animate={animate}
+                    reserve={labels}
+                    className="font-mono"
+                  />
                   <RollText
                     text={detail.kind === "same" ? "Same region" : detail.toPlace}
                     direction={columnDirection}
@@ -531,7 +566,11 @@ export function GeoLatencyMatrix({
                 ref={fxRef}
                 aria-hidden="true"
                 className="pointer-events-none absolute block"
-                style={{ inset: -FX_MARGIN, width: `calc(100% + ${FX_MARGIN * 2}px)`, height: `calc(100% + ${FX_MARGIN * 2}px)` }}
+                style={{
+                  inset: -FX_MARGIN,
+                  width: `calc(100% + ${FX_MARGIN * 2}px)`,
+                  height: `calc(100% + ${FX_MARGIN * 2}px)`,
+                }}
               />
               <div role="img" aria-label={mapLabel(detail)} className="absolute inset-0" />
               <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -541,7 +580,10 @@ export function GeoLatencyMatrix({
                 <span ref={toLabelRef} className={cn(MAP_LABEL_CLASS, "text-foreground")}>
                   {detail.toText}
                 </span>
-                <span ref={floorLabelRef} className={cn(MAP_LABEL_CLASS, "font-sans text-[10px] text-muted-foreground")}>
+                <span
+                  ref={floorLabelRef}
+                  className={cn(MAP_LABEL_CLASS, "font-sans text-[10px] text-muted-foreground")}
+                >
                   fibre minimum
                 </span>
               </div>
@@ -562,7 +604,10 @@ export function GeoLatencyMatrix({
                   <span aria-hidden="true" className="text-[13px] text-muted-foreground">
                     ms
                   </span>
-                  <span aria-hidden="true" className="ml-1 inline-flex items-center gap-1.5 text-[11.5px] text-muted-foreground">
+                  <span
+                    aria-hidden="true"
+                    className="ml-1 inline-flex items-center gap-1.5 text-[11.5px] text-muted-foreground"
+                  >
                     <RouteSwatch measured />
                     round trip
                   </span>
@@ -572,9 +617,25 @@ export function GeoLatencyMatrix({
               )}
             </div>
             <dl className="m-0 grid grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)_minmax(0,1fr)] gap-3 border-t border-border pt-2.5">
-              <Stat label="Fibre minimum" text={formatMsText(detail.floor)} direction={floorDirection} animate={animate} swatch={<RouteSwatch />} />
-              <Stat label="Stretch" text={formatStretch(detail.stretch)} direction={stretchDirection} animate={animate} />
-              <Stat label="Distance" text={detail.kind === "same" || detail.kind === "none" ? MISSING : formatDistance(detail.km)} direction={distanceDirection} animate={animate} />
+              <Stat
+                label="Fibre minimum"
+                text={formatMsText(detail.floor)}
+                direction={floorDirection}
+                animate={animate}
+                swatch={<RouteSwatch />}
+              />
+              <Stat
+                label="Stretch"
+                text={formatStretch(detail.stretch)}
+                direction={stretchDirection}
+                animate={animate}
+              />
+              <Stat
+                label="Distance"
+                text={detail.kind === "same" || detail.kind === "none" ? MISSING : formatDistance(detail.km)}
+                direction={distanceDirection}
+                animate={animate}
+              />
             </dl>
           </div>
         </div>
@@ -589,7 +650,17 @@ const MAP_LABEL_CLASS =
   "absolute top-0 left-0 rounded-[3px] bg-card/85 px-[3px] font-mono text-[10.5px] leading-[14px] whitespace-nowrap opacity-0 will-change-transform";
 
 /** A number whose characters roll on their own, keyed from the right, so only the digits that change move. */
-function RollingNumber({ text, direction, animate, className }: { text: string; direction: number; animate: boolean; className?: string }) {
+function RollingNumber({
+  text,
+  direction,
+  animate,
+  className,
+}: {
+  text: string;
+  direction: number;
+  animate: boolean;
+  className?: string;
+}) {
   const characters = Array.from(text);
   return (
     <span aria-hidden="true" className={cn("inline-flex", className)}>
@@ -630,7 +701,11 @@ function Stat({
 /** Three dots in the style of a route: accent for the measured route, faint for the fibre minimum. */
 function RouteSwatch({ measured = false }: { measured?: boolean }) {
   return (
-    <svg viewBox="0 0 12 4" aria-hidden="true" className={cn("h-1 w-3 shrink-0", measured ? "fill-lumesec" : "fill-foreground/35")}>
+    <svg
+      viewBox="0 0 12 4"
+      aria-hidden="true"
+      className={cn("h-1 w-3 shrink-0", measured ? "fill-lumesec" : "fill-foreground/35")}
+    >
       {measured ? (
         <>
           <rect x="0" y="1" width="2" height="2" />
@@ -702,10 +777,22 @@ function DotBlock({ level }: { level: number }) {
         const y = Math.floor(index / 5) * 4;
         if (missing) {
           if ((index + Math.floor(index / 5)) % 2 !== 0) return null;
-          return <rect key={index} x={x} y={y} width="2" height="2" style={{ fill: "var(--foreground)", opacity: MISSING_ALPHA }} />;
+          return (
+            <rect
+              key={index}
+              x={x}
+              y={y}
+              width="2"
+              height="2"
+              style={{ fill: "var(--foreground)", opacity: MISSING_ALPHA }}
+            />
+          );
         }
-        if (rank >= lit) return <rect key={index} x={x} y={y} width="2" height="2" style={{ fill: LAND_CSS, opacity: UNLIT_ALPHA }} />;
-        return <rect key={index} x={x} y={y} width="2" height="2" style={{ fill: color, opacity: 0.4 + 0.6 * level }} />;
+        if (rank >= lit)
+          return <rect key={index} x={x} y={y} width="2" height="2" style={{ fill: LAND_CSS, opacity: UNLIT_ALPHA }} />;
+        return (
+          <rect key={index} x={x} y={y} width="2" height="2" style={{ fill: color, opacity: 0.4 + 0.6 * level }} />
+        );
       })}
     </svg>
   );
@@ -715,7 +802,8 @@ function DotBlock({ level }: { level: number }) {
 function useRollDirection(value: number) {
   const [state, setState] = React.useState({ value, direction: 1 });
   if (!Object.is(state.value, value)) {
-    const direction = Number.isFinite(value) && Number.isFinite(state.value) ? (value >= state.value ? 1 : -1) : state.direction;
+    const direction =
+      Number.isFinite(value) && Number.isFinite(state.value) ? (value >= state.value ? 1 : -1) : state.direction;
     setState({ value, direction });
     return direction;
   }
@@ -863,7 +951,8 @@ function pairOfCell(model: MatrixModel, cell: number): LatencyPair | null {
   return { from: model.regions[Math.floor(cell / model.size)].id, to: model.regions[cell % model.size].id };
 }
 
-const samePair = (a: LatencyPair | null, b: LatencyPair | null) => a === b || (!!a && !!b && a.from === b.from && a.to === b.to);
+const samePair = (a: LatencyPair | null, b: LatencyPair | null) =>
+  a === b || (!!a && !!b && a.from === b.from && a.to === b.to);
 
 /** What the detail panel shows for a cell. */
 interface CellDetail {
@@ -952,12 +1041,23 @@ const formatMsText = (ms: number) => (Number.isFinite(ms) ? `${formatMsNumber(ms
 
 /** '+38 %' for 0.38, with a true minus sign below the fibre minimum. */
 const formatStretch = (stretch: number) =>
-  Number.isFinite(stretch) ? `${formatNumber(Math.round(stretch * 100), { sign: Math.round(stretch * 100) !== 0 })} %` : MISSING;
+  Number.isFinite(stretch)
+    ? `${formatNumber(Math.round(stretch * 100), { sign: Math.round(stretch * 100) !== 0 })} %`
+    : MISSING;
 
 /* Demo data ------------------------------------------------------------------------------------------- */
 
 /** Eight demo regions in the order of the map, west to east, so the matrix reads like the map. */
-const DEMO_REGION_IDS = ["us-west", "us-east", "sa-east", "eu-central", "af-south", "ap-southeast", "ap-northeast", "au-east"];
+const DEMO_REGION_IDS = [
+  "us-west",
+  "us-east",
+  "sa-east",
+  "eu-central",
+  "af-south",
+  "ap-southeast",
+  "ap-northeast",
+  "au-east",
+];
 
 const DEMO_MATRIX_REGIONS: readonly LatencyRegion[] = DEMO_REGION_IDS.flatMap((id) => {
   const region = findRegion(id);
@@ -983,7 +1083,9 @@ const MIN_SCALE_MS = 0.1;
  * and density grows without clumping (toroidal void-and-cluster, so neighbouring blocks tile evenly). The first four
  * dots form a square; the centre comes late, so the diagonal's lone centre dot never reads as a fast pair.
  */
-const RANKS: readonly number[] = [10, 20, 6, 13, 4, 14, 0, 17, 3, 21, 7, 12, 22, 8, 18, 23, 2, 15, 1, 11, 5, 19, 9, 24, 16];
+const RANKS: readonly number[] = [
+  10, 20, 6, 13, 4, 14, 0, 17, 3, 21, 7, 12, 22, 8, 18, 23, 2, 15, 1, 11, 5, 19, 9, 24, 16,
+];
 const RANK_COLUMN = new Uint8Array(25);
 const RANK_ROW = new Uint8Array(25);
 RANKS.forEach((rank, index) => {
@@ -994,7 +1096,8 @@ const CENTRE_RANK = RANKS[12];
 const LEGEND_LEVELS = [0, 0.25, 0.5, 0.75, 1];
 
 /** The cells' grey (between geoInk's land and landStrong), as CSS, for the legend blocks. */
-const LAND_CSS = "color-mix(in srgb, color-mix(in srgb, var(--muted-foreground) 70%, var(--card)) 50%, color-mix(in srgb, var(--foreground) 55%, var(--card)))";
+const LAND_CSS =
+  "color-mix(in srgb, color-mix(in srgb, var(--muted-foreground) 70%, var(--card)) 50%, color-mix(in srgb, var(--foreground) 55%, var(--card)))";
 
 /** Room around the cells on the matrix canvas, for the commit ring. */
 const MATRIX_MARGIN = 8;
@@ -1273,7 +1376,8 @@ function stepMatrix(matrix: MatrixState, now: number, delta: number, reduced: bo
     else matrix.frameAlpha.position = frameTarget;
   }
 
-  if (matrix.twinkleCell >= 0 && now - matrix.twinkleStart < TWINKLE_SECONDS + 25 * TWINKLE_STAGGER + 0.02 && !reduced) moving = true;
+  if (matrix.twinkleCell >= 0 && now - matrix.twinkleStart < TWINKLE_SECONDS + 25 * TWINKLE_STAGGER + 0.02 && !reduced)
+    moving = true;
   else if (matrix.twinkleCell >= 0) {
     matrix.twinkleCell = -1;
     matrix.dirty = true;
@@ -1288,7 +1392,8 @@ function stepMatrix(matrix: MatrixState, now: number, delta: number, reduced: bo
 
 const COUNT_SPRING: Spring = spring();
 
-const settled = (state: Spring, target: number) => Math.abs(state.position - target) < 0.001 && Math.abs(state.velocity) < 0.001;
+const settled = (state: Spring, target: number) =>
+  Math.abs(state.position - target) < 0.001 && Math.abs(state.velocity) < 0.001;
 
 /** Draws every cell's dot block, the slow marks, the selection and the active frame. */
 function drawMatrix(surface: CanvasSurface, matrix: MatrixState, ink: GeoInk, now: number) {
@@ -1314,7 +1419,18 @@ function drawMatrix(surface: CanvasSurface, matrix: MatrixState, ink: GeoInk, no
       const age = cell === matrix.twinkleCell ? twinkleAge : -1;
 
       if (kind === KIND_SAME) {
-        blockDot(pen, x0, y0, pitch, dpr, CENTRE_RANK, ink.landStrong, 0.55 * clamp(shown, 0, 1), twinklePulse(age, 0), ink.shine);
+        blockDot(
+          pen,
+          x0,
+          y0,
+          pitch,
+          dpr,
+          CENTRE_RANK,
+          ink.landStrong,
+          0.55 * clamp(shown, 0, 1),
+          twinklePulse(age, 0),
+          ink.shine,
+        );
         continue;
       }
       if (kind === KIND_MISSING) {
@@ -1332,7 +1448,8 @@ function drawMatrix(surface: CanvasSurface, matrix: MatrixState, ink: GeoInk, no
       const presence = clamp(shown, 0, 1);
       for (let rank = 0; rank < 25; rank++) {
         const lit = clamp(shown - rank, 0, 1);
-        if (lit < 1) blockDot(pen, x0, y0, pitch, dpr, rank, ink.land, UNLIT_ALPHA * presence * (1 - lit), 0, ink.shine);
+        if (lit < 1)
+          blockDot(pen, x0, y0, pitch, dpr, rank, ink.land, UNLIT_ALPHA * presence * (1 - lit), 0, ink.shine);
         if (lit > 0) blockDot(pen, x0, y0, pitch, dpr, rank, color, alpha * lit, twinklePulse(age, rank), ink.shine);
       }
       if (matrix.slow[cell]) {
@@ -1353,11 +1470,21 @@ function drawMatrix(surface: CanvasSurface, matrix: MatrixState, ink: GeoInk, no
     strokeFrame(context, dpr, matrix.selected % n, Math.floor(matrix.selected / n), cellSize, ink.accent, 0.4, 0);
   }
   const frameAlpha = clamp(matrix.frameAlpha.position, 0, 1);
-  if (frameAlpha > 0.01) strokeFrame(context, dpr, matrix.frameX.position, matrix.frameY.position, cellSize, ink.accent, frameAlpha, 0);
+  if (frameAlpha > 0.01)
+    strokeFrame(context, dpr, matrix.frameX.position, matrix.frameY.position, cellSize, ink.accent, frameAlpha, 0);
   if (matrix.popCell >= 0) {
     const t = clamp((now - matrix.popStart) / POP_SECONDS, 0, 1);
     const grow = easeOutCubic(t) * 6;
-    strokeFrame(context, dpr, matrix.popCell % n, Math.floor(matrix.popCell / n), cellSize, ink.accent, (1 - t) * (1 - t) * 0.9, grow);
+    strokeFrame(
+      context,
+      dpr,
+      matrix.popCell % n,
+      Math.floor(matrix.popCell / n),
+      cellSize,
+      ink.accent,
+      (1 - t) * (1 - t) * 0.9,
+      grow,
+    );
   }
 }
 
@@ -1440,7 +1567,12 @@ function layoutMap(engine: Engine, width: number, height: number) {
   const key = `${width}x${height}`;
   if (engine.mapKey === key) return;
   const previous = engine.projection;
-  const projection = createProjection("equirectangular", { width, height, latRange: MAP_LAT_RANGE, center: MAP_CENTER });
+  const projection = createProjection("equirectangular", {
+    width,
+    height,
+    latRange: MAP_LAT_RANGE,
+    center: MAP_CENTER,
+  });
   engine.projection = projection;
   engine.lattice = mapLattice(projection, { pitch: MAP_PITCH });
   engine.mapKey = key;
@@ -1539,7 +1671,10 @@ function retargetRoute(engine: Engine, projection: MapProjection) {
     let best = 0;
     let bestCost = Infinity;
     for (const turns of [0, -1, 1]) {
-      const cost = Math.max(Math.abs(route.ax.position + turns * world - target.ax), Math.abs(route.bx.position + turns * world - target.bx));
+      const cost = Math.max(
+        Math.abs(route.ax.position + turns * world - target.ax),
+        Math.abs(route.bx.position + turns * world - target.bx),
+      );
       if (cost < bestCost - 0.5) {
         best = turns;
         bestCost = cost;
@@ -1831,7 +1966,12 @@ function drawSparks(engine: Engine, surface: CanvasSurface, ink: GeoInk, delta: 
     const hot = Math.max(0, 1 - spark.age / 0.12);
     context.globalAlpha = Math.pow(life, 1.3);
     context.fillStyle = rgba(mixRgb(ink.accent, ink.shine, Math.min(1, spark.mix * 0.6 + hot)));
-    context.fillRect(Math.round((spark.x + FX_MARGIN) * 2) / 2, Math.round((spark.y + FX_MARGIN) * 2) / 2, spark.size, spark.size);
+    context.fillRect(
+      Math.round((spark.x + FX_MARGIN) * 2) / 2,
+      Math.round((spark.y + FX_MARGIN) * 2) / 2,
+      spark.size,
+      spark.size,
+    );
     alive.push(spark);
   }
   context.globalAlpha = 1;
@@ -1878,7 +2018,13 @@ function placeLabels(
     element.style.opacity = opacity.toFixed(3);
   };
   place(fromElement, ax + route.labelA.x.position, ay + route.labelA.y.position, widthA, visible);
-  place(toElement, bx + route.labelB.x.position, by + route.labelB.y.position, widthB, clamp(route.ghost.position, 0, 1) * visible);
+  place(
+    toElement,
+    bx + route.labelB.x.position,
+    by + route.labelB.y.position,
+    widthB,
+    clamp(route.ghost.position, 0, 1) * visible,
+  );
 
   // the fibre-minimum label sits outside the great circle's bulge, at its middle
   const middle = SHAPE_SAMPLES >> 1;
@@ -1894,7 +2040,9 @@ function placeLabels(
   const floorTop = ly - LABEL_HEIGHT / 2 + ny * 5;
   // only where the arc is long enough to carry it, and where its middle is on the map with room for the label
   const onMap = clamp(1 - Math.max(-floorTop, floorTop + LABEL_HEIGHT - height) / 6, 0, 1);
-  const floorOpacity = route.same ? 0 : clamp((chord - widthFloor - 14) / 12, 0, 1) * onMap * clamp(route.ghost.position, 0, 1) * visible;
+  const floorOpacity = route.same
+    ? 0
+    : clamp((chord - widthFloor - 14) / 12, 0, 1) * onMap * clamp(route.ghost.position, 0, 1) * visible;
   place(floorElement, lx - widthFloor / 2 + nx * (widthFloor / 2), floorTop, widthFloor, floorOpacity);
 }
 
@@ -1939,7 +2087,10 @@ function labelOffset(
     const left = x + offsetX;
     const top = y + offsetY;
     const overflow =
-      Math.max(0, 1 - left) + Math.max(0, left + labelWidth - (width - 1)) + Math.max(0, -top) + Math.max(0, top + LABEL_HEIGHT - height);
+      Math.max(0, 1 - left) +
+      Math.max(0, left + labelWidth - (width - 1)) +
+      Math.max(0, -top) +
+      Math.max(0, top + LABEL_HEIGHT - height);
     const score = overflow * 0.25 + side.x * toward.x + side.y * toward.y + side.cost;
     if (score < bestScore) {
       bestScore = score;

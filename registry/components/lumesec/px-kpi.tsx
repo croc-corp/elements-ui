@@ -122,7 +122,11 @@ export function PxKpi({
             )}
           >
             {/* the arrows read badly aloud, so assistive technology gets words instead */}
-            <RollText text={`${up ? "▲" : "▼"} ${Math.abs(change).toFixed(1)}%`} direction={up ? 1 : -1} aria-hidden="true" />
+            <RollText
+              text={`${up ? "▲" : "▼"} ${Math.abs(change).toFixed(1)}%`}
+              direction={up ? 1 : -1}
+              aria-hidden="true"
+            />
             <span className="sr-only">{`${up ? "Up" : "Down"} ${Math.abs(change).toFixed(1)}%`}</span>
           </span>
         )}
@@ -146,7 +150,8 @@ function formatValue(value: number, format: PxKpiFormat, currency: string) {
     }).format(value);
   }
   if (format === "percent") return `${value.toFixed(1)}%`;
-  if (format === "compact") return new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(value);
+  if (format === "compact")
+    return new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(value);
   if (format === "ms") return `${Math.round(value)} ms`;
   return value.toLocaleString("en-US");
 }

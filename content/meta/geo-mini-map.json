@@ -70,7 +70,10 @@
   },
   "subcomponents": [],
   "keyboard": [
-    { "keys": "Tab", "action": "Focus the thumbnail. The popover opens at once and closes when focus leaves, unless it is pinned." },
+    {
+      "keys": "Tab",
+      "action": "Focus the thumbnail. The popover opens at once and closes when focus leaves, unless it is pinned."
+    },
     { "keys": "Enter / Space", "action": "Pin the popover, or unpin and close it." },
     { "keys": "Escape", "action": "Close the most recently opened popover. Focus stays on the thumbnail." }
   ],
@@ -111,12 +114,23 @@
   "usage": "import { GeoMiniMap, type MiniMapLocation } from \"@/components/lumesec/geo-mini-map\";\n\nconst office = { lat: 50.1109, lon: 8.6821, label: \"Frankfurt\" };\n\nexport function SignInLocation({ location }: { location: MiniMapLocation }) {\n  return <GeoMiniMap location={location} from={office} />;\n}\n",
   "playground": {
     "props": {
-      "location": { "lat": 35.6762, "lon": 139.6503, "label": "Tokyo", "detail": "Sign-in from 203.0.113.88", "timeZone": "Asia/Tokyo" },
+      "location": {
+        "lat": 35.6762,
+        "lon": 139.6503,
+        "label": "Tokyo",
+        "detail": "Sign-in from 203.0.113.88",
+        "timeZone": "Asia/Tokyo"
+      },
       "from": { "lat": 50.1109, "lon": 8.6821, "label": "Frankfurt" }
     },
     "controls": [
       { "name": "size", "kind": "enum", "options": ["sm", "md", "lg"], "default": "md" },
-      { "name": "tone", "kind": "enum", "options": ["accent", "info", "success", "warning", "destructive"], "default": "accent" },
+      {
+        "name": "tone",
+        "kind": "enum",
+        "options": ["accent", "info", "success", "warning", "destructive"],
+        "default": "accent"
+      },
       { "name": "zoom", "kind": "number", "options": null, "default": "4" },
       { "name": "side", "kind": "enum", "options": ["auto", "top", "bottom"], "default": "auto" },
       { "name": "unit", "kind": "enum", "options": ["km", "mi"], "default": "km" },

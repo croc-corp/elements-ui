@@ -1,21 +1,64 @@
 {
   "summary": "Textarea with @mention suggestions for files, people and agents; matched letters are marked and inserted mentions become dotted chips.",
   "attributes": [
-    { "name": "label", "type": "string", "default": "Message", "description": "Visible label of the textarea, associated with it through `<label for>`. Observed." },
-    { "name": "placeholder", "type": "string", "default": "Type @ to mention a file, person or agent", "description": "Placeholder for the empty textarea. Observed." },
-    { "name": "value", "type": "string", "default": "Can @grace look at @src/auth/session.ts before we ship?", "description": "Initial text. Read once on connect; omitting it or leaving it empty loads the demo sentence. Form reset restores it." },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Message",
+      "description": "Visible label of the textarea, associated with it through `<label for>`. Observed."
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "default": "Type @ to mention a file, person or agent",
+      "description": "Placeholder for the empty textarea. Observed."
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "default": "Can @grace look at @src/auth/session.ts before we ship?",
+      "description": "Initial text. Read once on connect; omitting it or leaving it empty loads the demo sentence. Form reset restores it."
+    },
     { "name": "name", "type": "string", "description": "Form field name used when the element is inside a form." },
-    { "name": "disabled", "type": "boolean", "default": "false", "description": "Presence attribute. Disables the textarea; a disabled ancestor `<fieldset>` does the same." }
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Disables the textarea; a disabled ancestor `<fieldset>` does the same."
+    }
   ],
   "events": [
-    { "name": "input", "detail": "{ value: string }", "description": "Fires on each edit and after a mention is inserted, with the full text." },
-    { "name": "mention", "detail": "{ value: string }", "description": "Fires when a suggestion is inserted. `value` is the mention without the `@`, for example `src/auth/session.ts`." }
+    {
+      "name": "input",
+      "detail": "{ value: string }",
+      "description": "Fires on each edit and after a mention is inserted, with the full text."
+    },
+    {
+      "name": "mention",
+      "detail": "{ value: string }",
+      "description": "Fires when a suggestion is inserted. `value` is the mention without the `@`, for example `src/auth/session.ts`."
+    }
   ],
   "methods": [],
   "properties": [
-    { "name": "value", "type": "string", "readonly": false, "description": "The textarea text. Setting it replaces the text and updates the chips and form value without firing events." },
-    { "name": "form", "type": "HTMLFormElement | null", "readonly": true, "description": "The owning form, from `ElementInternals`." },
-    { "name": "name", "type": "string | null", "readonly": true, "description": "The `name` attribute. There is no setter; set the attribute instead." }
+    {
+      "name": "value",
+      "type": "string",
+      "readonly": false,
+      "description": "The textarea text. Setting it replaces the text and updates the chips and form value without firing events."
+    },
+    {
+      "name": "form",
+      "type": "HTMLFormElement | null",
+      "readonly": true,
+      "description": "The owning form, from `ElementInternals`."
+    },
+    {
+      "name": "name",
+      "type": "string | null",
+      "readonly": true,
+      "description": "The `name` attribute. There is no setter; set the attribute instead."
+    }
   ],
   "keyboard": [
     { "keys": "ArrowDown / ArrowUp", "action": "While suggestions are open: move the highlight, wrapping." },

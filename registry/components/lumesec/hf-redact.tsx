@@ -24,10 +24,5 @@ export interface HfRedactProps extends Omit<LumesecElementProps<HfRedactElement>
  * @see https://elements.lumesec.ai/components/pixel-hd/redact
  */
 export function HfRedact({ names, label, onChange, ...props }: HfRedactProps) {
-  return useLumesecElement(
-    "hf-redact",
-    props,
-    { "names": names, "label": label },
-    { "change": onChange },
-  );
+  return useLumesecElement("hf-redact", props, { names: names, label: label }, { change: onChange });
 }

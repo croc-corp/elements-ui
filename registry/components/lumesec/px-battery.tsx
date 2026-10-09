@@ -22,10 +22,5 @@ export interface PxBatteryProps extends Omit<LumesecElementProps<PxBatteryElemen
  * @see https://elements.lumesec.ai/components/pixel-lab/battery
  */
 export function PxBattery({ onUse, onFull, ...props }: PxBatteryProps) {
-  return useLumesecElement(
-    "px-battery",
-    props,
-    {},
-    { "use": onUse, "full": onFull },
-  );
+  return useLumesecElement("px-battery", props, {}, { use: onUse, full: onFull });
 }

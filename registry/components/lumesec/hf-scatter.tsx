@@ -22,10 +22,5 @@ export interface HfScatterProps extends Omit<LumesecElementProps<HfScatterElemen
  * @see https://elements.lumesec.ai/components/pixel-hd/scatter
  */
 export function HfScatter({ label, onSelect, ...props }: HfScatterProps) {
-  return useLumesecElement(
-    "hf-scatter",
-    props,
-    { "label": label },
-    { "select": onSelect },
-  );
+  return useLumesecElement("hf-scatter", props, { label: label }, { select: onSelect });
 }

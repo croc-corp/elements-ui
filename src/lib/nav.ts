@@ -13,7 +13,10 @@ const GUIDE_GROUPS: { title: string; slugs: string[] }[] = [
   { title: "Project", slugs: ["changelog", "faq", "license"] },
 ];
 
-const NEWEST = collections.map((c) => c.updated).sort().at(-1);
+const NEWEST = collections
+  .map((c) => c.updated)
+  .sort()
+  .at(-1);
 
 /** The sidebar: guides in their groups, then every collection with its components by group. */
 export function getNav(): Nav {
@@ -31,7 +34,9 @@ export function getNav(): Nav {
 function navCollection(c: CollectionMeta, items: ElementMeta[]): NavCollection {
   const groups = c.groups.map((g) => ({
     title: g,
-    items: items.filter((e) => e.group === g).map((e) => ({ title: e.title, href: elementHref(e), tag: e.tag, isNew: e.added === NEWEST })),
+    items: items
+      .filter((e) => e.group === g)
+      .map((e) => ({ title: e.title, href: elementHref(e), tag: e.tag, isNew: e.added === NEWEST })),
   }));
   return { slug: c.slug, title: c.title, href: `/components/${c.slug}`, count: c.count, groups };
 }

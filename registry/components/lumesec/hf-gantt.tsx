@@ -22,10 +22,5 @@ export interface HfGanttProps extends Omit<LumesecElementProps<HfGanttElement>, 
  * @see https://elements.lumesec.ai/components/pixel-hd/gantt
  */
 export function HfGantt({ label, onChange, ...props }: HfGanttProps) {
-  return useLumesecElement(
-    "hf-gantt",
-    props,
-    { "label": label },
-    { "change": onChange },
-  );
+  return useLumesecElement("hf-gantt", props, { label: label }, { change: onChange });
 }

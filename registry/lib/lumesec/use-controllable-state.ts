@@ -22,7 +22,11 @@ type SetState<T> = (next: T | ((previous: T) => T)) => void;
  * parent renders the new one: a change the parent ignores or rejects is not remembered, so the next update
  * starts from the value on screen. The setter keeps its identity across renders.
  */
-export function useControllableState<T>({ value, defaultValue, onChange }: ControllableStateOptions<T>): [T, SetState<T>] {
+export function useControllableState<T>({
+  value,
+  defaultValue,
+  onChange,
+}: ControllableStateOptions<T>): [T, SetState<T>] {
   const [uncontrolled, setUncontrolled] = React.useState(defaultValue);
   const controlled = value !== undefined;
   const current = controlled ? value : uncontrolled;

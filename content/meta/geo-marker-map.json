@@ -100,10 +100,19 @@
   },
   "subcomponents": [],
   "keyboard": [
-    { "keys": "Tab", "action": "Moves focus into the map. One marker holds the tab stop: the last one focused, else the selected one, else the first." },
-    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "action": "Move focus to the nearest marker in that direction on the map." },
+    {
+      "keys": "Tab",
+      "action": "Moves focus into the map. One marker holds the tab stop: the last one focused, else the selected one, else the first."
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown",
+      "action": "Move focus to the nearest marker in that direction on the map."
+    },
     { "keys": "Home / End", "action": "Move focus to the first / last marker in `markers` order." },
-    { "keys": "Enter / Space", "action": "Select the focused marker, or clear the selection when it is already selected." },
+    {
+      "keys": "Enter / Space",
+      "action": "Select the focused marker, or clear the selection when it is already selected."
+    },
     { "keys": "Escape", "action": "Clear the selection." }
   ],
   "accessibility": [
@@ -143,7 +152,12 @@
   "playground": {
     "props": { "label": "Requests by city" },
     "controls": [
-      { "name": "projection", "kind": "enum", "options": ["equalEarth", "equirectangular", "mercator"], "default": "equalEarth" },
+      {
+        "name": "projection",
+        "kind": "enum",
+        "options": ["equalEarth", "equirectangular", "mercator"],
+        "default": "equalEarth"
+      },
       { "name": "grid", "kind": "enum", "options": ["honeycomb", "square"], "default": "honeycomb" },
       { "name": "pitch", "kind": "number", "options": null, "default": "4" },
       { "name": "maxHalo", "kind": "number", "options": null, "default": "28" },

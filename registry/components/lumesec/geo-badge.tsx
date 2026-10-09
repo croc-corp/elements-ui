@@ -146,7 +146,12 @@ export function GeoBadge({
             <span className="size-[3px] shrink-0 self-center rounded-full bg-muted-foreground/45" />
             <span className="inline-flex items-baseline gap-[0.3em]">
               <RollingNumber text={reading.number} direction={tick.direction} animate={!reducedMotion} />
-              <RollText text={reading.unit} direction={tick.direction} animate={!reducedMotion} className="text-muted-foreground" />
+              <RollText
+                text={reading.unit}
+                direction={tick.direction}
+                animate={!reducedMotion}
+                className="text-muted-foreground"
+              />
             </span>
           </>
         ) : null}
@@ -160,13 +165,22 @@ export function GeoBadge({
     "relative inline-flex shrink-0 items-center rounded-full border border-border bg-card pl-[3px] align-middle font-sans leading-none whitespace-nowrap text-foreground [-webkit-tap-highlight-color:transparent]",
     metrics.root,
     asButton &&
-      "cursor-pointer outline-none [transition:border-color_.2s_ease,transform_.15s_cubic-bezier(.2,.8,.2,1)] select-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec active:scale-[.97] motion-reduce:transition-none",
+      "cursor-pointer outline-none select-none [transition:border-color_.2s_ease,transform_.15s_cubic-bezier(.2,.8,.2,1)] hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid active:scale-[.97] motion-reduce:transition-none",
     className,
   );
 
   if (asButton) {
     return (
-      <button type="button" ref={setRoot} data-slot="geo-badge" data-size={size} data-status={status} onClick={onClick} className={rootClass} {...props}>
+      <button
+        type="button"
+        ref={setRoot}
+        data-slot="geo-badge"
+        data-size={size}
+        data-status={status}
+        onClick={onClick}
+        className={rootClass}
+        {...props}
+      >
         {content}
       </button>
     );
@@ -286,7 +300,8 @@ function BadgeGlobe({ lat, lon, size, dots, sparks }: BadgeGlobeProps) {
     latLonToVector(state.marker.lat, state.marker.lon, state.origin);
     state.pending = limbSparks(state, count, size / 2);
     const pill = wrapRef.current?.parentElement;
-    if (pill && typeof pill.animate === "function") pill.animate(PILL_POP_KEYFRAMES, { duration: 700, easing: "cubic-bezier(.25,.7,.3,1)" });
+    if (pill && typeof pill.animate === "function")
+      pill.animate(PILL_POP_KEYFRAMES, { duration: 700, easing: "cubic-bezier(.25,.7,.3,1)" });
   }
 
   const outline = size / 2 - 0.375;
@@ -344,8 +359,18 @@ function RegionLabel({ text, direction, animate }: { text: string; direction: nu
     width.current = next;
     resize.current?.cancel();
     resize.current = null;
-    if (from === null || Math.abs(from - next) < 0.5 || !animate || prefersReducedMotion() || typeof box.animate !== "function") return;
-    const animation = box.animate([{ width: `${from}px` }, { width: `${next}px` }], { duration: ROLL_TIMING.duration, easing: WIDTH_EASING });
+    if (
+      from === null ||
+      Math.abs(from - next) < 0.5 ||
+      !animate ||
+      prefersReducedMotion() ||
+      typeof box.animate !== "function"
+    )
+      return;
+    const animation = box.animate([{ width: `${from}px` }, { width: `${next}px` }], {
+      duration: ROLL_TIMING.duration,
+      easing: WIDTH_EASING,
+    });
     animation.onfinish = () => {
       if (resize.current === animation) resize.current = null;
     };
@@ -404,14 +429,22 @@ function StatusDot({ status }: { status: GeoBadgeStatus }) {
     if (prefersReducedMotion()) return;
     const dot = dotRef.current;
     const ripple = rippleRef.current;
-    if (dot && typeof dot.animate === "function") dot.animate(DOT_POP_KEYFRAMES, { duration: 460, easing: "cubic-bezier(.2,1.5,.4,1)" });
-    if (ripple && typeof ripple.animate === "function") ripple.animate(RIPPLE_KEYFRAMES, { duration: 720, easing: "cubic-bezier(.1,.75,.3,1)" });
+    if (dot && typeof dot.animate === "function")
+      dot.animate(DOT_POP_KEYFRAMES, { duration: 460, easing: "cubic-bezier(.2,1.5,.4,1)" });
+    if (ripple && typeof ripple.animate === "function")
+      ripple.animate(RIPPLE_KEYFRAMES, { duration: 720, easing: "cubic-bezier(.1,.75,.3,1)" });
   }, [status]);
 
   return (
     <span aria-hidden="true" className="relative grid size-1.5 shrink-0 place-items-center">
       <span ref={rippleRef} className={cn("absolute inset-0 rounded-full border opacity-0", STATUS_RIPPLE[status])} />
-      <span ref={dotRef} className={cn("block size-1.5 rounded-full [transition:background-color_.3s_ease,box-shadow_.3s_ease]", STATUS_DOT[status])} />
+      <span
+        ref={dotRef}
+        className={cn(
+          "block size-1.5 rounded-full [transition:background-color_.3s_ease,box-shadow_.3s_ease]",
+          STATUS_DOT[status],
+        )}
+      />
     </span>
   );
 }
@@ -477,11 +510,18 @@ const WIDTH_EASING = "cubic-bezier(.2,.85,.25,1)";
 const accentMix = (percent: number) => `color-mix(in srgb, var(--lumesec) ${percent}%, transparent)`;
 
 const PILL_POP_KEYFRAMES: Keyframe[] = [
-  { borderColor: "color-mix(in srgb, var(--lumesec) 55%, var(--border))", boxShadow: `0 0 0 1px ${accentMix(30)}, 0 0 14px -3px ${accentMix(28)}` },
+  {
+    borderColor: "color-mix(in srgb, var(--lumesec) 55%, var(--border))",
+    boxShadow: `0 0 0 1px ${accentMix(30)}, 0 0 14px -3px ${accentMix(28)}`,
+  },
   { borderColor: "var(--border)", boxShadow: "0 0 0 1px transparent, 0 0 14px -3px transparent" },
 ];
 
-const DOT_POP_KEYFRAMES: Keyframe[] = [{ transform: "scale(.4)" }, { transform: "scale(1.35)", offset: 0.45 }, { transform: "scale(1)" }];
+const DOT_POP_KEYFRAMES: Keyframe[] = [
+  { transform: "scale(.4)" },
+  { transform: "scale(1.35)", offset: 0.45 },
+  { transform: "scale(1)" },
+];
 
 const RIPPLE_KEYFRAMES: Keyframe[] = [
   { opacity: 0.9, transform: "scale(1)" },

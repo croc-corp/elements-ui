@@ -17,10 +17,5 @@ export type PxGlobeProps = LumesecElementProps<PxGlobeElement>;
  * @see https://elements.lumesec.ai/components/pixel-lab/globe
  */
 export function PxGlobe({ ...props }: PxGlobeProps) {
-  return useLumesecElement(
-    "px-globe",
-    props,
-    {},
-    {},
-  );
+  return useLumesecElement("px-globe", props, {}, {});
 }

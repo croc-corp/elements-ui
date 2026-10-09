@@ -24,10 +24,5 @@ export interface PxXpProps extends Omit<LumesecElementProps<PxXpElement>, "level
  * @see https://elements.lumesec.ai/components/pixel-lab/xp
  */
 export function PxXp({ level, onGain, onLevelup, ...props }: PxXpProps) {
-  return useLumesecElement(
-    "px-xp",
-    props,
-    { "level": level },
-    { "gain": onGain, "levelup": onLevelup },
-  );
+  return useLumesecElement("px-xp", props, { level: level }, { gain: onGain, levelup: onLevelup });
 }

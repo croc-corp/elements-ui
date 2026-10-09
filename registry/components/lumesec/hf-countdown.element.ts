@@ -214,7 +214,7 @@ class HCountdown extends HF {
   /** Wake the loop at the next whole second of the countdown. */
   private scheduleTick(): void {
     if (this.tick) return;
-    const ms = ((this.end - Date.now()) % 1000 + 1000) % 1000;
+    const ms = (((this.end - Date.now()) % 1000) + 1000) % 1000;
     this.tick = window.setTimeout(() => {
       this.tick = 0;
       this.kick();

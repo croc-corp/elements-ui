@@ -160,16 +160,31 @@ export function GeoRoute({
   const playable = model.samples >= 2;
 
   const rateOptions = React.useMemo(() => normaliseRates(speeds), [speeds]);
-  const [time, setTime] = useControllableState<number>({ value, defaultValue: defaultValue ?? model.start, onChange: onValueChange });
-  const [playing, setPlaying] = useControllableState<boolean>({ value: playingProp, defaultValue: defaultPlaying, onChange: onPlayingChange });
-  const [rateValue, setRate] = useControllableState<number>({ value: speedProp, defaultValue: defaultSpeed, onChange: onSpeedChange });
+  const [time, setTime] = useControllableState<number>({
+    value,
+    defaultValue: defaultValue ?? model.start,
+    onChange: onValueChange,
+  });
+  const [playing, setPlaying] = useControllableState<boolean>({
+    value: playingProp,
+    defaultValue: defaultPlaying,
+    onChange: onPlayingChange,
+  });
+  const [rateValue, setRate] = useControllableState<number>({
+    value: speedProp,
+    defaultValue: defaultSpeed,
+    onChange: onSpeedChange,
+  });
   const rate = Number.isFinite(rateValue) && rateValue > 0 ? rateValue : DEFAULT_RATE;
   const shownTime = clampTime(model, time);
 
   const [hover, setHover] = React.useState<number | null>(null);
   const [activeStop, setActiveStop] = React.useState<string | null>(null);
   // The server markup places the marker and the thumb; the animation loop moves them from there.
-  const [initial] = React.useState(() => ({ marker: placementAt(model, shownTime), progress: progressOf(model, shownTime) }));
+  const [initial] = React.useState(() => ({
+    marker: placementAt(model, shownTime),
+    progress: progressOf(model, shownTime),
+  }));
 
   const mapRef = React.useRef<HTMLDivElement>(null);
   const baseRef = React.useRef<HTMLCanvasElement>(null);
@@ -184,7 +199,15 @@ export function GeoRoute({
   const liveRef = React.useRef<HTMLDivElement>(null);
   const engineRef = useLazyRef(() => new RouteEngine());
   const latestTime = React.useRef(time);
-  const written = React.useRef<WrittenStyles>({ marker: null, arrow: null, left: "", top: "", rotate: "", fill: "", thumb: "" });
+  const written = React.useRef<WrittenStyles>({
+    marker: null,
+    arrow: null,
+    left: "",
+    top: "",
+    rotate: "",
+    fill: "",
+    thumb: "",
+  });
 
   /** Where the effects layer sits relative to the map, in CSS px (offsets ignore the gallery's zoom). */
   function measureEffects() {
@@ -471,7 +494,10 @@ export function GeoRoute({
           <canvas ref={baseRef} aria-hidden="true" className="absolute inset-0 block size-full" />
           <canvas ref={trackRef} aria-hidden="true" className="absolute inset-0 block size-full" />
         </div>
-        <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[10px] border border-border/70" />
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 rounded-[10px] border border-border/70"
+        />
 
         {[model.origin, model.destination].map((place, i) =>
           place ? <PlaceLabel key={i === 0 ? "origin" : "destination"} place={place} /> : null,
@@ -487,14 +513,21 @@ export function GeoRoute({
             onBlur={() => setActiveStop((current) => (current === entry.key ? null : current))}
             onPointerEnter={() => setActiveStop(entry.key)}
             onPointerLeave={() => setActiveStop((current) => (current === entry.key ? null : current))}
-            className="absolute z-[2] -mt-3 -ml-3 size-6 cursor-pointer rounded-full border-0 bg-transparent p-0 outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-solid focus-visible:outline-lumesec"
+            className="absolute z-[2] -mt-3 -ml-3 size-6 cursor-pointer rounded-full border-0 bg-transparent p-0 outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-lumesec focus-visible:outline-solid"
             style={{ left: percent(entry.x), top: percent(entry.y) }}
           />
         ))}
 
         {ghost ? (
-          <span aria-hidden="true" className="pointer-events-none absolute z-[3] size-0 opacity-50" style={{ left: percent(ghost.x), top: percent(ghost.y) }}>
-            <span className="absolute -top-[7px] -left-[7px] block size-3.5" style={{ transform: `rotate(${ghost.heading.toFixed(1)}deg)` }}>
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute z-[3] size-0 opacity-50"
+            style={{ left: percent(ghost.x), top: percent(ghost.y) }}
+          >
+            <span
+              className="absolute -top-[7px] -left-[7px] block size-3.5"
+              style={{ transform: `rotate(${ghost.heading.toFixed(1)}deg)` }}
+            >
               <Chevron />
             </span>
           </span>
@@ -521,7 +554,9 @@ export function GeoRoute({
           </span>
         ) : (
           <p className="absolute inset-0 m-0 grid place-items-center">
-            <span className="rounded-md bg-card/85 px-2 text-[12.5px] leading-5 text-muted-foreground">No track points</span>
+            <span className="rounded-md bg-card/85 px-2 text-[12.5px] leading-5 text-muted-foreground">
+              No track points
+            </span>
           </p>
         )}
 
@@ -542,7 +577,7 @@ export function GeoRoute({
           disabled={!playable}
           data-state={playing ? "playing" : "paused"}
           onClick={togglePlayback}
-          className="group/play grid size-8 cursor-pointer place-items-center rounded-lg border border-border bg-card p-0 text-foreground outline-none transition-[border-color] duration-200 hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec disabled:cursor-default disabled:opacity-50 disabled:hover:border-border data-[state=playing]:border-[color-mix(in_srgb,var(--lumesec)_45%,var(--border))] motion-reduce:transition-none"
+          className="group/play grid size-8 cursor-pointer place-items-center rounded-lg border border-border bg-card p-0 text-foreground transition-[border-color] duration-200 outline-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid disabled:cursor-default disabled:opacity-50 disabled:hover:border-border data-[state=playing]:border-[color-mix(in_srgb,var(--lumesec)_45%,var(--border))] motion-reduce:transition-none"
         >
           <svg
             viewBox="0 0 16 16"
@@ -591,13 +626,16 @@ export function GeoRoute({
                     key={entry.key}
                     aria-hidden="true"
                     className="absolute top-1/2 h-[7px] min-w-px -translate-y-1/2 rounded-[1px] bg-foreground/30"
-                    style={{ left: percent(progressOf(model, entry.start) * 100), width: percent((progressOf(model, entry.end) - progressOf(model, entry.start)) * 100) }}
+                    style={{
+                      left: percent(progressOf(model, entry.start) * 100),
+                      width: percent((progressOf(model, entry.end) - progressOf(model, entry.start)) * 100),
+                    }}
                   />
                 ))
               : null}
             <div
               ref={thumbRef}
-              className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-lumesec bg-card shadow-[0_1px_3px_rgb(0_0_0/0.25)] outline-offset-2 group-focus-visible/scrub:outline-2 group-focus-visible/scrub:outline-solid group-focus-visible/scrub:outline-lumesec"
+              className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-lumesec bg-card shadow-[0_1px_3px_rgb(0_0_0/0.25)] outline-offset-2 group-focus-visible/scrub:outline-2 group-focus-visible/scrub:outline-lumesec group-focus-visible/scrub:outline-solid"
               style={{ left: percent(initial.progress * 100) }}
             />
           </div>
@@ -607,9 +645,27 @@ export function GeoRoute({
       </div>
 
       <dl className="m-0 flex items-end gap-4 text-[11px] leading-4">
-        <Reading label="Track time" text={timeText} order={readTime} animate={!reducedMotion} className="min-w-0 flex-1" />
-        <Reading label="Speed" text={speedText} order={speedKmh} animate={!reducedMotion} className="justify-items-end text-right" />
-        <Reading label="Travelled" text={travelledText} order={travelled} animate={!reducedMotion} className="justify-items-end text-right" />
+        <Reading
+          label="Track time"
+          text={timeText}
+          order={readTime}
+          animate={!reducedMotion}
+          className="min-w-0 flex-1"
+        />
+        <Reading
+          label="Speed"
+          text={speedText}
+          order={speedKmh}
+          animate={!reducedMotion}
+          className="justify-items-end text-right"
+        />
+        <Reading
+          label="Travelled"
+          text={travelledText}
+          order={travelled}
+          animate={!reducedMotion}
+          className="justify-items-end text-right"
+        />
       </dl>
 
       <div className="grid gap-1">
@@ -631,11 +687,17 @@ export function GeoRoute({
               style={{ left: `clamp(100px, ${hoverLeft.toFixed(3)}%, calc(100% - 100px))` }}
             >
               {trackTimeText(model, hover, timeZone)}
-              <span className="text-muted-foreground"> · {formatSpeed(sampleValue(model.speed, fractionOf(model, hover)), unit)}</span>
+              <span className="text-muted-foreground">
+                {" "}
+                · {formatSpeed(sampleValue(model.speed, fractionOf(model, hover)), unit)}
+              </span>
             </span>
           ) : null}
         </div>
-        <div aria-hidden="true" className="flex justify-between font-mono text-[10.5px] leading-[14px] text-muted-foreground tabular-nums">
+        <div
+          aria-hidden="true"
+          className="flex justify-between font-mono text-[10.5px] leading-[14px] text-muted-foreground tabular-nums"
+        >
           <span>{rangeStart}</span>
           <span>{rangeEnd}</span>
         </div>
@@ -652,7 +714,12 @@ export function GeoRoute({
 function Chevron() {
   return (
     <svg viewBox="0 0 14 14" aria-hidden="true" className="block size-3.5 overflow-visible">
-      <path d="M1.6 2.2 12.8 7 1.6 11.8 4.3 7Z" strokeWidth={1} strokeLinejoin="round" className="fill-lumesec stroke-card" />
+      <path
+        d="M1.6 2.2 12.8 7 1.6 11.8 4.3 7Z"
+        strokeWidth={1}
+        strokeLinejoin="round"
+        className="fill-lumesec stroke-card"
+      />
     </svg>
   );
 }
@@ -789,7 +856,7 @@ function SpeedControl({ rates, value, onChange, className }: SpeedControlProps) 
           title={spokenRate(rate)}
           tabIndex={i === focusIndex ? 0 : -1}
           onClick={() => onChange(rate)}
-          className="relative z-[1] cursor-pointer rounded-md border-0 bg-transparent px-2.5 font-mono text-[11.5px] leading-7 whitespace-nowrap text-muted-foreground tabular-nums outline-none transition-colors duration-200 hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec aria-checked:text-foreground motion-reduce:transition-none"
+          className="relative z-[1] cursor-pointer rounded-md border-0 bg-transparent px-2.5 font-mono text-[11.5px] leading-7 whitespace-nowrap text-muted-foreground tabular-nums transition-colors duration-200 outline-none hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid aria-checked:text-foreground motion-reduce:transition-none"
         >
           {rateLabel(rate)}
         </button>
@@ -891,7 +958,8 @@ function buildModel(track: readonly TrackPoint[], stopSpeed: number, minStop: nu
   for (const point of track) {
     const time = toEpochMs(point.time);
     if (time === null || !isValidLatLon(point)) continue;
-    const speed = typeof point.speed === "number" && Number.isFinite(point.speed) && point.speed >= 0 ? point.speed : null;
+    const speed =
+      typeof point.speed === "number" && Number.isFinite(point.speed) && point.speed >= 0 ? point.speed : null;
     const label = typeof point.label === "string" && point.label.trim() !== "" ? point.label.trim() : null;
     parsed.push({ time, lat: point.lat, lon: wrapLongitude(point.lon), speed, label });
   }
@@ -939,7 +1007,12 @@ function buildModel(track: readonly TrackPoint[], stopSpeed: number, minStop: nu
     : null;
   const destination: PlacePoint | null =
     last?.label && points.length > 1
-      ? { label: last.label, x: nx[count - 1], y: ny[count - 1], side: labelSide(nx[count - 1], ny[count - 1], table.heading[count - 1]) }
+      ? {
+          label: last.label,
+          x: nx[count - 1],
+          y: ny[count - 1],
+          side: labelSide(nx[count - 1], ny[count - 1], table.heading[count - 1]),
+        }
       : null;
 
   const key = `${points.map((point) => `${point.time},${point.lat},${point.lon},${point.speed ?? ""},${point.label ?? ""}`).join("|")}#${stopSpeed}#${minStop}`;
@@ -1026,7 +1099,10 @@ function sampleTrack(points: readonly RoutePoint[]) {
     lat[k] = lerp(a.lat, b.lat, f);
     lon[k] = lerp(a.lon, b.lon, f);
     km[k] = cumulative[segment] + segmentKm[segment] * f;
-    speed[k] = a.speed !== null && b.speed !== null ? lerp(a.speed, b.speed, f) : segmentKm[segment] / Math.max(1e-9, length / HOUR_MS);
+    speed[k] =
+      a.speed !== null && b.speed !== null
+        ? lerp(a.speed, b.speed, f)
+        : segmentKm[segment] / Math.max(1e-9, length / HOUR_MS);
     heading[k] = segmentHeading[segment];
   }
   return { lat, lon, speed, km, heading };
@@ -1058,7 +1134,9 @@ function findStops(
     const stopEnd = start + last * step;
     if (stopEnd - stopStart < minStop * MINUTE_MS || stopEnd <= stopStart) continue;
     const fraction = (first + last) / 2;
-    const named = points.find((point) => point.label !== null && point.time >= stopStart - step && point.time <= stopEnd + step);
+    const named = points.find(
+      (point) => point.label !== null && point.time >= stopStart - step && point.time <= stopEnd + step,
+    );
     stops.push({
       key: `${Math.round(stopStart)}`,
       start: stopStart,
@@ -1083,11 +1161,13 @@ function labelSide(x: number, y: number, angle: number): LabelSide {
   const horizontal: LabelSide = dx >= 0 ? "right" : "left";
   const vertical: LabelSide = dy >= 0 ? "below" : "above";
   const order = Math.abs(dx) >= Math.abs(dy) ? [horizontal, vertical] : [vertical, horizontal];
-  const fits = (side: LabelSide) => (side === "right" ? x < 78 : side === "left" ? x > 22 : side === "below" ? y < 88 : y > 12);
+  const fits = (side: LabelSide) =>
+    side === "right" ? x < 78 : side === "left" ? x > 22 : side === "below" ? y < 88 : y > 12;
   return order.find(fits) ?? (x > 50 ? "left" : "right");
 }
 
-const clampTime = (model: RouteModel, time: number) => (Number.isFinite(time) ? clamp(time, model.start, model.end) : model.start);
+const clampTime = (model: RouteModel, time: number) =>
+  Number.isFinite(time) ? clamp(time, model.start, model.end) : model.start;
 
 /** Fractional row of the uniform table at `time`. */
 function fractionOf(model: RouteModel, time: number) {
@@ -1132,7 +1212,10 @@ function placementAt(model: RouteModel, time: number): Placement {
 function trackTimeText(model: RouteModel, time: number, timeZone: string) {
   const parts = zonedParts(timeZone, time);
   const first = zonedParts(timeZone, model.start);
-  const day = Math.round((Date.UTC(parts.year, parts.month - 1, parts.day) - Date.UTC(first.year, first.month - 1, first.day)) / DAY_MS) + 1;
+  const day =
+    Math.round(
+      (Date.UTC(parts.year, parts.month - 1, parts.day) - Date.UTC(first.year, first.month - 1, first.day)) / DAY_MS,
+    ) + 1;
   return `Day ${day}, ${pad2(parts.hour)}:${pad2(parts.minute)} ${formatUtcOffset(utcOffsetMinutes(timeZone, time))}`;
 }
 
@@ -1162,7 +1245,8 @@ function spokenDuration(ms: number) {
   const minutes = Math.round(Math.max(0, ms) / MINUTE_MS);
   if (minutes < 60) return plural(minutes, "minute");
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return minutes % 60 ? `${plural(hours, "hour")} ${plural(minutes % 60, "minute")}` : plural(hours, "hour");
+  if (hours < 24)
+    return minutes % 60 ? `${plural(hours, "hour")} ${plural(minutes % 60, "minute")}` : plural(hours, "hour");
   const totalHours = Math.round(minutes / 60);
   const days = Math.floor(totalHours / 24);
   return totalHours % 24 ? `${plural(days, "day")} ${plural(totalHours % 24, "hour")}` : plural(days, "day");
@@ -1175,7 +1259,8 @@ function stopLabel(stop: Stop, model: RouteModel, timeZone: string) {
 
 function mapSummary(model: RouteModel, unit: GeoRouteUnit) {
   if (model.samples === 0) return "Route map: no track points.";
-  if (model.samples === 1) return `Route map with a single track point${model.origin ? ` at ${model.origin.label}` : ""}.`;
+  if (model.samples === 1)
+    return `Route map with a single track point${model.origin ? ` at ${model.origin.label}` : ""}.`;
   const route = model.origin && model.destination ? ` from ${model.origin.label} to ${model.destination.label}` : "";
   const stops = model.stops.length === 1 ? "1 stop" : `${model.stops.length} stops`;
   return `Route map of a track${route}: ${distanceText(model.totalKm, unit)} in ${spokenDuration(model.duration)}, with ${stops}.`;
@@ -1636,7 +1721,13 @@ class RouteEngine {
   }
 
   /** One frame: the reveal, the clock, the heading spring, then the track, the chart and the sparks. */
-  step(base: CanvasSurface | null, track: CanvasSurface | null, chart: CanvasSurface | null, effects: CanvasSurface | null, delta: number) {
+  step(
+    base: CanvasSurface | null,
+    track: CanvasSurface | null,
+    chart: CanvasSurface | null,
+    effects: CanvasSurface | null,
+    delta: number,
+  ) {
     const model = this.model;
     if (!model || !this.ink) return false;
     const now = clockNow();
@@ -1708,7 +1799,8 @@ class RouteEngine {
       this.markerReady = true;
     }
 
-    if (this.pendingEmit || (this.time !== this.lastEmitted && (!this.playing || now - this.lastEmitAt >= EMIT_MS))) this.emit(now);
+    if (this.pendingEmit || (this.time !== this.lastEmitted && (!this.playing || now - this.lastEmitAt >= EMIT_MS)))
+      this.emit(now);
 
     const cooling = !reduced && now - this.lastPassAt < SETTLE_MS;
     const fading = this.fadePass !== null && now - this.fadeStart < RESTART_FADE_MS;
@@ -1804,7 +1896,13 @@ class RouteEngine {
     this.stopPop[index] = now;
     const ink = this.ink;
     if (!ink || index >= this.stopX.length) return;
-    this.sparks.add(this.stopX[index] + this.effectsX, this.stopY[index] + this.effectsY, 10, [ink.accent, ink.dark ? ink.glint : ink.soft], STOP_SPARKS);
+    this.sparks.add(
+      this.stopX[index] + this.effectsX,
+      this.stopY[index] + this.effectsY,
+      10,
+      [ink.accent, ink.dark ? ink.glint : ink.soft],
+      STOP_SPARKS,
+    );
   }
 
   /** The destination: sparks fly out past the map's edge and the marker pops. */
@@ -1812,7 +1910,13 @@ class RouteEngine {
     const ink = this.ink;
     const last = this.sx.length - 1;
     if (ink && last >= 0) {
-      this.sparks.add(this.sx[last] + this.effectsX, this.sy[last] + this.effectsY, 32, [ink.accent, ink.dark ? ink.glint : ink.soft], ARRIVAL_SPARKS);
+      this.sparks.add(
+        this.sx[last] + this.effectsX,
+        this.sy[last] + this.effectsY,
+        32,
+        [ink.accent, ink.dark ? ink.glint : ink.soft],
+        ARRIVAL_SPARKS,
+      );
     }
     this.onArrive();
   }
@@ -1943,7 +2047,13 @@ class RouteEngine {
       if (appear <= 0) continue;
       const flash = Math.exp(-passed / 0.05);
       const size = snapSize(LAND_SIZE + 0.6 * flash, dpr);
-      batch.add(snapCenter(lattice.x[i], size, dpr), snapCenter(lattice.y[i], size, dpr), size, 0.85 * flash, appear * LAND_ALPHA);
+      batch.add(
+        snapCenter(lattice.x[i], size, dpr),
+        snapCenter(lattice.y[i], size, dpr),
+        size,
+        0.85 * flash,
+        appear * LAND_ALPHA,
+      );
     }
     batch.flush(context);
   }
@@ -1980,7 +2090,8 @@ class RouteEngine {
     if (this.fadePass) {
       const keep = 1 - clamp((now - this.fadeStart) / RESTART_FADE_MS, 0, 1);
       const fadeIndex = Math.min(dots - 1, Math.floor(this.fadeHead / WAKE_SPACING + 1e-6));
-      for (let j = 0; j <= fadeIndex; j++) this.addWakeDot(batch, j, this.fadePass, this.fadeHead, now, reduced, dpr, keep);
+      for (let j = 0; j <= fadeIndex; j++)
+        this.addWakeDot(batch, j, this.fadePass, this.fadeHead, now, reduced, dpr, keep);
     }
     for (let j = 0; j <= headIndex; j++) this.addWakeDot(batch, j, this.passAt, head, now, reduced, dpr, 1);
     this.addStops(batch, now, reduced, dpr);
@@ -1988,7 +2099,13 @@ class RouteEngine {
     const last = model.samples - 1;
     const end = snapSize(3, dpr);
     batch.add(snapCenter(this.sx[0], end, dpr), snapCenter(this.sy[0], end, dpr), end, 0, 0.9);
-    batch.add(snapCenter(this.sx[last], end, dpr), snapCenter(this.sy[last], end, dpr), end, this.time >= model.end ? 0.5 : 0, 0.9);
+    batch.add(
+      snapCenter(this.sx[last], end, dpr),
+      snapCenter(this.sy[last], end, dpr),
+      end,
+      this.time >= model.end ? 0.5 : 0,
+      0.9,
+    );
     batch.flush(context);
   }
 
@@ -1997,7 +2114,16 @@ class RouteEngine {
    * whichever is brighter; it sets the tone (strong land → accent → glint), the alpha (0.15 to 1) and the size (1.4 to
    * 2 px). Reduced motion draws the whole wake in the accent at one alpha.
    */
-  private addWakeDot(batch: DotBatch, j: number, pass: Float64Array, head: number, now: number, reduced: boolean, dpr: number, keep: number) {
+  private addWakeDot(
+    batch: DotBatch,
+    j: number,
+    pass: Float64Array,
+    head: number,
+    now: number,
+    reduced: boolean,
+    dpr: number,
+    keep: number,
+  ) {
     let fresh: number;
     if (reduced) fresh = 0.5;
     else {

@@ -46,7 +46,8 @@ interface Section {
   entries: { result: Result; index: number }[];
 }
 
-const KBD = "whitespace-nowrap rounded-[5px] border border-border px-1.5 py-px font-mono text-[11px] text-muted-foreground";
+const KBD =
+  "whitespace-nowrap rounded-[5px] border border-border px-1.5 py-px font-mono text-[11px] text-muted-foreground";
 
 /**
  * ⌘K / Ctrl+K command palette with grouped commands, fuzzy search and a springing pixel highlight. A
@@ -99,14 +100,19 @@ export function PxCommand({
   const status = lastRun !== null ? `Ran “${lastRun}”` : hotkey ? "Press the shortcut anywhere on the page" : "";
 
   return (
-    <div data-slot="px-command" data-state={open ? "open" : "closed"} className={cn("block text-foreground", className)} {...props}>
+    <div
+      data-slot="px-command"
+      data-state={open ? "open" : "closed"}
+      className={cn("block text-foreground", className)}
+      {...props}
+    >
       <button
         ref={triggerRef}
         type="button"
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-keyshortcuts={hotkey ? "Control+K Meta+K" : undefined}
-        className="flex h-10 w-full cursor-pointer select-none items-center gap-2.5 rounded-[10px] border border-border bg-card pr-2.5 pl-[22px] text-left text-[13.5px] leading-normal text-muted-foreground outline-none hover:border-[color-mix(in_srgb,var(--foreground)_25%,var(--border))] focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+        className="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-[10px] border border-border bg-card pr-2.5 pl-[22px] text-left text-[13.5px] leading-normal text-muted-foreground outline-none select-none hover:border-[color-mix(in_srgb,var(--foreground)_25%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
         onClick={() => setOpen(true)}
       >
         <span className="flex-1">Search or jump to…</span>
@@ -179,16 +185,23 @@ function CommandDialog({ items, fallbackFocusRef, onClose, onRun }: CommandDialo
     inputRef.current?.focus();
     if (!prefersReducedMotion()) {
       backdropRef.current?.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 180, easing: "ease" });
-      dialog?.animate([{ opacity: 0, transform: "translateY(-8px) scale(.97)" }, { opacity: 1, transform: "none" }], {
-        duration: 220,
-        easing: "cubic-bezier(.2,.9,.3,1.1)",
-      });
+      dialog?.animate(
+        [
+          { opacity: 0, transform: "translateY(-8px) scale(.97)" },
+          { opacity: 1, transform: "none" },
+        ],
+        {
+          duration: 220,
+          easing: "cubic-bezier(.2,.9,.3,1.1)",
+        },
+      );
     }
     return () => {
       // a command that moved focus somewhere else keeps it there
       const focused = document.activeElement;
       if (focused && focused !== document.body && !dialog?.contains(focused)) return;
-      const target = returnTo instanceof HTMLElement && returnTo !== document.body && returnTo.isConnected ? returnTo : fallback;
+      const target =
+        returnTo instanceof HTMLElement && returnTo !== document.body && returnTo.isConnected ? returnTo : fallback;
       target?.focus();
     };
   }, [fallbackFocusRef]);
@@ -238,7 +251,11 @@ function CommandDialog({ items, fallbackFocusRef, onClose, onRun }: CommandDialo
       onClick={() => onRun(item)}
     >
       <span>
-        <FuzzyHighlight text={item.label} indices={match.indices} markClassName="bg-transparent font-semibold text-lumesec" />
+        <FuzzyHighlight
+          text={item.label}
+          indices={match.indices}
+          markClassName="bg-transparent font-semibold text-lumesec"
+        />
       </span>
       {item.shortcut && <kbd className={cn(KBD, "ml-auto")}>{item.shortcut}</kbd>}
     </div>
@@ -308,7 +325,8 @@ function CommandDialog({ items, fallbackFocusRef, onClose, onRun }: CommandDialo
           />
           <div ref={listRef} id={listId} role="listbox" aria-label="Commands">
             {sections.map((section, sectionIndex) => {
-              if (section.group === null) return <React.Fragment key="matches">{section.entries.map(renderOption)}</React.Fragment>;
+              if (section.group === null)
+                return <React.Fragment key="matches">{section.entries.map(renderOption)}</React.Fragment>;
               const headingId = `${baseId}-group-${sectionIndex}`;
               return (
                 <div key={`${sectionIndex}:${section.group}`} role="group" aria-labelledby={headingId}>
@@ -325,7 +343,9 @@ function CommandDialog({ items, fallbackFocusRef, onClose, onRun }: CommandDialo
             })}
           </div>
           {results.length === 0 && (
-            <div className="px-3 py-[18px] text-[13.5px] leading-normal text-muted-foreground">No commands match. Try another word.</div>
+            <div className="px-3 py-[18px] text-[13.5px] leading-normal text-muted-foreground">
+              No commands match. Try another word.
+            </div>
           )}
         </div>
         <div className="flex gap-3.5 border-t border-border px-3.5 py-2 text-[11.5px] leading-normal text-muted-foreground">
@@ -351,7 +371,8 @@ function search(items: readonly PxCommandItem[], query: string): Result[] {
 
 /** Runs of consecutive results with the same group while the query is empty; one flat run while searching. */
 function groupResults(results: readonly Result[], query: string): Section[] {
-  if (query) return results.length ? [{ group: null, entries: results.map((result, index) => ({ result, index })) }] : [];
+  if (query)
+    return results.length ? [{ group: null, entries: results.map((result, index) => ({ result, index })) }] : [];
   const sections: Section[] = [];
   results.forEach((result, index) => {
     const last = sections[sections.length - 1];

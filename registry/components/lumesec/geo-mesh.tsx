@@ -200,7 +200,11 @@ export function GeoMesh({
   const view = React.useMemo(() => fitView(model), [model]);
   const layout = React.useMemo(() => markerLayout(model, view), [model, view]);
 
-  const [selection, setSelection] = useControllableState<string | null>({ value, defaultValue, onChange: onValueChange });
+  const [selection, setSelection] = useControllableState<string | null>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
   const selectedId = selection !== null && model.peerById.has(selection) ? selection : null;
 
   // An upgrade keeps showing the relayed values in the list until the path lets go of its relay on the map.
@@ -626,7 +630,7 @@ export function GeoMesh({
             <ul
               ref={listRef}
               aria-label="Devices"
-              className="m-0 grid list-none grid-cols-1 content-start gap-x-1 p-1 @min-[320px]:grid-cols-2 @min-[560px]:absolute @min-[560px]:inset-0 @min-[560px]:grid-cols-1 @min-[560px]:overflow-y-auto @min-[560px]:[scrollbar-width:thin]"
+              className="m-0 grid list-none grid-cols-1 content-start gap-x-1 p-1 @min-[320px]:grid-cols-2 @min-[560px]:absolute @min-[560px]:inset-0 @min-[560px]:[scrollbar-width:thin] @min-[560px]:grid-cols-1 @min-[560px]:overflow-y-auto"
             >
               {rows.map((row, i) => (
                 <li key={row.id}>
@@ -769,7 +773,7 @@ function PeerRow({ row, selected, focusable, reserve, animate, ref, ...props }: 
       aria-label={rowName(row)}
       tabIndex={focusable ? 0 : -1}
       data-status={status}
-      className="group/row grid w-full cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 rounded-md border-0 bg-transparent px-2.5 py-[3px] text-left font-[inherit] text-foreground outline-none transition-[background-color,box-shadow] duration-200 hover:bg-muted/60 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec aria-pressed:bg-muted aria-pressed:shadow-[inset_2px_0_0_var(--lumesec)] motion-reduce:transition-none @max-[420px]:gap-x-1.5 @max-[420px]:px-2"
+      className="group/row grid w-full cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 rounded-md border-0 bg-transparent px-2.5 py-[3px] text-left font-[inherit] text-foreground transition-[background-color,box-shadow] duration-200 outline-none hover:bg-muted/60 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid aria-pressed:bg-muted aria-pressed:shadow-[inset_2px_0_0_var(--lumesec)] motion-reduce:transition-none @max-[420px]:gap-x-1.5 @max-[420px]:px-2"
       {...props}
     >
       <span className="truncate text-[12.5px] leading-[15px] font-medium group-data-[status=offline]/row:text-muted-foreground">
@@ -902,7 +906,13 @@ const UPGRADE_CHIP: Keyframe[] = [
 
 /* Demo data ------------------------------------------------------------------------------------------- */
 
-const DEMO_DEVICE: MeshDevice = { id: "laptop", label: "Work laptop", location: "Amsterdam", lat: 52.3676, lon: 4.9041 };
+const DEMO_DEVICE: MeshDevice = {
+  id: "laptop",
+  label: "Work laptop",
+  location: "Amsterdam",
+  lat: 52.3676,
+  lon: 4.9041,
+};
 
 /** Invented devices. The phone sits behind a network that never allows a direct path, so it stays relayed. */
 const DEMO_PEERS: readonly MeshDevice[] = [
@@ -1064,7 +1074,8 @@ function resolveModel(
   const peers: MeshPeer[] = [];
   const peerById = new Map<string, MeshPeer>();
   for (const peer of peerList) {
-    if (typeof peer.id !== "string" || peerById.has(peer.id) || peer.id === origin?.id || !isValidLatLon(peer)) continue;
+    if (typeof peer.id !== "string" || peerById.has(peer.id) || peer.id === origin?.id || !isValidLatLon(peer))
+      continue;
     const entry: MeshPeer = { device: peer, path: origin ? (pathByPeer.get(peer.id) ?? null) : null };
     peerById.set(peer.id, entry);
     peers.push(entry);
@@ -2282,7 +2293,12 @@ function drawPackets(context: CanvasRenderingContext2D, engine: MeshEngine, ink:
         if (alpha < 0.03) continue;
         const size = k === 0 ? HEAD_SIZE : TAIL_SIZE;
         context.globalAlpha = Math.round(alpha * 24) / 24;
-        context.fillRect(snapCenter(fxPoint.x, size, dpr) - size / 2, snapCenter(fxPoint.y, size, dpr) - size / 2, size, size);
+        context.fillRect(
+          snapCenter(fxPoint.x, size, dpr) - size / 2,
+          snapCenter(fxPoint.y, size, dpr) - size / 2,
+          size,
+          size,
+        );
       }
     }
   }
@@ -2290,14 +2306,31 @@ function drawPackets(context: CanvasRenderingContext2D, engine: MeshEngine, ink:
 }
 
 /** The probes of an upgrade, leaving a faint trace of the direct line behind them. */
-function drawProbes(context: CanvasRenderingContext2D, engine: MeshEngine, ink: GeoInk, hot: RGB, time: number, dpr: number) {
+function drawProbes(
+  context: CanvasRenderingContext2D,
+  engine: MeshEngine,
+  ink: GeoInk,
+  hot: RGB,
+  time: number,
+  dpr: number,
+) {
   const device = engine.devicePoint;
   for (const track of engine.tracks.values()) {
     const strength = clamp(track.emphasis.position, 0, 1);
     const afterglow = track.trace;
     if (afterglow) {
       const fade = 1 - clamp((time - afterglow.start) / TRACE_SECONDS, 0, 1);
-      drawTrace(context, afterglow.table, track, device, 0, afterglow.table.length, 0.32 * fade * strength, ink.accent, dpr);
+      drawTrace(
+        context,
+        afterglow.table,
+        track,
+        device,
+        0,
+        afterglow.table.length,
+        0.32 * fade * strength,
+        ink.accent,
+        dpr,
+      );
     }
     const probe = track.probe;
     if (!probe) continue;
@@ -2315,7 +2348,12 @@ function drawProbes(context: CanvasRenderingContext2D, engine: MeshEngine, ink: 
         pointAtDistance(table, s, fxPoint);
         const size = k === 0 ? HEAD_SIZE : TAIL_SIZE;
         context.globalAlpha = TAIL_ALPHA[k] * strength;
-        context.fillRect(snapCenter(fxPoint.x, size, dpr) - size / 2, snapCenter(fxPoint.y, size, dpr) - size / 2, size, size);
+        context.fillRect(
+          snapCenter(fxPoint.x, size, dpr) - size / 2,
+          snapCenter(fxPoint.y, size, dpr) - size / 2,
+          size,
+          size,
+        );
       }
     }
   }
@@ -2369,7 +2407,12 @@ function drawPulses(context: CanvasRenderingContext2D, engine: MeshEngine, hot: 
       pointAtDistance(track.table, s, fxPoint);
       const size = k === 0 ? HEAD_SIZE : TAIL_SIZE;
       context.globalAlpha = (1 - k / 7) * fade;
-      context.fillRect(snapCenter(fxPoint.x, size, dpr) - size / 2, snapCenter(fxPoint.y, size, dpr) - size / 2, size, size);
+      context.fillRect(
+        snapCenter(fxPoint.x, size, dpr) - size / 2,
+        snapCenter(fxPoint.y, size, dpr) - size / 2,
+        size,
+        size,
+      );
     }
   }
   context.globalAlpha = 1;

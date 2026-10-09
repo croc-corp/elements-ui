@@ -22,10 +22,5 @@ export interface HfDropzoneProps extends Omit<LumesecElementProps<HfDropzoneElem
  * @see https://elements.lumesec.ai/components/pixel-hd/dropzone
  */
 export function HfDropzone({ onFiles, onUploaded, ...props }: HfDropzoneProps) {
-  return useLumesecElement(
-    "hf-dropzone",
-    props,
-    {},
-    { "files": onFiles, "uploaded": onUploaded },
-  );
+  return useLumesecElement("hf-dropzone", props, {}, { files: onFiles, uploaded: onUploaded });
 }

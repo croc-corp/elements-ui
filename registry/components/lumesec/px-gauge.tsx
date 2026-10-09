@@ -20,10 +20,5 @@ export interface PxGaugeProps extends Omit<LumesecElementProps<PxGaugeElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/gauge
  */
 export function PxGauge({ max, ...props }: PxGaugeProps) {
-  return useLumesecElement(
-    "px-gauge",
-    props,
-    { "max": max },
-    {},
-  );
+  return useLumesecElement("px-gauge", props, { max: max }, {});
 }

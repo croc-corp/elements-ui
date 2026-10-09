@@ -214,7 +214,11 @@ export function UiToastStack({ trigger = true, ref, className, ...props }: UiToa
   const live = toasts.filter((toast) => !toast.leaving);
 
   return (
-    <div data-slot="ui-toast-stack" className={cn("grid justify-items-center gap-4 leading-normal", className)} {...props}>
+    <div
+      data-slot="ui-toast-stack"
+      className={cn("grid justify-items-center gap-4 leading-normal", className)}
+      {...props}
+    >
       {/* one polite live region for the whole stack: a new toast is announced once, removals are not */}
       <div
         ref={regionRef}
@@ -250,7 +254,7 @@ export function UiToastStack({ trigger = true, ref, className, ...props }: UiToa
               data-dragging={toast.dragging ? "" : undefined}
               // a leaving toast is gone for assistive technology and the keyboard
               inert={toast.leaving ? true : undefined}
-              className="absolute inset-x-0 bottom-0 flex h-[58px] cursor-grab touch-pan-y items-center gap-[11px] rounded-xl border border-border bg-card pr-2 pl-3.5 text-foreground shadow-[0_10px_28px_-14px_rgba(0,0,0,.45),0_2px_6px_-3px_rgba(0,0,0,.2)] origin-top [transition:transform_.5s_cubic-bezier(.2,.9,.3,1.12),opacity_.35s_ease] will-change-transform select-none motion-reduce:transition-none data-[dragging]:cursor-grabbing data-[dragging]:transition-none"
+              className="absolute inset-x-0 bottom-0 flex h-[58px] origin-top cursor-grab touch-pan-y items-center gap-[11px] rounded-xl border border-border bg-card pr-2 pl-3.5 text-foreground shadow-[0_10px_28px_-14px_rgba(0,0,0,.45),0_2px_6px_-3px_rgba(0,0,0,.2)] will-change-transform select-none [transition:transform_.5s_cubic-bezier(.2,.9,.3,1.12),opacity_.35s_ease] data-[dragging]:cursor-grabbing data-[dragging]:transition-none motion-reduce:transition-none"
               style={toastStyle(toast, index, expanded, reduced)}
               onPointerDown={(event) => {
                 if (event.button !== 0 || (event.target instanceof Element && event.target.closest("button"))) return;
@@ -288,9 +292,13 @@ export function UiToastStack({ trigger = true, ref, className, ...props }: UiToa
                 aria-describedby={titleId}
                 tabIndex={visible ? 0 : -1}
                 onClick={() => dismiss(toast.id, "down")}
-                className="grid size-7 flex-none cursor-pointer place-items-center rounded-[7px] border-0 bg-transparent p-0 text-muted-foreground outline-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+                className="grid size-7 flex-none cursor-pointer place-items-center rounded-[7px] border-0 bg-transparent p-0 text-muted-foreground outline-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
               >
-                <svg viewBox="0 0 12 12" aria-hidden="true" className="size-3 stroke-current [stroke-linecap:round] [stroke-width:1.7]">
+                <svg
+                  viewBox="0 0 12 12"
+                  aria-hidden="true"
+                  className="size-3 stroke-current [stroke-width:1.7] [stroke-linecap:round]"
+                >
                   <path d="M3 3l6 6M9 3l-6 6" />
                 </svg>
               </button>
@@ -303,7 +311,7 @@ export function UiToastStack({ trigger = true, ref, className, ...props }: UiToa
           ref={triggerRef}
           type="button"
           onClick={() => show()}
-          className="inline-flex h-[34px] cursor-pointer items-center gap-2 rounded-[9px] border border-border bg-card px-3.5 font-[inherit] text-[13.5px] font-medium text-foreground outline-none select-none [transition:transform_.15s_cubic-bezier(.2,.8,.2,1),background-color_.2s] hover:bg-muted active:[transform:scale(.95)] focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+          className="inline-flex h-[34px] cursor-pointer items-center gap-2 rounded-[9px] border border-border bg-card px-3.5 font-[inherit] text-[13.5px] font-medium text-foreground outline-none select-none [transition:transform_.15s_cubic-bezier(.2,.8,.2,1),background-color_.2s] hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid active:[transform:scale(.95)]"
         >
           Show toast
         </button>

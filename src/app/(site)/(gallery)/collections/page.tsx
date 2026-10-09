@@ -19,7 +19,12 @@ export const metadata: Metadata = {
 export default function CollectionsPage() {
   return (
     <>
-      <JsonLd data={itemListJsonLd("LumeSec Elements collections", collections.map((c) => ({ name: c.title, path: `/components/${c.slug}` })))} />
+      <JsonLd
+        data={itemListJsonLd(
+          "LumeSec Elements collections",
+          collections.map((c) => ({ name: c.title, path: `/components/${c.slug}` })),
+        )}
+      />
       <SubNavStatic />
       <div className="sl-page">
         <section className="sl-panel sl-open-top">
@@ -29,13 +34,14 @@ export default function CollectionsPage() {
               <span data-sep />
               <span className="tabular">{collections.length} families</span>
             </p>
-            <h1 className="mt-6 text-[clamp(40px,7vw,88px)] leading-[0.95] font-medium tracking-[-0.05em] page-enter">
+            <h1 className="page-enter mt-6 text-[clamp(40px,7vw,88px)] leading-[0.95] font-medium tracking-[-0.05em]">
               {countWord(collections.length, true)} collections.
               <br />
               <span className="text-muted-foreground">One way of moving.</span>
             </h1>
-            <p className="mt-6 max-w-[56ch] text-[17px] leading-[1.65] text-muted-foreground page-enter">
-              Each collection came out of one design question, from a single slider state to a whole dashboard. They share an engine per family, a theming contract and the same rules for motion.
+            <p className="page-enter mt-6 max-w-[56ch] text-[17px] leading-[1.65] text-muted-foreground">
+              Each collection came out of one design question, from a single slider state to a whole dashboard. They
+              share an engine per family, a theming contract and the same rules for motion.
             </p>
           </div>
         </section>
@@ -47,10 +53,20 @@ export default function CollectionsPage() {
                 <article key={c.slug} className="group/col flex flex-col bg-background">
                   {sig && (
                     <div className="border-b border-border">
-                      <ComponentPreview variant="hero" tag={sig.tag} html={sig.stage} layout={sig.layout} stageClass={sig.stageClass} minHeight={340} />
+                      <ComponentPreview
+                        variant="hero"
+                        tag={sig.tag}
+                        html={sig.stage}
+                        layout={sig.layout}
+                        stageClass={sig.stageClass}
+                        minHeight={340}
+                      />
                     </div>
                   )}
-                  <Link href={`/components/${c.slug}`} className="flex flex-1 flex-col p-6 transition-colors hover:bg-surface sm:p-8">
+                  <Link
+                    href={`/components/${c.slug}`}
+                    className="flex flex-1 flex-col p-6 transition-colors hover:bg-surface sm:p-8"
+                  >
                     <p className="sl-eyebrow">
                       <span className="tabular text-foreground">{pad2(i + 1)}</span>
                       <span data-sep />
@@ -61,9 +77,14 @@ export default function CollectionsPage() {
                     <h2 className="mt-4 flex items-center gap-3 text-[30px] font-medium tracking-[-0.03em]">
                       <CollectionGlyph slug={c.slug} size={22} className="text-muted-foreground" />
                       {c.title}
-                      <ArrowRightIcon size={18} className="ml-auto text-muted-foreground transition-all duration-300 ease-[var(--ease-expo)] group-hover/col:translate-x-1 group-hover/col:text-foreground" />
+                      <ArrowRightIcon
+                        size={18}
+                        className="ml-auto text-muted-foreground transition-all duration-300 ease-[var(--ease-expo)] group-hover/col:translate-x-1 group-hover/col:text-foreground"
+                      />
                     </h2>
-                    <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-muted-foreground">{c.description}</p>
+                    <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-muted-foreground">
+                      {c.description}
+                    </p>
                     <p className="mt-auto pt-6 font-mono text-[11.5px] text-muted-foreground">{c.groups.join(" · ")}</p>
                   </Link>
                 </article>

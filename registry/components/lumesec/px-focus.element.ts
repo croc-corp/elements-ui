@@ -187,10 +187,13 @@ class Focus extends PxBase {
     clearTimeout(this.doneTimer);
     if (!this.running || !this.isConnected) return;
     const left = this.duration - this.elapsed;
-    this.doneTimer = setTimeout(() => {
-      if (this.elapsed >= this.duration) this.finish();
-      else this.schedule();
-    }, Math.max(0, left * 1000));
+    this.doneTimer = setTimeout(
+      () => {
+        if (this.elapsed >= this.duration) this.finish();
+        else this.schedule();
+      },
+      Math.max(0, left * 1000),
+    );
   }
 
   /** Complete the session and fire `done`; the next frame drops the remaining pixels. */

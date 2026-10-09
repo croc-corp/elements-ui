@@ -17,7 +17,8 @@ function trustedProxies() {
     if (prefix === undefined) list.addAddress(address, family(address));
     else list.addSubnet(address, Number(prefix), family(address));
   };
-  for (const range of ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "::1/128", "fc00::/7"]) add(range);
+  for (const range of ["127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "::1/128", "fc00::/7"])
+    add(range);
   for (const entry of (process.env.TRUSTED_PROXIES ?? "").split(",")) if (entry.trim()) add(entry);
   return list;
 }

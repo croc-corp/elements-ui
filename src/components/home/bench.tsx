@@ -56,7 +56,15 @@ export function Bench() {
                       <ArrowUpRightIcon size={11} />
                     </Link>
                   </div>
-                  <ComponentPreview variant="card" tag={c.tag} html={c.el.stage} layout={c.el.layout === "wide" ? "fill" : c.el.layout} stageClass={c.el.stageClass} minHeight={c.height - 40} className="bg-transparent" />
+                  <ComponentPreview
+                    variant="card"
+                    tag={c.tag}
+                    html={c.el.stage}
+                    layout={c.el.layout === "wide" ? "fill" : c.el.layout}
+                    stageClass={c.el.stageClass}
+                    minHeight={c.height - 40}
+                    className="bg-transparent"
+                  />
                 </div>
               </Spotlight>
             ))}

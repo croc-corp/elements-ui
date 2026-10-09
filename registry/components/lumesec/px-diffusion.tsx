@@ -22,10 +22,5 @@ export interface PxDiffusionProps extends Omit<LumesecElementProps<PxDiffusionEl
  * @see https://elements.lumesec.ai/components/pixel-lab/diffusion
  */
 export function PxDiffusion({ onStart, onDone, ...props }: PxDiffusionProps) {
-  return useLumesecElement(
-    "px-diffusion",
-    props,
-    {},
-    { "start": onStart, "done": onDone },
-  );
+  return useLumesecElement("px-diffusion", props, {}, { start: onStart, done: onDone });
 }

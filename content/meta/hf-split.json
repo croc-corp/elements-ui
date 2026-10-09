@@ -1,18 +1,44 @@
 {
   "summary": "Split button with a primary action and a menu of alternatives; choosing an item rolls its label into the main button.",
   "attributes": [
-    { "name": "items", "type": "string", "default": "Deploy to production|Ships to everyone after checks;Deploy to staging|Internal testers only;Create preview|A unique URL for this branch;Schedule deploy…|Pick a time tonight", "description": "Menu entries separated by `;`, each `Label|Description` with an optional description; entries without a label are skipped. The first entry starts selected. Observed: a change rebuilds the menu and keeps the selection when its label is still there." },
-    { "name": "menu-label", "type": "string", "default": "More options", "description": "Accessible name of the caret button that opens the menu. Observed." }
+    {
+      "name": "items",
+      "type": "string",
+      "default": "Deploy to production|Ships to everyone after checks;Deploy to staging|Internal testers only;Create preview|A unique URL for this branch;Schedule deploy…|Pick a time tonight",
+      "description": "Menu entries separated by `;`, each `Label|Description` with an optional description; entries without a label are skipped. The first entry starts selected. Observed: a change rebuilds the menu and keeps the selection when its label is still there."
+    },
+    {
+      "name": "menu-label",
+      "type": "string",
+      "default": "More options",
+      "description": "Accessible name of the caret button that opens the menu. Observed."
+    }
   ],
   "events": [
-    { "name": "action", "detail": "{ value: string }", "description": "Fires when the main button is clicked. `value` is the selected item's label." },
-    { "name": "select", "detail": "{ value: string }", "description": "Fires when an item is chosen from the menu. `value` is its label." }
+    {
+      "name": "action",
+      "detail": "{ value: string }",
+      "description": "Fires when the main button is clicked. `value` is the selected item's label."
+    },
+    {
+      "name": "select",
+      "detail": "{ value: string }",
+      "description": "Fires when an item is chosen from the menu. `value` is its label."
+    }
   ],
   "methods": [
-    { "signature": "toggle(force?: boolean)", "description": "Opens or closes the menu: `true` opens, `false` closes, no argument toggles. Opening focuses the selected item." }
+    {
+      "signature": "toggle(force?: boolean)",
+      "description": "Opens or closes the menu: `true` opens, `false` closes, no argument toggles. Opening focuses the selected item."
+    }
   ],
   "properties": [
-    { "name": "items", "type": "{ label: string; desc: string }[]", "readonly": true, "description": "The parsed `items`." }
+    {
+      "name": "items",
+      "type": "{ label: string; desc: string }[]",
+      "readonly": true,
+      "description": "The parsed `items`."
+    }
   ],
   "keyboard": [
     { "keys": "ArrowDown", "action": "On the caret button: open the menu and focus the selected item." },

@@ -23,7 +23,11 @@ export async function highlight(code: string, lang = "tsx") {
   const hit = results.get(key);
   if (hit) return hit;
   const hl = await highlighter();
-  const html = hl.codeToHtml(code, { lang, themes: { light: "lumesec-light", dark: "lumesec-dark" }, defaultColor: false });
+  const html = hl.codeToHtml(code, {
+    lang,
+    themes: { light: "lumesec-light", dark: "lumesec-dark" },
+    defaultColor: false,
+  });
   if (results.size > 2000) results.clear();
   results.set(key, html);
   return html;

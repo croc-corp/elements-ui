@@ -44,7 +44,16 @@ export interface UiThinkingProps extends Omit<React.ComponentProps<"div">, "ref"
  * @example
  * <UiThinking done={!streaming}>The reasoning text.</UiThinking>
  */
-export function UiThinking({ done: doneProp, defaultDone = false, onDoneChange, onDone, children, className, ref, ...props }: UiThinkingProps) {
+export function UiThinking({
+  done: doneProp,
+  defaultDone = false,
+  onDoneChange,
+  onDone,
+  children,
+  className,
+  ref,
+  ...props
+}: UiThinkingProps) {
   const [done, setDone] = useControllableState({ value: doneProp, defaultValue: defaultDone, onChange: onDoneChange });
   const [seconds, setSeconds] = React.useState(0);
   /** Bumped by `restart()` to restart the counter. */
@@ -137,7 +146,10 @@ export function UiThinking({ done: doneProp, defaultDone = false, onDoneChange, 
       ref={rootRef}
       data-slot="ui-thinking"
       data-state={done ? "done" : "thinking"}
-      className={cn("group/thinking block text-[14px] text-foreground [-webkit-tap-highlight-color:transparent]", className)}
+      className={cn(
+        "group/thinking block text-[14px] text-foreground [-webkit-tap-highlight-color:transparent]",
+        className,
+      )}
       {...props}
     >
       <div className="flex items-center gap-2.5">
@@ -145,7 +157,7 @@ export function UiThinking({ done: doneProp, defaultDone = false, onDoneChange, 
           <canvas
             ref={canvasRef}
             aria-hidden="true"
-            className="absolute inset-0 block size-full [transition:opacity_.3s_ease,transform_.45s_cubic-bezier(.2,.8,.2,1)] group-data-[state=done]/thinking:opacity-0 group-data-[state=done]/thinking:[transform:scale(.3)]"
+            className="absolute inset-0 block size-full [transition:opacity_.3s_ease,transform_.45s_cubic-bezier(.2,.8,.2,1)] group-data-[state=done]/thinking:[transform:scale(.3)] group-data-[state=done]/thinking:opacity-0"
           />
           <svg
             viewBox="0 0 18 18"
@@ -164,7 +176,7 @@ export function UiThinking({ done: doneProp, defaultDone = false, onDoneChange, 
           aria-controls={panelId}
           disabled={!done}
           onClick={() => setExpanded((open) => !open)}
-          className="-mx-1.5 -my-1 flex cursor-default items-center gap-2 rounded-lg border-0 bg-transparent px-1.5 py-1 text-inherit select-none [font:inherit] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec enabled:cursor-pointer enabled:hover:bg-foreground/7"
+          className="-mx-1.5 -my-1 flex cursor-default items-center gap-2 rounded-lg border-0 bg-transparent px-1.5 py-1 text-inherit outline-none select-none [font:inherit] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid enabled:cursor-pointer enabled:hover:bg-foreground/7"
         >
           <RollText
             ref={labelRef}
@@ -181,7 +193,7 @@ export function UiThinking({ done: doneProp, defaultDone = false, onDoneChange, 
             viewBox="0 0 12 12"
             aria-hidden="true"
             className={cn(
-              "size-3 fill-none stroke-muted-foreground opacity-0 [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.6] [transition:transform_.35s_cubic-bezier(.2,.8,.2,1),opacity_.3s] group-data-[state=done]/thinking:opacity-100",
+              "size-3 fill-none stroke-muted-foreground [stroke-width:1.6] opacity-0 [stroke-linecap:round] [stroke-linejoin:round] [transition:transform_.35s_cubic-bezier(.2,.8,.2,1),opacity_.3s] group-data-[state=done]/thinking:opacity-100",
               expanded && "[transform:rotate(90deg)]",
             )}
           >
@@ -197,7 +209,9 @@ export function UiThinking({ done: doneProp, defaultDone = false, onDoneChange, 
         className="grid grid-rows-[0fr] opacity-0 [transition:grid-template-rows_.4s_cubic-bezier(.2,.8,.2,1),opacity_.3s] data-[state=open]:grid-rows-[1fr] data-[state=open]:opacity-100"
       >
         <div className="overflow-hidden">
-          <div className="mt-2.5 mb-0.5 ml-[9px] border-l-2 border-muted pl-[18px] text-[13px] leading-[1.55] text-muted-foreground">{children}</div>
+          <div className="mt-2.5 mb-0.5 ml-[9px] border-l-2 border-muted pl-[18px] text-[13px] leading-[1.55] text-muted-foreground">
+            {children}
+          </div>
         </div>
       </div>
     </div>
@@ -217,7 +231,12 @@ const SHIMMER_CLASSES =
   "*:bg-[linear-gradient(100deg,var(--muted-foreground)_0%,var(--muted-foreground)_38%,var(--foreground)_50%,var(--muted-foreground)_62%,var(--muted-foreground)_100%)] *:bg-clip-text *:text-transparent *:[background-position:var(--thinking-shimmer,0%)_0] *:[background-size:260%_100%]";
 
 /** A 6 x 4 grid of 2px pixels; a sine wave runs through it and brightens toward the glint. */
-function drawWave(context: CanvasRenderingContext2D, colors: Palette<keyof typeof WAVE_COLORS>, time: number, reduced: boolean) {
+function drawWave(
+  context: CanvasRenderingContext2D,
+  colors: Palette<keyof typeof WAVE_COLORS>,
+  time: number,
+  reduced: boolean,
+) {
   context.clearRect(0, 0, 20, 14);
   for (let column = 0; column < 6; column++) {
     for (let row = 0; row < 4; row++) {

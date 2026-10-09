@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-gauge.element";
 /** The `<hf-gauge>` element, with its properties and methods. */
 export type HfGaugeElement = ElementModule.HGauge;
 
-export interface HfGaugeProps extends Omit<LumesecElementProps<HfGaugeElement>, "value" | "min" | "max" | "zones" | "decimals" | "label" | "unit"> {
+export interface HfGaugeProps extends Omit<
+  LumesecElementProps<HfGaugeElement>,
+  "value" | "min" | "max" | "zones" | "decimals" | "label" | "unit"
+> {
   /** Current value, clamped to `min`–`max`. Observed. Default: `42`. */
   value?: number;
   /** Lower bound. Observed. Default: `0`. */
@@ -35,7 +38,7 @@ export function HfGauge({ value, min, max, zones, decimals, label, unit, ...prop
   return useLumesecElement(
     "hf-gauge",
     props,
-    { "value": value, "min": min, "max": max, "zones": zones, "decimals": decimals, "label": label, "unit": unit },
+    { value: value, min: min, max: max, zones: zones, decimals: decimals, label: label, unit: unit },
     {},
   );
 }

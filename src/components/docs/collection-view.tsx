@@ -23,7 +23,10 @@ export function CollectionView({ c }: { c: CollectionMeta }) {
     <div>
       <JsonLd
         data={[
-          itemListJsonLd(`${c.title} components`, items.map((e) => ({ name: e.title, path: elementHref(e) }))),
+          itemListJsonLd(
+            `${c.title} components`,
+            items.map((e) => ({ name: e.title, path: elementHref(e) })),
+          ),
           breadcrumbJsonLd([
             { name: "Components", path: "/components" },
             { name: c.title, path: `/components/${c.slug}` },
@@ -48,7 +51,11 @@ export function CollectionView({ c }: { c: CollectionMeta }) {
             <p className="mt-6 max-w-[58ch] text-[17px] leading-[1.65] text-muted-foreground">{c.description}</p>
             <div className="mt-6 flex flex-wrap gap-2">
               {c.groups.map((g) => (
-                <a key={g} href={`#${groupId(g)}`} className="h-7 rounded-full border border-border px-3 text-[12.5px] leading-[26px] text-muted-foreground transition-colors hover:border-input hover:text-foreground">
+                <a
+                  key={g}
+                  href={`#${groupId(g)}`}
+                  className="h-7 rounded-full border border-border px-3 text-[12.5px] leading-[26px] text-muted-foreground transition-colors hover:border-input hover:text-foreground"
+                >
                   {g}
                 </a>
               ))}
@@ -56,11 +63,20 @@ export function CollectionView({ c }: { c: CollectionMeta }) {
           </div>
           <div className="grid gap-3">
             <p className="font-mono text-[11px] text-muted-foreground">Every component in this collection</p>
-            <CodeBlock code={`npx shadcn@latest add ${site.registry.namespace}/${c.slug}`} lang="bash" item={c.slug} event="copy_install" />
+            <CodeBlock
+              code={`npx shadcn@latest add ${site.registry.namespace}/${c.slug}`}
+              lang="bash"
+              item={c.slug}
+              event="copy_install"
+            />
             {c.kind !== "react" && (
               <>
                 <p className="mt-1 font-mono text-[11px] text-muted-foreground">Or as one module, for plain HTML</p>
-                <CodeBlock code={`<script type="module" src="${site.url}/cdn/${c.slug}.js"></script>`} lang="html" item={c.slug} />
+                <CodeBlock
+                  code={`<script type="module" src="${site.url}/cdn/${c.slug}.js"></script>`}
+                  lang="html"
+                  item={c.slug}
+                />
               </>
             )}
           </div>
@@ -83,13 +99,40 @@ export function CollectionView({ c }: { c: CollectionMeta }) {
             {/* wide components (editors, tables, maps) get a full-width row, the rest share the grid */}
             {wide.map((e, i) => (
               <div key={e.tag} className="grid border-t border-border">
-                <ComponentCard index={i} height={460} zoom={0.8} data={{ tag: e.tag, title: e.title, collection: e.collection, href: elementHref(e), stage: e.stage, stageClass: e.stageClass, layout: "fill", demo: e.data === "demo" }} />
+                <ComponentCard
+                  index={i}
+                  height={460}
+                  zoom={0.8}
+                  data={{
+                    tag: e.tag,
+                    title: e.title,
+                    collection: e.collection,
+                    href: elementHref(e),
+                    stage: e.stage,
+                    stageClass: e.stageClass,
+                    layout: "fill",
+                    demo: e.data === "demo",
+                  }}
+                />
               </div>
             ))}
             {grid.length > 0 && (
               <div className="grid gap-px border-t border-border bg-border sm:grid-cols-2 2xl:grid-cols-3">
                 {grid.map((e, i) => (
-                  <ComponentCard key={e.tag} index={i} data={{ tag: e.tag, title: e.title, collection: e.collection, href: elementHref(e), stage: e.stage, stageClass: e.stageClass, layout: e.layout, demo: e.data === "demo" }} />
+                  <ComponentCard
+                    key={e.tag}
+                    index={i}
+                    data={{
+                      tag: e.tag,
+                      title: e.title,
+                      collection: e.collection,
+                      href: elementHref(e),
+                      stage: e.stage,
+                      stageClass: e.stageClass,
+                      layout: e.layout,
+                      demo: e.data === "demo",
+                    }}
+                  />
                 ))}
                 {/* fill the last row so the hairline grid stays closed */}
                 {grid.length % 2 === 1 && <div className="hidden bg-background sm:block 2xl:hidden" aria-hidden />}
@@ -105,8 +148,14 @@ export function CollectionView({ c }: { c: CollectionMeta }) {
       <nav aria-label="Other collections" className="grid gap-px border-t border-border bg-border sm:grid-cols-2">
         {[prev, next].map((x, i) =>
           x ? (
-            <Link key={x.slug} href={`/components/${x.slug}`} className={`group/c flex flex-col gap-1 bg-background p-8 transition-colors hover:bg-surface ${i === 1 ? "sm:items-end sm:text-right" : ""}`}>
-              <span className="font-mono text-[11px] text-muted-foreground">{i === 0 ? "Previous collection" : "Next collection"}</span>
+            <Link
+              key={x.slug}
+              href={`/components/${x.slug}`}
+              className={`group/c flex flex-col gap-1 bg-background p-8 transition-colors hover:bg-surface ${i === 1 ? "sm:items-end sm:text-right" : ""}`}
+            >
+              <span className="font-mono text-[11px] text-muted-foreground">
+                {i === 0 ? "Previous collection" : "Next collection"}
+              </span>
               <span className="flex items-center gap-2 text-[20px] font-medium tracking-tight">
                 {x.title}
                 <ArrowRightIcon size={16} className="transition-transform duration-300 group-hover/c:translate-x-1" />

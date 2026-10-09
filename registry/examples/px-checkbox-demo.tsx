@@ -23,7 +23,9 @@ export default function PxCheckboxDemo() {
       <span className="text-[12.5px] font-medium">Notify me by</span>
       <PxCheckbox
         checked={all}
-        onCheckedChange={(checked) => setSelected({ email: checked === true, push: checked === true, sms: checked === true })}
+        onCheckedChange={(checked) =>
+          setSelected({ email: checked === true, push: checked === true, sms: checked === true })
+        }
       >
         All channels
       </PxCheckbox>

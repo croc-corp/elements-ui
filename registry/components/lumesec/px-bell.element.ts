@@ -5,7 +5,19 @@
  * A framework-free custom element. Importing this module registers the tag.
  * The React wrapper is ./px-bell.tsx.
  */
-import { PxBase, Sparks, bitmap, css, define, mix, now, reduced, rollText, type Point, type RGB } from "@/lib/lumesec/pixel";
+import {
+  PxBase,
+  Sparks,
+  bitmap,
+  css,
+  define,
+  mix,
+  now,
+  reduced,
+  rollText,
+  type Point,
+  type RGB,
+} from "@/lib/lumesec/pixel";
 
 /** Events fired by `<px-bell>`. */
 export interface BellEventMap {

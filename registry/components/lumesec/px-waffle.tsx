@@ -22,10 +22,5 @@ export interface PxWaffleProps extends Omit<LumesecElementProps<PxWaffleElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/waffle
  */
 export function PxWaffle({ onChange, onCompact, ...props }: PxWaffleProps) {
-  return useLumesecElement(
-    "px-waffle",
-    props,
-    {},
-    { "change": onChange, "compact": onCompact },
-  );
+  return useLumesecElement("px-waffle", props, {}, { change: onChange, compact: onCompact });
 }

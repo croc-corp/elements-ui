@@ -4,7 +4,18 @@ import { Command } from "cmdk";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 
-import { ArrowRightIcon, BookIcon, CheckIcon, CollectionGlyph, CopyIcon, GitHubIcon, MoonIcon, SearchIcon, SunIcon, TerminalIcon } from "@/components/icons";
+import {
+  ArrowRightIcon,
+  BookIcon,
+  CheckIcon,
+  CollectionGlyph,
+  CopyIcon,
+  GitHubIcon,
+  MoonIcon,
+  SearchIcon,
+  SunIcon,
+  TerminalIcon,
+} from "@/components/icons";
 import { useModifierKey } from "@/components/site/search-context";
 import { useTheme } from "@/components/site/theme";
 import { site } from "@/config/site";
@@ -44,7 +55,8 @@ function loadIndex() {
 /** Whether the focused text field has a selection, so Ctrl+C / ⌘C should copy it rather than the install command. */
 function hasTextSelection() {
   const active = document.activeElement;
-  if (active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement) return active.selectionStart !== active.selectionEnd;
+  if (active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement)
+    return active.selectionStart !== active.selectionEnd;
   return Boolean(window.getSelection()?.toString());
 }
 
@@ -147,10 +159,14 @@ export function CommandMenu({ open, onOpenChange }: { open: boolean; onOpenChang
         <Command.List className="h-[min(460px,60vh)] overflow-y-auto overscroll-contain p-2 [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pt-3 [&_[cmdk-group-heading]]:pb-1.5 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:text-muted-foreground">
           {!entries && (
             <div className="px-3 py-8 text-center font-mono text-[12px] text-muted-foreground" role="status">
-              {failed ? "The search index could not be loaded. Close and open the search to try again." : "Loading index…"}
+              {failed
+                ? "The search index could not be loaded. Close and open the search to try again."
+                : "Loading index…"}
             </div>
           )}
-          <Command.Empty className="px-3 py-10 text-center text-[14px] text-muted-foreground">No results for “{query}”.</Command.Empty>
+          <Command.Empty className="px-3 py-10 text-center text-[14px] text-muted-foreground">
+            No results for “{query}”.
+          </Command.Empty>
           {pages.length > 0 && (
             <Command.Group heading="Guides">
               {pages.map((p) => (
@@ -161,7 +177,12 @@ export function CommandMenu({ open, onOpenChange }: { open: boolean; onOpenChang
           {collections.length > 0 && (
             <Command.Group heading="Collections">
               {collections.map((p) => (
-                <Item key={p.id} entry={p} onSelect={() => go(p.url)} icon={<CollectionGlyph slug={p.collection ?? ""} />} />
+                <Item
+                  key={p.id}
+                  entry={p}
+                  onSelect={() => go(p.url)}
+                  icon={<CollectionGlyph slug={p.collection ?? ""} />}
+                />
               ))}
             </Command.Group>
           )}
@@ -170,14 +191,24 @@ export function CommandMenu({ open, onOpenChange }: { open: boolean; onOpenChang
               {components
                 .filter((c) => (c.section ?? "") === g)
                 .map((c) => (
-                  <Item key={c.id} entry={c} onSelect={() => go(c.url)} icon={<CollectionGlyph slug={c.collection ?? ""} />} />
+                  <Item
+                    key={c.id}
+                    entry={c}
+                    onSelect={() => go(c.url)}
+                    icon={<CollectionGlyph slug={c.collection ?? ""} />}
+                  />
                 ))}
             </Command.Group>
           ))}
           {headings.length > 0 && (
             <Command.Group heading="On pages">
               {headings.map((h) => (
-                <Item key={h.id} entry={h} onSelect={() => go(h.url)} icon={<span className="font-mono text-[12px]">#</span>} />
+                <Item
+                  key={h.id}
+                  entry={h}
+                  onSelect={() => go(h.url)}
+                  icon={<span className="font-mono text-[12px]">#</span>}
+                />
               ))}
             </Command.Group>
           )}
@@ -190,16 +221,28 @@ export function CommandMenu({ open, onOpenChange }: { open: boolean; onOpenChang
               }}
               className={itemClass}
             >
-              <span className="flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground">{resolved === "dark" ? <SunIcon /> : <MoonIcon />}</span>
+              <span className="flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground">
+                {resolved === "dark" ? <SunIcon /> : <MoonIcon />}
+              </span>
               Switch to {resolved === "dark" ? "light" : "dark"} theme
             </Command.Item>
-            <Command.Item value="action:registry" keywords={["registry", "shadcn", "components.json", "namespace"]} onSelect={() => go("/docs/installation")} className={itemClass}>
+            <Command.Item
+              value="action:registry"
+              keywords={["registry", "shadcn", "components.json", "namespace"]}
+              onSelect={() => go("/docs/installation")}
+              className={itemClass}
+            >
               <span className="flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground">
                 <TerminalIcon />
               </span>
               Add the {site.registry.namespace} registry to components.json
             </Command.Item>
-            <Command.Item value="action:github" keywords={["github", "source", "repository"]} onSelect={() => go(site.repo.url)} className={itemClass}>
+            <Command.Item
+              value="action:github"
+              keywords={["github", "source", "repository"]}
+              onSelect={() => go(site.repo.url)}
+              className={itemClass}
+            >
               <span className="flex size-7 items-center justify-center rounded-md border border-border bg-background text-muted-foreground">
                 <GitHubIcon />
               </span>
@@ -210,10 +253,24 @@ export function CommandMenu({ open, onOpenChange }: { open: boolean; onOpenChang
         <aside className="hidden border-l border-border bg-surface/50 p-5 md:block" aria-live="polite">
           {selected ? (
             <div key={selected.id} className="page-enter">
-              <p className="font-mono text-[11px] text-muted-foreground">{selected.kind === "component" ? selected.section : selected.kind === "heading" ? "Heading" : selected.kind === "collection" ? "Collection" : "Guide"}</p>
+              <p className="font-mono text-[11px] text-muted-foreground">
+                {selected.kind === "component"
+                  ? selected.section
+                  : selected.kind === "heading"
+                    ? "Heading"
+                    : selected.kind === "collection"
+                      ? "Collection"
+                      : "Guide"}
+              </p>
               <p className="mt-2 text-[17px] font-medium tracking-tight">{selected.title}</p>
-              {selected.tag && <p className="mt-1 font-mono text-[12px] text-muted-foreground">&lt;{selected.tag}&gt;</p>}
-              {selected.description && <p className="mt-3 line-clamp-6 text-[13px] leading-relaxed text-muted-foreground">{selected.description}</p>}
+              {selected.tag && (
+                <p className="mt-1 font-mono text-[12px] text-muted-foreground">&lt;{selected.tag}&gt;</p>
+              )}
+              {selected.description && (
+                <p className="mt-3 line-clamp-6 text-[13px] leading-relaxed text-muted-foreground">
+                  {selected.description}
+                </p>
+              )}
               {selected.tag && (
                 <button
                   type="button"
@@ -223,8 +280,14 @@ export function CommandMenu({ open, onOpenChange }: { open: boolean; onOpenChang
                   className="mt-5 flex w-full items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-left font-mono text-[11.5px] transition-colors hover:border-input"
                 >
                   <span className="text-muted-foreground">$</span>
-                  <span className="min-w-0 flex-1 truncate">shadcn add {site.registry.namespace}/{selected.tag}</span>
-                  {copied === selected.tag ? <CheckIcon size={14} className="text-success" /> : <CopyIcon size={14} className="text-muted-foreground" />}
+                  <span className="min-w-0 flex-1 truncate">
+                    shadcn add {site.registry.namespace}/{selected.tag}
+                  </span>
+                  {copied === selected.tag ? (
+                    <CheckIcon size={14} className="text-success" />
+                  ) : (
+                    <CopyIcon size={14} className="text-muted-foreground" />
+                  )}
                 </button>
               )}
             </div>
@@ -247,7 +310,9 @@ export function CommandMenu({ open, onOpenChange }: { open: boolean; onOpenChang
             <kbd className="sl-kbd">C</kbd> copy install
           </span>
         )}
-        <span className="ml-auto hidden sm:block">{entries ? `${entries.filter((e) => e.kind === "component").length} components indexed` : ""}</span>
+        <span className="ml-auto hidden sm:block">
+          {entries ? `${entries.filter((e) => e.kind === "component").length} components indexed` : ""}
+        </span>
       </div>
     </Command.Dialog>
   );
@@ -258,14 +323,28 @@ const itemClass =
 
 function Item({ entry, onSelect, icon }: { entry: SearchEntry; onSelect: () => void; icon: React.ReactNode }) {
   return (
-    <Command.Item value={entry.id} keywords={[entry.title, entry.tag ?? "", entry.keywords ?? "", entry.section ?? ""]} onSelect={onSelect} className={itemClass}>
-      <span className="flex size-7 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground">{icon}</span>
+    <Command.Item
+      value={entry.id}
+      keywords={[entry.title, entry.tag ?? "", entry.keywords ?? "", entry.section ?? ""]}
+      onSelect={onSelect}
+      className={itemClass}
+    >
+      <span className="flex size-7 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground">
+        {icon}
+      </span>
       <span className="min-w-0 flex-1 truncate">
         {entry.title}
-        {entry.kind === "heading" && entry.section && <span className="ml-2 text-muted-foreground">{entry.section}</span>}
+        {entry.kind === "heading" && entry.section && (
+          <span className="ml-2 text-muted-foreground">{entry.section}</span>
+        )}
       </span>
       {entry.tag && <span className="hidden font-mono text-[11px] text-muted-foreground sm:block">{entry.tag}</span>}
-      <ArrowRightIcon size={14} className={cn("text-muted-foreground opacity-0 transition-all group-data-[selected=true]:translate-x-0.5 group-data-[selected=true]:opacity-100")} />
+      <ArrowRightIcon
+        size={14}
+        className={cn(
+          "text-muted-foreground opacity-0 transition-all group-data-[selected=true]:translate-x-0.5 group-data-[selected=true]:opacity-100",
+        )}
+      />
     </Command.Item>
   );
 }

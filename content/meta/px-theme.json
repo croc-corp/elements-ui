@@ -1,13 +1,25 @@
 {
   "summary": "Day/night switch whose sun pixels rebuild as a crescent moon while night sweeps the sky; it can set the page theme.",
   "attributes": [
-    { "name": "controls-page", "type": "boolean", "default": "false", "description": "Presence attribute. When set, each toggle writes `data-theme=\"dark\"` or `\"light\"` and toggles the `.dark` class on the `<html>` element, the switch follows theme changes made elsewhere on the page, and a hint under the switch says so." }
+    {
+      "name": "controls-page",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. When set, each toggle writes `data-theme=\"dark\"` or `\"light\"` and toggles the `.dark` class on the `<html>` element, the switch follows theme changes made elsewhere on the page, and a hint under the switch says so."
+    }
   ],
   "events": [
-    { "name": "change", "detail": "{ dark: boolean }", "description": "Fires on every toggle with the new state; not when the switch follows a page theme change." }
+    {
+      "name": "change",
+      "detail": "{ dark: boolean }",
+      "description": "Fires on every toggle with the new state; not when the switch follows a page theme change."
+    }
   ],
   "methods": [
-    { "signature": "toggle()", "description": "Switches between day and night and fires `change`. With `controls-page`, also sets the page theme." }
+    {
+      "signature": "toggle()",
+      "description": "Switches between day and night and fires `change`. With `controls-page`, also sets the page theme."
+    }
   ],
   "properties": [],
   "keyboard": [],

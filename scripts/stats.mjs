@@ -123,7 +123,14 @@ async function printStatistics() {
     order by created_at desc
     limit 25`;
   if (notes.length) {
-    console.table(notes.map((n) => ({ date: n.created_at.toISOString().slice(0, 10), page: n.path, helpful: n.helpful ? "yes" : "no", note: n.note })));
+    console.table(
+      notes.map((n) => ({
+        date: n.created_at.toISOString().slice(0, 10),
+        page: n.path,
+        helpful: n.helpful ? "yes" : "no",
+        note: n.note,
+      })),
+    );
   } else {
     console.log("  no notes");
   }

@@ -2,15 +2,60 @@
   "kind": "react",
   "summary": "The devices of a private network and how this device reaches each one, directly or through a relay server; an upgrade lets go of the relay with a wobble.",
   "props": [
-    { "name": "device", "type": "MeshDevice", "default": "demo laptop", "description": "This device: `{ id, label, location?, lat, lon }`. Every path starts here, and the header names it. Without a device no paths are drawn and every peer shows as offline." },
-    { "name": "peers", "type": "readonly MeshDevice[]", "default": "6 demo peers", "description": "The other devices: `{ id, label, location?, lat, lon }`. `location` is shown under the name and read in the row's accessible name. Peers with a repeated id, the device's id or an invalid coordinate are skipped." },
-    { "name": "relays", "type": "readonly MeshRelay[]", "default": "3 demo relays", "description": "Relay servers: `{ id, label, lat, lon }`. The `id` is shown on the map and in the row chip (`via lhr`), the `label` in the detail line (`Relayed through London`)." },
-    { "name": "paths", "type": "readonly MeshPath[]", "default": "-", "description": "The current path to each peer: `{ peer, relay: string | null, ms, traffic? }`. `relay: null` is a direct connection, `ms` the round-trip latency, and `traffic` from 0 to 1 sets the packet rate. A peer without a path is offline. When a path changes, the map animates the change." },
-    { "name": "value", "type": "string | null", "default": "-", "description": "Selected peer id (controlled), or null for none. Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "string | null", "default": "null", "description": "Selected peer when uncontrolled." },
-    { "name": "onValueChange", "type": "(value: string | null) => void", "default": "-", "description": "Called with the peer id when a peer is selected, and with null when the selection is cleared." },
-    { "name": "live", "type": "boolean", "default": "true", "description": "Runs the demo upgrades and fallbacks while the map is on screen. `false` shows the demo settled, with every peer direct except the phone. Has no effect once any data prop is given." },
-    { "name": "label", "type": "string", "default": "\"Mesh connections\"", "description": "Accessible name of the map. Its `aria-label` adds the device name and the number of direct, relayed and offline peers." }
+    {
+      "name": "device",
+      "type": "MeshDevice",
+      "default": "demo laptop",
+      "description": "This device: `{ id, label, location?, lat, lon }`. Every path starts here, and the header names it. Without a device no paths are drawn and every peer shows as offline."
+    },
+    {
+      "name": "peers",
+      "type": "readonly MeshDevice[]",
+      "default": "6 demo peers",
+      "description": "The other devices: `{ id, label, location?, lat, lon }`. `location` is shown under the name and read in the row's accessible name. Peers with a repeated id, the device's id or an invalid coordinate are skipped."
+    },
+    {
+      "name": "relays",
+      "type": "readonly MeshRelay[]",
+      "default": "3 demo relays",
+      "description": "Relay servers: `{ id, label, lat, lon }`. The `id` is shown on the map and in the row chip (`via lhr`), the `label` in the detail line (`Relayed through London`)."
+    },
+    {
+      "name": "paths",
+      "type": "readonly MeshPath[]",
+      "default": "-",
+      "description": "The current path to each peer: `{ peer, relay: string | null, ms, traffic? }`. `relay: null` is a direct connection, `ms` the round-trip latency, and `traffic` from 0 to 1 sets the packet rate. A peer without a path is offline. When a path changes, the map animates the change."
+    },
+    {
+      "name": "value",
+      "type": "string | null",
+      "default": "-",
+      "description": "Selected peer id (controlled), or null for none. Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string | null",
+      "default": "null",
+      "description": "Selected peer when uncontrolled."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string | null) => void",
+      "default": "-",
+      "description": "Called with the peer id when a peer is selected, and with null when the selection is cleared."
+    },
+    {
+      "name": "live",
+      "type": "boolean",
+      "default": "true",
+      "description": "Runs the demo upgrades and fallbacks while the map is on screen. `false` shows the demo settled, with every peer direct except the phone. Has no effect once any data prop is given."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Mesh connections\"",
+      "description": "Accessible name of the map. Its `aria-label` adds the device name and the number of direct, relayed and offline peers."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -20,7 +65,10 @@
     { "keys": "ArrowUp / ArrowDown", "action": "Moves focus to the device above or below." },
     { "keys": "ArrowLeft / ArrowRight", "action": "Moves focus to the previous or next device." },
     { "keys": "Home / End", "action": "Moves focus to the first or last device." },
-    { "keys": "Enter / Space", "action": "Selects the focused device, or clears the selection when it is already selected." },
+    {
+      "keys": "Enter / Space",
+      "action": "Selects the focused device, or clears the selection when it is already selected."
+    },
     { "keys": "Escape", "action": "Clears the selection." }
   ],
   "accessibility": [
@@ -46,7 +94,20 @@
     "kind": "input",
     "note": "Pass this device as `device`, the other devices as `peers`, your relay servers as `relays` and the current path to each peer as `paths`. Only while all four are undefined does the component show its demo: a laptop in Amsterdam with 6 invented peers in Europe and North America, 3 relays and invented latencies, each relayed peer going through the relay nearest to it, playing a seeded sequence of upgrades and fallbacks. Once any of them is given, the others default to empty."
   },
-  "tokens": ["--lumesec", "--lumesec-glint", "--lumesec-shine", "--lumesec-info", "--lumesec-warning", "--foreground", "--muted-foreground", "--muted", "--card", "--card-foreground", "--background", "--border"],
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--lumesec-shine",
+    "--lumesec-info",
+    "--lumesec-warning",
+    "--foreground",
+    "--muted-foreground",
+    "--muted",
+    "--card",
+    "--card-foreground",
+    "--background",
+    "--border"
+  ],
   "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { GeoMesh, type MeshDevice, type MeshPath, type MeshRelay } from \"@/components/lumesec/geo-mesh\";\n\nconst device: MeshDevice = { id: \"laptop\", label: \"Work laptop\", location: \"Amsterdam\", lat: 52.37, lon: 4.9 };\n\nconst peers: MeshDevice[] = [\n  { id: \"build\", label: \"Build server\", location: \"Milan\", lat: 45.46, lon: 9.19 },\n  { id: \"desktop\", label: \"Desktop\", location: \"Toronto\", lat: 43.65, lon: -79.38 },\n];\n\nconst relays: MeshRelay[] = [\n  { id: \"lhr\", label: \"London\", lat: 51.51, lon: -0.13 },\n  { id: \"iad\", label: \"Ashburn\", lat: 39.04, lon: -77.49 },\n];\n\nexport function Example({ paths }: { paths: MeshPath[] }) {\n  const [peer, setPeer] = React.useState<string | null>(null);\n  return <GeoMesh device={device} peers={peers} relays={relays} paths={paths} value={peer} onValueChange={setPeer} />;\n}\n",
   "playground": {
     "props": {},

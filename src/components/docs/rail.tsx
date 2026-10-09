@@ -13,7 +13,17 @@ function productFor(path: string) {
 }
 
 /** "Edit this page" on GitHub and "Report an issue" with the page and its source file filled in. */
-function EditLinks({ path, file, title, className }: { path: string; file: string; title: string; className?: string }) {
+function EditLinks({
+  path,
+  file,
+  title,
+  className,
+}: {
+  path: string;
+  file: string;
+  title: string;
+  className?: string;
+}) {
   const edit = `${site.repo.url}/edit/${site.repo.branch}/${file}`;
   // prefills the "Documentation" issue form (.github/ISSUE_TEMPLATE/docs.yml)
   const query = { template: "docs.yml", title: `Docs: ${title}`, page: absoluteUrl(path), file };
@@ -22,11 +32,21 @@ function EditLinks({ path, file, title, className }: { path: string; file: strin
     .join("&")}`;
   return (
     <div className={cn("grid gap-1", className)}>
-      <a href={edit} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-1 text-[13px] text-muted-foreground transition-colors hover:text-foreground">
+      <a
+        href={edit}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 py-1 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+      >
         <PencilIcon size={13} />
         Edit this page
       </a>
-      <a href={issue} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-1 text-[13px] text-muted-foreground transition-colors hover:text-foreground">
+      <a
+        href={issue}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 py-1 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+      >
         <FlagIcon size={13} />
         Report an issue
       </a>

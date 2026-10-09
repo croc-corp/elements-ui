@@ -12,10 +12,12 @@ const NOTE_WINDOW = "1 hour";
 /** 128 random bits, base64url: what POST hands out and PATCH accepts. */
 const TOKEN = /^[A-Za-z0-9_-]{22}$/;
 
-const cleanNote = (value: unknown) => (typeof value === "string" && value.trim() ? value.trim().slice(0, MAX_NOTE) : null);
+const cleanNote = (value: unknown) =>
+  typeof value === "string" && value.trim() ? value.trim().slice(0, MAX_NOTE) : null;
 
 /** A path on this site, never a full URL. */
-const isSitePath = (value: unknown): value is string => typeof value === "string" && value.startsWith("/") && !value.startsWith("//");
+const isSitePath = (value: unknown): value is string =>
+  typeof value === "string" && value.startsWith("/") && !value.startsWith("//");
 
 const isToken = (value: unknown): value is string => typeof value === "string" && TOKEN.test(value);
 

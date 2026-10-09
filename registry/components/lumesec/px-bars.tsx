@@ -56,7 +56,15 @@ interface Bar {
  * @example
  * <PxBars label="Runs per day" unit="runs" data={[{ label: "Mon", value: 12 }, { label: "Tue", value: 18 }]} />
  */
-export function PxBars({ data = SAMPLE_DATA, max = 0, label = "Bar chart", unit, height = 170, className, ...props }: PxBarsProps) {
+export function PxBars({
+  data = SAMPLE_DATA,
+  max = 0,
+  label = "Bar chart",
+  unit,
+  height = 170,
+  className,
+  ...props
+}: PxBarsProps) {
   const hovered = React.useRef(-1);
   const bars = React.useRef<Bar[]>([]);
   /** When the bars started growing, in seconds; each bar waits 50 ms longer than the one before. */
@@ -115,8 +123,15 @@ export function PxBars({ data = SAMPLE_DATA, max = 0, label = "Bar chart", unit,
           // the top cell fades in with the fraction of a cell the bar has reached
           const isTop = k === full;
           const alpha = isTop ? filled - full : 1;
-          const color = isTop || isHovered ? mixRgb(palette.accent, palette.shine, isHovered ? 0.35 : 0.5) : palette.accent;
-          frame.dot(x0 + c * CELL, bottom - (k + 1) * CELL + 1.5, color, (hover >= 0 && !isHovered ? 0.45 : 0.95) * alpha, 4.5);
+          const color =
+            isTop || isHovered ? mixRgb(palette.accent, palette.shine, isHovered ? 0.35 : 0.5) : palette.accent;
+          frame.dot(
+            x0 + c * CELL,
+            bottom - (k + 1) * CELL + 1.5,
+            color,
+            (hover >= 0 && !isHovered ? 0.45 : 0.95) * alpha,
+            4.5,
+          );
         }
       }
       g.globalAlpha = isHovered ? 1 : 0.85;
@@ -159,7 +174,7 @@ export function PxBars({ data = SAMPLE_DATA, max = 0, label = "Bar chart", unit,
         tabIndex={0}
         role="img"
         aria-label={description}
-        className="block w-full cursor-crosshair font-mono outline-none [image-rendering:pixelated] focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+        className="block w-full cursor-crosshair font-mono outline-none [image-rendering:pixelated] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
         style={{ height }}
         onPointerMove={(event) => {
           const rect = event.currentTarget.getBoundingClientRect();
@@ -185,7 +200,7 @@ export function PxBars({ data = SAMPLE_DATA, max = 0, label = "Bar chart", unit,
       <span
         ref={tipRef}
         hidden
-        className="pointer-events-none absolute z-[5] rounded-md bg-foreground px-2 py-1 text-[11.5px] leading-normal whitespace-nowrap text-card [transform:translate(-50%,calc(-100%-6px))]"
+        className="pointer-events-none absolute z-[5] [transform:translate(-50%,calc(-100%-6px))] rounded-md bg-foreground px-2 py-1 text-[11.5px] leading-normal whitespace-nowrap text-card"
       />
     </div>
   );

@@ -55,7 +55,10 @@ interface Rect {
 const EMPTY: readonly string[] = [];
 
 /** Chips scale in with a little overshoot. */
-const CHIP_IN: Keyframe[] = [{ transform: "scale(.6)", opacity: 0 }, { transform: "none", opacity: 1 }];
+const CHIP_IN: Keyframe[] = [
+  { transform: "scale(.6)", opacity: 0 },
+  { transform: "none", opacity: 1 },
+];
 
 /** The pixels of a removed chip: it breaks apart from left to right, starting now. */
 function shatter(rect: Rect): TagPixel[] {
@@ -176,7 +179,12 @@ export function PxTags({
     if (!canvas) return null;
     const chipBox = chip.getBoundingClientRect();
     const canvasBox = canvas.getBoundingClientRect();
-    return { x: chipBox.left - canvasBox.left, y: chipBox.top - canvasBox.top, width: chipBox.width, height: chipBox.height };
+    return {
+      x: chipBox.left - canvasBox.left,
+      y: chipBox.top - canvasBox.top,
+      width: chipBox.width,
+      height: chipBox.height,
+    };
   };
 
   const markRefused = (tag: string, on: boolean) =>
@@ -300,9 +308,17 @@ export function PxTags({
               disabled={disabled}
               aria-label={`Remove ${tag}`}
               onClick={() => remove(index)}
-              className="grid size-5 flex-none cursor-pointer place-items-center rounded-[5px] border-0 bg-transparent p-0 text-muted-foreground select-none outline-none hover:bg-foreground/10 hover:text-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+              className="grid size-5 flex-none cursor-pointer place-items-center rounded-[5px] border-0 bg-transparent p-0 text-muted-foreground outline-none select-none hover:bg-foreground/10 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
             >
-              <svg viewBox="0 0 10 10" aria-hidden="true" className="size-2.5" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round">
+              <svg
+                viewBox="0 0 10 10"
+                aria-hidden="true"
+                className="size-2.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.8}
+                strokeLinecap="round"
+              >
                 <path d="M2 2l6 6M8 2L2 8" />
               </svg>
             </button>
@@ -367,7 +383,7 @@ export function PxTags({
             type="button"
             disabled={disabled}
             onClick={() => add([suggestion])}
-            className="inline-flex h-[26px] cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-border bg-card px-[9px] font-[inherit] text-[12px] font-medium text-foreground select-none outline-none [transition:transform_.15s_cubic-bezier(.2,.8,.2,1),background-color_.2s,border-color_.2s,color_.2s] hover:bg-muted focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec active:[transform:scale(.95)]"
+            className="inline-flex h-[26px] cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-[9px] font-[inherit] text-[12px] font-medium whitespace-nowrap text-foreground outline-none select-none [transition:transform_.15s_cubic-bezier(.2,.8,.2,1),background-color_.2s,border-color_.2s,color_.2s] hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid active:[transform:scale(.95)]"
           >
             + {suggestion}
           </button>

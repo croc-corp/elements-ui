@@ -6,7 +6,10 @@
     { "name": "finish", "detail": "{}", "description": "Fires when the tour ends through Done, Skip or Escape." }
   ],
   "methods": [
-    { "signature": "go(index: number)", "description": "Shows step `index` (0 to 3); 4 or more ends a running tour. Negative values are ignored." }
+    {
+      "signature": "go(index: number)",
+      "description": "Shows step `index` (0 to 3); 4 or more ends a running tour. Negative values are ignored."
+    }
   ],
   "properties": [],
   "keyboard": [

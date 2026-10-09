@@ -111,11 +111,7 @@ export function UiContextMeter({
     const element = percentRef.current;
     if (zone !== "full" || reduced || !element) return;
     const blink = element.animate(
-      [
-        { opacity: 1, easing: "ease-in-out" },
-        { opacity: 0.55, offset: 0.5, easing: "ease-in-out" },
-        { opacity: 1 },
-      ],
+      [{ opacity: 1, easing: "ease-in-out" }, { opacity: 0.55, offset: 0.5, easing: "ease-in-out" }, { opacity: 1 }],
       { duration: 1200, iterations: Infinity },
     );
     return () => blink.cancel();
@@ -174,7 +170,11 @@ export function UiContextMeter({
         const distance = edge - column;
         // the front dithers: cells within 1.5 columns of the edge flicker on and off
         const on =
-          distance > 1.5 ? true : distance > -1.5 ? hash(column * 3.1 + row * 7.7 + tick * 0.13) < (distance + 1.5) / 3 : false;
+          distance > 1.5
+            ? true
+            : distance > -1.5
+              ? hash(column * 3.1 + row * 7.7 + tick * 0.13) < (distance + 1.5) / 3
+              : false;
         if (on) {
           const near = Math.max(0, 1 - Math.abs(distance) / 4);
           const alpha = 0.55 + 0.45 * Math.min(1, (edge - column) / 6);

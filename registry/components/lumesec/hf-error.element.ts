@@ -119,7 +119,10 @@ class HError extends HF {
     const block = this.$(".code");
     block.classList.toggle("long", code.length > 3);
     const upper = code.toUpperCase();
-    block.style.setProperty("--c", upper === "500" ? "var(--_danger)" : upper === "OFFLINE" ? "var(--_muted)" : "var(--_accent)");
+    block.style.setProperty(
+      "--c",
+      upper === "500" ? "var(--_danger)" : upper === "OFFLINE" ? "var(--_muted)" : "var(--_accent)",
+    );
   }
 
   /** The code's colour: danger for 500, muted for offline, the accent otherwise. */

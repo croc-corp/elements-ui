@@ -5,7 +5,10 @@ import { NodeType, parse } from "node-html-parser";
 import { camel, SITE_URL } from "./catalog.mjs";
 
 /** Inline SVG artwork (logos) becomes a one-line placeholder in snippets. */
-const stripArt = (html) => html.replace(/<svg\b[^>]*\bslot="([^"]+)"[\s\S]*?<\/svg>/g, '<span slot="$1">Your logo</span>').replace(/…lockup…/g, "Your logo");
+const stripArt = (html) =>
+  html
+    .replace(/<svg\b[^>]*\bslot="([^"]+)"[\s\S]*?<\/svg>/g, '<span slot="$1">Your logo</span>')
+    .replace(/…lockup…/g, "Your logo");
 
 /** `margin-top: 16px; --gap: 4px` → `{{ marginTop: 16, "--gap": "4px" }}`. */
 function styleObject(css) {
@@ -46,7 +49,11 @@ function toJsx(node, depth, byTag, used) {
     const raw = node.rawText;
     // multi-line text (a diff, a log) keeps its line breaks as a template literal
     if (/\n\s*\S[\s\S]*\n/.test(raw)) {
-      const body = raw.replace(/^\n+|\s+$/g, "").replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
+      const body = raw
+        .replace(/^\n+|\s+$/g, "")
+        .replace(/\\/g, "\\\\")
+        .replace(/`/g, "\\`")
+        .replace(/\$\{/g, "\\${");
       return `${pad}{\`${body}\`}`;
     }
     const t = raw.replace(/\s+/g, " ").trim();
@@ -64,7 +71,8 @@ function toJsx(node, depth, byTag, used) {
   const open = `<${name}${attrs.length ? " " + attrs.join(" ") : ""}`;
   const kids = node.childNodes.map((c) => toJsx(c, depth + 1, byTag, used)).filter(Boolean);
   if (!kids.length) return `${pad}${open} />`;
-  if (kids.length === 1 && !kids[0].includes("\n") && kids[0].trim().length < 48) return `${pad}${open}>${kids[0].trim()}</${name}>`;
+  if (kids.length === 1 && !kids[0].includes("\n") && kids[0].trim().length < 48)
+    return `${pad}${open}>${kids[0].trim()}</${name}>`;
   return `${pad}${open}>\n${kids.join("\n")}\n${pad}</${name}>`;
 }
 
@@ -88,7 +96,10 @@ export function usageFor(meta, byTag) {
   const used = new Set();
   const list = nodes.length ? nodes : root.childNodes;
   const single = list.filter((n) => n.nodeType === NodeType.ELEMENT_NODE).length === 1;
-  const body = list.map((n) => toJsx(n, single ? 2 : 3, byTag, used)).filter(Boolean).join("\n");
+  const body = list
+    .map((n) => toJsx(n, single ? 2 : 3, byTag, used))
+    .filter(Boolean)
+    .join("\n");
   const comps = [...used];
   if (!comps.length) comps.push(meta);
   const tags = comps.map((c) => c.tag);

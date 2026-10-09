@@ -20,10 +20,5 @@ export interface PxSecretProps extends Omit<LumesecElementProps<PxSecretElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/secret
  */
 export function PxSecret({ value, ...props }: PxSecretProps) {
-  return useLumesecElement(
-    "px-secret",
-    props,
-    { "value": value },
-    {},
-  );
+  return useLumesecElement("px-secret", props, { value: value }, {});
 }

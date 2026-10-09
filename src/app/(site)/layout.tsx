@@ -7,7 +7,10 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
   const nav = collections.map((c) => ({ slug: c.slug, title: c.title, count: c.count }));
   return (
     <>
-      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:rounded-md focus:bg-foreground focus:px-3 focus:py-2 focus:text-background">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:rounded-md focus:bg-foreground focus:px-3 focus:py-2 focus:text-background"
+      >
         Skip to content
       </a>
       <Banner />

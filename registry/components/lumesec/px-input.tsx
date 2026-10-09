@@ -20,8 +20,10 @@ export interface PxInputHandle {
 }
 
 /** Props of `PxInput`. Other `div` props go to the wrapper; the input's own attributes are the props below. */
-export interface PxInputProps
-  extends Omit<React.ComponentProps<"div">, "ref" | "children" | "defaultValue" | "onChange" | "inputMode" | "spellCheck"> {
+export interface PxInputProps extends Omit<
+  React.ComponentProps<"div">,
+  "ref" | "children" | "defaultValue" | "onChange" | "inputMode" | "spellCheck"
+> {
   /** Controlled text. Use with `onValueChange`. */
   value?: string;
   /** Initial text when uncontrolled; also restored on form reset. */
@@ -146,10 +148,12 @@ export function PxInput({
       dot(x, y + offset, tone, lit ? 0.95 : 0.1, 2);
     }
     if (validation === "ok") {
-      for (const [px, py] of SMALL_CHECK) dot(width - 26 + px * 2, height / 2 - 5 + py * 2, palette.success, Math.min(1, spread.current), 2);
+      for (const [px, py] of SMALL_CHECK)
+        dot(width - 26 + px * 2, height / 2 - 5 + py * 2, palette.success, Math.min(1, spread.current), 2);
     }
     if (validation === "error") {
-      for (const [px, py] of SMALL_ALERT) dot(width - 20 + px * 1.8, height / 2 - 6 + py * 1.8, palette.destructive, 1, 1.5);
+      for (const [px, py] of SMALL_ALERT)
+        dot(width - 20 + px * 1.8, height / 2 - 6 + py * 1.8, palette.destructive, 1, 1.5);
     }
     return Math.abs(spread.current - target) > 0.001 || jitter.current > 0;
   });
@@ -210,7 +214,8 @@ export function PxInput({
     return clamp((12 + textWidth) / canvas.clientWidth, 0, 1);
   };
 
-  const message = validation === "error" ? error || browserMessage : validation === "ok" ? success || hint || "" : hint || "";
+  const message =
+    validation === "error" ? error || browserMessage : validation === "ok" ? success || hint || "" : hint || "";
 
   return (
     <div

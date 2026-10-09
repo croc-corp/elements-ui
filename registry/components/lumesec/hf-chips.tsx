@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-chips.element";
 /** The `<hf-chips>` element, with its properties and methods. */
 export type HfChipsElement = ElementModule.HChips;
 
-export interface HfChipsProps extends Omit<LumesecElementProps<HfChipsElement>, "options" | "value" | "label" | "name" | "disabled" | "onChange"> {
+export interface HfChipsProps extends Omit<
+  LumesecElementProps<HfChipsElement>,
+  "options" | "value" | "label" | "name" | "disabled" | "onChange"
+> {
   /** Comma-separated chips as `Label:count`, split at the last colon. The count is optional and shown after the label. Observed: a change rebuilds the chips and keeps the selected labels. Default: `TypeScript:128,Python:96,Rust:41,Go:37,SQL:22,Shell:18,Swift:9`. */
   options?: string;
   /** Comma-separated labels of the selected chips, matched exactly. Observed: a change updates the selection and becomes the selection a form reset restores. Reflects the current selection. Default: `TypeScript,Rust`. */
@@ -33,7 +36,7 @@ export function HfChips({ options, value, label, name, disabled, onChange, ...pr
   return useLumesecElement(
     "hf-chips",
     props,
-    { "options": options, "value": value, "label": label, "name": name, "disabled": disabled },
-    { "change": onChange },
+    { options: options, value: value, label: label, name: name, disabled: disabled },
+    { change: onChange },
   );
 }

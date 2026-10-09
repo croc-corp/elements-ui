@@ -141,7 +141,11 @@ export function GeoFlows({
   const kind: GeoFlowsProjection = projection === "equirectangular" ? "equirectangular" : "equalEarth";
   const layout = React.useMemo(() => markerLayout(kind, model.regions), [kind, model.regions]);
 
-  const [selection, setSelection] = useControllableState<string | null>({ value, defaultValue, onChange: onValueChange });
+  const [selection, setSelection] = useControllableState<string | null>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
   const selectedIndex = selection === null ? -1 : (model.indexById.get(selection) ?? -1);
   const selectedId = selectedIndex >= 0 ? model.regions[selectedIndex].id : null;
   const reducedMotion = useReducedMotion();
@@ -210,7 +214,8 @@ export function GeoFlows({
     engine.ping = selectedId !== null && !reduced ? { id: selectedId, start: performance.now() / 1000 } : null;
     engine.flowsDirty = true;
     const dot = selectedIndex >= 0 ? dotRefs.current[selectedIndex] : null;
-    if (dot && !reduced && typeof dot.animate === "function") dot.animate(MARKER_POP, { duration: 520, easing: "cubic-bezier(.2,.8,.2,1)" });
+    if (dot && !reduced && typeof dot.animate === "function")
+      dot.animate(MARKER_POP, { duration: 520, easing: "cubic-bezier(.2,.8,.2,1)" });
     loop.kick();
   }, [selectedId, selectedIndex, engineRef, loop]);
 
@@ -301,7 +306,10 @@ export function GeoFlows({
       const rect = box.getBoundingClientRect();
       let best = Infinity;
       layout.points.forEach((point, i) => {
-        const distance = Math.hypot(rect.left + point.x * rect.width - event.clientX, rect.top + point.y * rect.height - event.clientY);
+        const distance = Math.hypot(
+          rect.left + point.x * rect.width - event.clientX,
+          rect.top + point.y * rect.height - event.clientY,
+        );
         if (distance < best) {
           best = distance;
           target = i;
@@ -341,7 +349,10 @@ export function GeoFlows({
     [model, layout, boxWidth, selectedIndex, narrow],
   );
 
-  const totals = selectedIndex >= 0 ? { in: model.inbound[selectedIndex], out: model.outbound[selectedIndex] } : { in: model.totalIn, out: model.totalOut };
+  const totals =
+    selectedIndex >= 0
+      ? { in: model.inbound[selectedIndex], out: model.outbound[selectedIndex] }
+      : { in: model.totalIn, out: model.totalOut };
   const inText = format(totals.in);
   const outText = format(totals.out);
   // both numbers reserve the widest of the visible and the overall totals, so the bar never shifts
@@ -356,15 +367,28 @@ export function GeoFlows({
   }
 
   return (
-    <div data-slot="geo-flows" className={cn("@container grid w-full gap-2 text-foreground", className)} onKeyDown={handleKeyDown} {...props}>
-      <div ref={cardRef} className="relative overflow-hidden rounded-xl border border-border bg-card p-3 [-webkit-tap-highlight-color:transparent]">
+    <div
+      data-slot="geo-flows"
+      className={cn("@container grid w-full gap-2 text-foreground", className)}
+      onKeyDown={handleKeyDown}
+      {...props}
+    >
+      <div
+        ref={cardRef}
+        className="relative overflow-hidden rounded-xl border border-border bg-card p-3 [-webkit-tap-highlight-color:transparent]"
+      >
         <svg
           aria-hidden="true"
           viewBox={`0 0 ${NOMINAL_PROJECTION_WIDTH} ${(NOMINAL_PROJECTION_WIDTH / layout.aspect).toFixed(2)}`}
           preserveAspectRatio="none"
           className="pointer-events-none absolute inset-3 block size-[calc(100%-24px)] overflow-visible"
         >
-          <path d={layout.outline} vectorEffect="non-scaling-stroke" strokeWidth={1} className="fill-muted/35 stroke-border" />
+          <path
+            d={layout.outline}
+            vectorEffect="non-scaling-stroke"
+            strokeWidth={1}
+            className="fill-muted/35 stroke-border"
+          />
         </svg>
         <div
           ref={stackRef}
@@ -399,7 +423,7 @@ export function GeoFlows({
                   onFocus={() => setFocusIndex(i)}
                   onKeyDown={(event) => handleMarkerKeyDown(event, i)}
                   className={cn(
-                    "group/marker absolute -mt-3 -ml-3 grid size-6 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 font-[inherit] outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-lumesec",
+                    "group/marker absolute -mt-3 -ml-3 grid size-6 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 font-[inherit] outline-none focus-visible:outline-2 focus-visible:outline-lumesec focus-visible:outline-solid",
                     selected && "z-[2]",
                   )}
                   style={{ left: percent(point.x), top: percent(point.y) }}
@@ -432,8 +456,22 @@ export function GeoFlows({
         ) : null}
       </div>
       <div className="flex min-h-7 flex-wrap items-center gap-x-4 gap-y-1 px-0.5 text-[12.5px] leading-5">
-        <TotalReadout direction="in" value={totals.in} text={inText} unit={unit} reserve={reserve} animate={!reducedMotion} />
-        <TotalReadout direction="out" value={totals.out} text={outText} unit={unit} reserve={reserve} animate={!reducedMotion} />
+        <TotalReadout
+          direction="in"
+          value={totals.in}
+          text={inText}
+          unit={unit}
+          reserve={reserve}
+          animate={!reducedMotion}
+        />
+        <TotalReadout
+          direction="out"
+          value={totals.out}
+          text={outText}
+          unit={unit}
+          reserve={reserve}
+          animate={!reducedMotion}
+        />
         <div className="ml-auto flex min-h-6 items-center @max-[480px]:ml-0 @max-[480px]:basis-full">
           {selectedRegion ? (
             <SelectionChip key={selectedRegion.id} label={selectedRegion.label} onClear={clearSelection} />
@@ -518,9 +556,17 @@ function SelectionChip({ label, onClear }: { label: string; onClear: () => void 
         type="button"
         aria-label={`Clear selection: ${label}`}
         onClick={onClear}
-        className="grid size-5 shrink-0 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 text-muted-foreground outline-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+        className="grid size-5 shrink-0 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 text-muted-foreground outline-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-lumesec focus-visible:outline-solid"
       >
-        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" aria-hidden="true" className="size-2.5">
+        <svg
+          viewBox="0 0 12 12"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.4}
+          strokeLinecap="round"
+          aria-hidden="true"
+          className="size-2.5"
+        >
           <path d="M3 3l6 6M9 3l-6 6" />
         </svg>
       </button>
@@ -597,7 +643,12 @@ const CHIP_ENTER: Keyframe[] = [
 const formatThroughput = (value: number) => formatNumber(value, { fractionDigits: 1 });
 
 /** The first 12 demo regions, as flow regions. */
-const DEMO_FLOW_REGIONS: readonly FlowRegion[] = DEMO_REGIONS.slice(0, 12).map(({ id, label, lat, lon }) => ({ id, label, lat, lon }));
+const DEMO_FLOW_REGIONS: readonly FlowRegion[] = DEMO_REGIONS.slice(0, 12).map(({ id, label, lat, lon }) => ({
+  id,
+  label,
+  lat,
+  lon,
+}));
 
 /** Invented demo traffic in Gbps: 412.6 down and 128.4 up in total. */
 const DEMO_FLOWS: readonly RegionFlow[] = [
@@ -749,14 +800,18 @@ function markerLayout(kind: GeoFlowsProjection, regions: readonly FlowRegion[]):
  * selection only the region and the regions it exchanges traffic with; on narrow maps only the selected one. Every
  * marker stays an obstacle, so labels never cover a dot.
  */
-function placeRegionLabels(model: FlowModel, layout: MarkerLayout, boxWidth: number, selectedIndex: number, narrow: boolean) {
+function placeRegionLabels(
+  model: FlowModel,
+  layout: MarkerLayout,
+  boxWidth: number,
+  selectedIndex: number,
+  narrow: boolean,
+) {
   const width = boxWidth;
   const height = boxWidth / layout.aspect;
   const anchors: LabelAnchor[] = model.regions.map((region, i) => {
     const point = layout.points[i];
-    const candidate =
-      i === selectedIndex ||
-      (!narrow && (selectedIndex < 0 || model.neighbours[selectedIndex].has(i)));
+    const candidate = i === selectedIndex || (!narrow && (selectedIndex < 0 || model.neighbours[selectedIndex].has(i)));
     return {
       x: MARGIN + point.x * width,
       y: MARGIN + point.y * height,
@@ -898,7 +953,8 @@ function createEngine(selected: string | null, kind: GeoFlowsProjection): FlowEn
 }
 
 /** Whether traffic between these regions touches the selected one. */
-const touches = (startId: string, endId: string, selected: string | null) => selected !== null && (startId === selected || endId === selected);
+const touches = (startId: string, endId: string, selected: string | null) =>
+  selected !== null && (startId === selected || endId === selected);
 
 const isRelated = (path: FlowPath, selected: string | null) => touches(path.startId, path.endId, selected);
 
@@ -993,7 +1049,13 @@ function refreshInk(engine: FlowEngine, palette: GeoPalette) {
 
 /** A new canvas size or projection: fit the map into the card padding and rebuild the lattice and every curve. */
 function layoutEngine(engine: FlowEngine, width: number, height: number, key: string) {
-  const projection = createProjection(engine.kind, { width, height, padding: MARGIN, latRange: LAT_RANGE, center: CENTER });
+  const projection = createProjection(engine.kind, {
+    width,
+    height,
+    padding: MARGIN,
+    latRange: LAT_RANGE,
+    center: CENTER,
+  });
   const innerWidth = width - 2 * MARGIN;
   engine.projection = projection;
   engine.lattice = mapLattice(projection, { pitch: innerWidth < NARROW_WIDTH ? 3 : 4 });
@@ -1061,7 +1123,9 @@ function advancePaths(engine: FlowEngine, delta: number, reduced: boolean) {
     if (path.rows.position < 0) path.rows = spring(rowsTarget);
     settleSpring(path.amount, path.target, delta, reduced, DATA_SPRING);
     moving = settleSpring(path.rows, rowsTarget, delta, reduced, DATA_SPRING) || moving;
-    moving = settleSpring(path.emphasis, engine.selected === null || related ? 1 : 0, delta, reduced, EMPHASIS_SPRING) || moving;
+    moving =
+      settleSpring(path.emphasis, engine.selected === null || related ? 1 : 0, delta, reduced, EMPHASIS_SPRING) ||
+      moving;
     moving = settleSpring(path.presence, path.removed ? 0 : 1, delta, reduced, DATA_SPRING) || moving;
     const litTarget = related ? 1 : 0;
     if (path.lit !== litTarget) {
@@ -1171,7 +1235,13 @@ function drawFlows(engine: FlowEngine, surface: CanvasSurface, batches: FlowBatc
           // collapsed rows overlap on the centre line; only one of them keeps its full alpha
           const rowAlpha = alpha * share * (k === 0 ? 1 : emphasis);
           // squares on the device pixel grid read as crisp pixel rows, like the lattice, not as an anti-aliased smear
-          batch.add(snapCenter(x + nx * offset, FLOW_DOT, dpr), snapCenter(y + ny * offset, FLOW_DOT, dpr), FLOW_DOT, flash, rowAlpha);
+          batch.add(
+            snapCenter(x + nx * offset, FLOW_DOT, dpr),
+            snapCenter(y + ny * offset, FLOW_DOT, dpr),
+            FLOW_DOT,
+            flash,
+            rowAlpha,
+          );
         }
       }
     }
@@ -1223,7 +1293,11 @@ function spawnParticles(engine: FlowEngine, delta: number) {
       // the oldest particle makes room
       if (engine.particles.length >= engine.maxParticles) engine.particles.shift();
       // start a little along the curve, by how long ago within this frame the arrival fell
-      engine.particles.push({ path, s: Math.min(path.length, (path.accumulator / rate) * speed), lane: randomLane(path) });
+      engine.particles.push({
+        path,
+        s: Math.min(path.length, (path.accumulator / rate) * speed),
+        lane: randomLane(path),
+      });
     }
   }
 }
@@ -1238,7 +1312,8 @@ function moveParticles(engine: FlowEngine, delta: number) {
     if (particle.path.dead) continue;
     particle.s += speed * delta;
     if (particle.s >= particle.path.length) {
-      if (engine.selected !== null && particle.path.endId === engine.selected) engine.halo = Math.min(1, engine.halo + 0.12);
+      if (engine.selected !== null && particle.path.endId === engine.selected)
+        engine.halo = Math.min(1, engine.halo + 0.12);
       continue;
     }
     particles[alive++] = particle;
@@ -1250,7 +1325,14 @@ const particlePoint = { x: 0, y: 0, angle: 0 };
 const markerPoint = createScreenPoint();
 
 /** Particles, the selection ping and the arrival halo. Returns whether anything is still animating. */
-function drawEffects(engine: FlowEngine, surface: CanvasSurface, batches: FlowBatches, time: number, delta: number, reduced: boolean) {
+function drawEffects(
+  engine: FlowEngine,
+  surface: CanvasSurface,
+  batches: FlowBatches,
+  time: number,
+  delta: number,
+  reduced: boolean,
+) {
   const { context, width, height, dpr } = surface;
   const { lattice, projection } = engine;
   engine.halo *= Math.exp(-delta / HALO_DECAY);
@@ -1294,7 +1376,13 @@ function drawEffects(engine: FlowEngine, surface: CanvasSurface, batches: FlowBa
         const falloff = 1 - distanceSquared / (radius * radius);
         // the dots light in their seeded order, so a stronger halo is a denser one, with an uneven edge
         if (lattice.density[i] > halo * 1.6 - (1 - falloff) * 0.5) return;
-        batches.fx.add(lattice.x[i], lattice.y[i], size, 0.15 + 0.5 * halo * falloff, (0.25 + 0.75 * halo) * falloff * 0.85);
+        batches.fx.add(
+          lattice.x[i],
+          lattice.y[i],
+          size,
+          0.15 + 0.5 * halo * falloff,
+          (0.25 + 0.75 * halo) * falloff * 0.85,
+        );
       });
     }
     batches.fx.flush(context);
@@ -1326,7 +1414,13 @@ function drawEffects(engine: FlowEngine, surface: CanvasSurface, batches: FlowBa
         if (x < -4 || y < -4 || x > width + 4 || y > height + 4) continue;
         const size = k === 0 ? HEAD_SIZE : TAIL_SIZE;
         const fade = edgeFade(engine.edges, x, y);
-        batch.add(snapCenter(x, size, dpr), snapCenter(y, size, dpr), size, k === 0 ? tone : tone * 0.4, alpha * TAIL_ALPHA[k] * fade);
+        batch.add(
+          snapCenter(x, size, dpr),
+          snapCenter(y, size, dpr),
+          size,
+          k === 0 ? tone : tone * 0.4,
+          alpha * TAIL_ALPHA[k] * fade,
+        );
       }
     }
   }

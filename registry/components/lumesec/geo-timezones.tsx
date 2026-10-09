@@ -242,7 +242,10 @@ export function GeoTimezones({
     [engineRef, loop],
   );
   const handleRowExited = React.useCallback((id: string) => {
-    setPresence((current) => ({ ...current, items: current.items.filter((item) => !(item.leaving && item.row.id === id)) }));
+    setPresence((current) => ({
+      ...current,
+      items: current.items.filter((item) => !(item.leaving && item.row.id === id)),
+    }));
   }, []);
 
   function frame(time: number, delta: number) {
@@ -295,7 +298,8 @@ export function GeoTimezones({
       if (!settled(highlight, cursorSpring.position)) moving = true;
     }
     if (engine.highlights.size > items.length) {
-      for (const id of engine.highlights.keys()) if (!items.some((item) => item.row.id === id)) engine.highlights.delete(id);
+      for (const id of engine.highlights.keys())
+        if (!items.some((item) => item.row.id === id)) engine.highlights.delete(id);
     }
 
     const glowTarget = engine.dragging ? 1 : engine.focused ? 0.7 : REST_GLOW;
@@ -333,11 +337,16 @@ export function GeoTimezones({
     if (stripSurface && ink && batch) drawStrip(stripSurface, batch, ink, scene, engine, ms, reduced);
 
     const effectsSurface = effects.current;
-    const sparksAlive = effectsSurface && ink && stripSurface ? drawEffects(effectsSurface, ink, engine, stripSurface.width, ms, delta) : false;
+    const sparksAlive =
+      effectsSurface && ink && stripSurface
+        ? drawEffects(effectsSurface, ink, engine, stripSurface.width, ms, delta)
+        : false;
 
     const sweeping = engine.sweepStart >= 0 && ms - engine.sweepStart < SWEEP_MS + 100;
     const ambient = !reduced && band.current.length > 0 && engine.ready;
-    return moving || band.fill < 1 || band.drain < 1 || sweeping || sparksAlive || ms < engine.animatingUntil || ambient;
+    return (
+      moving || band.fill < 1 || band.drain < 1 || sweeping || sparksAlive || ms < engine.animatingUntil || ambient
+    );
   }
 
   const fractionOf = (time: number) => (start === null ? 0 : clamp((time - start) / span, 0, 1));
@@ -423,7 +432,8 @@ export function GeoTimezones({
     const remaining = rows.filter((row) => row.id !== id);
     // focus moves before the row turns inert: to the next row's button, else the previous one, else the cursor
     const neighbour = remaining[index] ?? remaining[index - 1];
-    const target = (neighbour && removeRefs.current.get(neighbour.id)) ?? (remaining.length > 0 ? sliderRef.current : null);
+    const target =
+      (neighbour && removeRefs.current.get(neighbour.id)) ?? (remaining.length > 0 ? sliderRef.current : null);
     target?.focus({ preventScroll: true });
     setCityList(cityList.filter((city) => city.id !== id));
   }
@@ -435,7 +445,10 @@ export function GeoTimezones({
       : rows.map((row) => `${formatZonedTime(row.zone, cursor, { hour12 })} ${row.label}`).join(", ");
   const referenceLabel = referenceRow?.label ?? "";
   const rangeText = overlap.ranges
-    .map((range) => `${formatZonedTime(referenceZone, range.from, { hour12 })}–${formatZonedTime(referenceZone, range.to, { hour12 })}`)
+    .map(
+      (range) =>
+        `${formatZonedTime(referenceZone, range.from, { hour12 })}–${formatZonedTime(referenceZone, range.to, { hour12 })}`,
+    )
     .join(", ");
   const status: OverlapStatus =
     rows.length === 0 || start === null ? "idle" : rows.length === 1 ? "single" : overlap.minutes > 0 ? "band" : "none";
@@ -474,7 +487,9 @@ export function GeoTimezones({
           ) : status === "none" ? (
             <span className="truncate text-[12.5px] leading-4 text-muted-foreground">No common working hours</span>
           ) : status === "single" ? (
-            <span className="truncate text-[12.5px] leading-4 text-muted-foreground">Common hours need two or more cities</span>
+            <span className="truncate text-[12.5px] leading-4 text-muted-foreground">
+              Common hours need two or more cities
+            </span>
           ) : null}
         </div>
         <span className="sr-only" aria-live="polite">
@@ -483,8 +498,13 @@ export function GeoTimezones({
 
         {/* the canvases stay mounted when the list is empty, so they keep their size observers */}
         <div className="relative select-none">
-          <div aria-hidden="true" className={cn("grid h-[22px] grid-cols-[var(--col)_minmax(0,1fr)]", empty && "hidden")}>
-            <span className="self-end truncate pr-2 pb-1 text-[11px] leading-[14px] text-muted-foreground">{referenceLabel} time</span>
+          <div
+            aria-hidden="true"
+            className={cn("grid h-[22px] grid-cols-[var(--col)_minmax(0,1fr)]", empty && "hidden")}
+          >
+            <span className="self-end truncate pr-2 pb-1 text-[11px] leading-[14px] text-muted-foreground">
+              {referenceLabel} time
+            </span>
             <div className="relative">
               {ticks.map((tick, i) => (
                 <span
@@ -501,7 +521,12 @@ export function GeoTimezones({
             </div>
           </div>
 
-          <div ref={rowsRef} role={empty ? undefined : "list"} aria-label={empty ? undefined : "Cities"} className="relative">
+          <div
+            ref={rowsRef}
+            role={empty ? undefined : "list"}
+            aria-label={empty ? undefined : "Cities"}
+            className="relative"
+          >
             <canvas
               ref={stripRef}
               aria-hidden="true"
@@ -557,7 +582,11 @@ export function GeoTimezones({
               }}
               className="group/slider absolute inset-y-0 right-0 left-[var(--col)] z-[3] cursor-grab touch-pan-y outline-none data-[dragging]:cursor-grabbing"
             >
-              <div ref={cursorRef} aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-0 opacity-0 will-change-transform">
+              <div
+                ref={cursorRef}
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 left-0 w-0 opacity-0 will-change-transform"
+              >
                 <div className="absolute top-[17px] bottom-0 -left-px w-0.5 bg-lumesec" />
                 <div className="absolute top-[3px] -left-[7px] grid size-[14px] place-items-center rounded-[4px] bg-lumesec shadow-[0_0_0_2px_var(--card),0_1px_3px_rgb(0_0_0/0.25)] outline-lumesec group-focus-visible/slider:outline-2 group-focus-visible/slider:outline-offset-2 group-focus-visible/slider:outline-solid">
                   <span className="h-1.5 w-[3px] border-x border-lumesec-foreground/85" />
@@ -619,7 +648,10 @@ function TimezoneRow({
     },
     [id, registerRow],
   );
-  const setRemove = React.useCallback((element: HTMLButtonElement | null) => registerRemove(id, element), [id, registerRemove]);
+  const setRemove = React.useCallback(
+    (element: HTMLButtonElement | null) => registerRemove(id, element),
+    [id, registerRemove],
+  );
 
   // A row added after the first render grows in; the canvas measures it every frame and follows.
   React.useLayoutEffect(() => {
@@ -678,9 +710,17 @@ function TimezoneRow({
               type="button"
               aria-label={`Remove ${row.label}`}
               onClick={() => onRemove(id)}
-              className="-my-0.5 ml-auto grid size-5 shrink-0 cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-muted-foreground opacity-0 outline-none transition-[opacity,background-color,color] duration-150 group-hover/row:opacity-100 hover:bg-muted hover:text-foreground focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-solid focus-visible:outline-lumesec motion-reduce:transition-none [@media(hover:none)]:opacity-100"
+              className="-my-0.5 ml-auto grid size-5 shrink-0 cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-muted-foreground opacity-0 transition-[opacity,background-color,color] duration-150 outline-none group-hover/row:opacity-100 hover:bg-muted hover:text-foreground focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid motion-reduce:transition-none [@media(hover:none)]:opacity-100"
             >
-              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" aria-hidden="true" className="size-2.5">
+              <svg
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.4}
+                strokeLinecap="round"
+                aria-hidden="true"
+                className="size-2.5"
+              >
                 <path d="M3 3l6 6M9 3l-6 6" />
               </svg>
             </button>
@@ -688,7 +728,13 @@ function TimezoneRow({
         </div>
         <div className="flex min-w-0 items-baseline gap-1.5">
           <span className="flex shrink-0 items-baseline font-mono text-[15px] leading-[18px] font-medium text-foreground tabular-nums @max-[480px]:text-[13px]">
-            <RollText text={clock.hours} direction={direction} animate={animate} reserve={HOUR_RESERVE} className="justify-items-end" />
+            <RollText
+              text={clock.hours}
+              direction={direction}
+              animate={animate}
+              reserve={HOUR_RESERVE}
+              className="justify-items-end"
+            />
             <span>:</span>
             <RollText text={clock.minutes} direction={direction} animate={animate} />
             {hour12 ? (
@@ -709,7 +755,11 @@ function TimezoneRow({
       </div>
       <div aria-hidden="true" className="relative">
         {model?.midnights.map((midnight) => (
-          <div key={midnight.at} className="pointer-events-none absolute inset-y-0 w-0" style={{ left: `${(midnight.at * 100).toFixed(3)}%` }}>
+          <div
+            key={midnight.at}
+            className="pointer-events-none absolute inset-y-0 w-0"
+            style={{ left: `${(midnight.at * 100).toFixed(3)}%` }}
+          >
             <div className="absolute inset-y-0 left-0 w-px bg-border" />
             <span
               className={cn(
@@ -727,7 +777,15 @@ function TimezoneRow({
 }
 
 /** The accent chip with the total overlap; the duration rolls when it changes and the chip pops on the entry light. */
-function OverlapChip({ minutes, animate, ref }: { minutes: number; animate: boolean; ref: React.Ref<HTMLSpanElement> }) {
+function OverlapChip({
+  minutes,
+  animate,
+  ref,
+}: {
+  minutes: number;
+  animate: boolean;
+  ref: React.Ref<HTMLSpanElement>;
+}) {
   const [shown, setShown] = React.useState({ minutes, direction: 1 });
   if (shown.minutes !== minutes) setShown({ minutes, direction: minutes > shown.minutes ? 1 : -1 });
   return (
@@ -736,7 +794,12 @@ function OverlapChip({ minutes, animate, ref }: { minutes: number; animate: bool
       className="inline-flex h-6 shrink-0 items-center gap-1.5 rounded-md border border-lumesec/30 bg-lumesec/10 px-2 text-[12px] leading-4 font-medium text-lumesec"
     >
       <span className="size-1.5 rounded-[1px] bg-lumesec" />
-      <RollText text={formatSpan(minutes)} direction={shown.direction} animate={animate} className="font-mono tabular-nums" />
+      <RollText
+        text={formatSpan(minutes)}
+        direction={shown.direction}
+        animate={animate}
+        className="font-mono tabular-nums"
+      />
       <span>overlap</span>
     </span>
   );
@@ -881,7 +944,12 @@ function resolveCities(list: readonly TimeZoneCity[]): CityRow[] {
     if (!city || typeof city.id !== "string" || seen.has(city.id)) continue;
     seen.add(city.id);
     const valid = isValidTimeZone(city.timeZone);
-    rows.push({ id: city.id, label: String(city.label ?? city.id), zone: valid ? city.timeZone : "UTC", invalid: !valid });
+    rows.push({
+      id: city.id,
+      label: String(city.label ?? city.id),
+      zone: valid ? city.timeZone : "UTC",
+      invalid: !valid,
+    });
   }
   return rows;
 }
@@ -890,13 +958,18 @@ function resolveCities(list: readonly TimeZoneCity[]): CityRow[] {
 function mergePresence(previous: readonly PresenceItem[], next: readonly CityRow[], reduced: boolean): PresenceItem[] {
   const before = new Map(previous.map((item) => [item.row.id, item]));
   const nextIds = new Set(next.map((row) => row.id));
-  const items: PresenceItem[] = next.map((row) => ({ row, entering: before.get(row.id)?.entering ?? true, leaving: false }));
+  const items: PresenceItem[] = next.map((row) => ({
+    row,
+    entering: before.get(row.id)?.entering ?? true,
+    leaving: false,
+  }));
   if (reduced) return items;
   previous.forEach((item, i) => {
     if (nextIds.has(item.row.id)) return;
     // insert after the nearest earlier row that is still on screen
     let anchor = -1;
-    for (let j = i - 1; j >= 0 && anchor < 0; j--) anchor = items.findIndex((candidate) => candidate.row.id === previous[j].row.id);
+    for (let j = i - 1; j >= 0 && anchor < 0; j--)
+      anchor = items.findIndex((candidate) => candidate.row.id === previous[j].row.id);
     items.splice(anchor + 1, 0, { row: item.row, entering: item.entering, leaving: true });
   });
   return items;
@@ -913,7 +986,13 @@ function inHours(hour: number, from: number, to: number) {
   return from < to ? hour >= from && hour < to : hour >= from || hour < to;
 }
 
-function buildRowModel(row: CityRow, start: number, end: number, rules: HourRules, locale: string | undefined): RowModel {
+function buildRowModel(
+  row: CityRow,
+  start: number,
+  end: number,
+  rules: HourRules,
+  locale: string | undefined,
+): RowModel {
   const span = end - start;
   const cells: Cell[] = [];
   const midnights: { at: number; weekday: string }[] = [];
@@ -929,7 +1008,11 @@ function buildRowModel(row: CityRow, start: number, end: number, rules: HourRule
     if (next > end) next = end;
     const from = (time - start) / span;
     const to = (next - start) / span;
-    const kind = inHours(parts.hour, rules.workFrom, rules.workTo) ? WORK : inHours(parts.hour, rules.sleepFrom, rules.sleepTo) ? SLEEP : OFF;
+    const kind = inHours(parts.hour, rules.workFrom, rules.workTo)
+      ? WORK
+      : inHours(parts.hour, rules.sleepFrom, rules.sleepTo)
+        ? SLEEP
+        : OFF;
     cells.push({ from, to, kind, weekend: parts.weekday === 0 || parts.weekday === 6 });
     if (day !== -1 && parts.day !== day) midnights.push({ at: from, weekday: formatWeekday(row.zone, time, locale) });
     day = parts.day;
@@ -960,7 +1043,12 @@ function intersect(a: readonly Interval[], b: readonly Interval[]): Interval[] {
 const NO_OVERLAP: Overlap = { intervals: [], ranges: [], minutes: 0, key: "" };
 
 /** Hours when every city is at work. One city has nothing to compare, so it has no band. */
-function computeOverlap(rows: readonly CityRow[], models: ReadonlyMap<string, RowModel>, start: number | null, end: number | null): Overlap {
+function computeOverlap(
+  rows: readonly CityRow[],
+  models: ReadonlyMap<string, RowModel>,
+  start: number | null,
+  end: number | null,
+): Overlap {
   if (start === null || end === null || rows.length < 2) return NO_OVERLAP;
   const span = end - start;
   let band: readonly Interval[] | null = null;
@@ -1137,7 +1225,8 @@ function createEngine(): Engine {
   };
 }
 
-const settled = (spring: Spring, target: number) => Math.abs(spring.position - target) < 0.0004 && Math.abs(spring.velocity) < 0.002;
+const settled = (spring: Spring, target: number) =>
+  Math.abs(spring.position - target) < 0.0004 && Math.abs(spring.velocity) < 0.002;
 
 interface Scene {
   items: readonly PresenceItem[];
@@ -1157,7 +1246,15 @@ function rowsExtent(engine: Engine) {
 const reveal = (level: number, threshold: number) => clamp((level - threshold) / REVEAL_EDGE, 0, 1);
 
 /** The dot strip: one block of dots per local hour and row, the overlap band, and the lit column under the cursor. */
-function drawStrip(surface: CanvasSurface, batch: DotBatch, ink: GeoInk, scene: Scene, engine: Engine, now: number, reduced: boolean) {
+function drawStrip(
+  surface: CanvasSurface,
+  batch: DotBatch,
+  ink: GeoInk,
+  scene: Scene,
+  engine: Engine,
+  now: number,
+  reduced: boolean,
+) {
   const { context, width, height, dpr } = surface;
   context.clearRect(0, 0, width, height);
   const { items, models, span } = scene;
@@ -1237,7 +1334,11 @@ function drawStrip(surface: CanvasSurface, batch: DotBatch, ink: GeoInk, scene: 
             const jitter = hash(column * 31 + r * 7 + model.seed);
             const threshold = ((y - extent.top) / extent.height) * 0.82 + jitter * 0.18;
             const kept = inPrevious ? Math.min(1 - reveal(drainLevel, threshold), reveal(previousLevel, threshold)) : 0;
-            const amount = inCurrent ? (inPrevious ? Math.max(kept, reveal(fillLevel, threshold)) : reveal(fillLevel, threshold)) : kept;
+            const amount = inCurrent
+              ? inPrevious
+                ? Math.max(kept, reveal(fillLevel, threshold))
+                : reveal(fillLevel, threshold)
+              : kept;
             if (amount > 0) {
               tone = lerp(tone, TONE_ACCENT, amount);
               alpha = lerp(alpha, BAND_ALPHA * shimmer, amount);
@@ -1269,7 +1370,14 @@ function drawStrip(surface: CanvasSurface, batch: DotBatch, ink: GeoInk, scene: 
 const smoothFade = (value: number, from: number, to: number) => clamp((value - from) / (to - from), 0, 1);
 
 /** The light bar of the entry sweep and the burst at the band's foot, on the canvas that reaches past the card. */
-function drawEffects(surface: CanvasSurface, ink: GeoInk, engine: Engine, stripWidth: number, now: number, delta: number) {
+function drawEffects(
+  surface: CanvasSurface,
+  ink: GeoInk,
+  engine: Engine,
+  stripWidth: number,
+  now: number,
+  delta: number,
+) {
   const { context, width, height } = surface;
   const extent = rowsExtent(engine);
   const band = engine.band.current;

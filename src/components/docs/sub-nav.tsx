@@ -50,7 +50,7 @@ export function SubNav({ collections, onMenu }: { collections: Col[]; onMenu?: (
 
   return (
     <div className="sticky top-[var(--header-height)] z-30 bg-background/80 px-2 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70">
-      <div className="relative mx-auto grid h-[var(--subnav-height)] max-w-[calc(var(--container)-16px)] grid-cols-[auto_1fr_auto] items-center gap-3 border-x border-border px-2 after:pointer-events-none after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-border sm:px-3 in-data-[layout=full]:max-w-none lg:grid-cols-[1fr_auto_1fr]">
+      <div className="relative mx-auto grid h-[var(--subnav-height)] max-w-[calc(var(--container)-16px)] grid-cols-[auto_1fr_auto] items-center gap-3 border-x border-border px-2 after:pointer-events-none after:absolute after:bottom-0 after:-left-[100vw] after:h-px after:w-[200vw] after:bg-border in-data-[layout=full]:max-w-none sm:px-3 lg:grid-cols-[1fr_auto_1fr]">
         <div className="flex items-center gap-1">
           {onMenu && (
             <button
@@ -79,18 +79,38 @@ export function SubNav({ collections, onMenu }: { collections: Col[]; onMenu?: (
                 )}
               >
                 {t.label}
-                <span className={cn("absolute inset-x-2.5 bottom-0 h-px origin-left bg-foreground transition-transform duration-300 ease-[var(--ease-expo)]", section === t.id ? "scale-x-100" : "scale-x-0")} />
+                <span
+                  className={cn(
+                    "absolute inset-x-2.5 bottom-0 h-px origin-left bg-foreground transition-transform duration-300 ease-[var(--ease-expo)]",
+                    section === t.id ? "scale-x-100" : "scale-x-0",
+                  )}
+                />
               </Link>
             ))}
           </nav>
         </div>
 
-        <nav aria-label="Collections" className="flex min-w-0 items-center justify-center overflow-x-auto [scrollbar-width:none]">
+        <nav
+          aria-label="Collections"
+          className="flex min-w-0 [scrollbar-width:none] items-center justify-center overflow-x-auto"
+        >
           <div className="flex items-center gap-0.5">
-            <SwitchItem href="/components" label="All components" active={pathname === "/components"} glyph={<GridIcon size={16} />} />
+            <SwitchItem
+              href="/components"
+              label="All components"
+              active={pathname === "/components"}
+              glyph={<GridIcon size={16} />}
+            />
             <span className="mx-1.5 h-4 w-px shrink-0 bg-border" aria-hidden />
             {collections.map((c) => (
-              <SwitchItem key={c.slug} href={`/components/${c.slug}`} label={c.title} count={c.count} active={active === c.slug} glyph={<CollectionGlyph slug={c.slug} size={16} />} />
+              <SwitchItem
+                key={c.slug}
+                href={`/components/${c.slug}`}
+                label={c.title}
+                count={c.count}
+                active={active === c.slug}
+                glyph={<CollectionGlyph slug={c.slug} size={16} />}
+              />
             ))}
           </div>
         </nav>
@@ -117,19 +137,39 @@ export function SubNav({ collections, onMenu }: { collections: Col[]; onMenu?: (
 }
 
 /** Icon-only until active or hovered; the label opens out on a spring. */
-function SwitchItem({ href, label, count, active, glyph }: { href: string; label: string; count?: number; active: boolean; glyph: React.ReactNode }) {
+function SwitchItem({
+  href,
+  label,
+  count,
+  active,
+  glyph,
+}: {
+  href: string;
+  label: string;
+  count?: number;
+  active: boolean;
+  glyph: React.ReactNode;
+}) {
   return (
     <Link
       href={href}
       aria-label={label}
       aria-current={active ? "page" : undefined}
-      className={cn("group/sw relative flex h-[var(--subnav-height)] shrink-0 items-center px-1.5 transition-colors", active ? "text-foreground" : "text-muted-foreground hover:text-foreground")}
+      className={cn(
+        "group/sw relative flex h-[var(--subnav-height)] shrink-0 items-center px-1.5 transition-colors",
+        active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+      )}
     >
-      <span className={cn("flex items-center rounded-md px-1.5 py-1 transition-colors", active ? "bg-muted" : "group-hover/sw:bg-muted/60")}>
+      <span
+        className={cn(
+          "flex items-center rounded-md px-1.5 py-1 transition-colors",
+          active ? "bg-muted" : "group-hover/sw:bg-muted/60",
+        )}
+      >
         {glyph}
         <span
           className={cn(
-            "grid overflow-hidden whitespace-nowrap text-[13px] font-medium transition-[grid-template-columns,margin,opacity] duration-500 ease-[var(--ease-expo)]",
+            "grid overflow-hidden text-[13px] font-medium whitespace-nowrap transition-[grid-template-columns,margin,opacity] duration-500 ease-[var(--ease-expo)]",
             active
               ? "ml-2 grid-cols-[1fr] opacity-100"
               : "ml-0 grid-cols-[0fr] opacity-0 group-hover/sw:ml-2 group-hover/sw:grid-cols-[1fr] group-hover/sw:opacity-100 group-focus-visible/sw:ml-2 group-focus-visible/sw:grid-cols-[1fr] group-focus-visible/sw:opacity-100",
@@ -137,11 +177,18 @@ function SwitchItem({ href, label, count, active, glyph }: { href: string; label
         >
           <span className="min-w-0">
             {label}
-            {count !== undefined && <span className="tabular ml-1.5 font-mono text-[10.5px] text-muted-foreground">{count}</span>}
+            {count !== undefined && (
+              <span className="tabular ml-1.5 font-mono text-[10.5px] text-muted-foreground">{count}</span>
+            )}
           </span>
         </span>
       </span>
-      <span className={cn("absolute inset-x-2 bottom-0 h-px bg-foreground transition-transform duration-300 ease-[var(--ease-expo)]", active ? "scale-x-100" : "scale-x-0")} />
+      <span
+        className={cn(
+          "absolute inset-x-2 bottom-0 h-px bg-foreground transition-transform duration-300 ease-[var(--ease-expo)]",
+          active ? "scale-x-100" : "scale-x-0",
+        )}
+      />
     </Link>
   );
 }

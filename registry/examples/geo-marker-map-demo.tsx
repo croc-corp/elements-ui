@@ -63,7 +63,9 @@ export default function GeoMarkerMapDemo() {
           <div className="text-[12px] leading-4 text-muted-foreground">Per minute, by location</div>
         </div>
         <div className="flex items-baseline gap-2 text-right" aria-live="polite">
-          <span className="truncate text-[12px] text-muted-foreground">{current ? current.label : "All locations"}</span>
+          <span className="truncate text-[12px] text-muted-foreground">
+            {current ? current.label : "All locations"}
+          </span>
           <RollText
             text={formatNumber(shown)}
             direction={readout.direction}
@@ -71,7 +73,14 @@ export default function GeoMarkerMapDemo() {
           />
         </div>
       </div>
-      <GeoMarkerMap markers={markers} grid={grid} value={selected} onValueChange={setSelected} format={formatCompact} label="Requests per minute by edge location" />
+      <GeoMarkerMap
+        markers={markers}
+        grid={grid}
+        value={selected}
+        onValueChange={setSelected}
+        format={formatCompact}
+        label="Requests per minute by edge location"
+      />
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
         <button type="button" onClick={shuffle} className={BUTTON}>
           Shuffle values

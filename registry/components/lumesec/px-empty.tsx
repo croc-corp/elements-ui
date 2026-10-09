@@ -25,10 +25,62 @@ export interface PxEmptyProps extends React.ComponentProps<"div"> {
 
 /** 16x12 illustrations: `#` is a pixel, `*` a highlighted pixel. */
 const EMPTY_ART: Record<PxEmptyKind, readonly string[]> = {
-  inbox: ["................", "..############..", "..#..........#..", "..#..........#..", "..#..........#..", ".##..........##.", ".#.####..####.#.", ".#....#..#....#.", ".#....####....#.", ".#............#.", ".##############.", "................"],
-  search: ["....######......", "...#......#.....", "..#..**....#....", "..#.*......#....", "..#........#....", "..#........#....", "...#......#.....", "....######......", "..........##....", "...........##...", "............##..", ".............#.."],
-  error: [".......##.......", "......#..#......", "......#..#......", ".....#....#.....", ".....#.**.#.....", "....#..**..#....", "....#..**..#....", "...#...**...#...", "...#........#...", "..#....**....#..", ".#.....**.....#.", "################"],
-  done: [".....######.....", "...##......##...", "..#..........#..", ".#.........**.#.", ".#........**..#.", "#........**....#", "#..**...**.....#", "#...**.**......#", ".#...***......#.", ".#....*.......#.", "..#..........#..", "...##......##..."],
+  inbox: [
+    "................",
+    "..############..",
+    "..#..........#..",
+    "..#..........#..",
+    "..#..........#..",
+    ".##..........##.",
+    ".#.####..####.#.",
+    ".#....#..#....#.",
+    ".#....####....#.",
+    ".#............#.",
+    ".##############.",
+    "................",
+  ],
+  search: [
+    "....######......",
+    "...#......#.....",
+    "..#..**....#....",
+    "..#.*......#....",
+    "..#........#....",
+    "..#........#....",
+    "...#......#.....",
+    "....######......",
+    "..........##....",
+    "...........##...",
+    "............##..",
+    ".............#..",
+  ],
+  error: [
+    ".......##.......",
+    "......#..#......",
+    "......#..#......",
+    ".....#....#.....",
+    ".....#.**.#.....",
+    "....#..**..#....",
+    "....#..**..#....",
+    "...#...**...#...",
+    "...#........#...",
+    "..#....**....#..",
+    ".#.....**.....#.",
+    "################",
+  ],
+  done: [
+    ".....######.....",
+    "...##......##...",
+    "..#..........#..",
+    ".#.........**.#.",
+    ".#........**..#.",
+    "#........**....#",
+    "#..**...**.....#",
+    "#...**.**......#",
+    ".#...***......#.",
+    ".#....*.......#.",
+    "..#..........#..",
+    "...##......##...",
+  ],
 };
 
 const DEFAULT_HEADINGS: Record<PxEmptyKind, string> = {
@@ -106,7 +158,11 @@ export function PxEmpty({ kind = "inbox", heading, description, children, classN
     if (!reduced && time - lastSpark.current > 1.4) {
       lastSpark.current = time;
       const source = pixels.current[Math.floor(Math.random() * pixels.current.length)];
-      if (source) sparksRef.current.add(source.x + 3, source.y + 3, 5, [palette.shine, color], { speed: [20, 60], life: [0.4, 0.8] });
+      if (source)
+        sparksRef.current.add(source.x + 3, source.y + 3, 5, [palette.shine, color], {
+          speed: [20, 60],
+          life: [0.4, 0.8],
+        });
     }
     sparksRef.current.step(context, delta);
     return !reduced;
@@ -125,9 +181,15 @@ export function PxEmpty({ kind = "inbox", heading, description, children, classN
       className={cn("grid justify-items-center gap-1.5 py-2 text-center text-foreground", className)}
       {...props}
     >
-      <canvas ref={canvasRef} aria-hidden="true" className="mb-1.5 block h-[112px] w-[144px] [image-rendering:pixelated]" />
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        className="mb-1.5 block h-[112px] w-[144px] [image-rendering:pixelated]"
+      />
       <h3 className="m-0 text-[15px] leading-[1.5] font-semibold">{heading ?? DEFAULT_HEADINGS[art]}</h3>
-      <p className="m-0 max-w-[32ch] text-[13px] leading-[1.5] text-muted-foreground">{description ?? DEFAULT_DESCRIPTIONS[art]}</p>
+      <p className="m-0 max-w-[32ch] text-[13px] leading-[1.5] text-muted-foreground">
+        {description ?? DEFAULT_DESCRIPTIONS[art]}
+      </p>
       {children != null && <div className="mt-2.5 flex flex-wrap justify-center gap-2">{children}</div>}
     </div>
   );

@@ -154,7 +154,10 @@ const MARKER_SIZE = 24;
 /** Zoomed in, the globe and its markers fade out over this many px at the stage edge. */
 const EDGE_FADE = 20;
 const EDGE_MASK = ["bottom", "right"]
-  .map((side) => `linear-gradient(to ${side}, transparent, #000 ${EDGE_FADE}px, #000 calc(100% - ${EDGE_FADE}px), transparent)`)
+  .map(
+    (side) =>
+      `linear-gradient(to ${side}, transparent, #000 ${EDGE_FADE}px, #000 calc(100% - ${EDGE_FADE}px), transparent)`,
+  )
   .join(", ");
 const MARKER_HIDE_Z = 0.12;
 const AUTO_ROTATE_SPEED = 6;
@@ -255,7 +258,11 @@ export function GeoGlobe({
   const reducedMotion = useReducedMotion();
   const hintId = React.useId();
 
-  const centerLat = clamp(Number.isFinite(defaultCenter.lat) ? defaultCenter.lat : DEFAULT_CENTER.lat, -LAT_LIMIT, LAT_LIMIT);
+  const centerLat = clamp(
+    Number.isFinite(defaultCenter.lat) ? defaultCenter.lat : DEFAULT_CENTER.lat,
+    -LAT_LIMIT,
+    LAT_LIMIT,
+  );
   const centerLon = wrapLongitude(Number.isFinite(defaultCenter.lon) ? defaultCenter.lon : DEFAULT_CENTER.lon);
 
   const [stats, setStats] = React.useState<StatsMap>(EMPTY_STATS);
@@ -278,8 +285,14 @@ export function GeoGlobe({
   const tabStop = known(tabStopId) ?? selectedPlace?.id ?? places[0]?.id ?? null;
 
   // Server markup: markers placed from the starting view, in container units, until the loop takes over.
-  const serverMarkers = React.useMemo(() => serverMarkerStyles(places, centerLon, centerLat), [places, centerLon, centerLat]);
-  const graticule = React.useMemo(() => graticuleSvgPath({ size: 200, centerLon, centerLat, step: 30 }), [centerLon, centerLat]);
+  const serverMarkers = React.useMemo(
+    () => serverMarkerStyles(places, centerLon, centerLat),
+    [places, centerLon, centerLat],
+  );
+  const graticule = React.useMemo(
+    () => graticuleSvgPath({ size: 200, centerLon, centerLat, step: 30 }),
+    [centerLon, centerLat],
+  );
 
   const rootRef = React.useRef<HTMLDivElement>(null);
   const stageRef = React.useRef<HTMLDivElement>(null);
@@ -360,7 +373,10 @@ export function GeoGlobe({
     [motionRef, runtimeRef, loop],
   );
 
-  React.useImperativeHandle(ref, () => ({ push: (connection) => play([connection]), flyTo: flyToTarget }), [play, flyToTarget]);
+  React.useImperativeHandle(ref, () => ({ push: (connection) => play([connection]), flyTo: flyToTarget }), [
+    play,
+    flyToTarget,
+  ]);
 
   // Your connections: every id that has not played yet plays now.
   React.useEffect(() => {
@@ -409,7 +425,8 @@ export function GeoGlobe({
   const selectedLat = selectedPlace?.lat;
   const selectedLon = selectedPlace?.lon;
   React.useEffect(() => {
-    if (selectedLat !== undefined && selectedLon !== undefined) flyTo(motionRef.current, { lat: selectedLat, lon: selectedLon });
+    if (selectedLat !== undefined && selectedLon !== undefined)
+      flyTo(motionRef.current, { lat: selectedLat, lon: selectedLon });
     loop.kick();
   }, [selectedLat, selectedLon, selected, motionRef, loop]);
 
@@ -495,7 +512,14 @@ export function GeoGlobe({
     ensureLattice(run, PITCH[density] ?? PITCH.regular, () => loop.kick());
 
     const { selected: selection } = latest.current;
-    const springing = advanceArcs(run, selection, delta, reduced, (arc) => arrive(arc, reduced), (arc) => depart(arc));
+    const springing = advanceArcs(
+      run,
+      selection,
+      delta,
+      reduced,
+      (arc) => arrive(arc, reduced),
+      (arc) => depart(arc),
+    );
     advanceRipples(run, delta);
 
     if (run.globeDirty || run.ripples.length) {
@@ -520,7 +544,15 @@ export function GeoGlobe({
       setStats((previous) => applyStats(previous, events));
     }
 
-    return moving || springing || run.arcs.length > 0 || run.ripples.length > 0 || run.glows.length > 0 || run.sparks.active || run.fxDirty;
+    return (
+      moving ||
+      springing ||
+      run.arcs.length > 0 ||
+      run.ripples.length > 0 ||
+      run.glows.length > 0 ||
+      run.sparks.active ||
+      run.fxDirty
+    );
   }
 
   function depart(arc: Arc) {
@@ -568,7 +600,8 @@ export function GeoGlobe({
       const y = point.y - MARKER_SIZE / 2;
       // zoomed in, markers fade out at the stage edge with the globe instead of floating past it
       const edge = Math.min(point.x, run.width - point.x, point.y, run.height - point.y);
-      const opacity = smoothstep(MARKER_HIDE_Z, MARKER_HIDE_Z + 0.12, point.z) * smoothstep(EDGE_FADE * 0.25, EDGE_FADE, edge);
+      const opacity =
+        smoothstep(MARKER_HIDE_Z, MARKER_HIDE_Z + 0.12, point.z) * smoothstep(EDGE_FADE * 0.25, EDGE_FADE, edge);
       const last = run.markers.get(place.id);
       const unchanged = last?.element === button && Math.abs(last.x - x) < 0.01 && Math.abs(last.y - y) < 0.01;
       if (unchanged && Math.abs(last.opacity - opacity) < 0.005) continue;
@@ -695,14 +728,26 @@ export function GeoGlobe({
           viewBox="0 0 200 200"
           className="pointer-events-none absolute top-1/2 left-1/2 size-[calc(var(--globe-r)*2)] -translate-x-1/2 -translate-y-1/2 overflow-visible transition-opacity duration-300 motion-reduce:transition-none"
         >
-          <circle cx="100" cy="100" r="100" className="fill-card stroke-border" strokeWidth={1} vectorEffect="non-scaling-stroke" />
+          <circle
+            cx="100"
+            cy="100"
+            r="100"
+            className="fill-card stroke-border"
+            strokeWidth={1}
+            vectorEffect="non-scaling-stroke"
+          />
           <path d={graticule} fill="none" className="stroke-border" strokeWidth={1} vectorEffect="non-scaling-stroke" />
         </svg>
         <canvas
           ref={globeRef}
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 block size-full"
-          style={{ maskImage: EDGE_MASK, WebkitMaskImage: EDGE_MASK, maskComposite: "intersect", WebkitMaskComposite: "source-in" }}
+          style={{
+            maskImage: EDGE_MASK,
+            WebkitMaskImage: EDGE_MASK,
+            maskComposite: "intersect",
+            WebkitMaskComposite: "source-in",
+          }}
         />
         <div
           ref={surfaceRef}
@@ -741,7 +786,7 @@ export function GeoGlobe({
                 onKeyDown={(event) => handleMarkerKeyDown(event, index)}
                 onPointerEnter={() => setHoverId(place.id)}
                 onPointerLeave={() => setHoverId((current) => (current === place.id ? null : current))}
-                className="group/marker pointer-events-auto absolute top-0 left-0 grid size-6 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 outline-none [-webkit-tap-highlight-color:transparent] focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+                className="group/marker pointer-events-auto absolute top-0 left-0 grid size-6 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 outline-none [-webkit-tap-highlight-color:transparent] focus-visible:outline-2 focus-visible:outline-lumesec focus-visible:outline-solid"
                 style={serverMarkers.get(place.id)}
               >
                 <span
@@ -990,10 +1035,13 @@ function createRuntime(): Runtime {
 
 /* Data ---------------------------------------------------------------------------------------------------- */
 
-const isTone = (tone: unknown): tone is GlobeTone => typeof tone === "string" && (TONES as readonly string[]).includes(tone);
+const isTone = (tone: unknown): tone is GlobeTone =>
+  typeof tone === "string" && (TONES as readonly string[]).includes(tone);
 
 function isConnection(value: GlobeConnection | null | undefined): value is GlobeConnection {
-  return Boolean(value) && typeof value?.id === "string" && typeof value.from === "string" && typeof value.to === "string";
+  return (
+    Boolean(value) && typeof value?.id === "string" && typeof value.from === "string" && typeof value.to === "string"
+  );
 }
 
 /** Valid, unique locations with wrapped longitudes. Invalid entries are skipped. */
@@ -1004,7 +1052,12 @@ function normalizeLocations(list: readonly GlobeLocation[]): GlobeLocation[] {
     if (!place || typeof place.id !== "string" || seen.has(place.id)) continue;
     if (!isValidLatLon(place)) continue;
     seen.add(place.id);
-    result.push({ id: place.id, label: String(place.label ?? place.id), lat: place.lat, lon: wrapLongitude(place.lon) });
+    result.push({
+      id: place.id,
+      label: String(place.label ?? place.id),
+      lat: place.lat,
+      lon: wrapLongitude(place.lon),
+    });
   }
   return result;
 }
@@ -1139,7 +1192,13 @@ function arrivalReport(arrivals: readonly string[], placeById: ReadonlyMap<strin
 /* Frame steps --------------------------------------------------------------------------------------------- */
 
 function byTone<T>(make: (tone: GlobeTone) => T): Record<GlobeTone, T> {
-  return { accent: make("accent"), info: make("info"), success: make("success"), warning: make("warning"), destructive: make("destructive") };
+  return {
+    accent: make("accent"),
+    info: make("info"),
+    success: make("success"),
+    warning: make("warning"),
+    destructive: make("destructive"),
+  };
 }
 
 /** Colours for a theme. The hottest shade is the glint in dark themes and the deep shine in light ones. */
@@ -1159,7 +1218,14 @@ function applyInk(run: Runtime, ink: GeoInk) {
 function updateView(run: Runtime, motion: GlobeMotion, width: number, height: number) {
   const radius = Math.min(width, height) * RADIUS_SHARE * motion.zoom;
   const view = run.view;
-  if (motion.lon === run.lastLon && motion.lat === run.lastLat && radius === view.radius && width === run.width && height === run.height) return;
+  if (
+    motion.lon === run.lastLon &&
+    motion.lat === run.lastLat &&
+    radius === view.radius &&
+    width === run.width &&
+    height === run.height
+  )
+    return;
   rotationFromView(motion.lon, motion.lat, view.rotation);
   view.cx = width / 2;
   view.cy = height / 2;
@@ -1439,7 +1505,8 @@ function drawArc(run: Runtime, arc: Arc) {
     pointAtDistance(table, s, run.packet);
     const depth = zs[segment] < 0 ? 0.55 : 1;
     if (k === 0) batch.add(run.packet.x, run.packet.y, 2.5, 1, packet * depth);
-    else batch.add(run.packet.x, run.packet.y, k < 3 ? 2 : 1.5, 0.85 - k * 0.08, (0.9 - (k - 1) * 0.1) * packet * depth);
+    else
+      batch.add(run.packet.x, run.packet.y, k < 3 ? 2 : 1.5, 0.85 - k * 0.08, (0.9 - (k - 1) * 0.1) * packet * depth);
   }
 }
 

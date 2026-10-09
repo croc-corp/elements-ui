@@ -20,10 +20,5 @@ export interface PxMetronomeProps extends Omit<LumesecElementProps<PxMetronomeEl
  * @see https://elements.lumesec.ai/components/pixel-lab/metronome
  */
 export function PxMetronome({ bpm, onChange, ...props }: PxMetronomeProps) {
-  return useLumesecElement(
-    "px-metronome",
-    props,
-    { "bpm": bpm },
-    { "change": onChange },
-  );
+  return useLumesecElement("px-metronome", props, { bpm: bpm }, { change: onChange });
 }

@@ -20,10 +20,5 @@ export interface PxUptimeProps extends Omit<LumesecElementProps<PxUptimeElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/uptime
  */
 export function PxUptime({ data, ...props }: PxUptimeProps) {
-  return useLumesecElement(
-    "px-uptime",
-    props,
-    { "data": data },
-    {},
-  );
+  return useLumesecElement("px-uptime", props, { data: data }, {});
 }

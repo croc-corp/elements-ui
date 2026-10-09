@@ -90,7 +90,11 @@ export function PxTabs({ items, value: valueProp, defaultValue, onValueChange, c
     if (frame.width !== laidOutWidth.current) {
       // a new size snaps the line under the current tab
       laidOutWidth.current = frame.width;
-      dots.current = Array.from({ length: DOTS }, (_, k) => ({ position: lerp(a, b, k / (DOTS - 1)), velocity: 0, start: 0 }));
+      dots.current = Array.from({ length: DOTS }, (_, k) => ({
+        position: lerp(a, b, k / (DOTS - 1)),
+        velocity: 0,
+        start: 0,
+      }));
     }
     const reduced = prefersReducedMotion();
     let moving = false;
@@ -114,10 +118,16 @@ export function PxTabs({ items, value: valueProp, defaultValue, onValueChange, c
     if (previous === index) return;
     const panel = panelRefs.current[index];
     if (panel && !prefersReducedMotion() && typeof panel.animate === "function") {
-      panel.animate([{ opacity: 0, transform: `translateX(${index > previous ? 10 : -10}px)` }, { opacity: 1, transform: "none" }], {
-        duration: 260,
-        easing: "cubic-bezier(.2,.8,.2,1)",
-      });
+      panel.animate(
+        [
+          { opacity: 0, transform: `translateX(${index > previous ? 10 : -10}px)` },
+          { opacity: 1, transform: "none" },
+        ],
+        {
+          duration: 260,
+          easing: "cubic-bezier(.2,.8,.2,1)",
+        },
+      );
     }
     // the dots leave one after another, starting with the ones nearest the new tab
     const now = performance.now() / 1000;
@@ -137,7 +147,12 @@ export function PxTabs({ items, value: valueProp, defaultValue, onValueChange, c
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     const n = items.length;
-    const keys: Record<string, number> = { ArrowRight: (index + 1) % n, ArrowLeft: (index - 1 + n) % n, Home: 0, End: n - 1 };
+    const keys: Record<string, number> = {
+      ArrowRight: (index + 1) % n,
+      ArrowLeft: (index - 1 + n) % n,
+      Home: 0,
+      End: n - 1,
+    };
     const next = keys[event.key];
     if (next === undefined) return;
     event.preventDefault();
@@ -152,7 +167,7 @@ export function PxTabs({ items, value: valueProp, defaultValue, onValueChange, c
         role="tablist"
         // the underline follows the tabs when a narrow tab row scrolls sideways
         onScroll={redraw}
-        className="flex gap-0.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex [scrollbar-width:none] gap-0.5 overflow-x-auto [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item, i) => (
           <button
@@ -166,13 +181,15 @@ export function PxTabs({ items, value: valueProp, defaultValue, onValueChange, c
             aria-selected={i === index}
             aria-controls={`${baseId}-panel-${i}`}
             tabIndex={i === index ? 0 : -1}
-            className="cursor-pointer select-none whitespace-nowrap rounded-t-lg border-0 bg-transparent px-3 py-2 text-[14px] leading-normal font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec aria-selected:text-foreground"
+            className="cursor-pointer rounded-t-lg border-0 bg-transparent px-3 py-2 text-[14px] leading-normal font-medium whitespace-nowrap text-muted-foreground outline-none select-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid aria-selected:text-foreground"
             onClick={() => select(i)}
             onKeyDown={onKeyDown}
           >
             {item.label}
             {item.count !== undefined && (
-              <span className="ml-1.5 rounded-[5px] bg-foreground/8 px-[5px] py-px font-mono text-[11px]">{item.count}</span>
+              <span className="ml-1.5 rounded-[5px] bg-foreground/8 px-[5px] py-px font-mono text-[11px]">
+                {item.count}
+              </span>
             )}
           </button>
         ))}

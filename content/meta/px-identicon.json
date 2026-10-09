@@ -2,7 +2,11 @@
   "summary": "Symmetric 7x7 pixel avatar generated from a typed name; changed cells flip in a ring spreading from the centre as the hue drifts.",
   "attributes": [],
   "events": [
-    { "name": "change", "detail": "{ name: string, hash: number }", "description": "Fires on every edit of the name field and on Shuffle. `name` is the trimmed input (`?` when empty); `hash` is the unsigned 32-bit hash of its lower-cased form." }
+    {
+      "name": "change",
+      "detail": "{ name: string, hash: number }",
+      "description": "Fires on every edit of the name field and on Shuffle. `name` is the trimmed input (`?` when empty); `hash` is the unsigned 32-bit hash of its lower-cased form."
+    }
   ],
   "methods": [],
   "properties": [],

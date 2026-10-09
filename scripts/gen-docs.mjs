@@ -47,7 +47,9 @@ function tokenMap(engine) {
   const map = {};
   const source = readFileSync(join(ROOT, `registry/lib/lumesec/${engine}.ts`), "utf8");
   for (const m of source.matchAll(/(--_[a-z0-9-]+)\s*:\s*var\((--ui-[a-z0-9-]+),\s*([^;]+);/g)) {
-    const theme = [...m[3].matchAll(/var\((--(?!ui-|_)[a-z0-9-]+)/g)].map((x) => x[1]).filter((t) => !t.startsWith("--font"));
+    const theme = [...m[3].matchAll(/var\((--(?!ui-|_)[a-z0-9-]+)/g)]
+      .map((x) => x[1])
+      .filter((t) => !t.startsWith("--font"));
     map[m[1]] = { override: m[2], theme };
   }
   return map;
@@ -56,7 +58,8 @@ function tokenMap(engine) {
 const tokenMaps = Object.fromEntries([...ENGINES].map((engine) => [engine, tokenMap(engine)]));
 
 /** The engine a custom element runs on: the engine module among its install files. */
-const engineOf = (el) => [...ENGINES].find((engine) => el.files.some((f) => f.source === `registry/lib/lumesec/${engine}.ts`));
+const engineOf = (el) =>
+  [...ENGINES].find((engine) => el.files.some((f) => f.source === `registry/lib/lumesec/${engine}.ts`));
 
 function elementTokens(el) {
   const map = tokenMaps[engineOf(el)];
@@ -64,7 +67,8 @@ function elementTokens(el) {
   const src = readFileSync(join(ROOT, `registry/components/lumesec/${el.tag}.element.ts`), "utf8");
   const used = new Set(src.match(/--_[a-z0-9-]+/g) ?? []);
   // canvas palettes read the accent and foreground through the engine's palette
-  if (/this\.P\b|\bP\.(accent|ac|fg|muted)\b|\bpalette\b/.test(src)) ["--_accent", "--_ac", "--_fg"].forEach((t) => used.add(t));
+  if (/this\.P\b|\bP\.(accent|ac|fg|muted)\b|\bpalette\b/.test(src))
+    ["--_accent", "--_ac", "--_fg"].forEach((t) => used.add(t));
   const theme = new Set();
   const overrides = new Set();
   for (const name of used) {
@@ -115,7 +119,14 @@ function notesSection(meta, push) {
 
 function reactPage(el, meta, push) {
   if (meta?.playground?.controls?.length) {
-    push("## Playground", "", "Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.", "", `<Playground tag="${el.tag}" />`, "");
+    push(
+      "## Playground",
+      "",
+      "Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.",
+      "",
+      `<Playground tag="${el.tag}" />`,
+      "",
+    );
   }
   push("## Installation", "", `<Install tag="${el.tag}" />`, "");
   push("## Usage", "", `<Usage tag="${el.tag}" />`, "");
@@ -127,15 +138,27 @@ function reactPage(el, meta, push) {
   if (props.length || meta?.ref || subs.length) push("## API reference", "");
   if (props.length) {
     push("### Props", "");
-    if (meta?.extends) push(`Also accepts every prop of ${code(`<${meta.extends}>`)} (${code(`React.ComponentProps<"${meta.extends}">`)}), spread onto the root element.`, "");
+    if (meta?.extends)
+      push(
+        `Also accepts every prop of ${code(`<${meta.extends}>`)} (${code(`React.ComponentProps<"${meta.extends}">`)}), spread onto the root element.`,
+        "",
+      );
     push("| Prop | Type | Default | Description |", "| --- | --- | --- | --- |");
-    for (const p of props) push(`| ${codeCell(p.name)} | ${codeCell(p.type ?? "unknown")} | ${p.default && p.default !== "-" ? codeCell(p.default) : "—"} | ${cell(p.description) || "—"} |`);
+    for (const p of props)
+      push(
+        `| ${codeCell(p.name)} | ${codeCell(p.type ?? "unknown")} | ${p.default && p.default !== "-" ? codeCell(p.default) : "—"} | ${cell(p.description) || "—"} |`,
+      );
     push("");
   }
   if (meta?.ref) {
     push("### Ref", "");
     if (methods.length) {
-      push(`${code("ref")} receives a ${code(meta.ref.type)} handle with these methods.`, "", "| Method | Description |", "| --- | --- |");
+      push(
+        `${code("ref")} receives a ${code(meta.ref.type)} handle with these methods.`,
+        "",
+        "| Method | Description |",
+        "| --- | --- |",
+      );
       for (const m of methods) push(`| ${codeCell(m.signature)} | ${cell(m.description) || "—"} |`);
       push("");
     } else {
@@ -153,7 +176,10 @@ function reactPage(el, meta, push) {
 
   const tokens = meta?.tokens ?? [];
   push("## Theming", "");
-  push(`Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from ${code("--lumesec")}. See [Theming](/docs/theming).`, "");
+  push(
+    `Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from ${code("--lumesec")}. See [Theming](/docs/theming).`,
+    "",
+  );
   if (tokens.length) push(`This component reads ${list(tokens.map(code))}.`, "");
   notesSection(meta, push);
 }
@@ -161,41 +187,87 @@ function reactPage(el, meta, push) {
 /* ---------------------------------------------------------------- custom element page */
 
 /** Attribute type for the table: JSON attributes show the record type they hold. */
-const attrType = (a) => (a.type === "json" && a.tsType ? `${a.tsType.replace(/ElementModule\./g, "")} (JSON)` : (a.type ?? "string"));
+const attrType = (a) =>
+  a.type === "json" && a.tsType ? `${a.tsType.replace(/ElementModule\./g, "")} (JSON)` : (a.type ?? "string");
 
 function elementPage(el, meta, push) {
-  if (meta?.attributes?.length) push("## Playground", "", "Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.", "", `<Playground tag="${el.tag}" />`, "");
+  if (meta?.attributes?.length)
+    push(
+      "## Playground",
+      "",
+      "Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.",
+      "",
+      `<Playground tag="${el.tag}" />`,
+      "",
+    );
   push("## Installation", "", `<Install tag="${el.tag}" />`, "");
   push("## Usage", "", `<Usage tag="${el.tag}" />`, "");
   behaviour(el, push);
 
   const attrs = meta?.attributes ?? el.attributes.map((a) => ({ name: a.name, type: a.type, description: "" }));
-  const events = meta?.events ?? el.events.map((e) => ({ name: e.name, detail: e.detail.length ? `{ ${e.detail.join(", ")} }` : "", description: "" }));
+  const events =
+    meta?.events ??
+    el.events.map((e) => ({
+      name: e.name,
+      detail: e.detail.length ? `{ ${e.detail.join(", ")} }` : "",
+      description: "",
+    }));
   const methods = meta?.methods ?? el.methods.map((m) => ({ signature: `${m}()`, description: "" }));
   const props = meta?.properties ?? [];
   const slots = meta?.slots ?? [];
 
   if (attrs.length || events.length || methods.length || props.length || slots.length) push("## API reference", "");
   if (attrs.length) {
-    const reactProp = (name) => el.attributes.find((a) => a.name === name)?.prop ?? name.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
-    push("### Attributes", "", "| Attribute | React prop | Type | Default | Description |", "| --- | --- | --- | --- | --- |");
-    for (const a of attrs) push(`| ${codeCell(a.name)} | ${codeCell(reactProp(a.name))} | ${codeCell(attrType(a))} | ${a.default !== undefined && a.default !== "" ? codeCell(a.default) : "—"} | ${cell(a.description) || "—"} |`);
+    const reactProp = (name) =>
+      el.attributes.find((a) => a.name === name)?.prop ?? name.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+    push(
+      "### Attributes",
+      "",
+      "| Attribute | React prop | Type | Default | Description |",
+      "| --- | --- | --- | --- | --- |",
+    );
+    for (const a of attrs)
+      push(
+        `| ${codeCell(a.name)} | ${codeCell(reactProp(a.name))} | ${codeCell(attrType(a))} | ${a.default !== undefined && a.default !== "" ? codeCell(a.default) : "—"} | ${cell(a.description) || "—"} |`,
+      );
     push("");
   }
   if (events.length) {
-    const reactEvent = (name) => el.events.find((e) => e.name === name)?.prop ?? "on" + name.replace(/(^|-)([a-z])/g, (_, __, c) => c.toUpperCase());
-    push("### Events", "", "Events bubble and cross the shadow boundary unless the description says otherwise.", "", "| Event | React prop | Detail | Description |", "| --- | --- | --- | --- |");
-    for (const e of events) push(`| ${codeCell(e.name)} | ${codeCell(reactEvent(e.name))} | ${e.detail ? codeCell(e.detail) : "—"} | ${cell(e.description) || "—"} |`);
+    const reactEvent = (name) =>
+      el.events.find((e) => e.name === name)?.prop ??
+      "on" + name.replace(/(^|-)([a-z])/g, (_, __, c) => c.toUpperCase());
+    push(
+      "### Events",
+      "",
+      "Events bubble and cross the shadow boundary unless the description says otherwise.",
+      "",
+      "| Event | React prop | Detail | Description |",
+      "| --- | --- | --- | --- |",
+    );
+    for (const e of events)
+      push(
+        `| ${codeCell(e.name)} | ${codeCell(reactEvent(e.name))} | ${e.detail ? codeCell(e.detail) : "—"} | ${cell(e.description) || "—"} |`,
+      );
     push("");
   }
   if (methods.length) {
-    push("### Methods", "", "Call them on the element, for example through a React ref.", "", "| Method | Description |", "| --- | --- |");
+    push(
+      "### Methods",
+      "",
+      "Call them on the element, for example through a React ref.",
+      "",
+      "| Method | Description |",
+      "| --- | --- |",
+    );
     for (const m of methods) push(`| ${codeCell(m.signature)} | ${cell(m.description) || "—"} |`);
     push("");
   }
   if (props.length) {
     push("### Properties", "", "| Property | Type | Description |", "| --- | --- | --- |");
-    for (const p of props) push(`| ${codeCell(p.name)}${p.readonly ? " (read-only)" : ""} | ${codeCell(p.type ?? "unknown")} | ${cell(p.description) || "—"} |`);
+    for (const p of props)
+      push(
+        `| ${codeCell(p.name)}${p.readonly ? " (read-only)" : ""} | ${codeCell(p.type ?? "unknown")} | ${cell(p.description) || "—"} |`,
+      );
     push("");
   }
   if (slots.length) {
@@ -209,9 +281,16 @@ function elementPage(el, meta, push) {
 
   const { theme, overrides } = elementTokens(el);
   push("## Theming", "");
-  push(`The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from ${code("--lumesec")}. See [Theming](/docs/theming).`, "");
+  push(
+    `The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from ${code("--lumesec")}. See [Theming](/docs/theming).`,
+    "",
+  );
   if (theme.length) push(`This component reads ${list(theme.map(code))}.`, "");
-  if (overrides.length) push(`To restyle only LumeSec elements, set the matching ${code("--ui-*")} overrides: ${list(overrides.map(code))}.`, "");
+  if (overrides.length)
+    push(
+      `To restyle only LumeSec elements, set the matching ${code("--ui-*")} overrides: ${list(overrides.map(code))}.`,
+      "",
+    );
   notesSection(meta, push);
 }
 
@@ -237,7 +316,15 @@ function dataCallout(meta, push) {
 function page(el, meta) {
   const lines = [];
   const push = (...l) => lines.push(...l);
-  push("---", `title: ${JSON.stringify(el.title)}`, `description: ${JSON.stringify(summaryOf(el, meta))}`, `tag: ${el.tag}`, `updated: "${el.added}"`, "---", "");
+  push(
+    "---",
+    `title: ${JSON.stringify(el.title)}`,
+    `description: ${JSON.stringify(summaryOf(el, meta))}`,
+    `tag: ${el.tag}`,
+    `updated: "${el.added}"`,
+    "---",
+    "",
+  );
   push(`<ComponentPreview tag="${el.tag}" />`, "");
   dataCallout(meta, push);
   if (el.kind === "react") reactPage(el, meta, push);
@@ -260,7 +347,10 @@ for (const c of collections) {
   const dir = join(ROOT, "content/components", c.slug);
   mkdirSync(dir, { recursive: true });
   const items = elements.filter((e) => e.collection === c.slug);
-  writeFileSync(join(dir, "meta.json"), JSON.stringify({ title: c.title, pages: items.map((e) => e.slug) }, null, 2) + "\n");
+  writeFileSync(
+    join(dir, "meta.json"),
+    JSON.stringify({ title: c.title, pages: items.map((e) => e.slug) }, null, 2) + "\n",
+  );
   for (const el of items) {
     const file = join(dir, `${el.slug}.mdx`);
     if (keep(file)) {

@@ -255,9 +255,7 @@ class Activity extends PxBase {
           const on = (s + order) % 9 < lit;
           const x = x0 + sx * 3.4 * scale - 1.3;
           const y = y0 + sy * 3.4 * scale * fold - 1.3 * fold;
-          const alpha = on
-            ? 0.45 + 0.13 * level + boost * 0.4 + (inCross ? 0.1 : 0)
-            : 0.08 + (inCross ? 0.06 : 0);
+          const alpha = on ? 0.45 + 0.13 * level + boost * 0.4 + (inCross ? 0.1 : 0) : 0.08 + (inCross ? 0.06 : 0);
           g.globalAlpha = clamp(alpha, 0, 1);
           g.fillStyle = css(on ? mix(P.accent, P.shine, Math.min(1, boost * 0.8 + (isHovered ? 0.3 : 0))) : P.fg);
           g.fillRect(x, y, 2.6, 2.6 * Math.max(0.1, fold));

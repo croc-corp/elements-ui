@@ -2,13 +2,25 @@
   "summary": "Pixel donut chart of storage use that sweeps in clockwise; pointing at a segment pushes its pixels outward and click pins it.",
   "attributes": [],
   "events": [
-    { "name": "select", "detail": "{ segment: string | null }", "description": "Fires when a segment is pinned or unpinned. `segment` is the category name, or `null` when the pin is cleared." }
+    {
+      "name": "select",
+      "detail": "{ segment: string | null }",
+      "description": "Fires when a segment is pinned or unpinned. `segment` is the category name, or `null` when the pin is cleared."
+    }
   ],
   "methods": [
-    { "signature": "lock(index: number | null)", "description": "Pins the segment at `index` (0 to 4), or unpins it if it is already pinned or `index` is `null`, and fires `select`. Other values are ignored." }
+    {
+      "signature": "lock(index: number | null)",
+      "description": "Pins the segment at `index` (0 to 4), or unpins it if it is already pinned or `index` is `null`, and fires `select`. Other values are ignored."
+    }
   ],
   "properties": [
-    { "name": "active", "type": "number | null", "readonly": true, "description": "Index of the pinned segment, else the hovered one, else `null`." }
+    {
+      "name": "active",
+      "type": "number | null",
+      "readonly": true,
+      "description": "Index of the pinned segment, else the hovered one, else `null`."
+    }
   ],
   "keyboard": [],
   "accessibility": [

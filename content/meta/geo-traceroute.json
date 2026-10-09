@@ -2,18 +2,78 @@
   "kind": "react",
   "summary": "A traceroute as a hop table and a dotted map; the packet waits at each hop for its share of the round-trip time, so slow hops are slow to watch.",
   "props": [
-    { "name": "hops", "type": "readonly TraceHop[]", "default": "11 demo hops", "description": "The hops in order: `{ address, name?, location?, lat?, lon?, rtt }`. `rtt` holds one round-trip time in ms per probe; a non-finite entry is a probe that timed out and an empty array a hop that did not answer. Hops with `lat` and `lon` are drawn on the map; `location` is the place name in the table. An empty array shows an empty table and map." },
-    { "name": "target", "type": "string", "default": "last answering hop", "description": "The destination shown in the header. Without it the header shows the name, else the address, of the last hop that answered. The demo shows `app.example.com`." },
-    { "name": "value", "type": "number | null", "default": "-", "description": "Index of the selected hop in `hops` (controlled), or null for none. Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "number | null", "default": "null", "description": "Selected hop when uncontrolled." },
-    { "name": "onValueChange", "type": "(value: number | null) => void", "default": "-", "description": "Called with the hop index when a row or a map marker is selected, and with null when the selection is cleared." },
-    { "name": "playing", "type": "boolean", "default": "-", "description": "Whether the playback runs (controlled). Use with `onPlayingChange`. Setting it to true after the end starts over from hop 1." },
-    { "name": "defaultPlaying", "type": "boolean", "default": "true", "description": "Whether the playback starts by itself when uncontrolled. It begins once the map is first on screen. With false the path is drawn complete." },
-    { "name": "onPlayingChange", "type": "(playing: boolean) => void", "default": "-", "description": "Called by Pause, Play and Replay, with false when the playback reaches the end, and with false when `hops` changes." },
-    { "name": "speed", "type": "number", "default": "1", "description": "Playback speed. At 1, each millisecond of round-trip time a hop adds is 10 ms of waiting at that hop." },
-    { "name": "jumpMs", "type": "number", "default": "40", "description": "Added round-trip time in ms above which a segment is drawn as a dashed long-haul jump with a chip such as `+42 ms` on it." },
-    { "name": "probes", "type": "number", "default": "3", "description": "Probes sent per hop: the number of marks in each row, 1 to 8. A row with more `rtt` entries shows one mark per entry." },
-    { "name": "onComplete", "type": "() => void", "default": "-", "description": "Called when the playback reaches the end of the trace." }
+    {
+      "name": "hops",
+      "type": "readonly TraceHop[]",
+      "default": "11 demo hops",
+      "description": "The hops in order: `{ address, name?, location?, lat?, lon?, rtt }`. `rtt` holds one round-trip time in ms per probe; a non-finite entry is a probe that timed out and an empty array a hop that did not answer. Hops with `lat` and `lon` are drawn on the map; `location` is the place name in the table. An empty array shows an empty table and map."
+    },
+    {
+      "name": "target",
+      "type": "string",
+      "default": "last answering hop",
+      "description": "The destination shown in the header. Without it the header shows the name, else the address, of the last hop that answered. The demo shows `app.example.com`."
+    },
+    {
+      "name": "value",
+      "type": "number | null",
+      "default": "-",
+      "description": "Index of the selected hop in `hops` (controlled), or null for none. Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "number | null",
+      "default": "null",
+      "description": "Selected hop when uncontrolled."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: number | null) => void",
+      "default": "-",
+      "description": "Called with the hop index when a row or a map marker is selected, and with null when the selection is cleared."
+    },
+    {
+      "name": "playing",
+      "type": "boolean",
+      "default": "-",
+      "description": "Whether the playback runs (controlled). Use with `onPlayingChange`. Setting it to true after the end starts over from hop 1."
+    },
+    {
+      "name": "defaultPlaying",
+      "type": "boolean",
+      "default": "true",
+      "description": "Whether the playback starts by itself when uncontrolled. It begins once the map is first on screen. With false the path is drawn complete."
+    },
+    {
+      "name": "onPlayingChange",
+      "type": "(playing: boolean) => void",
+      "default": "-",
+      "description": "Called by Pause, Play and Replay, with false when the playback reaches the end, and with false when `hops` changes."
+    },
+    {
+      "name": "speed",
+      "type": "number",
+      "default": "1",
+      "description": "Playback speed. At 1, each millisecond of round-trip time a hop adds is 10 ms of waiting at that hop."
+    },
+    {
+      "name": "jumpMs",
+      "type": "number",
+      "default": "40",
+      "description": "Added round-trip time in ms above which a segment is drawn as a dashed long-haul jump with a chip such as `+42 ms` on it."
+    },
+    {
+      "name": "probes",
+      "type": "number",
+      "default": "3",
+      "description": "Probes sent per hop: the number of marks in each row, 1 to 8. A row with more `rtt` entries shows one mark per entry."
+    },
+    {
+      "name": "onComplete",
+      "type": "() => void",
+      "default": "-",
+      "description": "Called when the playback reaches the end of the trace."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -22,7 +82,10 @@
     { "keys": "Tab", "action": "Moves to Replay, to Pause or Play, then to the hop rows, which share one tab stop." },
     { "keys": "ArrowUp / ArrowDown", "action": "Moves focus to the previous or next hop." },
     { "keys": "Home / End", "action": "Moves focus to the first or last hop." },
-    { "keys": "Enter / Space", "action": "Selects the focused hop, or clears the selection when it is already selected." },
+    {
+      "keys": "Enter / Space",
+      "action": "Selects the focused hop, or clears the selection when it is already selected."
+    },
     { "keys": "Escape", "action": "Clears the selection." }
   ],
   "accessibility": [
@@ -54,7 +117,16 @@
     "kind": "input",
     "note": "Pass your trace as `hops`. Without it the component shows an invented 11-hop demo trace from a home router through Frankfurt, Marseille and Mumbai to Singapore, with private and documentation-range addresses and example.net names."
   },
-  "tokens": ["--lumesec", "--lumesec-shine", "--lumesec-glint", "--foreground", "--muted-foreground", "--muted", "--card", "--border"],
+  "tokens": [
+    "--lumesec",
+    "--lumesec-shine",
+    "--lumesec-glint",
+    "--foreground",
+    "--muted-foreground",
+    "--muted",
+    "--card",
+    "--border"
+  ],
   "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { GeoTraceroute, type TraceHop } from \"@/components/lumesec/geo-traceroute\";\n\nconst hops: TraceHop[] = [\n  { address: \"192.168.1.1\", name: \"router.home.arpa\", rtt: [0.6, 0.5, 0.7] },\n  { address: \"203.0.113.14\", location: \"Frankfurt\", lat: 50.11, lon: 8.68, rtt: [8.4, 8.1, 9.0] },\n  { address: \"*\", rtt: [] },\n  { address: \"192.0.2.33\", location: \"Mumbai\", lat: 19.08, lon: 72.88, rtt: [110.4, 109.8, 111.2] },\n  { address: \"203.0.113.200\", name: \"app.example.com\", location: \"Singapore\", lat: 1.35, lon: 103.82, rtt: [162.4, 161.9, 163.0] },\n];\n\nexport function Example() {\n  const [hop, setHop] = React.useState<number | null>(null);\n  return <GeoTraceroute target=\"app.example.com\" hops={hops} value={hop} onValueChange={setHop} />;\n}\n",
   "playground": {
     "props": {},

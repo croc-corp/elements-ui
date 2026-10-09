@@ -17,10 +17,5 @@ export type PxTickerProps = LumesecElementProps<PxTickerElement>;
  * @see https://elements.lumesec.ai/components/pixel-lab/ticker
  */
 export function PxTicker({ ...props }: PxTickerProps) {
-  return useLumesecElement(
-    "px-ticker",
-    props,
-    {},
-    {},
-  );
+  return useLumesecElement("px-ticker", props, {}, {});
 }

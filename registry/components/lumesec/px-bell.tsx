@@ -24,10 +24,5 @@ export interface PxBellProps extends Omit<LumesecElementProps<PxBellElement>, "c
  * @see https://elements.lumesec.ai/components/pixel-lab/bell
  */
 export function PxBell({ count, onNotify, onRead, ...props }: PxBellProps) {
-  return useLumesecElement(
-    "px-bell",
-    props,
-    { "count": count },
-    { "notify": onNotify, "read": onRead },
-  );
+  return useLumesecElement("px-bell", props, { count: count }, { notify: onNotify, read: onRead });
 }

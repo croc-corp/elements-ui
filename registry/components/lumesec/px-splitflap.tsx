@@ -20,10 +20,5 @@ export interface PxSplitflapProps extends Omit<LumesecElementProps<PxSplitflapEl
  * @see https://elements.lumesec.ai/components/pixel-lab/splitflap
  */
 export function PxSplitflap({ messages, ...props }: PxSplitflapProps) {
-  return useLumesecElement(
-    "px-splitflap",
-    props,
-    { "messages": messages },
-    {},
-  );
+  return useLumesecElement("px-splitflap", props, { messages: messages }, {});
 }

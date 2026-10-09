@@ -463,7 +463,13 @@ export function GeoCatchment({
               preserveAspectRatio="none"
               className="absolute inset-0 size-full overflow-visible"
             >
-              <path d={layout.outline} fill="none" stroke="var(--border)" strokeWidth={1} vectorEffect="non-scaling-stroke" />
+              <path
+                d={layout.outline}
+                fill="none"
+                stroke="var(--border)"
+                strokeWidth={1}
+                vectorEffect="non-scaling-stroke"
+              />
             </svg>
             <canvas ref={dotsRef} aria-hidden="true" className="absolute inset-0 block size-full" />
             <canvas
@@ -496,7 +502,7 @@ export function GeoCatchment({
                     onPointerEnter={() => setHoverIndex(i)}
                     onPointerLeave={() => setHoverIndex(-1)}
                     className={cn(
-                      "group/marker absolute -mt-3 -ml-3 grid size-6 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 font-[inherit] outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-lumesec",
+                      "group/marker absolute -mt-3 -ml-3 grid size-6 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 font-[inherit] outline-none focus-visible:outline-2 focus-visible:outline-lumesec focus-visible:outline-solid",
                       selected && "z-[2]",
                     )}
                     style={{ left: point.left, top: point.top }}
@@ -545,7 +551,13 @@ export function GeoCatchment({
           </div>
           <div className="mt-auto grid gap-2.5 border-t border-border pt-2.5">
             <Readout reading={reading} unit={unit} animate={animate} />
-            <ShareStrip model={model} traffic={traffic} selected={selectedIndex} linked={linked} onHover={setHoverIndex} />
+            <ShareStrip
+              model={model}
+              traffic={traffic}
+              selected={selectedIndex}
+              linked={linked}
+              onHover={setHoverIndex}
+            />
           </div>
         </div>
         <div className="flex min-w-0 flex-col gap-1 border-t border-border pt-2.5 @min-[560px]:border-t-0 @min-[560px]:border-l @min-[560px]:pt-0 @min-[560px]:pl-3">
@@ -556,7 +568,10 @@ export function GeoCatchment({
               <span className="min-w-0 flex-1">No sites</span>
             ) : (
               <span className="min-w-0 flex-1 truncate">
-                Sites <span className="ml-0.5 font-mono tabular-nums">{model.activeCount}/{count}</span>
+                Sites{" "}
+                <span className="ml-0.5 font-mono tabular-nums">
+                  {model.activeCount}/{count}
+                </span>
               </span>
             )}
             <span aria-hidden="true" className="w-[30px] shrink-0 text-right">
@@ -634,7 +649,7 @@ function SiteSwitch({ checked, label, onToggle }: { checked: boolean; label: str
         event.stopPropagation();
         onToggle();
       }}
-      className="group/switch relative h-[14px] w-6 shrink-0 cursor-pointer rounded-full border-0 bg-foreground/15 p-0 outline-none transition-colors duration-200 before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-[''] hover:bg-foreground/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec aria-checked:bg-lumesec motion-reduce:transition-none"
+      className="group/switch relative h-[14px] w-6 shrink-0 cursor-pointer rounded-full border-0 bg-foreground/15 p-0 transition-colors duration-200 outline-none before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-[''] hover:bg-foreground/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid aria-checked:bg-lumesec motion-reduce:transition-none"
     >
       <span className="absolute top-[2px] left-[2px] size-[10px] rounded-full bg-white shadow-[0_1px_1.5px_rgb(0_0_0/0.3)] transition-transform duration-300 ease-[cubic-bezier(.3,1.45,.5,1)] group-aria-checked/switch:translate-x-[10px] motion-reduce:transition-none" />
     </button>
@@ -642,7 +657,17 @@ function SiteSwitch({ checked, label, onToggle }: { checked: boolean; label: str
 }
 
 /** A number that rolls up when its value grows and down when it shrinks. */
-function RollingNumber({ value, text, animate, className }: { value: number; text: string; animate: boolean; className?: string }) {
+function RollingNumber({
+  value,
+  text,
+  animate,
+  className,
+}: {
+  value: number;
+  text: string;
+  animate: boolean;
+  className?: string;
+}) {
   const [state, setState] = React.useState({ value, direction: 1 });
   if (!Object.is(state.value, value)) {
     setState({ value, direction: Number.isNaN(state.value) || Number.isNaN(value) || value >= state.value ? 1 : -1 });
@@ -677,7 +702,12 @@ function Readout({ reading, unit, animate }: { reading: Reading; unit: string; a
           />
           <span className="truncate">{reading.name}</span>
         </div>
-        <div className={cn("text-[11.5px] leading-4", reading.tone === "off" ? "text-destructive" : "text-muted-foreground")}>
+        <div
+          className={cn(
+            "text-[11.5px] leading-4",
+            reading.tone === "off" ? "text-destructive" : "text-muted-foreground",
+          )}
+        >
           {reading.status}
         </div>
       </div>
@@ -688,12 +718,29 @@ function Readout({ reading, unit, animate }: { reading: Reading; unit: string; a
   );
 }
 
-function Stat({ label, value, text, unit, animate }: { label: string; value: number; text: string; unit?: string; animate: boolean }) {
+function Stat({
+  label,
+  value,
+  text,
+  unit,
+  animate,
+}: {
+  label: string;
+  value: number;
+  text: string;
+  unit?: string;
+  animate: boolean;
+}) {
   return (
     <div className="grid gap-0.5">
       <span className="text-[11px] leading-4 text-muted-foreground">{label}</span>
       <span className="flex items-baseline gap-1 leading-5 whitespace-nowrap">
-        <RollingNumber value={value} text={text} animate={animate} className="font-mono text-[14px] font-medium tabular-nums" />
+        <RollingNumber
+          value={value}
+          text={text}
+          animate={animate}
+          className="font-mono text-[14px] font-medium tabular-nums"
+        />
         {unit ? <span className="text-[11.5px] text-muted-foreground">{unit}</span> : null}
       </span>
     </div>
@@ -931,7 +978,8 @@ function computeTraffic(model: SiteModel, clients: readonly CatchmentClient[], m
   return { requests, rtt, served, meanRtt: served > 0 ? total / served : Number.NaN, hasClients: clients.length > 0 };
 }
 
-const shareText = (requests: number, served: number) => (served > 0 ? `${Math.round((requests / served) * 100)}%` : MISSING);
+const shareText = (requests: number, served: number) =>
+  served > 0 ? `${Math.round((requests / served) * 100)}%` : MISSING;
 
 const rttText = (ms: number) => (Number.isFinite(ms) ? `~${formatMs(ms)}` : MISSING);
 
@@ -1218,7 +1266,11 @@ function neighboursOf(lattice: DotLattice): Neighbours {
 
 /** Projection and lattice for the canvas size; a new lattice gets a fresh assignment. */
 function layoutMap(state: Engine, surface: CanvasSurface) {
-  const projection = createProjection(state.kind, { width: surface.width, height: surface.height, latRange: LAT_RANGE });
+  const projection = createProjection(state.kind, {
+    width: surface.width,
+    height: surface.height,
+    latRange: LAT_RANGE,
+  });
   const lattice = mapLattice(projection, { pitch: state.pitch });
   state.projection = projection;
   state.dpr = surface.dpr;
@@ -1455,7 +1507,11 @@ function retarget(state: Engine, now: number, wasActive: Uint8Array, reduced: bo
       continue;
     }
     const dies = from >= 0 && model.active[from] === 0;
-    const holeAt = dies ? now + (dieAngle[i] / dieMax[from]) * DIE_SECONDS + jitter * 0.05 : from < 0 ? -Infinity : Infinity;
+    const holeAt = dies
+      ? now + (dieAngle[i] / dieMax[from]) * DIE_SECONDS + jitter * 0.05
+      : from < 0
+        ? -Infinity
+        : Infinity;
     let switchAt: number;
     if (target < 0) switchAt = dies ? holeAt : now;
     else if (wasActive[target] === 0) {

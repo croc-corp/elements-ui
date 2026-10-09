@@ -8,14 +8,34 @@ export const dynamic = "force-static";
 export function GET() {
   const entries: SearchEntry[] = [];
   for (const p of docsSource.getPages()) {
-    entries.push({ id: `page:${p.url}`, kind: "page", title: p.data.title, url: p.url, description: p.data.description });
+    entries.push({
+      id: `page:${p.url}`,
+      kind: "page",
+      title: p.data.title,
+      url: p.url,
+      description: p.data.description,
+    });
     for (const h of p.data.toc) {
       if (h.depth > 3 || typeof h.title !== "string") continue;
-      entries.push({ id: `heading:${p.url}${h.url}`, kind: "heading", title: h.title, url: `${p.url}${h.url}`, section: p.data.title });
+      entries.push({
+        id: `heading:${p.url}${h.url}`,
+        kind: "heading",
+        title: h.title,
+        url: `${p.url}${h.url}`,
+        section: p.data.title,
+      });
     }
   }
   for (const c of collections) {
-    entries.push({ id: `collection:${c.slug}`, kind: "collection", title: c.title, url: `/components/${c.slug}`, description: c.description, collection: c.slug, keywords: c.prefix });
+    entries.push({
+      id: `collection:${c.slug}`,
+      kind: "collection",
+      title: c.title,
+      url: `/components/${c.slug}`,
+      description: c.description,
+      collection: c.slug,
+      keywords: c.prefix,
+    });
   }
   for (const e of elements) {
     entries.push({

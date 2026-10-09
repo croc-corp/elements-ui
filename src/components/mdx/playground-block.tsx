@@ -15,7 +15,13 @@ export function PlaygroundBlock({ tag }: { tag: string }) {
   if (e.kind === "react") {
     return (
       <div className="my-6">
-        <ReactPlayground tag={tag} component={e.component} controls={e.controls} baseProps={e.playgroundProps} layout={layout} />
+        <ReactPlayground
+          tag={tag}
+          component={e.component}
+          controls={e.controls}
+          baseProps={e.playgroundProps}
+          layout={layout}
+        />
       </div>
     );
   }
@@ -25,7 +31,15 @@ export function PlaygroundBlock({ tag }: { tag: string }) {
   const inner = node?.innerHTML.trim() ?? "";
   return (
     <div className="my-6">
-      <Playground tag={tag} component={e.component} controls={e.controls} observed={e.observed ?? []} initial={initial} inner={inner} layout={layout} />
+      <Playground
+        tag={tag}
+        component={e.component}
+        controls={e.controls}
+        observed={e.observed ?? []}
+        initial={initial}
+        inner={inner}
+        layout={layout}
+      />
     </div>
   );
 }

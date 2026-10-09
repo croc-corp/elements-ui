@@ -12,13 +12,17 @@ function textOf(node: React.ReactNode): string {
 }
 
 const childrenOf = (node: React.ReactNode) =>
-  React.Children.toArray(React.isValidElement<{ children?: React.ReactNode }>(node) ? node.props.children : null).filter(React.isValidElement) as React.ReactElement<{
+  React.Children.toArray(
+    React.isValidElement<{ children?: React.ReactNode }>(node) ? node.props.children : null,
+  ).filter(React.isValidElement) as React.ReactElement<{
     children?: React.ReactNode;
   }>[];
 
 /** Rows of a Markdown table as cell lists: [header, ...body]. */
 function rowsOf(table: React.ReactNode): { head: Cell[]; body: Cell[][] } | null {
-  const sections = React.Children.toArray(table).filter(React.isValidElement) as React.ReactElement<{ children?: React.ReactNode }>[];
+  const sections = React.Children.toArray(table).filter(React.isValidElement) as React.ReactElement<{
+    children?: React.ReactNode;
+  }>[];
   const thead = sections.find((s) => s.type === "thead");
   const tbody = sections.find((s) => s.type === "tbody");
   if (!thead || !tbody) return null;
@@ -48,7 +52,10 @@ export function ApiTable({ children }: { children: React.ReactNode }) {
     <div className="not-prose my-6 divide-y divide-line border-y border-border">
       {rows.body.map((cells, i) => {
         const name = cells[0];
-        const facts = cells.slice(1, -1).map((c, j) => ({ label: labels[j + 1], cell: c })).filter((f) => !isEmpty(f.cell));
+        const facts = cells
+          .slice(1, -1)
+          .map((c, j) => ({ label: labels[j + 1], cell: c }))
+          .filter((f) => !isEmpty(f.cell));
         const description = cells.at(-1);
         return (
           <div key={i} className="grid gap-2 py-4">

@@ -1,15 +1,31 @@
 {
   "summary": "Pixel notification bell that swings with a lagging clapper and pops its badge on new items; clicking it clears the badge in a spray of pixels.",
   "attributes": [
-    { "name": "count", "type": "number", "default": "2", "description": "Unread count, rounded to a whole number of at least 0. Changing it updates the count without ringing the bell." }
+    {
+      "name": "count",
+      "type": "number",
+      "default": "2",
+      "description": "Unread count, rounded to a whole number of at least 0. Changing it updates the count without ringing the bell."
+    }
   ],
   "events": [
-    { "name": "notify", "detail": "{ unread: number }", "description": "Fires on each new notification with the new unread count." },
-    { "name": "read", "detail": "{}", "description": "Fires when everything is marked as read, from a click on the bell or from `clearAll()`." }
+    {
+      "name": "notify",
+      "detail": "{ unread: number }",
+      "description": "Fires on each new notification with the new unread count."
+    },
+    {
+      "name": "read",
+      "detail": "{}",
+      "description": "Fires when everything is marked as read, from a click on the bell or from `clearAll()`."
+    }
   ],
   "methods": [
     { "signature": "notify()", "description": "Adds one unread notification, rings the bell and fires `notify`." },
-    { "signature": "clearAll()", "description": "Marks everything as read and fires `read`. Does nothing when the count is already zero." }
+    {
+      "signature": "clearAll()",
+      "description": "Marks everything as read and fires `read`. Does nothing when the count is already zero."
+    }
   ],
   "properties": [],
   "keyboard": [],

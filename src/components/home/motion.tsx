@@ -5,12 +5,23 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /** Adds data-shown to every .reveal inside once it enters the viewport. */
-export function Reveal({ children, className, as: Tag = "div", ...rest }: { children: React.ReactNode; className?: string; as?: "div" | "section" | "article" } & React.HTMLAttributes<HTMLElement>) {
+export function Reveal({
+  children,
+  className,
+  as: Tag = "div",
+  ...rest
+}: {
+  children: React.ReactNode;
+  className?: string;
+  as?: "div" | "section" | "article";
+} & React.HTMLAttributes<HTMLElement>) {
   // a callback ref, so one ref type fits every `as` element
   const [root, setRoot] = React.useState<HTMLElement | null>(null);
   React.useEffect(() => {
     if (!root) return;
-    const targets = [root, ...root.querySelectorAll<HTMLElement>(".reveal")].filter((el) => el.classList.contains("reveal"));
+    const targets = [root, ...root.querySelectorAll<HTMLElement>(".reveal")].filter((el) =>
+      el.classList.contains("reveal"),
+    );
     if (!targets.length) return;
     const io = new IntersectionObserver(
       (es) => {
@@ -42,7 +53,11 @@ function subscribeReducedMotion(onChange: () => void) {
 
 /** Whether the user asked for reduced motion; false on the server and until hydrated. */
 export function usePrefersReducedMotion() {
-  return React.useSyncExternalStore(subscribeReducedMotion, () => matchMedia(REDUCED_MOTION).matches, () => false);
+  return React.useSyncExternalStore(
+    subscribeReducedMotion,
+    () => matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
 }
 
 /**
@@ -96,7 +111,10 @@ export function Spotlight({ children, className }: { children: React.ReactNode; 
       <span
         aria-hidden
         className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-500 group-hover/spot:opacity-100"
-        style={{ background: "radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklab, var(--foreground) 5%, transparent), transparent 60%)" }}
+        style={{
+          background:
+            "radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklab, var(--foreground) 5%, transparent), transparent 60%)",
+        }}
       />
       {children}
     </div>

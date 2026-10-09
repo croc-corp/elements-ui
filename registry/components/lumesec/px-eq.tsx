@@ -20,10 +20,5 @@ export interface PxEqProps extends Omit<LumesecElementProps<PxEqElement>, "onCha
  * @see https://elements.lumesec.ai/components/pixel-lab/eq
  */
 export function PxEq({ onChange, ...props }: PxEqProps) {
-  return useLumesecElement(
-    "px-eq",
-    props,
-    {},
-    { "change": onChange },
-  );
+  return useLumesecElement("px-eq", props, {}, { change: onChange });
 }

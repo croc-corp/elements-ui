@@ -281,7 +281,9 @@ class HSwipe extends HF {
         // a check once confirmed, two chevrons before
         const glyph = done
           ? Math.min(segDist(cx, cy, -8, 0, -2.5, 6), segDist(cx, cy, -2.5, 6, 9, -6)) < 2
-          : [-4, 4].some((o) => Math.min(segDist(cx, cy, o - 4, -7, o + 3, 0), segDist(cx, cy, o + 3, 0, o - 4, 7)) < 1.6);
+          : [-4, 4].some(
+              (o) => Math.min(segDist(cx, cy, o - 4, -7, o + 3, 0), segDist(cx, cy, o + 3, 0, o - 4, 7)) < 1.6,
+            );
         const base = done ? P.ok : P.accent;
         const lit = 0.86 + 0.14 * clamp((-cx - cy) / 24, -1, 1);
         F.put(

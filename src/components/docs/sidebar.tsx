@@ -56,7 +56,10 @@ export function SidebarNav({ nav, onNavigate }: { nav: Nav; onNavigate?: () => v
           )}
         </label>
       </div>
-      <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pb-10 [mask-image:linear-gradient(to_bottom,transparent,black_12px,black_calc(100%-24px),transparent)]">
+      <div
+        ref={listRef}
+        className="min-h-0 flex-1 overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent,black_12px,black_calc(100%-24px),transparent)] px-3 pb-10"
+      >
         {nav.guides.map((g) => {
           const items = g.items.filter((i) => matches(q, i.title));
           if (!items.length) return null;
@@ -78,7 +81,9 @@ export function SidebarNav({ nav, onNavigate }: { nav: Nav; onNavigate?: () => v
 
         <p className="px-2 pt-2 pb-1.5 font-mono text-[11px] text-muted-foreground">Collections</p>
         {nav.collections.map((c) => {
-          const groups = c.groups.map((g) => ({ ...g, items: g.items.filter((i) => matches(q, i.title, i.tag, c.title)) })).filter((g) => g.items.length);
+          const groups = c.groups
+            .map((g) => ({ ...g, items: g.items.filter((i) => matches(q, i.title, i.tag, c.title)) }))
+            .filter((g) => g.items.length);
           if (filtering && !groups.length) return null;
           const expanded = filtering || open[c.slug];
           return (
@@ -90,7 +95,9 @@ export function SidebarNav({ nav, onNavigate }: { nav: Nav; onNavigate?: () => v
                   aria-current={pathname === c.href ? "page" : undefined}
                   className={cn(
                     "flex min-w-0 flex-1 items-center gap-2.5 rounded-md px-2 py-1.5 text-[13.5px] transition-colors",
-                    pathname === c.href ? "bg-muted font-medium text-foreground" : "text-foreground/85 hover:text-foreground",
+                    pathname === c.href
+                      ? "bg-muted font-medium text-foreground"
+                      : "text-foreground/85 hover:text-foreground",
                   )}
                 >
                   <CollectionGlyph slug={c.slug} size={15} className="shrink-0 text-muted-foreground" />
@@ -104,10 +111,19 @@ export function SidebarNav({ nav, onNavigate }: { nav: Nav; onNavigate?: () => v
                   onClick={() => setOpen((o) => ({ ...o, [c.slug]: !o[c.slug] }))}
                   className="ml-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/60 hover:text-foreground"
                 >
-                  <ChevronRightIcon size={13} className={cn("transition-transform duration-300 ease-[var(--ease-expo)]", expanded && "rotate-90")} />
+                  <ChevronRightIcon
+                    size={13}
+                    className={cn("transition-transform duration-300 ease-[var(--ease-expo)]", expanded && "rotate-90")}
+                  />
                 </button>
               </div>
-              <div inert={!expanded} className={cn("grid transition-[grid-template-rows] duration-400 ease-[var(--ease-expo)]", expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]")}>
+              <div
+                inert={!expanded}
+                className={cn(
+                  "grid transition-[grid-template-rows] duration-400 ease-[var(--ease-expo)]",
+                  expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+                )}
+              >
                 <div className="overflow-hidden">
                   <div className="relative ml-[15px] border-l border-border pb-2 pl-2">
                     {groups.map((g) => (
@@ -116,7 +132,13 @@ export function SidebarNav({ nav, onNavigate }: { nav: Nav; onNavigate?: () => v
                         <ul>
                           {g.items.map((i) => (
                             <li key={i.href}>
-                              <NavLink href={i.href} active={pathname === i.href} onNavigate={onNavigate} isNew={i.isNew} tabIndex={expanded ? 0 : -1}>
+                              <NavLink
+                                href={i.href}
+                                active={pathname === i.href}
+                                onNavigate={onNavigate}
+                                isNew={i.isNew}
+                                tabIndex={expanded ? 0 : -1}
+                              >
                                 {i.title}
                               </NavLink>
                             </li>
@@ -162,7 +184,11 @@ function NavLink({
       )}
     >
       <span className="truncate">{children}</span>
-      {isNew && <span className="ml-auto rounded-[4px] border border-border px-1 font-mono text-[9.5px] leading-[15px] text-muted-foreground">new</span>}
+      {isNew && (
+        <span className="ml-auto rounded-[4px] border border-border px-1 font-mono text-[9.5px] leading-[15px] text-muted-foreground">
+          new
+        </span>
+      )}
     </Link>
   );
 }

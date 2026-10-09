@@ -18,10 +18,5 @@ export interface PxKeysProps extends Omit<LumesecElementProps<PxKeysElement>, "o
  * @see https://elements.lumesec.ai/components/pixel-lab/keys
  */
 export function PxKeys({ onDone, ...props }: PxKeysProps) {
-  return useLumesecElement(
-    "px-keys",
-    props,
-    {},
-    { "done": onDone },
-  );
+  return useLumesecElement("px-keys", props, {}, { done: onDone });
 }

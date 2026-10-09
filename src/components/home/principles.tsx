@@ -63,14 +63,20 @@ export function Principles({ items }: { items: Principle[] }) {
     <div className="grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
       <ol ref={listRef} className="relative lg:border-r lg:border-border">
         {items.map((p, i) => (
-          <li key={p.title} data-i={i} className="flex min-h-0 flex-col justify-center border-b border-line px-4 py-12 last:border-b-0 sm:px-8 lg:min-h-[64vh] lg:py-16">
+          <li
+            key={p.title}
+            data-i={i}
+            className="flex min-h-0 flex-col justify-center border-b border-line px-4 py-12 last:border-b-0 sm:px-8 lg:min-h-[64vh] lg:py-16"
+          >
             <div className={cn("transition-opacity duration-500", active === i ? "lg:opacity-100" : "lg:opacity-35")}>
               <p className="sl-eyebrow">
                 <span className="tabular text-foreground">{pad2(i + 1)}</span>
                 <span data-sep />
                 <span>&lt;{p.tag}&gt;</span>
               </p>
-              <h3 className="mt-4 text-[30px] leading-[1.08] font-medium tracking-[-0.03em] sm:text-[38px]">{p.title}</h3>
+              <h3 className="mt-4 text-[30px] leading-[1.08] font-medium tracking-[-0.03em] sm:text-[38px]">
+                {p.title}
+              </h3>
               <p className="mt-4 max-w-[46ch] text-[16px] leading-[1.7] text-muted-foreground">{p.body}</p>
               <Link href={p.href} className="group/p mt-5 inline-flex items-center gap-1.5 text-[13.5px] font-medium">
                 {p.name}
@@ -104,7 +110,14 @@ export function Principles({ items }: { items: Principle[] }) {
                   )}
                 >
                   <div className="principle-stage w-full">
-                    <ComponentPreview variant="card" tag={p.tag} html={p.html} layout={p.layout} eager className="bg-transparent">
+                    <ComponentPreview
+                      variant="card"
+                      tag={p.tag}
+                      html={p.html}
+                      layout={p.layout}
+                      eager
+                      className="bg-transparent"
+                    >
                       {/* the first principle plays its own moment: the slider climbs to Ultracode */}
                       {p.tag === "effort-slider" ? <ClimbingSlider play={active === 0} /> : undefined}
                     </ComponentPreview>
@@ -118,7 +131,10 @@ export function Principles({ items }: { items: Principle[] }) {
               {pad2(active + 1)} / {pad2(items.length)}
             </span>
             <div className="relative h-px flex-1 bg-border">
-              <span className="absolute inset-y-0 left-0 bg-electric transition-[width] duration-700 ease-[var(--ease-expo)]" style={{ width: `${((active + 1) / items.length) * 100}%` }} />
+              <span
+                className="absolute inset-y-0 left-0 bg-electric transition-[width] duration-700 ease-[var(--ease-expo)]"
+                style={{ width: `${((active + 1) / items.length) * 100}%` }}
+              />
             </div>
             <span className="font-mono text-[11px] text-muted-foreground">{items[active]?.name}</span>
           </div>

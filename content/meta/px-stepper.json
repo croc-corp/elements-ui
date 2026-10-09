@@ -2,11 +2,18 @@
   "summary": "Five-step onboarding progress drawn as a pixel snake that circles the current step, slithers to the next, eats it and grows.",
   "attributes": [],
   "events": [
-    { "name": "change", "detail": "{ step: number }", "description": "Fires when the snake arrives at a step. `step` is 1-based." },
+    {
+      "name": "change",
+      "detail": "{ step: number }",
+      "description": "Fires when the snake arrives at a step. `step` is 1-based."
+    },
     { "name": "complete", "detail": "{}", "description": "Fires when Finish is pressed on the last step." }
   ],
   "methods": [
-    { "signature": "go(direction: 1 | -1)", "description": "Moves to the next or previous step; on the last step, `go(1)` completes onboarding. Ignored while the snake is moving and for other values." }
+    {
+      "signature": "go(direction: 1 | -1)",
+      "description": "Moves to the next or previous step; on the last step, `go(1)` completes onboarding. Ignored while the snake is moving and for other values."
+    }
   ],
   "properties": [],
   "keyboard": [],

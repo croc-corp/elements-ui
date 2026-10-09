@@ -20,10 +20,5 @@ export interface HfSourcesProps extends Omit<LumesecElementProps<HfSourcesElemen
  * @see https://elements.lumesec.ai/components/pixel-hd/sources
  */
 export function HfSources({ onOpen, ...props }: HfSourcesProps) {
-  return useLumesecElement(
-    "hf-sources",
-    props,
-    {},
-    { "open": onOpen },
-  );
+  return useLumesecElement("hf-sources", props, {}, { open: onOpen });
 }

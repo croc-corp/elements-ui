@@ -2,10 +2,17 @@
   "summary": "Six pixel loading indicators (orbit, snake, helix, scan, rain, pulse); clicking one finishes it with a check before it restarts.",
   "attributes": [],
   "events": [
-    { "name": "finish", "detail": "{ loader: string }", "description": "Fires when a loader is finished, by click, Finish all or `finish()`. `loader` is `Orbit`, `Snake`, `Helix`, `Scan`, `Rain` or `Pulse`." }
+    {
+      "name": "finish",
+      "detail": "{ loader: string }",
+      "description": "Fires when a loader is finished, by click, Finish all or `finish()`. `loader` is `Orbit`, `Snake`, `Helix`, `Scan`, `Rain` or `Pulse`."
+    }
   ],
   "methods": [
-    { "signature": "finish(index: number)", "description": "Shows the check on loader 0 to 5 for 1.6 seconds, then restarts it, and fires `finish`. Other values are ignored." }
+    {
+      "signature": "finish(index: number)",
+      "description": "Shows the check on loader 0 to 5 for 1.6 seconds, then restarts it, and fires `finish`. Other values are ignored."
+    }
   ],
   "properties": [],
   "keyboard": [],

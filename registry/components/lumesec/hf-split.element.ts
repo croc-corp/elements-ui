@@ -189,7 +189,10 @@ class HSplit extends HF {
   private build(): void {
     const previous = this.menuItems[this.sel]?.label;
     this.menuItems = this.items;
-    this.sel = Math.max(0, this.menuItems.findIndex((item) => item.label === previous));
+    this.sel = Math.max(
+      0,
+      this.menuItems.findIndex((item) => item.label === previous),
+    );
     if (this.hasAttribute("open")) this.toggle(false);
     this.$(".menu").innerHTML = this.menuItems
       .map(
@@ -340,7 +343,8 @@ class HSplit extends HF {
             const [x, y] = F.xy(i, j);
             const lx = x - x0;
             const ly = y - y0;
-            if (e < 1 && lx / w < e && lx / w > e - 0.25 && bayer(i, j) < 0.5) F.put(i, j, P.accent, 0.5 * (1 - e), 0.3);
+            if (e < 1 && lx / w < e && lx / w > e - 0.25 && bayer(i, j) < 0.5)
+              F.put(i, j, P.accent, 0.5 * (1 - e), 0.3);
             // check mark for the current choice
             if (k === this.sel && checkDist(lx, ly, h) < 1.3) F.put(i, j, P.accent, e, 0.4);
           }
@@ -358,13 +362,7 @@ class HSplit extends HF {
           if (inRR(lx, ly, w, th, 8) > 0) continue;
           const bar = lx < 3;
           if (!bar && bayer(i, j) > 0.3) continue;
-          F.put(
-            i,
-            j,
-            bar ? mix(P.accent, P.shine, 0.3) : mix(P.accent, P.surface, 0.55),
-            bar ? 1 : 0.7,
-            bar ? 0.6 : 0,
-          );
+          F.put(i, j, bar ? mix(P.accent, P.shine, 0.3) : mix(P.accent, P.surface, 0.55), bar ? 1 : 0.7, bar ? 0.6 : 0);
         }
       }
     }

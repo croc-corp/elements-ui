@@ -1,0 +1,9 @@
+name: Elements CodeQL config
+
+# Generated output and build artefacts: findings there are fixed in their sources.
+paths-ignore:
+  - src/generated
+  - registry.json
+  - .registry
+  - public/cdn
+  - .next

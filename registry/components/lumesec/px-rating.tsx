@@ -18,10 +18,5 @@ export interface PxRatingProps extends Omit<LumesecElementProps<PxRatingElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/rating
  */
 export function PxRating({ onChange, ...props }: PxRatingProps) {
-  return useLumesecElement(
-    "px-rating",
-    props,
-    {},
-    { "change": onChange },
-  );
+  return useLumesecElement("px-rating", props, {}, { change: onChange });
 }

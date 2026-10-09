@@ -3,11 +3,21 @@
   "attributes": [],
   "events": [
     { "name": "play", "detail": "{}", "description": "Fires when playback starts." },
-    { "name": "pause", "detail": "{}", "description": "Fires when playback pauses, including when the track reaches the end." }
+    {
+      "name": "pause",
+      "detail": "{}",
+      "description": "Fires when playback pauses, including when the track reaches the end."
+    }
   ],
   "methods": [
-    { "signature": "toggle()", "description": "Starts or pauses playback and fires `play` or `pause`. Playing at the end starts over." },
-    { "signature": "seek(position: number)", "description": "Moves the playhead to a position from 0 to 1 of the track. A value that is not a finite number is ignored." }
+    {
+      "signature": "toggle()",
+      "description": "Starts or pauses playback and fires `play` or `pause`. Playing at the end starts over."
+    },
+    {
+      "signature": "seek(position: number)",
+      "description": "Moves the playhead to a position from 0 to 1 of the track. A value that is not a finite number is ignored."
+    }
   ],
   "properties": [],
   "keyboard": [

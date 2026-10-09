@@ -22,10 +22,5 @@ export interface HfCarouselProps extends Omit<LumesecElementProps<HfCarouselElem
  * @see https://elements.lumesec.ai/components/pixel-hd/carousel
  */
 export function HfCarousel({ autoplay, onChange, ...props }: HfCarouselProps) {
-  return useLumesecElement(
-    "hf-carousel",
-    props,
-    { "autoplay": autoplay },
-    { "change": onChange },
-  );
+  return useLumesecElement("hf-carousel", props, { autoplay: autoplay }, { change: onChange });
 }

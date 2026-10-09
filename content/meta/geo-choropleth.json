@@ -141,11 +141,7 @@
       {
         "name": "scale",
         "kind": "enum",
-        "options": [
-          "quantile",
-          "linear",
-          "log"
-        ],
+        "options": ["quantile", "linear", "log"],
         "default": "quantile"
       },
       {
@@ -157,10 +153,7 @@
       {
         "name": "projection",
         "kind": "enum",
-        "options": [
-          "equalEarth",
-          "equirectangular"
-        ],
+        "options": ["equalEarth", "equirectangular"],
         "default": "equalEarth"
       },
       {

@@ -6,12 +6,17 @@
 
 <!-- For visual changes: before and after, in light and dark theme, and at 375 px width when the layout changes. Delete this section otherwise. -->
 
+## AI assistance
+
+<!-- If an AI assistant wrote a substantial part of this pull request, say so here. You are responsible for every line either way. Delete this section otherwise. -->
+
 ## Checklist
 
-- [ ] `pnpm lint` and `pnpm verify` pass.
+- [ ] `pnpm format`, `pnpm lint`, `pnpm test` and `pnpm verify` pass.
 - [ ] `pnpm catalog` ran after changes to a component, a demo, `content/catalog.json` or `content/meta/`, and the generated files are committed.
 - [ ] A new component has its docs page (`pnpm docs:generate`).
 - [ ] The notes in `content/meta/{tag}.json` match the code (props or attributes, events, keyboard, accessibility, motion).
 - [ ] Checked in light and dark theme, at 375 px width, with the keyboard and with reduced motion.
 - [ ] No new runtime dependencies.
+- [ ] A change users can notice has a line under `## Unreleased` in `content/docs/changelog.mdx`.
 - [ ] Text follows [`contributing/writing.md`](https://github.com/lumesec/elements-ui/blob/main/contributing/writing.md): plain, precise, no marketing words, no exclamation marks, no emoji.

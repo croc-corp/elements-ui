@@ -21,12 +21,24 @@ type Meta = Record<string, string | number | boolean | null>;
  */
 export function track(type: TrackType, item?: string | null, meta?: Meta) {
   if (typeof navigator === "undefined") return;
-  if (navigator.doNotTrack === "1" || ("globalPrivacyControl" in navigator && navigator.globalPrivacyControl === true)) return;
+  if (navigator.doNotTrack === "1" || ("globalPrivacyControl" in navigator && navigator.globalPrivacyControl === true))
+    return;
   try {
-    const body = JSON.stringify({ type, item: item ?? null, path: location.pathname, ref: referrerHost(), meta: meta ?? null });
+    const body = JSON.stringify({
+      type,
+      item: item ?? null,
+      path: location.pathname,
+      ref: referrerHost(),
+      meta: meta ?? null,
+    });
     const sent = navigator.sendBeacon?.("/api/track", new Blob([body], { type: "application/json" }));
     if (!sent) {
-      fetch("/api/track", { method: "POST", body, keepalive: true, headers: { "content-type": "application/json" } }).catch(() => {});
+      fetch("/api/track", {
+        method: "POST",
+        body,
+        keepalive: true,
+        headers: { "content-type": "application/json" },
+      }).catch(() => {});
     }
   } catch {
     // statistics are best effort

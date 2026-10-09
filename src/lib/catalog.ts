@@ -10,7 +10,12 @@ export type EventMeta = { name: string; prop: string; detail: string[] };
 /** A prop of a native React component. */
 export type PropMeta = { name: string; type: string; default: string };
 /** A playground control. */
-export type ControlMeta = { name: string; kind: "enum" | "boolean" | "number" | "string"; options: string[] | null; default: string | null };
+export type ControlMeta = {
+  name: string;
+  kind: "enum" | "boolean" | "number" | "string";
+  options: string[] | null;
+  default: string | null;
+};
 
 /** One component, as scripts/catalog.mjs writes it to src/generated/elements.json. */
 export type ElementMeta = {

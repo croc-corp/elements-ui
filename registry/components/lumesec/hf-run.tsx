@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-run.element";
 /** The `<hf-run>` element, with its properties and methods. */
 export type HfRunElement = ElementModule.HRun;
 
-export interface HfRunProps extends Omit<LumesecElementProps<HfRunElement>, "steps" | "label" | "autoplay" | "fail" | "onStep" | "onDone"> {
+export interface HfRunProps extends Omit<
+  LumesecElementProps<HfRunElement>,
+  "steps" | "label" | "autoplay" | "fail" | "onStep" | "onDone"
+> {
   /** Step labels separated by `|`; empty labels are skipped. Re-read at the start of each run. Default: `Plan the approach|Read 14 files|Edit src/auth.ts|Run test suite|Write summary`. */
   steps?: string;
   /** Title in the header. Read once on connect. Default: `Agent run`. */
@@ -33,7 +36,7 @@ export function HfRun({ steps, label, autoplay, fail, onStep, onDone, ...props }
   return useLumesecElement(
     "hf-run",
     props,
-    { "steps": steps, "label": label, "autoplay": autoplay, "fail": fail },
-    { "step": onStep, "done": onDone },
+    { steps: steps, label: label, autoplay: autoplay, fail: fail },
+    { step: onStep, done: onDone },
   );
 }

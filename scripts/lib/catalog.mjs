@@ -58,7 +58,8 @@ export const COLLECTIONS = [
     slug: "location",
     title: "Location",
     prefix: "geo-",
-    summary: "Globes, maps and connection lines for locations, visitors, sign-ins, latency and traffic between regions.",
+    summary:
+      "Globes, maps and connection lines for locations, visitors, sign-ins, latency and traffic between regions.",
     description:
       "Where things happen and how they connect: dot globes, partial globes and flat maps drawn from an embedded world dataset, with no map tiles. The dots carry the motion; every label and number stays real text.",
   },
@@ -67,22 +68,55 @@ export const COLLECTIONS = [
 /** Shared modules in registry/lib/lumesec: [title, description]. Engines back the custom elements. */
 export const LIB_MODULES = {
   math: ["Math helpers", "Clamp, lerp, easing, hashing and RGB colour helpers."],
-  color: ["Theme colours", "Resolves theme CSS variables (any colour format) to RGB for canvas drawing and repaints on theme changes."],
-  motion: ["Motion hooks", "Reduced motion, in-view detection, an off-screen-aware animation loop, lazy refs, springs and shake."],
-  canvas: ["Canvas sizing", "Device-pixel-ratio aware canvas sizing, pixel snapping and pointer positions in CSS pixels."],
+  color: [
+    "Theme colours",
+    "Resolves theme CSS variables (any colour format) to RGB for canvas drawing and repaints on theme changes.",
+  ],
+  motion: [
+    "Motion hooks",
+    "Reduced motion, in-view detection, an off-screen-aware animation loop, lazy refs, springs and shake.",
+  ],
+  canvas: [
+    "Canvas sizing",
+    "Device-pixel-ratio aware canvas sizing, pixel snapping and pointer positions in CSS pixels.",
+  ],
   "pixel-canvas": ["Pixel canvas", "The canvas loop behind the Pixel UI components."],
   "pixel-font": ["Pixel font", "The 5x7 pixel font and bitmap helpers."],
   sparks: ["Sparks", "Square pixel sparks, in a canvas or as a one-off burst over a component."],
   "roll-text": ["Rolling text", "Text that rolls over a horizontal axis when it changes."],
-  "use-controllable-state": ["Controllable state", "State that can be controlled or uncontrolled, like a native input."],
-  data: ["Data inputs", "Reads and validates the JSON `data` attribute and property that custom elements take for your records."],
+  "use-controllable-state": [
+    "Controllable state",
+    "State that can be controlled or uncontrolled, like a native input.",
+  ],
+  data: [
+    "Data inputs",
+    "Reads and validates the JSON `data` attribute and property that custom elements take for your records.",
+  ],
   fuzzy: ["Fuzzy match", "Fuzzy matching and match highlighting for search and command lists."],
-  geo: ["Geo helpers", "Map and globe projections, great-circle lines, rotation and dot lattices for the Location components."],
-  "geo-data": ["Geo data and text", "Time zones, coordinate, distance and IP parsing and formatting, demo cities and regions, and seeded randomness for the Location components."],
-  "geo-world": ["World data", "An embedded land mask at 0.5° and simplified coastlines (Natural Earth, public domain)."],
-  "geo-countries": ["Country data", "ISO codes, names, regions, label points and simplified outlines of 175 countries (Natural Earth)."],
-  react: ["React bindings", "Renders LumeSec custom elements from React 19, wires their custom events and composes refs."],
-  pixel: ["Pixel engine", "Runtime for the Pixel Lab and Pixel HD custom elements: theme tokens, base element, animation loop, drawing helpers."],
+  geo: [
+    "Geo helpers",
+    "Map and globe projections, great-circle lines, rotation and dot lattices for the Location components.",
+  ],
+  "geo-data": [
+    "Geo data and text",
+    "Time zones, coordinate, distance and IP parsing and formatting, demo cities and regions, and seeded randomness for the Location components.",
+  ],
+  "geo-world": [
+    "World data",
+    "An embedded land mask at 0.5° and simplified coastlines (Natural Earth, public domain).",
+  ],
+  "geo-countries": [
+    "Country data",
+    "ISO codes, names, regions, label points and simplified outlines of 175 countries (Natural Earth).",
+  ],
+  react: [
+    "React bindings",
+    "Renders LumeSec custom elements from React 19, wires their custom events and composes refs.",
+  ],
+  pixel: [
+    "Pixel engine",
+    "Runtime for the Pixel Lab and Pixel HD custom elements: theme tokens, base element, animation loop, drawing helpers.",
+  ],
 };
 
 /** Engines are registry items named lumesec-engine-*; other modules lumesec-*. */

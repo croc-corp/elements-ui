@@ -20,10 +20,5 @@ export interface PxThemeProps extends Omit<LumesecElementProps<PxThemeElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/theme
  */
 export function PxTheme({ controlsPage, onChange, ...props }: PxThemeProps) {
-  return useLumesecElement(
-    "px-theme",
-    props,
-    { "controls-page": controlsPage },
-    { "change": onChange },
-  );
+  return useLumesecElement("px-theme", props, { "controls-page": controlsPage }, { change: onChange });
 }

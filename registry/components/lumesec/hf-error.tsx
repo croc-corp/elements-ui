@@ -22,10 +22,5 @@ export interface HfErrorProps extends Omit<LumesecElementProps<HfErrorElement>, 
  * @see https://elements.lumesec.ai/components/pixel-hd/error
  */
 export function HfError({ code, onRetry, onHome, ...props }: HfErrorProps) {
-  return useLumesecElement(
-    "hf-error",
-    props,
-    { "code": code },
-    { "retry": onRetry, "home": onHome },
-  );
+  return useLumesecElement("hf-error", props, { code: code }, { retry: onRetry, home: onHome });
 }

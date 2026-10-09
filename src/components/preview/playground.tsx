@@ -32,7 +32,10 @@ function startValues(controls: Control[], initial: Record<string, string>): Valu
   const v: Values = {};
   for (const c of controls) {
     if (c.kind === "boolean") v[c.name] = c.name in initial ? true : c.default === "true";
-    else v[c.name] = initial[c.name] ?? (c.default && !/^\(|^none$|^empty$/i.test(c.default) ? c.default.replace(/^["'`]|["'`]$/g, "") : "");
+    else
+      v[c.name] =
+        initial[c.name] ??
+        (c.default && !/^\(|^none$|^empty$/i.test(c.default) ? c.default.replace(/^["'`]|["'`]$/g, "") : "");
   }
   return v;
 }
@@ -68,22 +71,34 @@ export function Playground({ tag, component, controls, observed, initial, inner,
   const [values, setValues] = React.useState<Values>(() => startValues(controls, initial));
   const [lang, setLang] = React.useState<"react" | "html">("react");
   const { copied, copy } = useCopy();
-  const passthrough = React.useMemo(() => Object.fromEntries(Object.entries(initial).filter(([k]) => !controls.some((c) => c.name === k) && !/^(id|class|style)$/.test(k))), [initial, controls]);
+  const passthrough = React.useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries(initial).filter(([k]) => !controls.some((c) => c.name === k) && !/^(id|class|style)$/.test(k)),
+      ),
+    [initial, controls],
+  );
   const lastMarkup = React.useRef<string | null>(null);
 
   // first render, and any change to an attribute the element does not observe, rebuilds the element
-  const structural = controls.filter((c) => !observed.includes(c.name)).map((c) => `${c.name}=${values[c.name]}`).join("|");
+  const structural = controls
+    .filter((c) => !observed.includes(c.name))
+    .map((c) => `${c.name}=${values[c.name]}`)
+    .join("|");
   // reads the latest values without making them a dependency: observed attributes change in place (see `set`)
   const currentMarkup = React.useEffectEvent(() => toMarkup(tag, values, inner, passthrough));
   React.useEffect(() => {
     const stage = stageRef.current;
     if (!stage || !ready) return;
-    const id = window.setTimeout(() => {
-      const markup = currentMarkup();
-      if (markup === lastMarkup.current) return;
-      lastMarkup.current = markup;
-      stage.innerHTML = markup;
-    }, lastMarkup.current ? 160 : 0);
+    const id = window.setTimeout(
+      () => {
+        const markup = currentMarkup();
+        if (markup === lastMarkup.current) return;
+        lastMarkup.current = markup;
+        stage.innerHTML = markup;
+      },
+      lastMarkup.current ? 160 : 0,
+    );
     return () => window.clearTimeout(id);
   }, [structural, ready, tag, inner, passthrough]);
 
@@ -106,8 +121,17 @@ export function Playground({ tag, component, controls, observed, initial, inner,
     <div ref={frameRef} className="not-prose overflow-hidden rounded-xl border border-border">
       <div className="grid lg:grid-cols-[minmax(0,1fr)_300px]">
         <div className="sl-dot-grid relative min-h-[320px] bg-background">
-          <div ref={stageRef} data-layout={layout} data-ready={ready || undefined} className="stage elements-stage min-h-[320px]" />
-          {!ready && <span className="absolute inset-0 grid place-items-center font-mono text-[11px] text-muted-foreground">Loading &lt;{tag}&gt;</span>}
+          <div
+            ref={stageRef}
+            data-layout={layout}
+            data-ready={ready || undefined}
+            className="stage elements-stage min-h-[320px]"
+          />
+          {!ready && (
+            <span className="absolute inset-0 grid place-items-center font-mono text-[11px] text-muted-foreground">
+              Loading &lt;{tag}&gt;
+            </span>
+          )}
         </div>
         <div className="border-t border-border bg-surface/50 lg:border-t-0 lg:border-l">
           <div className="flex h-10 items-center justify-between border-b border-border px-3.5">
@@ -130,7 +154,9 @@ export function Playground({ tag, component, controls, observed, initial, inner,
               <div key={c.name} className="flex items-center justify-between gap-3 px-3.5 py-2.5">
                 <span className="min-w-0">
                   <span className="block truncate font-mono text-[12px]">{c.name}</span>
-                  <span className="block font-mono text-[10.5px] text-muted-foreground">{observed.includes(c.name) ? "live" : "remounts"}</span>
+                  <span className="block font-mono text-[10.5px] text-muted-foreground">
+                    {observed.includes(c.name) ? "live" : "remounts"}
+                  </span>
                 </span>
                 <ControlInput control={c} value={values[c.name]} onChange={(v) => set(c.name, v)} />
               </div>
@@ -142,7 +168,16 @@ export function Playground({ tag, component, controls, observed, initial, inner,
         <div className="flex h-9 items-center justify-between border-b border-border pr-1.5 pl-2">
           <div role="group" aria-label="Code language" className="flex gap-1">
             {(["react", "html"] as const).map((l) => (
-              <button key={l} type="button" onClick={() => setLang(l)} aria-pressed={lang === l} className={cn("h-9 px-2 font-mono text-[11.5px] transition-colors", lang === l ? "text-foreground" : "text-muted-foreground hover:text-foreground")}>
+              <button
+                key={l}
+                type="button"
+                onClick={() => setLang(l)}
+                aria-pressed={lang === l}
+                className={cn(
+                  "h-9 px-2 font-mono text-[11.5px] transition-colors",
+                  lang === l ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+                )}
+              >
                 {l === "react" ? "React" : "HTML"}
               </button>
             ))}
@@ -159,14 +194,24 @@ export function Playground({ tag, component, controls, observed, initial, inner,
             {copied ? <CheckIcon size={14} className="text-success" /> : <CopyIcon size={14} />}
           </button>
         </div>
-        <pre className="overflow-x-auto px-4 py-3 font-mono text-[12.5px] leading-[1.7] whitespace-pre text-foreground/90">{code}</pre>
+        <pre className="overflow-x-auto px-4 py-3 font-mono text-[12.5px] leading-[1.7] whitespace-pre text-foreground/90">
+          {code}
+        </pre>
       </div>
     </div>
   );
 }
 
 /** The input for one control: a switch, a segmented choice or select, a number stepper or a text field. */
-export function ControlInput({ control, value, onChange }: { control: Control; value: string | boolean | undefined; onChange: (v: string | boolean) => void }) {
+export function ControlInput({
+  control,
+  value,
+  onChange,
+}: {
+  control: Control;
+  value: string | boolean | undefined;
+  onChange: (v: string | boolean) => void;
+}) {
   if (control.kind === "boolean") {
     const on = value === true;
     return (
@@ -178,7 +223,12 @@ export function ControlInput({ control, value, onChange }: { control: Control; v
         onClick={() => onChange(!on)}
         className={cn("relative h-5 w-9 shrink-0 rounded-full transition-colors", on ? "bg-foreground" : "bg-muted")}
       >
-        <span className={cn("absolute top-0.5 left-0.5 size-4 rounded-full bg-background shadow transition-transform duration-300 ease-[var(--ease-spring)]", on && "translate-x-4")} />
+        <span
+          className={cn(
+            "absolute top-0.5 left-0.5 size-4 rounded-full bg-background shadow transition-transform duration-300 ease-[var(--ease-spring)]",
+            on && "translate-x-4",
+          )}
+        />
       </button>
     );
   }
@@ -187,7 +237,16 @@ export function ControlInput({ control, value, onChange }: { control: Control; v
       return (
         <span role="group" aria-label={control.name} className="flex shrink-0 rounded-lg border border-border p-0.5">
           {control.options.map((o) => (
-            <button key={o} type="button" onClick={() => onChange(o)} aria-pressed={value === o} className={cn("h-6 rounded-md px-2 font-mono text-[11px] transition-colors", value === o ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground")}>
+            <button
+              key={o}
+              type="button"
+              onClick={() => onChange(o)}
+              aria-pressed={value === o}
+              className={cn(
+                "h-6 rounded-md px-2 font-mono text-[11px] transition-colors",
+                value === o ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground",
+              )}
+            >
               {o}
             </button>
           ))}
@@ -195,7 +254,12 @@ export function ControlInput({ control, value, onChange }: { control: Control; v
       );
     }
     return (
-      <select value={String(value ?? "")} onChange={(e) => onChange(e.target.value)} aria-label={control.name} className="h-7 max-w-[150px] rounded-md border border-border bg-background px-1.5 font-mono text-[11.5px] outline-none focus:border-ring">
+      <select
+        value={String(value ?? "")}
+        onChange={(e) => onChange(e.target.value)}
+        aria-label={control.name}
+        className="h-7 max-w-[150px] rounded-md border border-border bg-background px-1.5 font-mono text-[11.5px] outline-none focus:border-ring"
+      >
         <option value="">default</option>
         {control.options.map((o) => (
           <option key={o} value={o}>
@@ -211,15 +275,38 @@ export function ControlInput({ control, value, onChange }: { control: Control; v
     const bump = (d: number) => onChange(String(Math.round(((Number.isFinite(n) ? n : 0) + d * step) * 100) / 100));
     return (
       <span className="flex shrink-0 items-center rounded-md border border-border">
-        <button type="button" aria-label={`Decrease ${control.name}`} onClick={() => bump(-1)} className="h-7 w-6 text-muted-foreground hover:text-foreground">
+        <button
+          type="button"
+          aria-label={`Decrease ${control.name}`}
+          onClick={() => bump(-1)}
+          className="h-7 w-6 text-muted-foreground hover:text-foreground"
+        >
           −
         </button>
-        <input value={String(value ?? "")} onChange={(e) => onChange(e.target.value)} inputMode="decimal" aria-label={control.name} className="tabular h-7 w-14 border-x border-border bg-background text-center font-mono text-[11.5px] outline-none focus:bg-muted" />
-        <button type="button" aria-label={`Increase ${control.name}`} onClick={() => bump(1)} className="h-7 w-6 text-muted-foreground hover:text-foreground">
+        <input
+          value={String(value ?? "")}
+          onChange={(e) => onChange(e.target.value)}
+          inputMode="decimal"
+          aria-label={control.name}
+          className="tabular h-7 w-14 border-x border-border bg-background text-center font-mono text-[11.5px] outline-none focus:bg-muted"
+        />
+        <button
+          type="button"
+          aria-label={`Increase ${control.name}`}
+          onClick={() => bump(1)}
+          className="h-7 w-6 text-muted-foreground hover:text-foreground"
+        >
           +
         </button>
       </span>
     );
   }
-  return <input value={String(value ?? "")} onChange={(e) => onChange(e.target.value)} aria-label={control.name} className="h-7 w-[150px] shrink-0 rounded-md border border-border bg-background px-2 font-mono text-[11.5px] outline-none focus:border-ring" />;
+  return (
+    <input
+      value={String(value ?? "")}
+      onChange={(e) => onChange(e.target.value)}
+      aria-label={control.name}
+      className="h-7 w-[150px] shrink-0 rounded-md border border-border bg-background px-2 font-mono text-[11.5px] outline-none focus:border-ring"
+    />
+  );
 }

@@ -18,10 +18,5 @@ export interface PxChargeProps extends Omit<LumesecElementProps<PxChargeElement>
  * @see https://elements.lumesec.ai/components/pixel-lab/charge
  */
 export function PxCharge({ onGenerate, ...props }: PxChargeProps) {
-  return useLumesecElement(
-    "px-charge",
-    props,
-    {},
-    { "generate": onGenerate },
-  );
+  return useLumesecElement("px-charge", props, {}, { generate: onGenerate });
 }

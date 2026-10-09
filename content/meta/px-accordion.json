@@ -2,11 +2,36 @@
   "kind": "react",
   "summary": "Accordion whose pixel plus signs fold into minus signs while the panels open smoothly; one or several items can stay open.",
   "props": [
-    { "name": "value", "type": "string[]", "default": "-", "description": "Controlled list of open items (their `value`, or `title`). Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "string[]", "default": "[]", "description": "Items open initially when uncontrolled." },
-    { "name": "items", "type": "readonly PxAccordionItem[]", "default": "-", "description": "The sections: `{ value?: string; title: string; summary?: string; content: React.ReactNode }`. `value` defaults to `title`; `summary` adds muted text at the end of the header." },
-    { "name": "multiple", "type": "boolean", "default": "false", "description": "Lets several items stay open; without it, opening one closes the others." },
-    { "name": "onValueChange", "type": "(value: string[]) => void", "default": "-", "description": "Called with the open items whenever the user opens or closes one." }
+    {
+      "name": "value",
+      "type": "string[]",
+      "default": "-",
+      "description": "Controlled list of open items (their `value`, or `title`). Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string[]",
+      "default": "[]",
+      "description": "Items open initially when uncontrolled."
+    },
+    {
+      "name": "items",
+      "type": "readonly PxAccordionItem[]",
+      "default": "-",
+      "description": "The sections: `{ value?: string; title: string; summary?: string; content: React.ReactNode }`. `value` defaults to `title`; `summary` adds muted text at the end of the header."
+    },
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "default": "false",
+      "description": "Lets several items stay open; without it, opening one closes the others."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string[]) => void",
+      "default": "-",
+      "description": "Called with the open items whenever the user opens or closes one."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -33,9 +58,18 @@
     "props": {
       "defaultValue": ["What is Ultracode?"],
       "items": [
-        { "title": "What is Ultracode?", "content": "A mode that sends xhigh effort and lets the agent plan multi-agent workflows on its own." },
-        { "title": "How is usage counted?", "content": "Usage resets weekly. Longer reasoning and more agents use more of it." },
-        { "title": "Can I export my data?", "content": "Yes. Settings has an export that includes chats, projects and files." }
+        {
+          "title": "What is Ultracode?",
+          "content": "A mode that sends xhigh effort and lets the agent plan multi-agent workflows on its own."
+        },
+        {
+          "title": "How is usage counted?",
+          "content": "Usage resets weekly. Longer reasoning and more agents use more of it."
+        },
+        {
+          "title": "Can I export my data?",
+          "content": "Yes. Settings has an export that includes chats, projects and files."
+        }
       ]
     },
     "controls": [{ "name": "multiple", "kind": "boolean", "options": null, "default": "false" }]

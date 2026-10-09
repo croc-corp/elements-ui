@@ -98,9 +98,12 @@ export function PxPassword({
 
   const { ref: canvasRef, redraw } = usePixelCanvas(({ clear, dot, palette, width, delta }) => {
     const target = score / 4;
-    fill.current = prefersReducedMotion() ? target : fill.current + clamp(target - fill.current, -delta * 2.5, delta * 2.5);
+    fill.current = prefersReducedMotion()
+      ? target
+      : fill.current + clamp(target - fill.current, -delta * 2.5, delta * 2.5);
     const columns = Math.floor(width / 4);
-    const color = score <= 1 ? palette.destructive : score === 2 ? palette.warning : score === 3 ? palette.accent : palette.success;
+    const color =
+      score <= 1 ? palette.destructive : score === 2 ? palette.warning : score === 3 ? palette.accent : palette.success;
     clear();
     for (let column = 0; column < columns; column++) {
       for (let row = 0; row < 2; row++) {
@@ -110,7 +113,13 @@ export function PxPassword({
         // leave a one-column gap between the four segments
         const gap = Math.floor(u * 4) !== Math.floor((u + 1 / columns) * 4) && column < columns - 1;
         if (gap) continue;
-        dot(column * 4, row * 4 + 1, on ? mixRgb(color, palette.shine, edge ? 0.5 : 0) : palette.foreground, on ? 0.95 : 0.12, 2.6);
+        dot(
+          column * 4,
+          row * 4 + 1,
+          on ? mixRgb(color, palette.shine, edge ? 0.5 : 0) : palette.foreground,
+          on ? 0.95 : 0.12,
+          2.6,
+        );
       }
     }
     return Math.abs(fill.current - target) > 0.001;
@@ -122,7 +131,13 @@ export function PxPassword({
   React.useEffect(() => {
     met.forEach((isMet, index) => {
       const bullet = bulletRefs.current[index];
-      if (isMet && !metBefore.current[index] && bullet && !prefersReducedMotion() && typeof bullet.animate === "function") {
+      if (
+        isMet &&
+        !metBefore.current[index] &&
+        bullet &&
+        !prefersReducedMotion() &&
+        typeof bullet.animate === "function"
+      ) {
         bullet.animate(POP, { duration: 350 });
       }
     });
@@ -198,7 +213,7 @@ export function PxPassword({
           aria-pressed={visible}
           aria-controls={inputId}
           onClick={() => setVisible((shown) => !shown)}
-          className="grid size-7 flex-none cursor-pointer select-none place-items-center rounded-[7px] border-0 bg-transparent p-0 text-muted-foreground outline-none hover:bg-foreground/7 hover:text-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+          className="grid size-7 flex-none cursor-pointer place-items-center rounded-[7px] border-0 bg-transparent p-0 text-muted-foreground outline-none select-none hover:bg-foreground/7 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
         >
           {visible ? <EyeOffIcon /> : <EyeIcon />}
         </button>
@@ -215,10 +230,19 @@ export function PxPassword({
           className="block h-[10px] w-full min-w-0 flex-1 [image-rendering:pixelated]"
         />
         <span className={cn("min-w-[8em] text-right text-[12px] font-medium", wordColor)}>
-          <RollText text={word} direction={roll.direction} animate={edited} className="justify-items-end" aria-live="polite" />
+          <RollText
+            text={word}
+            direction={roll.direction}
+            animate={edited}
+            className="justify-items-end"
+            aria-live="polite"
+          />
         </span>
       </div>
-      <ul id={rulesId} className="mt-2.5 mb-0 grid list-none grid-cols-2 gap-x-3 gap-y-[5px] p-0 max-[360px]:grid-cols-1">
+      <ul
+        id={rulesId}
+        className="mt-2.5 mb-0 grid list-none grid-cols-2 gap-x-3 gap-y-[5px] p-0 max-[360px]:grid-cols-1"
+      >
         {RULES.map(([rule], index) => (
           <li
             key={rule}
@@ -249,7 +273,16 @@ export function PxPassword({
 
 function EyeIcon() {
   return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 16 16"
+      aria-hidden="true"
+      className="size-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M1.5 8s2.4-4.6 6.5-4.6S14.5 8 14.5 8s-2.4 4.6-6.5 4.6S1.5 8 1.5 8z" />
       <circle cx="8" cy="8" r="2" />
     </svg>
@@ -258,7 +291,16 @@ function EyeIcon() {
 
 function EyeOffIcon() {
   return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 16 16"
+      aria-hidden="true"
+      className="size-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M2.5 2.5l11 11M6.6 3.6A6.6 6.6 0 0 1 8 3.4c4.1 0 6.5 4.6 6.5 4.6a11 11 0 0 1-1.9 2.5M4.3 5.2A10.5 10.5 0 0 0 1.5 8s2.4 4.6 6.5 4.6a6.3 6.3 0 0 0 2.6-.6" />
     </svg>
   );

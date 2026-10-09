@@ -50,6 +50,14 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      # Prettier, with Tailwind classes sorted; run pnpm format to fix
+      - name: Check formatting
+        run: pnpm format:check
+
+      # unit tests with Vitest; no database, network or browser
+      - name: Test
+        run: pnpm test
+
       # escape-hatch scan, SSR import and render, strict type-check, usage snippets, registry lint;
       # no database or network
       - name: Quality gates
@@ -71,3 +79,33 @@ jobs:
             git --no-pager diff --stat -- registry.json registry src/generated
             exit 1
           fi
+
+  docker:
+    name: Docker image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # the compose file the production deployment builds, with its required variable set
+      - name: Validate docker-compose.yml
+        run: docker compose config --quiet
+        env:
+          NEXT_PUBLIC_SITE_URL: https://elements.lumesec.ai
+
+      - name: Build the image
+        run: docker build --build-arg NEXT_PUBLIC_SITE_URL=https://elements.lumesec.ai --tag elements:ci .
+
+      # the container starts without a database and its healthcheck endpoint answers
+      - name: Start the container
+        run: |
+          docker run --detach --name elements --publish 127.0.0.1:3000:3000 elements:ci
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --show-error http://127.0.0.1:3000/api/health; then exit 0; fi
+            sleep 2
+          done
+          docker logs elements
+          exit 1

@@ -14,7 +14,15 @@ const PACKAGE_MANAGERS = [
 ] as const;
 
 /** One highlighted shell command with a copy button. */
-async function CommandLine({ cmd, item, event = "copy_install" }: { cmd: string; item: string; event?: "copy_install" | "copy_code" }) {
+async function CommandLine({
+  cmd,
+  item,
+  event = "copy_install",
+}: {
+  cmd: string;
+  item: string;
+  event?: "copy_install" | "copy_code";
+}) {
   // shiki output for a command built from catalog data
   const html = await highlight(cmd, "bash");
   return (
@@ -37,7 +45,13 @@ export function InstallBlock({ element }: { element: ElementMeta }) {
   const setup = PACKAGE_MANAGERS.map((p) => ({
     value: p.id,
     label: p.id,
-    content: <CommandLine cmd={`${p.run} shadcn@latest registry add ${site.registry.namespace}=${site.registry.url}`} item="registry" event="copy_code" />,
+    content: (
+      <CommandLine
+        cmd={`${p.run} shadcn@latest registry add ${site.registry.namespace}=${site.registry.url}`}
+        item="registry"
+        event="copy_code"
+      />
+    ),
   }));
 
   return (
@@ -56,12 +70,17 @@ export function InstallBlock({ element }: { element: ElementMeta }) {
                   <summary className="flex cursor-pointer list-none items-center gap-2 px-3.5 py-2.5 text-[13px] text-muted-foreground transition-colors hover:text-foreground [&::-webkit-details-marker]:hidden">
                     <span className="font-mono text-[11px] text-foreground">First time</span>
                     Register the {site.registry.namespace} registry once, or install by URL
-                    <span className="ml-auto font-mono text-[11px] transition-transform group-open/setup:rotate-45" aria-hidden>
+                    <span
+                      className="ml-auto font-mono text-[11px] transition-transform group-open/setup:rotate-45"
+                      aria-hidden
+                    >
                       +
                     </span>
                   </summary>
                   <div className="grid gap-3 border-t border-border p-3">
-                    <p className="text-[13px] text-muted-foreground">Adds {site.registry.namespace} to your components.json:</p>
+                    <p className="text-[13px] text-muted-foreground">
+                      Adds {site.registry.namespace} to your components.json:
+                    </p>
                     <div className="overflow-hidden rounded-lg border border-border">
                       <CodeTabs group="pm" items={setup} className="[&>div:first-child]:px-2" />
                     </div>

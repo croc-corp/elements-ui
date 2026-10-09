@@ -15,10 +15,5 @@ export type PxClockProps = LumesecElementProps<PxClockElement>;
  * @see https://elements.lumesec.ai/components/pixel-lab/clock
  */
 export function PxClock({ ...props }: PxClockProps) {
-  return useLumesecElement(
-    "px-clock",
-    props,
-    {},
-    {},
-  );
+  return useLumesecElement("px-clock", props, {}, {});
 }

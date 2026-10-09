@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/px-focus.element";
 /** The `<px-focus>` element, with its properties and methods. */
 export type PxFocusElement = ElementModule.Focus;
 
-export interface PxFocusProps extends Omit<LumesecElementProps<PxFocusElement>, "duration" | "onStart" | "onPause" | "onReset" | "onDone"> {
+export interface PxFocusProps extends Omit<
+  LumesecElementProps<PxFocusElement>,
+  "duration" | "onStart" | "onPause" | "onReset" | "onDone"
+> {
   /** Session length in seconds, split evenly across the 60 ring pixels; a missing, invalid or non-positive value uses 60. A change applies immediately, also to a running session. Default: `60`. */
   duration?: number;
   /** Fires when the timer starts or resumes. */
@@ -29,7 +32,7 @@ export function PxFocus({ duration, onStart, onPause, onReset, onDone, ...props 
   return useLumesecElement(
     "px-focus",
     props,
-    { "duration": duration },
-    { "start": onStart, "pause": onPause, "reset": onReset, "done": onDone },
+    { duration: duration },
+    { start: onStart, pause: onPause, reset: onReset, done: onDone },
   );
 }

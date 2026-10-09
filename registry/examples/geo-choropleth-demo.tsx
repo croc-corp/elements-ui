@@ -108,14 +108,18 @@ export default function GeoChoroplethDemo() {
     <div className="w-full">
       <div className="mx-auto grid w-full max-w-[660px] gap-2.5">
         <div className="flex items-center justify-between gap-3">
-          <div role="group" aria-label="Metric" className="inline-flex h-[30px] items-center rounded-lg border border-border bg-card p-[2px]">
+          <div
+            role="group"
+            aria-label="Metric"
+            className="inline-flex h-[30px] items-center rounded-lg border border-border bg-card p-[2px]"
+          >
             {(Object.keys(METRICS) as Metric[]).map((key) => (
               <button
                 key={key}
                 type="button"
                 aria-pressed={metric === key}
                 onClick={() => setMetric(key)}
-                className="h-[24px] cursor-pointer rounded-md px-2.5 font-[inherit] text-[12.5px] font-medium text-muted-foreground outline-none transition-colors duration-150 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-solid focus-visible:outline-lumesec aria-pressed:bg-muted aria-pressed:text-foreground motion-reduce:transition-none"
+                className="h-[24px] cursor-pointer rounded-md px-2.5 font-[inherit] text-[12.5px] font-medium text-muted-foreground transition-colors duration-150 outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid aria-pressed:bg-muted aria-pressed:text-foreground motion-reduce:transition-none"
               >
                 {METRICS[key].name}
               </button>

@@ -217,7 +217,13 @@ class HMarquee extends HF {
         if (sd > 0) continue;
         const edge = sd > -1.6;
         if (!edge && bayer(i, j) > 0.3) continue;
-        F.put(i, j, edge ? mix(P.accent, P.shine, 0.3) : mix(P.accent, P.surface, 0.5), edge ? 0.8 : 0.5, edge ? 0.5 : 0.1);
+        F.put(
+          i,
+          j,
+          edge ? mix(P.accent, P.shine, 0.3) : mix(P.accent, P.surface, 0.5),
+          edge ? 0.8 : 0.5,
+          edge ? 0.5 : 0.1,
+        );
       }
     }
   }

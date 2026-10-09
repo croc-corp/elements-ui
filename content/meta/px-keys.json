@@ -2,14 +2,24 @@
   "summary": "Typing test over a pixel keyboard where each key flashes, ripples to its neighbours, builds heat with use and turns red on a miss.",
   "attributes": [],
   "events": [
-    { "name": "done", "detail": "{ wpm: number, accuracy: number }", "description": "Fires when the typed text matches the target line. `accuracy` is a whole percentage." }
+    {
+      "name": "done",
+      "detail": "{ wpm: number, accuracy: number }",
+      "description": "Fires when the typed text matches the target line. `accuracy` is a whole percentage."
+    }
   ],
   "methods": [
-    { "signature": "reset()", "description": "Clears the input, the timer, the score and the key heat, makes the field editable again and focuses it." }
+    {
+      "signature": "reset()",
+      "description": "Clears the input, the timer, the score and the key heat, makes the field editable again and focuses it."
+    }
   ],
   "properties": [],
   "keyboard": [
-    { "keys": "Printable characters (in the input)", "action": "Flash the matching key and count the keystroke; a wrong character flashes red and lowers accuracy." }
+    {
+      "keys": "Printable characters (in the input)",
+      "action": "Flash the matching key and count the keystroke; a wrong character flashes red and lowers accuracy."
+    }
   ],
   "accessibility": [
     "The target line is read as one piece of visually hidden text, \"Type this: pixels glow when you type them\"; the coloured characters are `aria-hidden`. The input has `aria-label=\"Typing test\"` and is described by the target line.",

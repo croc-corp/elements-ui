@@ -2,35 +2,107 @@
   "kind": "react",
   "summary": "A dotted globe with connections as dotted arcs. Each landing lights the land around the destination in an uneven ring and throws sparks past the edge.",
   "props": [
-    { "name": "locations", "type": "readonly GlobeLocation[]", "default": "12 demo regions", "description": "Points on the globe: `{ id, label, lat, lon }`. Connections refer to them by `id`. Entries with an invalid latitude or longitude, or a repeated id, are skipped. An empty array shows the bare globe." },
-    { "name": "connections", "type": "readonly GlobeConnection[]", "default": "-", "description": "Connections to play: `{ id, from, to, tone? }` with location ids; `tone` is `accent`, `info`, `success`, `warning` or `destructive`. Each new `id` plays once, so the array can grow or be replaced. Without it a seeded demo stream runs; pass an empty array to play only what you `push()`." },
-    { "name": "value", "type": "string | null", "default": "-", "description": "Selected location id (controlled). Use with `onValueChange`. A new value turns the globe toward that location." },
-    { "name": "defaultValue", "type": "string | null", "default": "null", "description": "Selected location when uncontrolled." },
-    { "name": "onValueChange", "type": "(value: string | null) => void", "default": "-", "description": "Called when a location is selected or the selection is cleared (Escape, the same location again, or a tap on the globe)." },
-    { "name": "defaultCenter", "type": "LatLon", "default": "{ lat: 24, lon: 12 }", "description": "Where the globe faces on mount and where Home returns to. The latitude is limited to ±35°." },
-    { "name": "autoRotate", "type": "boolean", "default": "false", "description": "Turns the globe slowly while idle (6° per second), resuming 2.5 s after the last drag or key press. Off with reduced motion." },
-    { "name": "density", "type": "\"fine\" | \"regular\" | \"coarse\"", "default": "\"regular\"", "description": "Land dot pitch at the centre of the globe: 3, 4 or 5 px." },
+    {
+      "name": "locations",
+      "type": "readonly GlobeLocation[]",
+      "default": "12 demo regions",
+      "description": "Points on the globe: `{ id, label, lat, lon }`. Connections refer to them by `id`. Entries with an invalid latitude or longitude, or a repeated id, are skipped. An empty array shows the bare globe."
+    },
+    {
+      "name": "connections",
+      "type": "readonly GlobeConnection[]",
+      "default": "-",
+      "description": "Connections to play: `{ id, from, to, tone? }` with location ids; `tone` is `accent`, `info`, `success`, `warning` or `destructive`. Each new `id` plays once, so the array can grow or be replaced. Without it a seeded demo stream runs; pass an empty array to play only what you `push()`."
+    },
+    {
+      "name": "value",
+      "type": "string | null",
+      "default": "-",
+      "description": "Selected location id (controlled). Use with `onValueChange`. A new value turns the globe toward that location."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string | null",
+      "default": "null",
+      "description": "Selected location when uncontrolled."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string | null) => void",
+      "default": "-",
+      "description": "Called when a location is selected or the selection is cleared (Escape, the same location again, or a tap on the globe)."
+    },
+    {
+      "name": "defaultCenter",
+      "type": "LatLon",
+      "default": "{ lat: 24, lon: 12 }",
+      "description": "Where the globe faces on mount and where Home returns to. The latitude is limited to ±35°."
+    },
+    {
+      "name": "autoRotate",
+      "type": "boolean",
+      "default": "false",
+      "description": "Turns the globe slowly while idle (6° per second), resuming 2.5 s after the last drag or key press. Off with reduced motion."
+    },
+    {
+      "name": "density",
+      "type": "\"fine\" | \"regular\" | \"coarse\"",
+      "default": "\"regular\"",
+      "description": "Land dot pitch at the centre of the globe: 3, 4 or 5 px."
+    },
     { "name": "coastline", "type": "boolean", "default": "true", "description": "Draws the hairline coastline." },
-    { "name": "maxArcs", "type": "number", "default": "24", "description": "Arcs in flight at once. Further connections only add to the counts." },
-    { "name": "onArrive", "type": "(connection: GlobeConnection) => void", "default": "-", "description": "Called when a connection's packet lands. Connections beyond `maxArcs` call it at once." },
-    { "name": "label", "type": "string", "default": "\"Connections between locations\"", "description": "Accessible name of the globe. The number of locations is appended." },
-    { "name": "ref", "type": "React.Ref<GeoGlobeHandle>", "default": "-", "description": "Exposes `push()` and `flyTo()`." }
+    {
+      "name": "maxArcs",
+      "type": "number",
+      "default": "24",
+      "description": "Arcs in flight at once. Further connections only add to the counts."
+    },
+    {
+      "name": "onArrive",
+      "type": "(connection: GlobeConnection) => void",
+      "default": "-",
+      "description": "Called when a connection's packet lands. Connections beyond `maxArcs` call it at once."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Connections between locations\"",
+      "description": "Accessible name of the globe. The number of locations is appended."
+    },
+    {
+      "name": "ref",
+      "type": "React.Ref<GeoGlobeHandle>",
+      "default": "-",
+      "description": "Exposes `push()` and `flyTo()`."
+    }
   ],
   "extends": "div",
   "ref": {
     "type": "GeoGlobeHandle",
     "methods": [
-      { "signature": "push(connection: GlobeConnection): void", "description": "Plays one connection, with or without `connections`. An id that has already played is ignored. Several pushes in one handler leave as a staggered volley." },
-      { "signature": "flyTo(target: string | LatLon): void", "description": "Turns the globe toward a location id or a point. The zoom stays." }
+      {
+        "signature": "push(connection: GlobeConnection): void",
+        "description": "Plays one connection, with or without `connections`. An id that has already played is ignored. Several pushes in one handler leave as a staggered volley."
+      },
+      {
+        "signature": "flyTo(target: string | LatLon): void",
+        "description": "Turns the globe toward a location id or a point. The zoom stays."
+      }
     ]
   },
   "subcomponents": [],
   "keyboard": [
-    { "keys": "Arrow keys", "action": "On the globe: turn it 10° (30° with Shift). On a location: move to the nearest location in that direction, which turns the globe toward it." },
+    {
+      "keys": "Arrow keys",
+      "action": "On the globe: turn it 10° (30° with Shift). On a location: move to the nearest location in that direction, which turns the globe toward it."
+    },
     { "keys": "+ / -", "action": "Zoom in or out, between 0.8 and 1.6." },
     { "keys": "Home", "action": "Return to `defaultCenter` at zoom 1." },
     { "keys": "Tab", "action": "Moves from the globe to the locations, which share one tab stop, and on." },
-    { "keys": "Enter / Space", "action": "On a location: select it, or clear the selection when it is already selected." },
+    {
+      "keys": "Enter / Space",
+      "action": "On a location: select it, or clear the selection when it is already selected."
+    },
     { "keys": "Escape", "action": "Clear the selection." }
   ],
   "accessibility": [

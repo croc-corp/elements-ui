@@ -104,10 +104,21 @@ export function PxProgress({
   React.useEffect(redraw, [indeterminate, percent, done, reduced, redraw]);
 
   return (
-    <div data-slot="px-progress" data-done={done ? "" : undefined} className={cn("block text-foreground", className)} {...props}>
+    <div
+      data-slot="px-progress"
+      data-done={done ? "" : undefined}
+      className={cn("block text-foreground", className)}
+      {...props}
+    >
       <div className="mb-2 flex items-baseline justify-between gap-2.5">
-        <RollText text={done ? doneLabel : label} direction={done || indeterminate ? 1 : -1} className="text-[13px] font-medium" />
-        <span className={cn("font-mono text-[12.5px] text-muted-foreground tabular-nums", done && "text-lumesec-success")}>
+        <RollText
+          text={done ? doneLabel : label}
+          direction={done || indeterminate ? 1 : -1}
+          className="text-[13px] font-medium"
+        />
+        <span
+          className={cn("font-mono text-[12.5px] text-muted-foreground tabular-nums", done && "text-lumesec-success")}
+        >
           {indeterminate ? "" : `${Math.round(percent)}%`}
         </span>
       </div>

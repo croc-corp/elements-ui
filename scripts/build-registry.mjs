@@ -38,7 +38,9 @@ function summary(el) {
 /** What a source file imports from the registry: lib modules, components, and shadcn's `cn`. */
 function importsOf(text) {
   const lib = [...new Set([...text.matchAll(/from\s+["']@\/lib\/lumesec\/([\w-]+)["']/g)].map((m) => m[1]))];
-  const components = [...new Set([...text.matchAll(/["']@\/components\/lumesec\/([a-z0-9-]+?)(?:\.element)?["']/g)].map((m) => m[1]))];
+  const components = [
+    ...new Set([...text.matchAll(/["']@\/components\/lumesec\/([a-z0-9-]+?)(?:\.element)?["']/g)].map((m) => m[1])),
+  ];
   return { lib, components, utils: /from\s+["']@\/lib\/utils["']/.test(text) };
 }
 
@@ -52,10 +54,20 @@ items.push({
   name: "lumesec-theme",
   type: "registry:theme",
   title: "LumeSec accent tokens",
-  description: "Adds the --lumesec accent tokens (Electric, its soft shade, shine, glint, success, warning, info) to your shadcn theme, with Tailwind colours.",
+  description:
+    "Adds the --lumesec accent tokens (Electric, its soft shade, shine, glint, success, warning, info) to your shadcn theme, with Tailwind colours.",
   cssVars: {
     theme: Object.fromEntries(
-      ["lumesec", "lumesec-foreground", "lumesec-soft", "lumesec-shine", "lumesec-glint", "lumesec-success", "lumesec-warning", "lumesec-info"].map((n) => [`color-${n}`, `var(--${n})`]),
+      [
+        "lumesec",
+        "lumesec-foreground",
+        "lumesec-soft",
+        "lumesec-shine",
+        "lumesec-glint",
+        "lumesec-success",
+        "lumesec-warning",
+        "lumesec-info",
+      ].map((n) => [`color-${n}`, `var(--${n})`]),
     ),
     light: {
       lumesec: "#6219f3",
@@ -83,7 +95,8 @@ items.push({
 
 /* shared lib modules: one item each, dependencies from their own imports */
 function libFile(name) {
-  for (const ext of ["ts", "tsx"]) if (existsSync(join(LIB, `${name}.${ext}`))) return { path: `registry/lib/lumesec/${name}.${ext}`, ext };
+  for (const ext of ["ts", "tsx"])
+    if (existsSync(join(LIB, `${name}.${ext}`))) return { path: `registry/lib/lumesec/${name}.${ext}`, ext };
   throw new Error(`missing lib module @/lib/lumesec/${name}`);
 }
 
@@ -136,18 +149,30 @@ for (const el of elements) {
   const { files, imports } = componentFiles.get(el.tag);
   const deps = [r("lumesec-theme"), ...imports.lib.map((l) => r(libItemName(l))), ...(imports.utils ? ["utils"] : [])];
   // demos that host other components (a shell around a map) pull them in too
-  for (const t of new Set([...imports.components, ...(el.nested ?? []), ...(el.usage?.uses ?? [])])) if (t !== el.tag) deps.push(r(t));
+  for (const t of new Set([...imports.components, ...(el.nested ?? []), ...(el.usage?.uses ?? [])]))
+    if (t !== el.tag) deps.push(r(t));
   items.push({
     name: el.tag,
     type: "registry:component",
     title: el.title,
     // `shadcn search` and `view` show the description: say up front when a component only shows demo data
-    description: el.data === "demo" ? `Demo data (a template: it cannot show your own data yet). ${summary(el)}` : summary(el),
+    description:
+      el.data === "demo" ? `Demo data (a template: it cannot show your own data yet). ${summary(el)}` : summary(el),
     registryDependencies: [...new Set(deps)],
-    files: files.map((f) => ({ path: `registry/components/lumesec/${f}`, type: "registry:component", target: `@components/lumesec/${f}` })),
+    files: files.map((f) => ({
+      path: `registry/components/lumesec/${f}`,
+      type: "registry:component",
+      target: `@components/lumesec/${f}`,
+    })),
     categories: [el.collection, (el.group ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "-")].filter(Boolean),
     docs: `${el.title} docs: ${SITE}/components/${el.collection}/${el.slug}`,
-    meta: { tag: el.tag, collection: el.collection, react: el.component, kind: el.kind, ...(el.data ? { data: el.data } : {}) },
+    meta: {
+      tag: el.tag,
+      collection: el.collection,
+      react: el.component,
+      kind: el.kind,
+      ...(el.data ? { data: el.data } : {}),
+    },
   });
 }
 
@@ -208,7 +233,11 @@ for (const c of collections) {
   bundles++;
   await build({
     ...bundle,
-    stdin: { contents: tags.map((t) => `import "@/components/lumesec/${t}.element";`).join("\n"), resolveDir: ROOT, loader: "js" },
+    stdin: {
+      contents: tags.map((t) => `import "@/components/lumesec/${t}.element";`).join("\n"),
+      resolveDir: ROOT,
+      loader: "js",
+    },
     outfile: join(cdn, `${c.slug}.js`),
   });
 }

@@ -1,18 +1,25 @@
 {
   "summary": "Carousel of four procedural pixel scenes with an ordered-dither dissolve between slides; autoplay pauses on hover or focus.",
   "attributes": [
-    { "name": "autoplay", "type": "boolean", "default": "false", "description": "Presence attribute. Advances every 5 s, draws a progress line along the bottom and shows a button that stops and starts the rotation. Pauses while hovered, focused or off-screen. Observed, so it can be added or removed at any time." }
+    {
+      "name": "autoplay",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Advances every 5 s, draws a progress line along the bottom and shows a button that stops and starts the rotation. Pauses while hovered, focused or off-screen. Observed, so it can be added or removed at any time."
+    }
   ],
   "events": [
-    { "name": "change", "detail": "{ index: number }", "description": "Fires when the slide changes, by user action or autoplay. `index` is zero-based." }
+    {
+      "name": "change",
+      "detail": "{ index: number }",
+      "description": "Fires when the slide changes, by user action or autoplay. `index` is zero-based."
+    }
   ],
   "methods": [
     { "signature": "go(index: number)", "description": "Shows the slide at `index`; values outside 0–3 wrap around." }
   ],
   "properties": [],
-  "keyboard": [
-    { "keys": "ArrowLeft / ArrowRight", "action": "Previous or next slide, wrapping." }
-  ],
+  "keyboard": [{ "keys": "ArrowLeft / ArrowRight", "action": "Previous or next slide, wrapping." }],
   "accessibility": [
     "The slide area is a focusable `role=\"region\"` with `aria-roledescription=\"carousel\"` and `aria-label=\"Pixel scenes\"`.",
     "The canvas has `role=\"img\"` and an `aria-label` such as `Slide 1 of 4: Aurora over the ridge`.",

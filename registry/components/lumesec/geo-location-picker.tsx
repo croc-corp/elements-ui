@@ -148,7 +148,10 @@ export function GeoLocationPicker({
   const showInvalid = invalid && !pin;
 
   const placeAtPin = React.useMemo(
-    () => (pinLat === null || pinLon === null ? null : (list.find((place) => place.lat === pinLat && place.lon === pinLon) ?? null)),
+    () =>
+      pinLat === null || pinLon === null
+        ? null
+        : (list.find((place) => place.lat === pinLat && place.lon === pinLon) ?? null),
     [list, pinLat, pinLon],
   );
   const awayKm = placeAtPin && snapped && snapped.id === placeAtPin.id ? snapped.km : 0;
@@ -342,7 +345,8 @@ export function GeoLocationPicker({
     const press = pressRef.current;
     if (!press || press.id !== event.pointerId) return;
     pressRef.current = null;
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+    if (event.currentTarget.hasPointerCapture(event.pointerId))
+      event.currentTarget.releasePointerCapture(event.pointerId);
     if (press.panning) {
       engineRef.current.endDrag();
       setDragging(false);
@@ -370,7 +374,10 @@ export function GeoLocationPicker({
   /** Moves the pin by whole degrees from the keyboard, with the small drop, and keeps it in view. */
   function movePin(deltaLat: number, deltaLon: number) {
     if (!pin) return;
-    const next = roundPoint({ lat: clamp(pin.lat + deltaLat, LAT_RANGE[0], LAT_RANGE[1]), lon: pin.lon + deltaLon }, digits);
+    const next = roundPoint(
+      { lat: clamp(pin.lat + deltaLat, LAT_RANGE[0], LAT_RANGE[1]), lon: pin.lon + deltaLon },
+      digits,
+    );
     commit(next, KEY_DROP);
     engineRef.current.reveal(next, prefersReducedMotion());
     loop.kick();
@@ -428,7 +435,8 @@ export function GeoLocationPicker({
   /* Search */
 
   function pick(option: SearchOption) {
-    const point = option.kind === "place" ? { lat: option.place.lat, lon: option.place.lon } : roundPoint(option.point, digits);
+    const point =
+      option.kind === "place" ? { lat: option.place.lat, lon: option.place.lon } : roundPoint(option.point, digits);
     setQuery(option.kind === "place" ? option.place.label : formatLatLon(point, "signed", digits));
     setOpen(false);
     const engine = engineRef.current;
@@ -584,7 +592,7 @@ export function GeoLocationPicker({
               setDraft(null);
             }}
             onKeyDown={(event) => handleFieldKeyDown(axis, event)}
-            className="peer block size-full rounded-md border border-border bg-card px-2 text-right font-mono text-[12.5px] text-transparent tabular-nums caret-foreground outline-none transition-[border-color,box-shadow] duration-150 focus:border-[color-mix(in_srgb,var(--lumesec)_65%,var(--border))] focus:text-foreground focus:ring-[3px] focus:ring-lumesec/14 disabled:cursor-not-allowed motion-reduce:transition-none"
+            className="peer block size-full rounded-md border border-border bg-card px-2 text-right font-mono text-[12.5px] text-transparent tabular-nums caret-foreground transition-[border-color,box-shadow] duration-150 outline-none focus:border-[color-mix(in_srgb,var(--lumesec)_65%,var(--border))] focus:text-foreground focus:ring-[3px] focus:ring-lumesec/14 disabled:cursor-not-allowed motion-reduce:transition-none"
           />
           <span
             aria-hidden="true"
@@ -616,7 +624,15 @@ export function GeoLocationPicker({
     >
       <div className="relative">
         <div className="flex h-9 items-center gap-2 rounded-lg border border-border bg-card px-2.5 transition-[border-color,box-shadow] duration-150 focus-within:border-[color-mix(in_srgb,var(--lumesec)_65%,var(--border))] focus-within:ring-[3px] focus-within:ring-lumesec/14 motion-reduce:transition-none">
-          <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" className="size-4 flex-none text-muted-foreground">
+          <svg
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            strokeLinecap="round"
+            className="size-4 flex-none text-muted-foreground"
+          >
             <circle cx="7" cy="7" r="4.6" />
             <path d="M10.5 10.5l3.5 3.5" />
           </svg>
@@ -662,7 +678,15 @@ export function GeoLocationPicker({
                   >
                     {option.kind === "coords" ? (
                       <>
-                        <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" className="size-3.5 flex-none text-muted-foreground">
+                        <svg
+                          viewBox="0 0 16 16"
+                          aria-hidden="true"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={1.4}
+                          strokeLinecap="round"
+                          className="size-3.5 flex-none text-muted-foreground"
+                        >
                           <circle cx="8" cy="8" r="4.5" />
                           <path d="M8 1.5v3M8 11.5v3M1.5 8h3M11.5 8h3" />
                         </svg>
@@ -673,7 +697,11 @@ export function GeoLocationPicker({
                     ) : (
                       <>
                         <span className="min-w-0 truncate">
-                          <FuzzyHighlight text={option.place.label} indices={option.indices} markClassName="bg-transparent font-semibold text-lumesec" />
+                          <FuzzyHighlight
+                            text={option.place.label}
+                            indices={option.indices}
+                            markClassName="bg-transparent font-semibold text-lumesec"
+                          />
                         </span>
                         <span className="ml-auto flex-none pl-2 font-mono text-[11.5px] text-muted-foreground tabular-nums">
                           {formatLatLon(option.place, "decimal", 2)}
@@ -684,7 +712,9 @@ export function GeoLocationPicker({
                 ))}
               </div>
             ) : (
-              <p className="m-0 px-2 py-1.5 text-[12.5px] leading-5 text-muted-foreground">No places match. Coordinates work too: 6.52, 3.38.</p>
+              <p className="m-0 px-2 py-1.5 text-[12.5px] leading-5 text-muted-foreground">
+                No places match. Coordinates work too: 6.52, 3.38.
+              </p>
             )}
           </div>
         ) : null}
@@ -712,13 +742,17 @@ export function GeoLocationPicker({
             onPointerCancel={(event) => endPress(event, true)}
             onKeyDown={handleMapKeyDown}
             className={cn(
-              "relative w-full overflow-hidden rounded-lg outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec",
+              "relative w-full overflow-hidden rounded-lg outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
               zoomed ? "cursor-grab touch-none data-[dragging]:cursor-grabbing" : "cursor-crosshair touch-pan-y",
             )}
             style={{ aspectRatio: MAP_ASPECT }}
           >
             <canvas ref={baseRef} aria-hidden="true" className="pointer-events-none absolute inset-0 block size-full" />
-            <canvas ref={overlayRef} aria-hidden="true" className="pointer-events-none absolute inset-0 z-[1] block size-full" />
+            <canvas
+              ref={overlayRef}
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-[1] block size-full"
+            />
             <div
               ref={pinRef}
               aria-hidden="true"
@@ -726,9 +760,16 @@ export function GeoLocationPicker({
               className="pointer-events-none absolute z-[2] size-0 transition-opacity duration-150 will-change-transform data-[hidden]:opacity-0 motion-reduce:transition-none"
               style={{ left: percent(pinOrigin.x), top: percent(pinOrigin.y) }}
             >
-              <span ref={shadowRef} className="absolute -top-0.5 -left-0.5 block size-1 rounded-full bg-foreground/25" />
+              <span
+                ref={shadowRef}
+                className="absolute -top-0.5 -left-0.5 block size-1 rounded-full bg-foreground/25"
+              />
               <div ref={liftRef} className="absolute -top-6 -left-[9px] h-6 w-[18px] will-change-transform">
-                <svg ref={markerRef} viewBox="0 0 18 24" className="block size-full origin-bottom overflow-visible drop-shadow-[0_1px_1px_rgb(0_0_0/0.22)]">
+                <svg
+                  ref={markerRef}
+                  viewBox="0 0 18 24"
+                  className="block size-full origin-bottom overflow-visible drop-shadow-[0_1px_1px_rgb(0_0_0/0.22)]"
+                >
                   <path d={PIN_PATH} fill="var(--lumesec)" stroke="var(--card)" strokeWidth={1} />
                   <circle cx="9" cy="8.75" r="2.6" fill="var(--card)" />
                 </svg>
@@ -765,10 +806,20 @@ export function GeoLocationPicker({
         </div>
 
         <div className="flex h-7 items-end gap-3 px-1 pb-0.5 text-[12px] leading-4">
-          <span id={statusId} className={cn("min-w-0 truncate", pin ? "text-foreground" : "text-muted-foreground", showInvalid && "text-destructive")}>
+          <span
+            id={statusId}
+            className={cn(
+              "min-w-0 truncate",
+              pin ? "text-foreground" : "text-muted-foreground",
+              showInvalid && "text-destructive",
+            )}
+          >
             {showInvalid ? REQUIRED_MESSAGE : status}
           </span>
-          <span aria-hidden="true" className="ml-auto shrink-0 font-mono text-[11.5px] text-muted-foreground tabular-nums">
+          <span
+            aria-hidden="true"
+            className="ml-auto shrink-0 font-mono text-[11.5px] text-muted-foreground tabular-nums"
+          >
             <RollingNumber value={shownZoom} text={zoomText(shownZoom)} />
           </span>
         </div>
@@ -781,7 +832,7 @@ export function GeoLocationPicker({
           type="button"
           disabled={disabled || !pin}
           onClick={clearPin}
-          className="ml-auto h-8 cursor-pointer rounded-md border-0 bg-transparent px-2.5 font-[inherit] text-[12.5px] font-medium text-muted-foreground outline-none transition-colors duration-150 hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-solid focus-visible:outline-lumesec disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground motion-reduce:transition-none"
+          className="ml-auto h-8 cursor-pointer rounded-md border-0 bg-transparent px-2.5 font-[inherit] text-[12.5px] font-medium text-muted-foreground transition-colors duration-150 outline-none hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground motion-reduce:transition-none"
         >
           Clear
         </button>
@@ -793,7 +844,12 @@ export function GeoLocationPicker({
 
       {name && pin ? (
         submitAs === "pair" ? (
-          <input type="hidden" name={name} value={`${editText(pin.lat, digits)},${editText(pin.lon, digits)}`} disabled={disabled} />
+          <input
+            type="hidden"
+            name={name}
+            value={`${editText(pin.lat, digits)},${editText(pin.lon, digits)}`}
+            disabled={disabled}
+          />
         ) : (
           <>
             <input type="hidden" name={`${name}-lat`} value={editText(pin.lat, digits)} disabled={disabled} />
@@ -808,7 +864,17 @@ export function GeoLocationPicker({
 /* Parts ----------------------------------------------------------------------------------------------- */
 
 /** A 24 px icon button of the zoom group over the map. */
-function MapButton({ label, disabled, onClick, children }: { label: string; disabled: boolean; onClick: () => void; children: React.ReactNode }) {
+function MapButton({
+  label,
+  disabled,
+  onClick,
+  children,
+}: {
+  label: string;
+  disabled: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
   return (
     <button
       type="button"
@@ -816,9 +882,18 @@ function MapButton({ label, disabled, onClick, children }: { label: string; disa
       title={label}
       disabled={disabled}
       onClick={onClick}
-      className="grid size-6 cursor-pointer place-items-center border-0 bg-transparent p-0 text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
+      className="grid size-6 cursor-pointer place-items-center border-0 bg-transparent p-0 text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
     >
-      <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
+      <svg
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="size-3.5"
+      >
         {children}
       </svg>
     </button>
@@ -864,7 +939,9 @@ function searchOptions(query: string, places: readonly PickerPlace[], digits: nu
     })
     .sort((a, b) => b.score - a.score)
     .slice(0, MAX_RESULTS);
-  ranked.forEach(({ place, indices }, i) => options.push({ kind: "place", key: `place:${i}:${place.id}`, place, indices }));
+  ranked.forEach(({ place, indices }, i) =>
+    options.push({ kind: "place", key: `place:${i}:${place.id}`, place, indices }),
+  );
   return options;
 }
 
@@ -920,13 +997,21 @@ function parseAxis(text: string, axis: Axis): number | null {
 function originOf(point: LatLon | null) {
   if (!point) return { x: 0.5, y: 0.5 };
   const lat = clamp(point.lat, LAT_RANGE[0], LAT_RANGE[1]);
-  return { x: clamp((wrapLongitude(point.lon) + 180) / 360, 0, 1), y: (LAT_RANGE[1] - lat) / (LAT_RANGE[1] - LAT_RANGE[0]) };
+  return {
+    x: clamp((wrapLongitude(point.lon) + 180) / 360, 0, 1),
+    y: (LAT_RANGE[1] - lat) / (LAT_RANGE[1] - LAT_RANGE[0]),
+  };
 }
 
 /* Constants ------------------------------------------------------------------------------------------- */
 
 /** The 60 demo cities as places. */
-const DEMO_PLACES: readonly PickerPlace[] = DEMO_CITIES.map((city) => ({ id: city.id, label: city.name, lat: city.lat, lon: city.lon }));
+const DEMO_PLACES: readonly PickerPlace[] = DEMO_CITIES.map((city) => ({
+  id: city.id,
+  label: city.name,
+  lat: city.lat,
+  lon: city.lon,
+}));
 
 /** Equirectangular strip from 60° S to 78° N; the view centre at zoom 1 is its middle. */
 const LAT_RANGE: readonly [number, number] = [-60, 78];
@@ -1190,7 +1275,11 @@ class PickerMap {
     if (!box || !this.fit) return;
     this.stopFlight();
     const scale = this.fit * this.target.zoom;
-    this.setTarget(this.target.zoom, this.target.lat + (shareY * box.height) / scale, this.target.lon + (shareX * box.width) / scale);
+    this.setTarget(
+      this.target.zoom,
+      this.target.lat + (shareY * box.height) / scale,
+      this.target.lon + (shareX * box.width) / scale,
+    );
     if (reduced) this.jump();
   }
 
@@ -1425,10 +1514,24 @@ class PickerMap {
   private world(): Bake {
     if (this.worldBake) return this.worldBake;
     const box = this.box ?? { width: 1, height: 1 };
-    const projection = createProjection("equirectangular", { width: box.width, height: box.height, latRange: LAT_RANGE });
+    const projection = createProjection("equirectangular", {
+      width: box.width,
+      height: box.height,
+      latRange: LAT_RANGE,
+    });
     const lattice = mapLattice(projection, { pitch: PITCH });
     const frame = projection.frame;
-    this.worldBake = { lattice, world: true, zoom: 1, lat: HOME.lat, lon: HOME.lon, x0: frame.x0, y0: frame.y0, x1: frame.x1, y1: frame.y1 };
+    this.worldBake = {
+      lattice,
+      world: true,
+      zoom: 1,
+      lat: HOME.lat,
+      lon: HOME.lon,
+      x0: frame.x0,
+      y0: frame.y0,
+      x1: frame.x1,
+      y1: frame.y1,
+    };
     return this.worldBake;
   }
 
@@ -1623,7 +1726,10 @@ class PickerMap {
 
     const point = this.point;
     const ink = this.ink;
-    const layer = this.layers.reduce<Layer | null>((best, item) => (!best || item.alpha > best.alpha ? item : best), null);
+    const layer = this.layers.reduce<Layer | null>(
+      (best, item) => (!best || item.alpha > best.alpha ? item : best),
+      null,
+    );
     if (!point || !ink || !layer || this.held > 0) return;
     const splash = this.splash;
     const t = splash ? (now - splash.start) / 1000 : 0;

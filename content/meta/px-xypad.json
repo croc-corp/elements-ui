@@ -2,11 +2,22 @@
   "summary": "Two-axis pad for temperature and top-p on a glowing pixel field; on release the puck springs onto the nearest 0.05 step.",
   "attributes": [],
   "events": [
-    { "name": "input", "detail": "{ x: number, y: number }", "description": "Fires continuously while dragging. Values are 0 to 1, rounded to two decimals; `x` is temperature, `y` is top-p." },
-    { "name": "change", "detail": "{ x: number, y: number }", "description": "Fires when the puck settles: on pointer release (snapped to 0.05), on arrow keys and on double-click reset." }
+    {
+      "name": "input",
+      "detail": "{ x: number, y: number }",
+      "description": "Fires continuously while dragging. Values are 0 to 1, rounded to two decimals; `x` is temperature, `y` is top-p."
+    },
+    {
+      "name": "change",
+      "detail": "{ x: number, y: number }",
+      "description": "Fires when the puck settles: on pointer release (snapped to 0.05), on arrow keys and on double-click reset."
+    }
   ],
   "methods": [
-    { "signature": "settle(x: number, y: number)", "description": "Springs the puck to the given position (each axis limited to 0 to 1) and fires `change`. Values that are not finite numbers are ignored." }
+    {
+      "signature": "settle(x: number, y: number)",
+      "description": "Springs the puck to the given position (each axis limited to 0 to 1) and fires `change`. Values that are not finite numbers are ignored."
+    }
   ],
   "properties": [],
   "keyboard": [

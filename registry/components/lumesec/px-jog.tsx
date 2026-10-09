@@ -17,10 +17,5 @@ export type PxJogProps = LumesecElementProps<PxJogElement>;
  * @see https://elements.lumesec.ai/components/pixel-lab/jog
  */
 export function PxJog({ ...props }: PxJogProps) {
-  return useLumesecElement(
-    "px-jog",
-    props,
-    {},
-    {},
-  );
+  return useLumesecElement("px-jog", props, {}, {});
 }

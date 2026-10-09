@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-split.element";
 /** The `<hf-split>` element, with its properties and methods. */
 export type HfSplitElement = ElementModule.HSplit;
 
-export interface HfSplitProps extends Omit<LumesecElementProps<HfSplitElement>, "items" | "menuLabel" | "onAction" | "onSelect"> {
+export interface HfSplitProps extends Omit<
+  LumesecElementProps<HfSplitElement>,
+  "items" | "menuLabel" | "onAction" | "onSelect"
+> {
   /** Menu entries separated by `;`, each `Label|Description` with an optional description; entries without a label are skipped. The first entry starts selected. Observed: a change rebuilds the menu and keeps the selection when its label is still there. Default: `Deploy to production|Ships to everyone after checks;Deploy to staging|Internal testers only;Create preview|A unique URL for this branch;Schedule deploy…|Pick a time tonight`. */
   items?: string;
   /** Accessible name of the caret button that opens the menu. Observed. Default: `More options`. */
@@ -27,7 +30,7 @@ export function HfSplit({ items, menuLabel, onAction, onSelect, ...props }: HfSp
   return useLumesecElement(
     "hf-split",
     props,
-    { "items": items, "menu-label": menuLabel },
-    { "action": onAction, "select": onSelect },
+    { items: items, "menu-label": menuLabel },
+    { action: onAction, select: onSelect },
   );
 }

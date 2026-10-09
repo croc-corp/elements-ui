@@ -5,7 +5,10 @@
   "methods": [],
   "properties": [],
   "keyboard": [
-    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "action": "In the time-zone switch: select and focus the previous or next zone, wrapping at the ends." }
+    {
+      "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown",
+      "action": "In the time-zone switch: select and focus the previous or next zone, wrapping at the ends."
+    }
   ],
   "accessibility": [
     "The time-zone switch is a `role=\"radiogroup\"` with `aria-label=\"Time zone\"`; each option has `role=\"radio\"` and `aria-checked`. Only the checked option is in the tab order; arrow keys move the selection.",

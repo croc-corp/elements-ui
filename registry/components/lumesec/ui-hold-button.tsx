@@ -61,7 +61,10 @@ export function UiHoldButton({
   onBlur,
   ...props
 }: UiHoldButtonProps) {
-  const [labelState, setLabelState] = React.useState<{ kind: LabelKind; direction: number }>({ kind: "idle", direction: 1 });
+  const [labelState, setLabelState] = React.useState<{ kind: LabelKind; direction: number }>({
+    kind: "idle",
+    direction: 1,
+  });
   const [done, setDone] = React.useState(false);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -224,7 +227,7 @@ export function UiHoldButton({
       data-state={done ? "done" : "idle"}
       className={cn(
         "relative inline-flex h-[38px] cursor-pointer touch-none items-center rounded-[10px] border border-[color-mix(in_srgb,var(--destructive)_38%,var(--border))] bg-card pr-4 pl-[13px] font-[inherit] text-[13.5px] leading-normal font-medium text-destructive outline-none select-none disabled:pointer-events-none disabled:opacity-50",
-        "focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
         className,
       )}
       onPointerDown={(event) => {
@@ -280,7 +283,7 @@ export function UiHoldButton({
         <svg
           viewBox="0 0 16 16"
           aria-hidden="true"
-          className="size-4 overflow-visible fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.6]"
+          className="size-4 overflow-visible fill-none stroke-current [stroke-width:1.6] [stroke-linecap:round] [stroke-linejoin:round]"
         >
           <g ref={lidRef} className="origin-[13.5px_4px] [transform-box:view-box]">
             <path d="M2.5 4h11" />

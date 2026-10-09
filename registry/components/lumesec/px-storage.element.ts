@@ -54,7 +54,7 @@ const SIZE = 200;
 const CENTER = 100;
 
 /** Fraction of a full turn clockwise from 12 o'clock for an offset from the centre. */
-const turnOf = (dx: number, dy: number): number => ((Math.atan2(dx, -dy) % TAU) + TAU) % TAU / TAU;
+const turnOf = (dx: number, dy: number): number => (((Math.atan2(dx, -dy) % TAU) + TAU) % TAU) / TAU;
 
 /** Index of the segment covering the turn fraction `f`, or -1. */
 const segmentOf = (f: number): number => RANGES.findIndex(([a, b]) => f >= a && f < b);

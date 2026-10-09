@@ -5,7 +5,17 @@ import { usePathname } from "next/navigation";
 import * as React from "react";
 import { createPortal } from "react-dom";
 
-import { ArrowRightIcon, ArrowUpRightIcon, BookIcon, CloseIcon, CollectionGlyph, GitHubIcon, GridIcon, LayersIcon, SearchIcon } from "@/components/icons";
+import {
+  ArrowRightIcon,
+  ArrowUpRightIcon,
+  BookIcon,
+  CloseIcon,
+  CollectionGlyph,
+  GitHubIcon,
+  GridIcon,
+  LayersIcon,
+  SearchIcon,
+} from "@/components/icons";
 import { LumeSecLockup } from "@/components/site/lumesec-logo";
 import type { NavCollection } from "@/components/site/header";
 import { ProductMark } from "@/components/site/product-mark";
@@ -28,7 +38,17 @@ const CLOSE_DISTANCE = 96;
  * focus moves into it, the page behind cannot scroll, and Escape, the backdrop, the close button or
  * dragging the handle down closes it. Navigating closes it too (the header keys it to the path).
  */
-export function MobileSheet({ open, onClose, collections, total }: { open: boolean; onClose: () => void; collections: NavCollection[]; total: number }) {
+export function MobileSheet({
+  open,
+  onClose,
+  collections,
+  total,
+}: {
+  open: boolean;
+  onClose: () => void;
+  collections: NavCollection[];
+  total: number;
+}) {
   const pathname = usePathname();
   const { open: openSearch } = useSearch();
   const sheetRef = React.useRef<HTMLDivElement>(null);
@@ -112,7 +132,10 @@ export function MobileSheet({ open, onClose, collections, total }: { open: boole
         aria-label="Close menu"
         tabIndex={-1}
         onClick={close}
-        className={cn("absolute inset-0 bg-black/45 backdrop-blur-[2px] transition-opacity duration-300", shown ? "opacity-100" : "opacity-0")}
+        className={cn(
+          "absolute inset-0 bg-black/45 backdrop-blur-[2px] transition-opacity duration-300",
+          shown ? "opacity-100" : "opacity-0",
+        )}
       />
       <div
         ref={sheetRef}
@@ -123,7 +146,9 @@ export function MobileSheet({ open, onClose, collections, total }: { open: boole
         style={{ transform: shown ? `translateY(${drag}px)` : "translateY(100%)" }}
         className={cn(
           "absolute inset-x-0 bottom-0 flex max-h-[88dvh] flex-col rounded-t-[22px] border-t border-border bg-popover text-popover-foreground shadow-[0_-20px_60px_-20px_rgb(0_0_0/0.5)] outline-none",
-          drag ? "transition-none" : "transition-transform duration-300 ease-[var(--ease-expo)] motion-reduce:transition-none",
+          drag
+            ? "transition-none"
+            : "transition-transform duration-300 ease-[var(--ease-expo)] motion-reduce:transition-none",
         )}
       >
         {/* drag handle and title */}
@@ -192,7 +217,10 @@ export function MobileSheet({ open, onClose, collections, total }: { open: boole
                     href={`/components/${c.slug}`}
                     onClick={close}
                     aria-current={active ? "page" : undefined}
-                    className={cn("flex items-center gap-3 px-3.5 py-3 text-[15px] transition-colors active:bg-muted", active && "bg-muted/60")}
+                    className={cn(
+                      "flex items-center gap-3 px-3.5 py-3 text-[15px] transition-colors active:bg-muted",
+                      active && "bg-muted/60",
+                    )}
                   >
                     <CollectionGlyph slug={c.slug} className="text-muted-foreground" />
                     <span className="flex-1">{c.title}</span>
@@ -210,7 +238,12 @@ export function MobileSheet({ open, onClose, collections, total }: { open: boole
               { href: "/docs/react", label: "React" },
               { href: "/docs/changelog", label: "Changelog" },
             ].map((l) => (
-              <Link key={l.href} href={l.href} onClick={close} className="rounded-xl px-3.5 py-2.5 text-muted-foreground transition-colors active:bg-muted">
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={close}
+                className="rounded-xl px-3.5 py-2.5 text-muted-foreground transition-colors active:bg-muted"
+              >
                 {l.label}
               </Link>
             ))}
@@ -219,7 +252,13 @@ export function MobileSheet({ open, onClose, collections, total }: { open: boole
           <p className="mt-5 mb-1.5 font-mono text-[11px] text-muted-foreground">From LumeSec</p>
           <div className="grid grid-cols-2 gap-2">
             {PRODUCTS.map((p) => (
-              <a key={p.id} href={p.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 rounded-xl border border-border bg-background p-2.5 transition-colors active:bg-muted">
+              <a
+                key={p.id}
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2.5 rounded-xl border border-border bg-background p-2.5 transition-colors active:bg-muted"
+              >
                 <ProductMark id={p.id} className="size-8" />
                 <span className="min-w-0">
                   <span className="block text-[13px] leading-tight font-medium">{p.name}</span>

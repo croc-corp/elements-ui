@@ -2,14 +2,44 @@
   "kind": "react",
   "summary": "Rotary dial that follows the pointer around a 270° arc, flashing a tick and rolling the value at each detent, then springs onto the step.",
   "props": [
-    { "name": "value", "type": "number", "default": "-", "description": "Controlled value, snapped to `step` and clamped to `min` and `max`. Use with `onValueChange`." },
+    {
+      "name": "value",
+      "type": "number",
+      "default": "-",
+      "description": "Controlled value, snapped to `step` and clamped to `min` and `max`. Use with `onValueChange`."
+    },
     { "name": "defaultValue", "type": "number", "default": "0.7", "description": "Initial value when uncontrolled." },
     { "name": "min", "type": "number", "default": "0", "description": "Lowest value." },
-    { "name": "max", "type": "number", "default": "1", "description": "Highest value. A `max` below `min` is treated as `min`." },
-    { "name": "step", "type": "number", "default": "0.1", "description": "Detent size, greater than 0 (anything else falls back to 1). Its decimal places set the display precision." },
-    { "name": "label", "type": "string", "default": "\"Temperature\"", "description": "Caption under the dial and the slider's `aria-label`." },
-    { "name": "onValueChange", "type": "(value: number) => void", "default": "-", "description": "Called on every detent change from drag, wheel or keys." },
-    { "name": "onValueCommit", "type": "(value: number) => void", "default": "-", "description": "Called with each wheel or key step, and when a drag ends, even if the value did not change." }
+    {
+      "name": "max",
+      "type": "number",
+      "default": "1",
+      "description": "Highest value. A `max` below `min` is treated as `min`."
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "default": "0.1",
+      "description": "Detent size, greater than 0 (anything else falls back to 1). Its decimal places set the display precision."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Temperature\"",
+      "description": "Caption under the dial and the slider's `aria-label`."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: number) => void",
+      "default": "-",
+      "description": "Called on every detent change from drag, wheel or keys."
+    },
+    {
+      "name": "onValueCommit",
+      "type": "(value: number) => void",
+      "default": "-",
+      "description": "Called with each wheel or key step, and when a drag ends, even if the value did not change."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },

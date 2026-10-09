@@ -77,10 +77,7 @@ class HGauge extends HF {
     const z = (this.getAttribute("zones") || "60,85").split(",").map((s) => parseFloat(s));
     const threshold = (k: number, fallback: number): number => (Number.isFinite(z[k]) ? z[k] : fallback);
     const range = this.max - this.min || 1;
-    return [
-      clamp((threshold(0, 60) - this.min) / range, 0, 1),
-      clamp((threshold(1, 85) - this.min) / range, 0, 1),
-    ];
+    return [clamp((threshold(0, 60) - this.min) / range, 0, 1), clamp((threshold(1, 85) - this.min) / range, 0, 1)];
   }
 
   protected override init(): void {

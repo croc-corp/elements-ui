@@ -2,14 +2,54 @@
   "kind": "react",
   "summary": "A pill with a tiny dotted globe, a region name and its latency. On a region change the globe turns to it and a ring pings across its dots.",
   "props": [
-    { "name": "region", "type": "string | GeoRegion", "default": "\"eu-central\"", "description": "Region id looked up in `regions`, or a region object `{ id, label, city, lat, lon, timeZone }`. An id that is not in `regions` shows the raw id and leaves the globe where it is, without a marker." },
-    { "name": "regions", "type": "readonly GeoRegion[]", "default": "DEMO_REGIONS", "description": "Lookup list for string ids. The default is 16 generic regions (`us-east`, `eu-central`, `ap-northeast` and others) at real metro coordinates." },
-    { "name": "latency", "type": "number", "default": "-", "description": "Round trip in milliseconds, shown after the name as `18 ms` (from 1,000 ms in seconds, `1.24 s`). Each digit rolls toward a new value. Omit to hide it." },
-    { "name": "status", "type": "\"operational\" | \"degraded\" | \"outage\"", "default": "-", "description": "Adds a status dot: `--lumesec-success`, `--lumesec-warning` or `--destructive`. Degraded and outage get a soft halo; a change pops the dot and sends one ripple out." },
-    { "name": "size", "type": "\"sm\" | \"md\"", "default": "\"md\"", "description": "`md` is 30 px tall with a 24 px globe and 12.5 px text, `sm` is 26 px tall with a 20 px globe and 12 px text." },
-    { "name": "label", "type": "string", "default": "-", "description": "Text shown instead of the region's label. The globe still follows `region`." },
-    { "name": "onClick", "type": "(event: React.MouseEvent<HTMLButtonElement>) => void", "default": "-", "description": "Renders the badge as a native `button type=\"button\"` with a hover border and a focus ring, and calls this on click." },
-    { "name": "ref", "type": "React.Ref<HTMLElement>", "default": "-", "description": "The root element: a `span`, or a `button` when `onClick` is set." }
+    {
+      "name": "region",
+      "type": "string | GeoRegion",
+      "default": "\"eu-central\"",
+      "description": "Region id looked up in `regions`, or a region object `{ id, label, city, lat, lon, timeZone }`. An id that is not in `regions` shows the raw id and leaves the globe where it is, without a marker."
+    },
+    {
+      "name": "regions",
+      "type": "readonly GeoRegion[]",
+      "default": "DEMO_REGIONS",
+      "description": "Lookup list for string ids. The default is 16 generic regions (`us-east`, `eu-central`, `ap-northeast` and others) at real metro coordinates."
+    },
+    {
+      "name": "latency",
+      "type": "number",
+      "default": "-",
+      "description": "Round trip in milliseconds, shown after the name as `18 ms` (from 1,000 ms in seconds, `1.24 s`). Each digit rolls toward a new value. Omit to hide it."
+    },
+    {
+      "name": "status",
+      "type": "\"operational\" | \"degraded\" | \"outage\"",
+      "default": "-",
+      "description": "Adds a status dot: `--lumesec-success`, `--lumesec-warning` or `--destructive`. Degraded and outage get a soft halo; a change pops the dot and sends one ripple out."
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "default": "\"md\"",
+      "description": "`md` is 30 px tall with a 24 px globe and 12.5 px text, `sm` is 26 px tall with a 20 px globe and 12 px text."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "-",
+      "description": "Text shown instead of the region's label. The globe still follows `region`."
+    },
+    {
+      "name": "onClick",
+      "type": "(event: React.MouseEvent<HTMLButtonElement>) => void",
+      "default": "-",
+      "description": "Renders the badge as a native `button type=\"button\"` with a hover border and a focus ring, and calls this on click."
+    },
+    {
+      "name": "ref",
+      "type": "React.Ref<HTMLElement>",
+      "default": "-",
+      "description": "The root element: a `span`, or a `button` when `onClick` is set."
+    }
   ],
   "extends": "span",
   "ref": { "type": "HTMLElement", "methods": [] },
@@ -49,7 +89,25 @@
   "playground": {
     "props": { "region": "eu-central", "latency": 18, "status": "operational" },
     "controls": [
-      { "name": "region", "kind": "enum", "options": ["eu-central", "us-east", "us-west", "sa-east", "eu-west", "eu-north", "me-central", "af-south", "ap-south", "ap-southeast", "ap-northeast", "au-east"], "default": "eu-central" },
+      {
+        "name": "region",
+        "kind": "enum",
+        "options": [
+          "eu-central",
+          "us-east",
+          "us-west",
+          "sa-east",
+          "eu-west",
+          "eu-north",
+          "me-central",
+          "af-south",
+          "ap-south",
+          "ap-southeast",
+          "ap-northeast",
+          "au-east"
+        ],
+        "default": "eu-central"
+      },
       { "name": "latency", "kind": "number", "options": null, "default": "18" },
       { "name": "status", "kind": "enum", "options": ["operational", "degraded", "outage"], "default": "operational" },
       { "name": "size", "kind": "enum", "options": ["sm", "md"], "default": "md" }

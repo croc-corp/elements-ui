@@ -1,4 +1,5 @@
-const FOCUSABLE = "a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]";
+const FOCUSABLE =
+  "a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]";
 
 /**
  * Keeps Tab and Shift+Tab inside a modal `container`: from the last focusable element to the first and back.
@@ -6,7 +7,9 @@ const FOCUSABLE = "a[href], button:not([disabled]), input:not([disabled]), selec
  */
 export function trapTab(event: KeyboardEvent, container: HTMLElement) {
   if (event.key !== "Tab") return;
-  const items = [...container.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((el) => el.tabIndex >= 0 && !el.closest("[inert]"));
+  const items = [...container.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
+    (el) => el.tabIndex >= 0 && !el.closest("[inert]"),
+  );
   if (!items.length) return;
   const first = items[0];
   const last = items[items.length - 1];

@@ -20,10 +20,5 @@ export interface PxDissolveProps extends Omit<LumesecElementProps<PxDissolveElem
  * @see https://elements.lumesec.ai/components/pixel-lab/dissolve
  */
 export function PxDissolve({ onDelete, ...props }: PxDissolveProps) {
-  return useLumesecElement(
-    "px-dissolve",
-    props,
-    {},
-    { "delete": onDelete },
-  );
+  return useLumesecElement("px-dissolve", props, {}, { delete: onDelete });
 }

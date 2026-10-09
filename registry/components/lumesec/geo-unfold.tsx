@@ -117,7 +117,11 @@ export function GeoUnfold({
   className,
   ...props
 }: GeoUnfoldProps) {
-  const [view, setView] = useControllableState<UnfoldView>({ value: viewProp, defaultValue: defaultView, onChange: onViewChange });
+  const [view, setView] = useControllableState<UnfoldView>({
+    value: viewProp,
+    defaultValue: defaultView,
+    onChange: onViewChange,
+  });
   const routeKey = routesKey(routes);
   const routeCount = routes === undefined ? DEMO_ROUTES.length : normalizeRoutes(routes).length;
 
@@ -275,10 +279,17 @@ export function GeoUnfold({
   const showHeader = title != null || showToggle || routeCount === 0;
 
   return (
-    <div data-slot="geo-unfold" data-view={view} className={cn("grid w-full max-w-[660px] gap-3", className)} {...props}>
+    <div
+      data-slot="geo-unfold"
+      data-view={view}
+      className={cn("grid w-full max-w-[660px] gap-3", className)}
+      {...props}
+    >
       {showHeader && (
         <div className="flex min-h-7 items-center gap-3">
-          {title != null && <div className="min-w-0 truncate text-[13.5px] leading-5 font-medium text-foreground">{title}</div>}
+          {title != null && (
+            <div className="min-w-0 truncate text-[13.5px] leading-5 font-medium text-foreground">{title}</div>
+          )}
           {routeCount === 0 && <span className="text-[12px] leading-5 text-muted-foreground">No routes</span>}
           {showToggle && <ViewToggle view={view} onSelect={setView} className="ml-auto" />}
         </div>
@@ -286,11 +297,7 @@ export function GeoUnfold({
       <div
         ref={stageRef}
         role="img"
-        aria-label={
-          view === "globe"
-            ? `Globe with ${routeText}. Arrow keys turn the globe.`
-            : `Map with ${routeText}.`
-        }
+        aria-label={view === "globe" ? `Globe with ${routeText}. Arrow keys turn the globe.` : `Map with ${routeText}.`}
         aria-keyshortcuts={view === "globe" ? "ArrowLeft ArrowRight Home" : undefined}
         tabIndex={view === "globe" ? 0 : undefined}
         data-view={view}
@@ -314,7 +321,15 @@ const VIEWS: readonly UnfoldView[] = ["globe", "map"];
 const VIEW_LABELS: Record<UnfoldView, string> = { globe: "Globe", map: "Map" };
 
 /** Two radio buttons on a muted track; the card-coloured pill slides between them on an under-damped spring. */
-function ViewToggle({ view, onSelect, className }: { view: UnfoldView; onSelect: (view: UnfoldView) => void; className?: string }) {
+function ViewToggle({
+  view,
+  onSelect,
+  className,
+}: {
+  view: UnfoldView;
+  onSelect: (view: UnfoldView) => void;
+  className?: string;
+}) {
   const index = Math.max(0, VIEWS.indexOf(view));
   const groupRef = React.useRef<HTMLDivElement>(null);
   const pillRef = React.useRef<HTMLSpanElement>(null);
@@ -342,7 +357,12 @@ function ViewToggle({ view, onSelect, className }: { view: UnfoldView; onSelect:
   }, [index, loop]);
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLButtonElement>) {
-    const offset = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 0;
+    const offset =
+      event.key === "ArrowRight" || event.key === "ArrowDown"
+        ? 1
+        : event.key === "ArrowLeft" || event.key === "ArrowUp"
+          ? -1
+          : 0;
     if (!offset) return;
     event.preventDefault();
     const next = (index + offset + VIEWS.length) % VIEWS.length;
@@ -379,7 +399,7 @@ function ViewToggle({ view, onSelect, className }: { view: UnfoldView; onSelect:
           data-state={i === index ? "checked" : "unchecked"}
           onClick={() => onSelect(option)}
           onKeyDown={handleKeyDown}
-          className="relative z-[1] inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-[6px] border-0 bg-transparent px-2.5 font-[inherit] text-[12px] leading-none font-medium whitespace-nowrap text-muted-foreground outline-none [transition:color_.2s_ease] select-none hover:text-[color-mix(in_srgb,var(--foreground)_75%,var(--muted-foreground))] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid data-[state=checked]:text-foreground"
+          className="relative z-[1] inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-[6px] border-0 bg-transparent px-2.5 font-[inherit] text-[12px] leading-none font-medium whitespace-nowrap text-muted-foreground outline-none select-none [transition:color_.2s_ease] hover:text-[color-mix(in_srgb,var(--foreground)_75%,var(--muted-foreground))] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid data-[state=checked]:text-foreground"
         >
           {option === "globe" ? <GlobeIcon /> : <MapIcon />}
           {VIEW_LABELS[option]}
@@ -391,7 +411,14 @@ function ViewToggle({ view, onSelect, className }: { view: UnfoldView; onSelect:
 
 function GlobeIcon() {
   return (
-    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth={1.15} aria-hidden="true" className="size-3.5 shrink-0">
+    <svg
+      viewBox="0 0 14 14"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.15}
+      aria-hidden="true"
+      className="size-3.5 shrink-0"
+    >
       <circle cx="7" cy="7" r="5.4" />
       <ellipse cx="7" cy="7" rx="2.3" ry="5.4" />
       <path d="M1.8 7h10.4" />
@@ -401,7 +428,15 @@ function GlobeIcon() {
 
 function MapIcon() {
   return (
-    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth={1.15} strokeLinejoin="round" aria-hidden="true" className="size-3.5 shrink-0">
+    <svg
+      viewBox="0 0 14 14"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.15}
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="size-3.5 shrink-0"
+    >
       <path d="M3.4 3.2h7.2c1.5 0 2.2 1.7 2.2 3.8s-.7 3.8-2.2 3.8H3.4C1.9 10.8 1.2 9.1 1.2 7s.7-3.8 2.2-3.8Z" />
       <path d="M1.4 7h11.2M7 3.2v7.6" />
     </svg>
@@ -512,7 +547,9 @@ function normalizeRoutes(routes: readonly UnfoldRoute[]): RouteInput[] {
 /** A string that changes only when the route data changes, so inline arrays do not rebuild every render. */
 function routesKey(routes: readonly UnfoldRoute[] | undefined) {
   if (routes === undefined) return "demo";
-  return routes.map((route) => `${route?.from?.lat},${route?.from?.lon},${route?.to?.lat},${route?.to?.lon},${route?.weight}`).join(";");
+  return routes
+    .map((route) => `${route?.from?.lat},${route?.from?.lon},${route?.to?.lat},${route?.to?.lon},${route?.weight}`)
+    .join(";");
 }
 
 /* Engine --------------------------------------------------------------------------------------------- */
@@ -709,15 +746,22 @@ const wrapRadians = (angle: number) => angle - TAU * Math.round(angle / TAU);
  */
 function releaseAt(phi: number, rho: number, grain: number) {
   const wrapped = wrapRadians(rho);
-  const wave = 0.5 + 0.28 * Math.sin(phi * 4.1 + wrapped * 1.3 + 0.7) + 0.22 * Math.sin(phi * 7.3 - wrapped * 2.2 + 2.1);
-  const order = (1 - Math.abs(wrapped) / Math.PI) * (1 - RELEASE_JITTER) + wave * RELEASE_JITTER + (grain - 0.5) * RELEASE_GRAIN;
+  const wave =
+    0.5 + 0.28 * Math.sin(phi * 4.1 + wrapped * 1.3 + 0.7) + 0.22 * Math.sin(phi * 7.3 - wrapped * 2.2 + 2.1);
+  const order =
+    (1 - Math.abs(wrapped) / Math.PI) * (1 - RELEASE_JITTER) + wave * RELEASE_JITTER + (grain - 0.5) * RELEASE_GRAIN;
   // strictly inside (0, 1): nothing moves at rest and everything has gone when the clock ends
   return 0.005 + 0.99 * clamp(order, 0, 1);
 }
 
 /** Springs for `count` points, all resting at `value`. */
 function createSprings(count: number, value: number): SpringSet {
-  return { count, e: new Float32Array(count).fill(value), v: new Float32Array(count), threshold: new Float32Array(count) };
+  return {
+    count,
+    e: new Float32Array(count).fill(value),
+    v: new Float32Array(count),
+    threshold: new Float32Array(count),
+  };
 }
 
 /**
@@ -1205,7 +1249,13 @@ function addGlobeLand(engine: Engine, dots: LandDots, batch: DotBatch, weight: n
     const vx = m[0] * x + m[1] * y + m[2] * z;
     const vy = m[3] * x + m[4] * y + m[5] * z;
     const alpha = smoothstep(-0.02, 0.1, vz) * depthShade(vz) * LAND_ALPHA * weight;
-    batch.add(snapCenter(cx + vx * radius, DOT_SIZE, dpr), snapCenter(cy - vy * radius, DOT_SIZE, dpr), DOT_SIZE, 0, alpha);
+    batch.add(
+      snapCenter(cx + vx * radius, DOT_SIZE, dpr),
+      snapCenter(cy - vy * radius, DOT_SIZE, dpr),
+      DOT_SIZE,
+      0,
+      alpha,
+    );
   }
 }
 
@@ -1222,12 +1272,30 @@ function addMorphLand(engine: Engine, dots: LandDots, batch: DotBatch, frame: Un
   const { e, v } = dots.springs;
   for (let i = 0; i < dots.count; i++) {
     const progress = e[i];
-    unroll(frame, dots.phi[i], dots.sinPhi[i], dots.cosPhi[i], dots.rho[i], dots.mapX[i], dots.mapY[i], progress, 0, unrolled);
+    unroll(
+      frame,
+      dots.phi[i],
+      dots.sinPhi[i],
+      dots.cosPhi[i],
+      dots.rho[i],
+      dots.mapX[i],
+      dots.mapY[i],
+      progress,
+      0,
+      unrolled,
+    );
     const visible = lerp(smoothstep(-0.02, 0.1, unrolled.depth), 1, unrolled.blend);
     if (visible <= 0.01) continue;
     const glow = launchGlow(v[i], omega);
-    const alpha = visible * (lerp(depthShade(unrolled.depth), 1, clamp(progress, 0, 1)) * LAND_ALPHA + glow * FLIGHT_BOOST);
-    batch.add(snapCenter(unrolled.x, DOT_SIZE, dpr), snapCenter(unrolled.y, DOT_SIZE, dpr), DOT_SIZE, glow * FLIGHT_TINT, alpha);
+    const alpha =
+      visible * (lerp(depthShade(unrolled.depth), 1, clamp(progress, 0, 1)) * LAND_ALPHA + glow * FLIGHT_BOOST);
+    batch.add(
+      snapCenter(unrolled.x, DOT_SIZE, dpr),
+      snapCenter(unrolled.y, DOT_SIZE, dpr),
+      DOT_SIZE,
+      glow * FLIGHT_TINT,
+      alpha,
+    );
   }
 }
 
@@ -1263,7 +1331,18 @@ function routeMap(route: RouteGeometry) {
 function routeMorph(route: RouteGeometry, frame: UnrollFrame) {
   const { e } = route.springs;
   for (let i = 0; i < SAMPLES; i++) {
-    unroll(frame, route.phi[i], route.sinPhi[i], route.cosPhi[i], route.rho[i], route.mapX[i], route.mapY[i], e[i], route.lift[i], unrolled);
+    unroll(
+      frame,
+      route.phi[i],
+      route.sinPhi[i],
+      route.cosPhi[i],
+      route.rho[i],
+      route.mapX[i],
+      route.mapY[i],
+      e[i],
+      route.lift[i],
+      unrolled,
+    );
     const settled = clamp(e[i], 0, 1);
     const facing = lerp(smoothstep(-0.02, 0.1, unrolled.depth), 1, unrolled.blend);
     route.xs[i] = unrolled.x;
@@ -1359,7 +1438,18 @@ function drawPlaces(
   };
   engine.places.forEach((place, index) => {
     if (morphing) {
-      unroll(frame, place.phi, place.sinPhi, place.cosPhi, place.rho, place.mapX, place.mapY, springs[index] ?? 0, 0, unrolled);
+      unroll(
+        frame,
+        place.phi,
+        place.sinPhi,
+        place.cosPhi,
+        place.rho,
+        place.mapX,
+        place.mapY,
+        springs[index] ?? 0,
+        0,
+        unrolled,
+      );
       place.x = unrolled.x;
       place.y = unrolled.y;
       place.vis = lerp(smoothstep(-0.02, 0.1, unrolled.depth), 1, unrolled.blend);
@@ -1451,7 +1541,8 @@ function drawEffects(engine: Engine, surface: CanvasSurface, delta: number, pack
     alive.push(packet);
     drawPacket(engine, context, route.table, route.vis, route.ease, packet.s, 1, head, tail);
     if (engine.copyAlpha > 0) {
-      for (const copy of route.copies) drawPacket(engine, context, copy, null, null, packet.s, engine.copyAlpha, head, tail);
+      for (const copy of route.copies)
+        drawPacket(engine, context, copy, null, null, packet.s, engine.copyAlpha, head, tail);
     }
   }
   engine.packets = alive;
@@ -1489,7 +1580,8 @@ function spawnPackets(engine: Engine, delta: number) {
   }
   routes.forEach((route, index) => {
     const rate = 0.4 + 1.2 * route.weight;
-    if (packets.length < MAX_PACKETS && Math.random() < 1 - Math.exp(-rate * delta)) packets.push({ route: index, s: 0 });
+    if (packets.length < MAX_PACKETS && Math.random() < 1 - Math.exp(-rate * delta))
+      packets.push({ route: index, s: 0 });
   });
 }
 

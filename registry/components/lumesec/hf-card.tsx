@@ -24,10 +24,5 @@ export interface HfCardProps extends Omit<LumesecElementProps<HfCardElement>, "h
  * @see https://elements.lumesec.ai/components/pixel-hd/card
  */
 export function HfCard({ hue, seed, tags, alt, ...props }: HfCardProps) {
-  return useLumesecElement(
-    "hf-card",
-    props,
-    { "hue": hue, "seed": seed, "tags": tags, "alt": alt },
-    {},
-  );
+  return useLumesecElement("hf-card", props, { hue: hue, seed: seed, tags: tags, alt: alt }, {});
 }

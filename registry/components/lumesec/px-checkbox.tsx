@@ -29,7 +29,11 @@ export interface PxCheckboxProps extends Omit<React.ComponentProps<"span">, "def
 }
 
 /** The box pops when it gets checked. */
-const POP: Keyframe[] = [{ transform: "scale(.82)" }, { transform: "scale(1.18)", offset: 0.5 }, { transform: "scale(1)" }];
+const POP: Keyframe[] = [
+  { transform: "scale(.82)" },
+  { transform: "scale(1.18)", offset: 0.5 },
+  { transform: "scale(1)" },
+];
 
 /**
  * Checkbox whose box fills with pixels from the centre and then draws its check, with a mixed state
@@ -126,7 +130,7 @@ export function PxCheckbox({
         toggle();
       }}
       className={cn(
-        "inline-flex w-fit cursor-pointer items-center gap-2.5 rounded-md p-0.5 align-middle text-[14px] leading-[1.5] text-foreground select-none outline-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec",
+        "inline-flex w-fit cursor-pointer items-center gap-2.5 rounded-md p-0.5 align-middle text-[14px] leading-[1.5] text-foreground outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid",
         disabled && "pointer-events-none opacity-50",
         className,
       )}

@@ -22,10 +22,5 @@ export interface PxPatternProps extends Omit<LumesecElementProps<PxPatternElemen
  * @see https://elements.lumesec.ai/components/pixel-lab/pattern
  */
 export function PxPattern({ pattern, onUnlock, onFail, ...props }: PxPatternProps) {
-  return useLumesecElement(
-    "px-pattern",
-    props,
-    { "pattern": pattern },
-    { "unlock": onUnlock, "fail": onFail },
-  );
+  return useLumesecElement("px-pattern", props, { pattern: pattern }, { unlock: onUnlock, fail: onFail });
 }

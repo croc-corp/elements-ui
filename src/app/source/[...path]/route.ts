@@ -22,5 +22,8 @@ export async function GET(_req: Request, ctx: { params: Promise<{ path: string[]
   // static "registry" prefix keeps file tracing to that folder
   const code = await readFile(join(process.cwd(), "registry", ...path.slice(1)), "utf8");
   const html = await highlight(code.replace(/\n+$/, ""), rel.endsWith(".tsx") ? "tsx" : "ts");
-  return Response.json({ code, html, lines: code.split("\n").length }, { headers: { "Cache-Control": "public, max-age=3600, s-maxage=86400" } });
+  return Response.json(
+    { code, html, lines: code.split("\n").length },
+    { headers: { "Cache-Control": "public, max-age=3600, s-maxage=86400" } },
+  );
 }

@@ -270,11 +270,13 @@ export function GeoAccess({
       if (!row || typeof row.animate !== "function" || prefersReducedMotion()) return;
       row.animate(ROW_FLASH_KEYFRAMES, { duration: 1100, easing: "cubic-bezier(.2,.8,.2,1)" });
       const dot = row.querySelector("[data-rail-dot]");
-      if (dot instanceof HTMLElement) dot.animate(RAIL_DOT_KEYFRAMES, { duration: 520, easing: "cubic-bezier(.2,1.4,.4,1)" });
+      if (dot instanceof HTMLElement)
+        dot.animate(RAIL_DOT_KEYFRAMES, { duration: 520, easing: "cubic-bezier(.2,1.4,.4,1)" });
     };
     engine.onTear = (leg) => {
       const chip = chipRefs.current.get(leg.key);
-      if (chip && typeof chip.animate === "function" && !prefersReducedMotion()) chip.animate(POP_KEYFRAMES, POP_TIMING);
+      if (chip && typeof chip.animate === "function" && !prefersReducedMotion())
+        chip.animate(POP_KEYFRAMES, POP_TIMING);
     };
   }, [engineRef]);
 
@@ -319,7 +321,9 @@ export function GeoAccess({
   React.useEffect(() => {
     if (!skippedKey || warned.current === skippedKey || process.env.NODE_ENV === "production") return;
     warned.current = skippedKey;
-    console.warn(`GeoAccess: skipped sign-ins with a missing or repeated id or an invalid time or position: ${skippedKey}.`);
+    console.warn(
+      `GeoAccess: skipped sign-ins with a missing or repeated id or an invalid time or position: ${skippedKey}.`,
+    );
   }, [skippedKey]);
 
   React.useImperativeHandle(
@@ -335,7 +339,9 @@ export function GeoAccess({
 
   const entries = model.entries;
   const rovingId =
-    focusId !== null && entries.some((entry) => entry.id === focusId) ? focusId : (selectedEntry?.id ?? entries[0]?.id ?? null);
+    focusId !== null && entries.some((entry) => entry.id === focusId)
+      ? focusId
+      : (selectedEntry?.id ?? entries[0]?.id ?? null);
   const isReached = (id: string) => !animated || progress.reached.has(id);
   const isTorn = (key: string) => !animated || progress.torn.has(key);
 
@@ -360,7 +366,8 @@ export function GeoAccess({
     if (!list || !row) return;
     const top = row.offsetTop;
     if (top < list.scrollTop) list.scrollTop = top - 4;
-    else if (top + row.offsetHeight > list.scrollTop + list.clientHeight) list.scrollTop = top + row.offsetHeight - list.clientHeight + 4;
+    else if (top + row.offsetHeight > list.scrollTop + list.clientHeight)
+      list.scrollTop = top + row.offsetHeight - list.clientHeight + 4;
   }
 
   /** The visible place under the pointer, within the marker's 24 px, or −1. */
@@ -465,7 +472,10 @@ export function GeoAccess({
             </div>
             <span className="pointer-events-none absolute inset-0 rounded-[10px] border border-border/70" />
             {model.places.map((place, i) => {
-              const reachedCount = place.members.reduce((count, member) => count + (isReached(entries[member].id) ? 1 : 0), 0);
+              const reachedCount = place.members.reduce(
+                (count, member) => count + (isReached(entries[member].id) ? 1 : 0),
+                0,
+              );
               const placement = labels?.key === model.key ? labels.placements[i] : undefined;
               const point = nominal.places[i];
               return (
@@ -543,13 +553,15 @@ export function GeoAccess({
         </div>
         <div className="min-w-0 border-t border-border pt-2 @min-[560px]:border-t-0 @min-[560px]:border-l @min-[560px]:pt-0 @min-[560px]:pl-2">
           {entries.length === 0 ? (
-            <p className="m-0 grid min-h-[120px] place-items-center text-[12.5px] leading-5 text-muted-foreground">No sign-ins yet</p>
+            <p className="m-0 grid min-h-[120px] place-items-center text-[12.5px] leading-5 text-muted-foreground">
+              No sign-ins yet
+            </p>
           ) : (
             <ol
               ref={listRef}
               aria-label="Sign-ins, oldest first"
               onKeyDown={handleListKeyDown}
-              className="relative m-0 grid max-h-[420px] list-none content-start overflow-y-auto p-0 [scrollbar-width:thin]"
+              className="relative m-0 grid max-h-[420px] [scrollbar-width:thin] list-none content-start overflow-y-auto p-0"
             >
               {entries.map((entry, i) => {
                 const leg = i > 0 ? model.legs[i - 1] : null;
@@ -588,13 +600,15 @@ export function GeoAccess({
                       onFocus={() => setFocusId(entry.id)}
                       onPointerEnter={() => setHover({ place: entry.place, source: "list" })}
                       onPointerLeave={() => setHover((current) => (current?.source === "list" ? null : current))}
-                      className="group/row relative flex w-full cursor-pointer items-start gap-2 rounded-md border-0 bg-transparent py-[3px] pr-1.5 pl-1 text-left font-[inherit] text-inherit outline-none transition-colors duration-150 hover:bg-muted/70 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec data-[hover]:bg-muted/70 data-[selected]:bg-muted motion-reduce:transition-none"
+                      className="group/row relative flex w-full cursor-pointer items-start gap-2 rounded-md border-0 bg-transparent py-[3px] pr-1.5 pl-1 text-left font-[inherit] text-inherit transition-colors duration-150 outline-none hover:bg-muted/70 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid data-[hover]:bg-muted/70 data-[selected]:bg-muted motion-reduce:transition-none"
                     >
                       <Rail incoming={leg} outgoing={outgoing} flaggedArrival={leg?.flagged ?? false} />
                       <span className="grid min-w-0 flex-1">
                         <span className="flex min-w-0 items-baseline gap-2">
                           <span className="truncate text-[13px] leading-4 text-foreground">{entry.name}</span>
-                          <span className="ml-auto shrink-0 font-mono text-[11px] leading-4 text-muted-foreground tabular-nums">{time}</span>
+                          <span className="ml-auto shrink-0 font-mono text-[11px] leading-4 text-muted-foreground tabular-nums">
+                            {time}
+                          </span>
                         </span>
                         <span className="truncate text-[11.5px] leading-[15px] text-muted-foreground">
                           {entry.device ?? (entry.address ? "" : formatLatLon(entry, "decimal", 1))}
@@ -649,7 +663,8 @@ function PlaceMarker({ x, y, visible, count, flagged, selected, dimmed, hovered,
     const was = shown.current;
     shown.current = visible;
     const element = ref.current;
-    if (!visible || was || !animate || !element || typeof element.animate !== "function" || prefersReducedMotion()) return;
+    if (!visible || was || !animate || !element || typeof element.animate !== "function" || prefersReducedMotion())
+      return;
     element.animate(MARKER_POP_KEYFRAMES, { duration: 460, easing: "cubic-bezier(.2,.9,.3,1)" });
   }, [visible, animate]);
 
@@ -700,7 +715,8 @@ function TearChip({ anchor, visible, dimmed, animate, speed, elapsed }: TearChip
     const was = shown.current;
     shown.current = visible;
     const element = ref.current;
-    if (!visible || was || !animate || !element || typeof element.animate !== "function" || prefersReducedMotion()) return;
+    if (!visible || was || !animate || !element || typeof element.animate !== "function" || prefersReducedMotion())
+      return;
     element.animate(POP_KEYFRAMES, POP_TIMING);
   }, [visible, animate]);
 
@@ -736,7 +752,10 @@ function Legend({ limit }: { limit: string }) {
       <span className="flex shrink-0 items-center gap-1.5">
         <span className="flex gap-[2px]">
           {[0, 1, 2].map((i) => (
-            <span key={i} className="size-[2px] rounded-[0.5px] bg-[color-mix(in_srgb,var(--foreground)_55%,var(--card))]" />
+            <span
+              key={i}
+              className="size-[2px] rounded-[0.5px] bg-[color-mix(in_srgb,var(--foreground)_55%,var(--card))]"
+            />
           ))}
         </span>
         Travel
@@ -779,7 +798,12 @@ function SelectionReadout({ leg, index, speed, speedText, animate }: SelectionRe
   const characters = Array.from(speedText);
   return (
     <span className="flex min-w-0 flex-1 items-center gap-3">
-      <RollText text={route} direction={shown.routeDirection} animate={animate} className="min-w-0 truncate text-foreground" />
+      <RollText
+        text={route}
+        direction={shown.routeDirection}
+        animate={animate}
+        className="min-w-0 truncate text-foreground"
+      />
       {characters.length > 0 ? (
         <span
           className={cn(
@@ -800,7 +824,15 @@ function SelectionReadout({ leg, index, speed, speedText, animate }: SelectionRe
 /* Timeline ---------------------------------------------------------------------------------------------- */
 
 /** The rail beside a row: the line from the previous sign-in, the dot, and the line to the next. */
-function Rail({ incoming, outgoing, flaggedArrival }: { incoming: Leg | null; outgoing: Leg | null; flaggedArrival: boolean }) {
+function Rail({
+  incoming,
+  outgoing,
+  flaggedArrival,
+}: {
+  incoming: Leg | null;
+  outgoing: Leg | null;
+  flaggedArrival: boolean;
+}) {
   return (
     <span aria-hidden="true" className="relative -my-[3px] w-[15px] shrink-0 self-stretch">
       {incoming ? <RailLine flagged={incoming.flagged} className="top-0 h-2" /> : null}
@@ -819,7 +851,11 @@ function Rail({ incoming, outgoing, flaggedArrival }: { incoming: Leg | null; ou
 function RailLine({ flagged, className }: { flagged: boolean; className: string }) {
   return (
     <span
-      className={cn("absolute left-[7px]", flagged ? "w-0 border-l border-dashed border-destructive" : "w-px bg-foreground/15", className)}
+      className={cn(
+        "absolute left-[7px]",
+        flagged ? "w-0 border-l border-dashed border-destructive" : "w-px bg-foreground/15",
+        className,
+      )}
     />
   );
 }
@@ -853,7 +889,10 @@ function LegConnector({ id, leg, unit, locale, speedUnit, chipRef }: LegConnecto
         )}
       </span>
       <span className="grid min-w-0 flex-1 justify-items-start gap-0.5 py-px">
-        <span aria-hidden="true" className="max-w-full truncate font-mono text-[11px] leading-[14px] text-muted-foreground tabular-nums">
+        <span
+          aria-hidden="true"
+          className="max-w-full truncate font-mono text-[11px] leading-[14px] text-muted-foreground tabular-nums"
+        >
           {shortDuration(leg.elapsed)} · {distance}
         </span>
         {leg.flagged ? (
@@ -1032,7 +1071,9 @@ function buildModel(signIns: readonly SignIn[], maxKmh: number, minKm: number): 
   }));
 
   const entryKeys = entries.map((entry) => `${entry.id}@${entry.time}@${entry.lat.toFixed(4)},${entry.lon.toFixed(4)}`);
-  const shownKeys = entries.map((entry, i) => `${entryKeys[i]}@${entry.name}@${entry.device ?? ""}@${entry.address ?? ""}`);
+  const shownKeys = entries.map(
+    (entry, i) => `${entryKeys[i]}@${entry.name}@${entry.device ?? ""}@${entry.address ?? ""}`,
+  );
   return {
     key: `${shownKeys.join("|")}#${maxKmh}#${minKm}`,
     entryKeys,
@@ -1089,9 +1130,15 @@ function fitProjection(bounds: GeoBounds, width: number, height: number): MapPro
     visit(0, -half);
     visit(0, half);
   }
-  const zoom = Math.min((width * (1 - 2 * FIT_PAD)) / Math.max(1, x1 - x0), (height * (1 - 2 * FIT_PAD)) / Math.max(1, y1 - y0));
+  const zoom = Math.min(
+    (width * (1 - 2 * FIT_PAD)) / Math.max(1, x1 - x0),
+    (height * (1 - 2 * FIT_PAD)) / Math.max(1, y1 - y0),
+  );
   if (!(zoom > 1.01)) return world;
-  const focus = world.invert((x0 + x1) / 2, (y0 + y1) / 2) ?? { lat: (bounds.south + bounds.north) / 2, lon: center.lon };
+  const focus = world.invert((x0 + x1) / 2, (y0 + y1) / 2) ?? {
+    lat: (bounds.south + bounds.north) / 2,
+    lon: center.lon,
+  };
   return createProjection("equalEarth", { width, height, center, zoom: Math.min(zoom, MAX_ZOOM), focus });
 }
 
@@ -1111,7 +1158,12 @@ function nominalLayout(model: Model): NominalLayout {
     if (!main || main.count < 2) continue;
     pointAtDistance(main, main.length / 2, cursor);
     const normal = chordNormal(main);
-    chips.set(leg.key, { x: (cursor.x / NOMINAL_WIDTH) * 100, y: (cursor.y / NOMINAL_HEIGHT) * 100, nx: normal.x, ny: normal.y });
+    chips.set(leg.key, {
+      x: (cursor.x / NOMINAL_WIDTH) * 100,
+      y: (cursor.y / NOMINAL_HEIGHT) * 100,
+      nx: normal.x,
+      ny: normal.y,
+    });
   }
   return { places, chips };
 }
@@ -1144,7 +1196,8 @@ function spokenDuration(ms: number) {
   if (minutes < 1) return "under a minute";
   if (minutes < 60) return plural(minutes, "minute");
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return minutes % 60 ? `${plural(hours, "hour")} ${plural(minutes % 60, "minute")}` : plural(hours, "hour");
+  if (hours < 24)
+    return minutes % 60 ? `${plural(hours, "hour")} ${plural(minutes % 60, "minute")}` : plural(hours, "hour");
   const totalHours = Math.round(minutes / 60);
   const days = Math.floor(totalHours / 24);
   return totalHours % 24 ? `${plural(days, "day")} ${plural(totalHours % 24, "hour")}` : plural(days, "day");
@@ -1154,12 +1207,60 @@ function spokenDuration(ms: number) {
 
 /** Invented demo trail over two days: London, London, Paris, London, then Singapore 40 minutes later. */
 const DEMO_SIGN_INS: readonly SignIn[] = [
-  { id: "s1", time: "2026-09-30T08:12:00Z", lat: 51.5072, lon: -0.1276, city: "London", device: "Laptop", address: "198.51.100.24" },
-  { id: "s2", time: "2026-09-30T12:47:00Z", lat: 51.5072, lon: -0.1276, city: "London", device: "Phone", address: "198.51.100.61" },
-  { id: "s3", time: "2026-09-30T18:05:00Z", lat: 48.8566, lon: 2.3522, city: "Paris", device: "Phone", address: "192.0.2.140" },
-  { id: "s4", time: "2026-10-01T07:30:00Z", lat: 51.5072, lon: -0.1276, city: "London", device: "Laptop", address: "198.51.100.24" },
-  { id: "s5", time: "2026-10-01T08:10:00Z", lat: 1.3521, lon: 103.8198, city: "Singapore", device: "Desktop", address: "203.0.113.77" },
-  { id: "s6", time: "2026-10-01T10:55:00Z", lat: 1.3521, lon: 103.8198, city: "Singapore", device: "Desktop", address: "203.0.113.77" },
+  {
+    id: "s1",
+    time: "2026-09-30T08:12:00Z",
+    lat: 51.5072,
+    lon: -0.1276,
+    city: "London",
+    device: "Laptop",
+    address: "198.51.100.24",
+  },
+  {
+    id: "s2",
+    time: "2026-09-30T12:47:00Z",
+    lat: 51.5072,
+    lon: -0.1276,
+    city: "London",
+    device: "Phone",
+    address: "198.51.100.61",
+  },
+  {
+    id: "s3",
+    time: "2026-09-30T18:05:00Z",
+    lat: 48.8566,
+    lon: 2.3522,
+    city: "Paris",
+    device: "Phone",
+    address: "192.0.2.140",
+  },
+  {
+    id: "s4",
+    time: "2026-10-01T07:30:00Z",
+    lat: 51.5072,
+    lon: -0.1276,
+    city: "London",
+    device: "Laptop",
+    address: "198.51.100.24",
+  },
+  {
+    id: "s5",
+    time: "2026-10-01T08:10:00Z",
+    lat: 1.3521,
+    lon: 103.8198,
+    city: "Singapore",
+    device: "Desktop",
+    address: "203.0.113.77",
+  },
+  {
+    id: "s6",
+    time: "2026-10-01T10:55:00Z",
+    lat: 1.3521,
+    lon: 103.8198,
+    city: "Singapore",
+    device: "Desktop",
+    address: "203.0.113.77",
+  },
 ];
 
 const MAP_ASPECT = 1.5;
@@ -1250,10 +1351,7 @@ const ROW_FLASH_KEYFRAMES: Keyframe[] = [
   { backgroundColor: "color-mix(in srgb, var(--lumesec) 14%, transparent)", offset: 0 },
   { backgroundColor: "color-mix(in srgb, var(--lumesec) 8%, transparent)", offset: 0.35 },
 ];
-const RAIL_DOT_KEYFRAMES: Keyframe[] = [
-  { scale: "1.7", backgroundColor: "var(--lumesec)" },
-  { scale: "1" },
-];
+const RAIL_DOT_KEYFRAMES: Keyframe[] = [{ scale: "1.7", backgroundColor: "var(--lumesec)" }, { scale: "1" }];
 
 /* Map engine ------------------------------------------------------------------------------------------ */
 
@@ -1401,7 +1499,12 @@ class TravelMap {
     this.model = model;
     this.reached = new Uint8Array(model.entries.length);
     this.torn = new Uint8Array(model.legs.length);
-    this.tears = model.legs.map(() => ({ gap: { position: 0, velocity: 0 }, openedAt: -Infinity, crackleUntil: 0, nextSpark: 0 }));
+    this.tears = model.legs.map(() => ({
+      gap: { position: 0, velocity: 0 },
+      openedAt: -Infinity,
+      crackleUntil: 0,
+      nextSpark: 0,
+    }));
     this.emphasis = model.legs.map(() => ({ position: 0, velocity: 0 }));
     this.dimming = model.legs.map(() => ({ position: 0, velocity: 0 }));
     this.schedule = null;
@@ -1771,7 +1874,13 @@ class TravelMap {
       if (appear <= 0) continue;
       const flash = Math.exp(-passed / 0.05);
       const size = snapSize(LAND_SIZE + 0.6 * flash, dpr);
-      batch.add(snapCenter(lattice.x[i], size, dpr), snapCenter(lattice.y[i], size, dpr), size, 0.85 * flash, appear * LAND_ALPHA);
+      batch.add(
+        snapCenter(lattice.x[i], size, dpr),
+        snapCenter(lattice.y[i], size, dpr),
+        size,
+        0.85 * flash,
+        appear * LAND_ALPHA,
+      );
     }
     batch.flush(context);
   }
@@ -1862,7 +1971,14 @@ class TravelMap {
   }
 
   /** Dots along a leg from `from` to `to` px, phase-locked to the leg start, optionally dashed and torn apart. */
-  private run(context: CanvasRenderingContext2D, path: LegPath, leg: number, from: number, to: number, style: RunStyle) {
+  private run(
+    context: CanvasRenderingContext2D,
+    path: LegPath,
+    leg: number,
+    from: number,
+    to: number,
+    style: RunStyle,
+  ) {
     if (!(to > from) || style.alpha <= 0.01) return;
     const dpr = this.box?.dpr ?? 1;
     const base = rgba(style.color);
@@ -1900,7 +2016,15 @@ class TravelMap {
   }
 
   /** The packet at the head of a drawing leg: a soft halo and a 3 px square. */
-  private packet(context: CanvasRenderingContext2D, path: LegPath, s: number, gap: number, side: number, color: RGB, fade: number) {
+  private packet(
+    context: CanvasRenderingContext2D,
+    path: LegPath,
+    s: number,
+    gap: number,
+    side: number,
+    color: RGB,
+    fade: number,
+  ) {
     const dpr = this.box?.dpr ?? 1;
     for (const table of path.tables) {
       pointAtDistance(table, s, this.cursor);

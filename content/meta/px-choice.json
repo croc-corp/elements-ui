@@ -2,13 +2,48 @@
   "kind": "react",
   "summary": "Radio group rendered as option cards; the selection outline is made of pixels that fly to the newly selected card, then keep circling.",
   "props": [
-    { "name": "options", "type": "readonly PxChoiceOption[]", "default": "-", "description": "The cards: `{ value?: string; label: string; description?: string; price?: string }`. `value` defaults to `label`; `price` is shown in monospace." },
-    { "name": "value", "type": "string", "default": "-", "description": "Controlled selected value. Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "string", "default": "first option", "description": "Initially selected value when uncontrolled. A form reset restores it." },
-    { "name": "label", "type": "React.ReactNode", "default": "-", "description": "Label above the cards; names the radio group." },
-    { "name": "name", "type": "string", "default": "-", "description": "Form field name; the selected value submits under it." },
-    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the group and disables the cards." },
-    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called when a different card is selected." }
+    {
+      "name": "options",
+      "type": "readonly PxChoiceOption[]",
+      "default": "-",
+      "description": "The cards: `{ value?: string; label: string; description?: string; price?: string }`. `value` defaults to `label`; `price` is shown in monospace."
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "default": "-",
+      "description": "Controlled selected value. Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "default": "first option",
+      "description": "Initially selected value when uncontrolled. A form reset restores it."
+    },
+    {
+      "name": "label",
+      "type": "React.ReactNode",
+      "default": "-",
+      "description": "Label above the cards; names the radio group."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "default": "-",
+      "description": "Form field name; the selected value submits under it."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Dims the group and disables the cards."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "default": "-",
+      "description": "Called when a different card is selected."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },

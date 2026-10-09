@@ -31,7 +31,11 @@ export function ThemeDemo() {
 
   return (
     <div ref={ref} className="overflow-hidden rounded-xl border border-border bg-[var(--code-bg)]">
-      <div className="flex items-center gap-1.5 border-b border-border px-3 py-2.5" role="group" aria-label="Accent colour">
+      <div
+        className="flex items-center gap-1.5 border-b border-border px-3 py-2.5"
+        role="group"
+        aria-label="Accent colour"
+      >
         {SWATCHES.map((s) => (
           <button
             key={s.id}
@@ -40,10 +44,16 @@ export function ThemeDemo() {
             onClick={() => apply(s)}
             className={cn(
               "flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-[12px] transition-colors",
-              pick.id === s.id ? "border-input bg-background text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
+              pick.id === s.id
+                ? "border-input bg-background text-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground",
             )}
           >
-            <span aria-hidden className="size-2.5 rounded-full [background:var(--sw-l)] dark:[background:var(--sw-d)]" style={{ "--sw-l": s.light, "--sw-d": s.dark } as React.CSSProperties} />
+            <span
+              aria-hidden
+              className="size-2.5 rounded-full [background:var(--sw-l)] dark:[background:var(--sw-d)]"
+              style={{ "--sw-l": s.light, "--sw-d": s.dark } as React.CSSProperties}
+            />
             {s.label}
           </button>
         ))}
@@ -54,7 +64,10 @@ export function ThemeDemo() {
         {"  "}--lumesec: <span className="text-foreground transition-colors">{pick.light}</span>;{"\n"}
         {"}"}
       </pre>
-      <div style={vars} className="grid min-h-[300px] gap-4 px-4 pt-3 pb-5 [--lumesec:var(--accent-light)] dark:[--lumesec:var(--accent-dark)]">
+      <div
+        style={vars}
+        className="grid min-h-[300px] gap-4 px-4 pt-3 pb-5 [--lumesec:var(--accent-light)] dark:[--lumesec:var(--accent-dark)]"
+      >
         {near && (
           <>
             <div className="rounded-xl border border-border bg-background px-4 py-3">

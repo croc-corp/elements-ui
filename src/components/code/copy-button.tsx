@@ -69,8 +69,20 @@ export function CopyButton({
         className,
       )}
     >
-      <CopyIcon size={14} className={cn("transition-all duration-300 ease-[var(--ease-expo)]", copied ? "scale-50 opacity-0" : "scale-100 opacity-100")} />
-      <CheckIcon size={14} className={cn("absolute text-success transition-all duration-300 ease-[var(--ease-expo)]", copied ? "scale-100 opacity-100" : "scale-50 opacity-0")} />
+      <CopyIcon
+        size={14}
+        className={cn(
+          "transition-all duration-300 ease-[var(--ease-expo)]",
+          copied ? "scale-50 opacity-0" : "scale-100 opacity-100",
+        )}
+      />
+      <CheckIcon
+        size={14}
+        className={cn(
+          "absolute text-success transition-all duration-300 ease-[var(--ease-expo)]",
+          copied ? "scale-100 opacity-100" : "scale-50 opacity-0",
+        )}
+      />
       <span className="sr-only" aria-live="polite">
         {copied ? "Copied" : ""}
       </span>

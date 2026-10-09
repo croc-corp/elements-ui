@@ -1,4 +1,18 @@
 {
   "title": "Docs",
-  "pages": ["index", "installation", "react", "html", "theming", "data", "accessibility", "motion", "registry", "ai", "changelog", "faq", "license"]
+  "pages": [
+    "index",
+    "installation",
+    "react",
+    "html",
+    "theming",
+    "data",
+    "accessibility",
+    "motion",
+    "registry",
+    "ai",
+    "changelog",
+    "faq",
+    "license"
+  ]
 }

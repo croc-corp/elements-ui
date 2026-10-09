@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-hero.element";
 /** The `<hf-hero>` element, with its properties and methods. */
 export type HfHeroElement = ElementModule.HHero;
 
-export interface HfHeroProps extends Omit<LumesecElementProps<HfHeroElement>, "headline" | "primary" | "secondary" | "onPrimary" | "onSecondary"> {
+export interface HfHeroProps extends Omit<
+  LumesecElementProps<HfHeroElement>,
+  "headline" | "primary" | "secondary" | "onPrimary" | "onSecondary"
+> {
   /** Headline text, shown in an `<h2>` over the dot grid. Observed. Default: `Think in pixels.`. */
   headline?: string;
   /** Label of the primary button. Observed. Default: `Get started`. */
@@ -29,7 +32,7 @@ export function HfHero({ headline, primary, secondary, onPrimary, onSecondary, .
   return useLumesecElement(
     "hf-hero",
     props,
-    { "headline": headline, "primary": primary, "secondary": secondary },
-    { "primary": onPrimary, "secondary": onSecondary },
+    { headline: headline, primary: primary, secondary: secondary },
+    { primary: onPrimary, secondary: onSecondary },
   );
 }

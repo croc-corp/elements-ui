@@ -18,10 +18,5 @@ export interface PxTokenizeProps extends Omit<LumesecElementProps<PxTokenizeElem
  * @see https://elements.lumesec.ai/components/pixel-lab/tokenize
  */
 export function PxTokenize({ onChange, ...props }: PxTokenizeProps) {
-  return useLumesecElement(
-    "px-tokenize",
-    props,
-    {},
-    { "change": onChange },
-  );
+  return useLumesecElement("px-tokenize", props, {}, { change: onChange });
 }

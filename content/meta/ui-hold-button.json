@@ -2,16 +2,29 @@
   "kind": "react",
   "summary": "Hold-to-confirm button for destructive actions: holding fills it as the bin lid lifts; letting go early drains it with a shake.",
   "props": [
-    { "name": "duration", "type": "number", "default": "1200", "description": "Hold time in milliseconds needed to confirm." },
+    {
+      "name": "duration",
+      "type": "number",
+      "default": "1200",
+      "description": "Hold time in milliseconds needed to confirm."
+    },
     { "name": "label", "type": "string", "default": "\"Hold to delete\"", "description": "Idle label." },
     { "name": "doneLabel", "type": "string", "default": "\"Deleted\"", "description": "Label shown after confirming." },
-    { "name": "onConfirm", "type": "() => void", "default": "-", "description": "Called once the button has been held for `duration`." }
+    {
+      "name": "onConfirm",
+      "type": "() => void",
+      "default": "-",
+      "description": "Called once the button has been held for `duration`."
+    }
   ],
   "extends": "button",
   "ref": { "type": "HTMLButtonElement", "methods": [] },
   "subcomponents": [],
   "keyboard": [
-    { "keys": "Space / Enter (held)", "action": "Fill while held; releasing before `duration`, or moving focus away, drains it. Key repeat is ignored." }
+    {
+      "keys": "Space / Enter (held)",
+      "action": "Fill while held; releasing before `duration`, or moving focus away, drains it. Key repeat is ignored."
+    }
   ],
   "accessibility": [
     "A native `<button>`; its accessible name is the visible label. Its click action is prevented, so a single click or key press does nothing.",

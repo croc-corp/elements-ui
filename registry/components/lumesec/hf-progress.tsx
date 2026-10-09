@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-progress.element";
 /** The `<hf-progress>` element, with its properties and methods. */
 export type HfProgressElement = ElementModule.HProgress;
 
-export interface HfProgressProps extends Omit<LumesecElementProps<HfProgressElement>, "value" | "label" | "doneLabel" | "onComplete"> {
+export interface HfProgressProps extends Omit<
+  LumesecElementProps<HfProgressElement>,
+  "value" | "label" | "doneLabel" | "onComplete"
+> {
   /** Progress from 0 to 100, clamped. Observed. Without the attribute the bar is indeterminate. */
   value?: number;
   /** Label above the bar and the progressbar `aria-label`. Observed. Default: `Uploading`. */
@@ -29,7 +32,7 @@ export function HfProgress({ value, label, doneLabel, onComplete, ...props }: Hf
   return useLumesecElement(
     "hf-progress",
     props,
-    { "value": value, "label": label, "done-label": doneLabel },
-    { "complete": onComplete },
+    { value: value, label: label, "done-label": doneLabel },
+    { complete: onComplete },
   );
 }

@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-mention.element";
 /** The `<hf-mention>` element, with its properties and methods. */
 export type HfMentionElement = ElementModule.HMention;
 
-export interface HfMentionProps extends Omit<LumesecElementProps<HfMentionElement>, "label" | "placeholder" | "value" | "name" | "disabled" | "onInput" | "onMention"> {
+export interface HfMentionProps extends Omit<
+  LumesecElementProps<HfMentionElement>,
+  "label" | "placeholder" | "value" | "name" | "disabled" | "onInput" | "onMention"
+> {
   /** Visible label of the textarea, associated with it through `<label for>`. Observed. Default: `Message`. */
   label?: string;
   /** Placeholder for the empty textarea. Observed. Default: `Type @ to mention a file, person or agent`. */
@@ -35,7 +38,7 @@ export function HfMention({ label, placeholder, value, name, disabled, onInput, 
   return useLumesecElement(
     "hf-mention",
     props,
-    { "label": label, "placeholder": placeholder, "value": value, "name": name, "disabled": disabled },
-    { "input": onInput, "mention": onMention },
+    { label: label, placeholder: placeholder, value: value, name: name, disabled: disabled },
+    { input: onInput, mention: onMention },
   );
 }

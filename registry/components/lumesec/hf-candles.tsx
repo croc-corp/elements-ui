@@ -22,10 +22,5 @@ export interface HfCandlesProps extends Omit<LumesecElementProps<HfCandlesElemen
  * @see https://elements.lumesec.ai/components/pixel-hd/candles
  */
 export function HfCandles({ ticker, data, ...props }: HfCandlesProps) {
-  return useLumesecElement(
-    "hf-candles",
-    props,
-    { "ticker": ticker, "data": data },
-    {},
-  );
+  return useLumesecElement("hf-candles", props, { ticker: ticker, data: data }, {});
 }

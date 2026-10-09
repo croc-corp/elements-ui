@@ -1,15 +1,28 @@
 {
   "summary": "Split-flap departure board whose tiles flip through the alphabet and cascade left to right on each new message.",
   "attributes": [
-    { "name": "messages", "type": "string", "default": "LARGE · ULTRACODE|CONTEXT 64% · OK|4 AGENTS RUNNING|DEPLOY 14:02 LIVE|SPEED 182 TOK/S", "description": "Messages separated by `|`; empty entries are skipped. Changing it starts the board over at the first new message." }
+    {
+      "name": "messages",
+      "type": "string",
+      "default": "LARGE · ULTRACODE|CONTEXT 64% · OK|4 AGENTS RUNNING|DEPLOY 14:02 LIVE|SPEED 182 TOK/S",
+      "description": "Messages separated by `|`; empty entries are skipped. Changing it starts the board over at the first new message."
+    }
   ],
   "events": [],
   "methods": [
     { "signature": "next()", "description": "Advances to the next message and restarts the auto-advance timer." },
-    { "signature": "show(message: string)", "description": "Flips the board to an arbitrary message without changing the rotation position." }
+    {
+      "signature": "show(message: string)",
+      "description": "Flips the board to an arbitrary message without changing the rotation position."
+    }
   ],
   "properties": [
-    { "name": "messages", "type": "string[]", "readonly": false, "description": "The `messages` attribute split on `|` without empty entries, or the default list. Setting it joins the list with `|`." }
+    {
+      "name": "messages",
+      "type": "string[]",
+      "readonly": false,
+      "description": "The `messages` attribute split on `|` without empty entries, or the default list. Setting it joins the list with `|`."
+    }
   ],
   "keyboard": [],
   "accessibility": [

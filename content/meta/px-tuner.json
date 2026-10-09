@@ -2,12 +2,19 @@
   "summary": "FM radio tuner where static thins out near a station, a waveform appears and the name resolves on lock; release nearby springs onto it.",
   "attributes": [],
   "events": [
-    { "name": "lock", "detail": "{ station: string, frequency: number }", "description": "Fires each time the dial locks onto a station, with its name and frequency in MHz." }
+    {
+      "name": "lock",
+      "detail": "{ station: string, frequency: number }",
+      "description": "Fires each time the dial locks onto a station, with its name and frequency in MHz."
+    }
   ],
   "methods": [],
   "properties": [],
   "keyboard": [
-    { "keys": "ArrowLeft / ArrowRight", "action": "Tune down or up by 0.1 MHz, then spring onto a station within 0.6 MHz." },
+    {
+      "keys": "ArrowLeft / ArrowRight",
+      "action": "Tune down or up by 0.1 MHz, then spring onto a station within 0.6 MHz."
+    },
     { "keys": "Home / End", "action": "Tune to 87.5 or 108 MHz." },
     { "keys": "PageUp / PageDown", "action": "Jump to the next or previous station, wrapping around." }
   ],

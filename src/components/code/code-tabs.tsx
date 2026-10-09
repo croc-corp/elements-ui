@@ -32,7 +32,11 @@ function readChoice(group: string) {
  */
 export function useSyncedChoice(group: string | undefined, values: readonly string[], initial: string) {
   const [local, setLocal] = React.useState(initial);
-  const shared = React.useSyncExternalStore(subscribeChoices, () => (group ? readChoice(group) : null), () => null);
+  const shared = React.useSyncExternalStore(
+    subscribeChoices,
+    () => (group ? readChoice(group) : null),
+    () => null,
+  );
   const value = shared !== null && values.includes(shared) ? shared : local;
 
   const choose = React.useCallback(
@@ -87,7 +91,12 @@ export function CodeTabs({
   const onKeyDown = (event: React.KeyboardEvent) => {
     const current = values.indexOf(value);
     const count = values.length;
-    const targets: Partial<Record<string, number>> = { ArrowRight: (current + 1) % count, ArrowLeft: (current - 1 + count) % count, Home: 0, End: count - 1 };
+    const targets: Partial<Record<string, number>> = {
+      ArrowRight: (current + 1) % count,
+      ArrowLeft: (current - 1 + count) % count,
+      Home: 0,
+      End: count - 1,
+    };
     const next = targets[event.key];
     if (next === undefined) return;
     event.preventDefault();

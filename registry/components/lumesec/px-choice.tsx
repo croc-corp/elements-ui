@@ -81,7 +81,11 @@ export function PxChoice({
   const labelId = React.useId();
   const values = options.map((option) => option.value ?? option.label);
   const initialValue = defaultValue ?? values[0] ?? "";
-  const [value, setValue] = useControllableState({ value: valueProp, defaultValue: initialValue, onChange: onValueChange });
+  const [value, setValue] = useControllableState({
+    value: valueProp,
+    defaultValue: initialValue,
+    onChange: onValueChange,
+  });
   const selectedIndex = Math.max(0, values.indexOf(value));
 
   const cardRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
@@ -178,7 +182,11 @@ export function PxChoice({
         {label}
       </span>
       <div className="relative">
-        <div role="radiogroup" aria-labelledby={labelId} className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-2.5">
+        <div
+          role="radiogroup"
+          aria-labelledby={labelId}
+          className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-2.5"
+        >
           {options.map((option, index) => {
             const checked = index === selectedIndex;
             return (
@@ -202,14 +210,16 @@ export function PxChoice({
                   cardRefs.current[next]?.focus();
                 }}
                 className={cn(
-                  "relative grid cursor-pointer select-none gap-[3px] rounded-[12px] border px-3.5 pt-3.5 pb-3 text-left font-[inherit] text-inherit outline-none transition-[border-color,background-color] duration-200 ease-[ease] focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-3 focus-visible:outline-lumesec",
+                  "relative grid cursor-pointer gap-[3px] rounded-[12px] border px-3.5 pt-3.5 pb-3 text-left font-[inherit] text-inherit transition-[border-color,background-color] duration-200 ease-[ease] outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-lumesec focus-visible:outline-solid",
                   checked
                     ? "border-transparent bg-[color-mix(in_srgb,var(--lumesec)_6%,var(--card))]"
                     : "border-border bg-card hover:border-[color-mix(in_srgb,var(--foreground)_25%,var(--border))]",
                 )}
               >
                 <span className="text-[14px] font-semibold">{option.label}</span>
-                {option.description ? <span className="text-[12px] leading-[1.4] text-muted-foreground">{option.description}</span> : null}
+                {option.description ? (
+                  <span className="text-[12px] leading-[1.4] text-muted-foreground">{option.description}</span>
+                ) : null}
                 {option.price ? <span className="mt-1.5 font-mono text-[12.5px]">{option.price}</span> : null}
               </button>
             );

@@ -25,7 +25,13 @@ export async function CodeBlock({ code, lang = "tsx", title, className, event = 
   const html = await highlight(text, lang);
   const Icon = lang === "bash" ? TerminalIcon : FileIcon;
   return (
-    <figure className={cn("group/code relative overflow-hidden text-[13px]", !bare && "rounded-xl border border-border bg-[var(--code-bg)]", className)}>
+    <figure
+      className={cn(
+        "group/code relative overflow-hidden text-[13px]",
+        !bare && "rounded-xl border border-border bg-[var(--code-bg)]",
+        className,
+      )}
+    >
       {title ? (
         <figcaption className="flex h-10 items-center justify-between gap-2 border-b border-border pr-1.5 pl-3.5">
           <span className="flex min-w-0 items-center gap-2 font-mono text-[12px] text-muted-foreground">
@@ -35,7 +41,12 @@ export async function CodeBlock({ code, lang = "tsx", title, className, event = 
           <CopyButton text={text} event={event} item={item} />
         </figcaption>
       ) : (
-        <CopyButton text={text} event={event} item={item} className="absolute top-1.5 right-1.5 z-10 bg-[var(--code-bg)] opacity-0 transition-opacity group-hover/code:opacity-100 focus-visible:opacity-100" />
+        <CopyButton
+          text={text}
+          event={event}
+          item={item}
+          className="absolute top-1.5 right-1.5 z-10 bg-[var(--code-bg)] opacity-0 transition-opacity group-hover/code:opacity-100 focus-visible:opacity-100"
+        />
       )}
       <div className="code-scroll" dangerouslySetInnerHTML={{ __html: html }} />
     </figure>

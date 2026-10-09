@@ -69,7 +69,13 @@ export interface GeoBounds {
 export function isValidLatLon(point: { readonly lat?: unknown; readonly lon?: unknown } | null | undefined): boolean {
   if (!point) return false;
   const { lat, lon } = point;
-  return typeof lat === "number" && Number.isFinite(lat) && Math.abs(lat) <= 90 && typeof lon === "number" && Number.isFinite(lon);
+  return (
+    typeof lat === "number" &&
+    Number.isFinite(lat) &&
+    Math.abs(lat) <= 90 &&
+    typeof lon === "number" &&
+    Number.isFinite(lon)
+  );
 }
 
 /** Mean Earth radius in kilometres. */
@@ -127,7 +133,7 @@ export function unwrapLongitude(from: number, to: number): number {
 
 /** Shortest signed difference from `from` to `to` in degrees, in (-180, 180]. Used for yaw and heading springs. */
 export function angleDelta(from: number, to: number): number {
-  const difference = ((((to - from) % 360) + 360) % 360);
+  const difference = (((to - from) % 360) + 360) % 360;
   return difference > 180 ? difference - 360 : difference;
 }
 
@@ -299,7 +305,7 @@ export function initialBearing(a: LatLon, b: LatLon): number {
   const deltaLambda = (b.lon - a.lon) * DEG;
   const y = Math.sin(deltaLambda) * Math.cos(phi2);
   const x = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(deltaLambda);
-  const bearing = ((Math.atan2(y, x) / DEG) % 360 + 360) % 360;
+  const bearing = (((Math.atan2(y, x) / DEG) % 360) + 360) % 360;
   return bearing >= 360 ? 0 : bearing;
 }
 
@@ -543,13 +549,7 @@ export function projectGlobe(view: GlobeView, v: Readonly<Vec3>, out: ScreenPoin
 const projectScratch: Vec3 = [0, 0, 0];
 
 /** projectGlobe for a lat/lon in degrees, using an internal scratch vector. Allocation-free. */
-export function projectLatLonGlobe(
-  view: GlobeView,
-  lat: number,
-  lon: number,
-  out: ScreenPoint,
-  altitude = 0,
-): boolean {
+export function projectLatLonGlobe(view: GlobeView, lat: number, lon: number, out: ScreenPoint, altitude = 0): boolean {
   return projectGlobe(view, latLonToVector(lat, lon, projectScratch), out, altitude);
 }
 
@@ -1279,7 +1279,7 @@ export function createProjection(kind: ProjectionKind, options: ProjectionOption
   const fit = Math.max(0, Math.min((width - 2 * padding) / extentWidth, (height - 2 * padding) / extentHeight));
   const s = fit * Math.max(1, zoom);
   // the window that ordinary longitudes are wrapped into: 360° centred on the cropped range
-  const windowCenter = ((domain.lambdaMin + domain.lambdaMax) / 2) / DEG;
+  const windowCenter = (domain.lambdaMin + domain.lambdaMax) / 2 / DEG;
   const raw: RawPoint = { x: 0, y: 0 };
   const angles: RawAngles = { lambda: 0, phi: 0 };
 
@@ -1344,8 +1344,7 @@ export function createProjection(kind: ProjectionKind, options: ProjectionOption
     frame,
     projectRelative,
     project(lat, lon, out) {
-      const lambda =
-        lon >= -180 && lon < 180 ? wrapLongitude(lon - lon0 - windowCenter) + windowCenter : lon - lon0;
+      const lambda = lon >= -180 && lon < 180 ? wrapLongitude(lon - lon0 - windowCenter) + windowCenter : lon - lon0;
       return projectRelative(lat, lambda, out);
     },
     invert(x, y) {
@@ -1731,9 +1730,7 @@ export function mapLattice(projection: MapProjection, options: MapLatticeOptions
   const landOnly = options.landOnly ?? true;
   const minCoverage = options.minCoverage ?? 0.45;
   const viewport = options.viewport;
-  const viewportKey = viewport
-    ? [viewport.x0, viewport.y0, viewport.x1, viewport.y1].map(round2).join(",")
-    : "";
+  const viewportKey = viewport ? [viewport.x0, viewport.y0, viewport.x1, viewport.y1].map(round2).join(",") : "";
   const key = `${projection.key}|${pitch}|${layout}|${landOnly}|${minCoverage}|${viewportKey}`;
   const cached = mapLatticeCache.get(key);
   if (cached) return cached;
@@ -3065,7 +3062,7 @@ export function unionBounds(boxes: readonly GeoBounds[]): GeoBounds {
 export function boundsContains(bounds: GeoBounds, lat: number, lon: number): boolean {
   if (lat < bounds.south || lat > bounds.north) return false;
   if (bounds.east - bounds.west >= 360) return true;
-  const offset = ((((lon - bounds.west) % 360) + 360) % 360);
+  const offset = (((lon - bounds.west) % 360) + 360) % 360;
   return offset <= bounds.east - bounds.west;
 }
 

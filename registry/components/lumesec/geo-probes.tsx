@@ -193,7 +193,11 @@ export function GeoProbes({
   const progressRef = React.useRef<HTMLSpanElement>(null);
   const siteRefs = React.useRef(new Map<string, HTMLSpanElement>());
   const rowMotion = React.useRef(new Map<string, RowMotion>());
-  const listMotion = React.useRef<TargetSpring>({ position: board.order.length, velocity: 0, target: board.order.length });
+  const listMotion = React.useRef<TargetSpring>({
+    position: board.order.length,
+    velocity: 0,
+    target: board.order.length,
+  });
   const markerMotion = React.useRef<Record<Percentile, MarkerMotion>>({
     p50: { position: 0, velocity: 0, target: 0, origin: 0, shown: false, element: null },
     p95: { position: 0, velocity: 0, target: 0, origin: 0, shown: false, element: null },
@@ -276,7 +280,8 @@ export function GeoProbes({
       if (engine.play(board.plan, timeScale, board.scale) && !prefersReducedMotion()) {
         for (const id of board.plan.ms.keys()) {
           const site = siteRefs.current.get(id);
-          if (site && typeof site.animate === "function") site.animate(LAUNCH_KEYFRAMES, { duration: 700, easing: "cubic-bezier(.2,.8,.2,1)" });
+          if (site && typeof site.animate === "function")
+            site.animate(LAUNCH_KEYFRAMES, { duration: 700, easing: "cubic-bezier(.2,.8,.2,1)" });
         }
       }
     } else {
@@ -289,7 +294,11 @@ export function GeoProbes({
   React.useEffect(() => {
     const bar = progressRef.current;
     if (!board.playing || !board.plan || !bar || typeof bar.animate !== "function" || prefersReducedMotion()) return;
-    const animation = bar.animate(PROGRESS_KEYFRAMES, { duration: Math.max(200, roundDuration(board.plan, timeScale)), easing: "linear", fill: "forwards" });
+    const animation = bar.animate(PROGRESS_KEYFRAMES, {
+      duration: Math.max(200, roundDuration(board.plan, timeScale)),
+      easing: "linear",
+      fill: "forwards",
+    });
     return () => animation.cancel();
   }, [board.playing, board.plan, timeScale]);
 
@@ -328,7 +337,9 @@ export function GeoProbes({
     lastStart.current = performance.now();
     const reduced = prefersReducedMotion();
     setBoard((previous) =>
-      previous.playing || previous.mode !== "demo" ? previous : startRound(previous, demoPlan(previous.round + 1, probes, target), reduced),
+      previous.playing || previous.mode !== "demo"
+        ? previous
+        : startRound(previous, demoPlan(previous.round + 1, probes, target), reduced),
     );
   }, [probes, target]);
 
@@ -336,7 +347,10 @@ export function GeoProbes({
   const demo = mode === "demo";
   React.useEffect(() => {
     if (!demo || !inView || board.playing || probes.length === 0) return;
-    const delay = board.round === 0 ? FIRST_ROUND_DELAY : Math.max(MIN_ROUND_GAP, intervalMs - (performance.now() - lastStart.current));
+    const delay =
+      board.round === 0
+        ? FIRST_ROUND_DELAY
+        : Math.max(MIN_ROUND_GAP, intervalMs - (performance.now() - lastStart.current));
     const timer = window.setTimeout(startDemoRound, delay);
     return () => window.clearTimeout(timer);
   }, [demo, inView, board.playing, board.round, intervalMs, probes.length, startDemoRound]);
@@ -399,15 +413,28 @@ export function GeoProbes({
   const ticks = scaleTicks(board.scale);
 
   return (
-    <div data-slot="geo-probes" className={cn("@container grid w-full max-w-[660px] gap-2 text-foreground", className)} {...props}>
+    <div
+      data-slot="geo-probes"
+      className={cn("@container grid w-full max-w-[660px] gap-2 text-foreground", className)}
+      {...props}
+    >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
         <div className="flex min-w-0 flex-1 items-center gap-2.5">
-          <span aria-hidden="true" className="size-2.5 shrink-0 rounded-[2px] bg-lumesec shadow-[0_0_0_2px_var(--background),0_0_0_3px_color-mix(in_srgb,var(--lumesec)_45%,transparent)]" />
-          <span className="min-w-0 truncate text-[13.5px] leading-5 font-medium tracking-[-0.005em]">{target.label}</span>
+          <span
+            aria-hidden="true"
+            className="size-2.5 shrink-0 rounded-[2px] bg-lumesec shadow-[0_0_0_2px_var(--background),0_0_0_3px_color-mix(in_srgb,var(--lumesec)_45%,transparent)]"
+          />
+          <span className="min-w-0 truncate text-[13.5px] leading-5 font-medium tracking-[-0.005em]">
+            {target.label}
+          </span>
           <span className="flex shrink-0 items-center gap-1 text-[12.5px] leading-5 text-muted-foreground">
             <span aria-hidden="true">Round</span>
             <span aria-hidden="true" className="font-mono text-[12.5px] text-foreground tabular-nums">
-              <RollingValue text={board.round > 0 ? String(board.round) : "–"} value={board.round} animate={!reducedMotion} />
+              <RollingValue
+                text={board.round > 0 ? String(board.round) : "–"}
+                value={board.round}
+                animate={!reducedMotion}
+              />
             </span>
             <span className="sr-only">{board.round > 0 ? `Round ${board.round}` : "No round yet"}</span>
           </span>
@@ -420,13 +447,17 @@ export function GeoProbes({
               type="button"
               aria-disabled={busy || probes.length === 0 || undefined}
               onClick={handleRun}
-              className="relative inline-flex h-[30px] shrink-0 cursor-pointer items-center gap-1.5 overflow-hidden rounded-lg border border-border bg-card px-[11px] font-[inherit] text-[12.5px] leading-none font-medium text-foreground outline-none transition-[border-color,color] duration-150 hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec aria-disabled:cursor-default aria-disabled:text-muted-foreground aria-disabled:hover:border-border motion-reduce:transition-none @max-[459px]:ml-auto"
+              className="relative inline-flex h-[30px] shrink-0 cursor-pointer items-center gap-1.5 overflow-hidden rounded-lg border border-border bg-card px-[11px] font-[inherit] text-[12.5px] leading-none font-medium text-foreground transition-[border-color,color] duration-150 outline-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid aria-disabled:cursor-default aria-disabled:text-muted-foreground aria-disabled:hover:border-border motion-reduce:transition-none @max-[459px]:ml-auto"
             >
               <svg viewBox="0 0 12 12" aria-hidden="true" className="size-3 shrink-0 fill-current">
                 <path d="M3.5 2.2v7.6a.5.5 0 0 0 .76.43l6.2-3.8a.5.5 0 0 0 0-.86l-6.2-3.8a.5.5 0 0 0-.76.43Z" />
               </svg>
               <RollText text={busy ? "Checking" : "Run check"} reserve={RUN_LABELS} animate={!reducedMotion} />
-              <span ref={progressRef} aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-lumesec" />
+              <span
+                ref={progressRef}
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-lumesec"
+              />
             </button>
           ) : null}
         </div>
@@ -449,7 +480,12 @@ export function GeoProbes({
               preserveAspectRatio="none"
               className="pointer-events-none absolute inset-0 block size-full overflow-visible"
             >
-              <path d={layout.outline} vectorEffect="non-scaling-stroke" strokeWidth={1} className="fill-muted/35 stroke-border" />
+              <path
+                d={layout.outline}
+                vectorEffect="non-scaling-stroke"
+                strokeWidth={1}
+                className="fill-muted/35 stroke-border"
+              />
             </svg>
             <canvas ref={baseRef} aria-hidden="true" className="absolute inset-0 block size-full" />
             <canvas ref={arcsRef} aria-hidden="true" className="absolute inset-0 block size-full" />
@@ -498,12 +534,24 @@ export function GeoProbes({
             </div>
             <div className="relative mt-1.5 min-h-[44px] flex-1">
               <canvas ref={stripRef} aria-hidden="true" className="absolute inset-0 block size-full" />
-              <PercentileMarker which="p50" fraction={view.p50 === null ? null : view.p50 / board.scale} register={registerMarker} />
-              <PercentileMarker which="p95" fraction={view.p95 === null ? null : view.p95 / board.scale} register={registerMarker} />
+              <PercentileMarker
+                which="p50"
+                fraction={view.p50 === null ? null : view.p50 / board.scale}
+                register={registerMarker}
+              />
+              <PercentileMarker
+                which="p95"
+                fraction={view.p95 === null ? null : view.p95 / board.scale}
+                register={registerMarker}
+              />
             </div>
             <div className="relative mt-1 h-3.5 font-mono text-[10px] leading-[14px] text-muted-foreground tabular-nums">
               {ticks.map((tick, i) => (
-                <span key={tick} className="absolute top-0 whitespace-nowrap" style={tickStyle(i, ticks.length, tick / board.scale)}>
+                <span
+                  key={tick}
+                  className="absolute top-0 whitespace-nowrap"
+                  style={tickStyle(i, ticks.length, tick / board.scale)}
+                >
                   {i === ticks.length - 1 ? `${formatNumber(tick)} ms` : formatNumber(tick)}
                 </span>
               ))}
@@ -513,7 +561,9 @@ export function GeoProbes({
 
         <div className="min-w-0 border-t border-border px-1.5 py-2 @min-[560px]:border-t-0 @min-[560px]:border-l">
           {probes.length === 0 ? (
-            <p className="m-0 grid min-h-[78px] place-items-center text-[12.5px] leading-5 text-muted-foreground">No probes</p>
+            <p className="m-0 grid min-h-[78px] place-items-center text-[12.5px] leading-5 text-muted-foreground">
+              No probes
+            </p>
           ) : null}
           <ol
             ref={listRef}
@@ -562,7 +612,10 @@ function StatChip({ label, value, animate }: { label: string; value: number | nu
       <span aria-hidden="true" className="font-mono text-[10.5px] text-muted-foreground">
         {label}
       </span>
-      <span aria-hidden="true" className="inline-flex min-w-[3.6ch] justify-end font-mono text-[12.5px] font-medium text-foreground tabular-nums">
+      <span
+        aria-hidden="true"
+        className="inline-flex min-w-[3.6ch] justify-end font-mono text-[12.5px] font-medium text-foreground tabular-nums"
+      >
         <RollingValue text={figures} value={value ?? 0} animate={animate} />
       </span>
       <span aria-hidden="true" className="min-w-[1.4em] text-[11.5px] text-muted-foreground">
@@ -650,7 +703,9 @@ function MapChip({
       aria-hidden="true"
       className={cn(
         "pointer-events-none absolute z-[2] rounded-[5px] border bg-card px-1.5 font-mono text-[10.5px] leading-4 whitespace-nowrap shadow-[0_2px_8px_-4px_rgb(0_0_0/0.3)]",
-        strong ? "border-[color-mix(in_srgb,var(--lumesec)_35%,var(--border))] text-foreground" : "border-border text-muted-foreground",
+        strong
+          ? "border-[color-mix(in_srgb,var(--lumesec)_35%,var(--border))] text-foreground"
+          : "border-border text-muted-foreground",
       )}
       style={style}
     >
@@ -732,14 +787,19 @@ function ProbeRow({ probe, rank, entry, place, fraction, slow, animate, pointed,
     if (!live || !animate || (status !== "ok" && status !== "failed")) return;
     const played: Animation[] = [];
     const wash = washRef.current;
-    if (wash && typeof wash.animate === "function") played.push(wash.animate(WASH_KEYFRAMES, { duration: 1200, easing: "cubic-bezier(.2,.8,.2,1)" }));
+    if (wash && typeof wash.animate === "function")
+      played.push(wash.animate(WASH_KEYFRAMES, { duration: 1200, easing: "cubic-bezier(.2,.8,.2,1)" }));
     const fill = fillRef.current;
-    if (status === "ok" && fill && typeof fill.animate === "function") played.push(fill.animate(BAR_FLASH_KEYFRAMES, { duration: 1500, easing: "ease-out" }));
+    if (status === "ok" && fill && typeof fill.animate === "function")
+      played.push(fill.animate(BAR_FLASH_KEYFRAMES, { duration: 1500, easing: "ease-out" }));
     if (status === "failed") shake(chipRef.current);
     return () => played.forEach((animation) => animation.cancel());
   }, [status, live, animate]);
 
-  const value = status === "ok" && entry.ms !== null ? splitUnit(formatMs(entry.ms)) : { figures: status === "pending" ? "pending" : "–", unit: "" };
+  const value =
+    status === "ok" && entry.ms !== null
+      ? splitUnit(formatMs(entry.ms))
+      : { figures: status === "pending" ? "pending" : "–", unit: "" };
   return (
     <li
       ref={itemRef}
@@ -770,7 +830,9 @@ function ProbeRow({ probe, rank, entry, place, fraction, slow, animate, pointed,
         <span
           className={cn(
             "truncate text-[12.5px] leading-4 transition-colors duration-200 motion-reduce:transition-none",
-            status === "pending" || status === "idle" || status === "missing" ? "text-muted-foreground" : "text-foreground",
+            status === "pending" || status === "idle" || status === "missing"
+              ? "text-muted-foreground"
+              : "text-foreground",
           )}
         >
           {probe.label}
@@ -805,7 +867,9 @@ function ProbeRow({ probe, rank, entry, place, fraction, slow, animate, pointed,
           ref={fillRef}
           className={cn(
             "relative block h-full max-w-full bg-[linear-gradient(90deg,currentColor_2px,transparent_2px)] bg-[length:4px_2px]",
-            slow ? "text-[color-mix(in_srgb,var(--lumesec-warning)_75%,transparent)]" : "text-[color-mix(in_srgb,var(--foreground)_34%,transparent)]",
+            slow
+              ? "text-[color-mix(in_srgb,var(--lumesec-warning)_75%,transparent)]"
+              : "text-[color-mix(in_srgb,var(--foreground)_34%,transparent)]",
           )}
           style={{ width: percent(barOrigin) }}
         />
@@ -999,7 +1063,14 @@ function startRound(board: Board, plan: RoundPlan, instant: boolean): Board {
   const settled = board.playing ? finishRound(board) : board;
   const entries = new Map<string, RowEntry>();
   for (const id of settled.order) entries.set(id, PENDING);
-  const started: Board = { ...settled, round: plan.round, playing: true, entries, plan, scale: scaleFor(plan, settled.scale) };
+  const started: Board = {
+    ...settled,
+    round: plan.round,
+    playing: true,
+    entries,
+    plan,
+    scale: scaleFor(plan, settled.scale),
+  };
   return instant ? finishRound(started) : started;
 }
 
@@ -1039,7 +1110,8 @@ function finishRound(board: Board): Board {
   remaining.sort((a, b) => (a[1] ?? Infinity) - (b[1] ?? Infinity));
   for (const [id, ms] of remaining) next = ms === null ? failResult(next, id, false) : landResult(next, id, false);
   const entries = new Map(next.entries);
-  for (const [id, entry] of entries) if (entry.status === "pending") entries.set(id, { status: "missing", ms: null, live: false });
+  for (const [id, entry] of entries)
+    if (entry.status === "pending") entries.set(id, { status: "missing", ms: null, live: false });
   const passed: number[] = [];
   for (const entry of entries.values()) if (entry.status === "ok" && entry.ms !== null) passed.push(entry.ms);
   const median = passed.length ? `, median ${formatMs(quantile(passed, 0.5))}` : "";
@@ -1054,7 +1126,8 @@ function planFromResults(results: readonly ProbeResult[], round: number, probes:
   for (const result of results) {
     if (!result || typeof result.probe !== "string" || !known.has(result.probe)) continue;
     if (result.ms === null) ms.set(result.probe, null);
-    else if (typeof result.ms === "number" && Number.isFinite(result.ms) && result.ms >= 0) ms.set(result.probe, result.ms);
+    else if (typeof result.ms === "number" && Number.isFinite(result.ms) && result.ms >= 0)
+      ms.set(result.probe, result.ms);
   }
   return { round, results: [...ms].map(([probe, value]) => ({ probe, ms: value })), ms };
 }
@@ -1066,7 +1139,10 @@ function planFromResults(results: readonly ProbeResult[], round: number, probes:
 function demoPlan(round: number, probes: readonly ProbeSite[], target: ProbeTarget): RoundPlan {
   const random = createRandom(round * 7919 + 101);
   const latencies = probes.map((probe) => demoLatency(probe, target));
-  const failing = round % 3 === 2 && probes.length > 1 ? pickWeighted(random, probes, (probe) => demoLatency(probe, target)).id : null;
+  const failing =
+    round % 3 === 2 && probes.length > 1
+      ? pickWeighted(random, probes, (probe) => demoLatency(probe, target)).id
+      : null;
   const results = probes.map((probe, i) => ({
     probe: probe.id,
     ms: probe.id === failing ? null : Math.max(1, Math.round(latencies[i] * (1 + (random() * 2 - 1) * 0.12))),
@@ -1110,7 +1186,8 @@ function scaleTicks(scale: number) {
 /** Animation ms from the launch to the last arrival or crack. */
 function roundDuration(plan: RoundPlan, timeScale: number) {
   let end = 0;
-  for (const ms of plan.ms.values()) end = Math.max(end, ms === null ? FAIL_PATH_MS * FAIL_AT : Math.min(MAX_ARC_MS, ms * timeScale));
+  for (const ms of plan.ms.values())
+    end = Math.max(end, ms === null ? FAIL_PATH_MS * FAIL_AT : Math.min(MAX_ARC_MS, ms * timeScale));
   return end;
 }
 
@@ -1146,7 +1223,9 @@ function landedResults(board: Board): StripResult[] {
 /* Data helpers ---------------------------------------------------------------------------------------- */
 
 function probeListKey(probes: readonly ProbeSite[]) {
-  return probes.map((probe) => `${probe?.id}\u0001${probe?.label}\u0001${probe?.lat}\u0001${probe?.lon}`).join("\u0002");
+  return probes
+    .map((probe) => `${probe?.id}\u0001${probe?.label}\u0001${probe?.lat}\u0001${probe?.lon}`)
+    .join("\u0002");
 }
 
 /** Probes with an id and a valid position, first of each id. */
@@ -1157,7 +1236,12 @@ function validProbes(probes: readonly ProbeSite[]): ProbeSite[] {
     if (!probe || typeof probe.id !== "string" || probe.id === "" || seen.has(probe.id)) continue;
     if (!isValidLatLon(probe)) continue;
     seen.add(probe.id);
-    list.push({ id: probe.id, label: typeof probe.label === "string" && probe.label ? probe.label : probe.id, lat: probe.lat, lon: probe.lon });
+    list.push({
+      id: probe.id,
+      label: typeof probe.label === "string" && probe.label ? probe.label : probe.id,
+      lat: probe.lat,
+      lon: probe.lon,
+    });
   }
   return list;
 }
@@ -1169,7 +1253,10 @@ function validTarget(target: ProbeTarget): ProbeTarget {
 }
 
 /** A point on the map in degrees, its latitude kept inside the map's crop. */
-const onMap = (point: LatLon): LatLon => ({ lat: clamp(point.lat, LAT_RANGE[0], LAT_RANGE[1]), lon: wrapLongitude(point.lon) });
+const onMap = (point: LatLon): LatLon => ({
+  lat: clamp(point.lat, LAT_RANGE[0], LAT_RANGE[1]),
+  lon: wrapLongitude(point.lon),
+});
 
 type LabelSide = "top" | "right" | "bottom" | "left";
 
@@ -1197,7 +1284,11 @@ function mapLayout(probes: readonly ProbeSite[], target: ProbeTarget) {
  * The side of the target for its label: the one the fewest arcs come in from, and that fits inside the map. Ties go
  * to top, right, left, bottom.
  */
-function labelSide(target: { x: number; y: number }, sites: readonly { x: number; y: number }[], ratio: number): LabelSide {
+function labelSide(
+  target: { x: number; y: number },
+  sites: readonly { x: number; y: number }[],
+  ratio: number,
+): LabelSide {
   const counts: Record<LabelSide, number> = { top: 0, right: 0, bottom: 0, left: 0 };
   for (const site of sites) {
     const dx = site.x - target.x;
@@ -1277,10 +1368,25 @@ interface MarkerMotion extends TargetSpring {
  * The DOM springs settle exactly (so the loop can stop) once they are within `epsilon` of their target and slower than
  * ten times that.
  */
-const ROW_SPRING: SettleSpringOptions = { stiffness: ROW_STIFFNESS, damping: ROW_DAMPING, epsilon: 0.002, velocityEpsilon: 0.02 };
+const ROW_SPRING: SettleSpringOptions = {
+  stiffness: ROW_STIFFNESS,
+  damping: ROW_DAMPING,
+  epsilon: 0.002,
+  velocityEpsilon: 0.02,
+};
 const BAR_SPRING: SettleSpringOptions = { stiffness: 300, damping: 0.78, epsilon: 0.001, velocityEpsilon: 0.01 };
-const LIST_SPRING: SettleSpringOptions = { stiffness: ROW_STIFFNESS, damping: 1, epsilon: 0.002, velocityEpsilon: 0.02 };
-const MARKER_SPRING: SettleSpringOptions = { stiffness: ROW_STIFFNESS, damping: ROW_DAMPING, epsilon: 0.0005, velocityEpsilon: 0.005 };
+const LIST_SPRING: SettleSpringOptions = {
+  stiffness: ROW_STIFFNESS,
+  damping: 1,
+  epsilon: 0.002,
+  velocityEpsilon: 0.02,
+};
+const MARKER_SPRING: SettleSpringOptions = {
+  stiffness: ROW_STIFFNESS,
+  damping: ROW_DAMPING,
+  epsilon: 0.0005,
+  velocityEpsilon: 0.005,
+};
 
 function snapRow(row: RowMotion) {
   row.position = row.target;
@@ -1290,7 +1396,13 @@ function snapRow(row: RowMotion) {
 }
 
 /** Rows slide to their ranks (a later, faster result pushes slower rows down), bars grow, the list follows its rows. */
-function stepRows(rows: Map<string, RowMotion>, list: TargetSpring, element: HTMLOListElement | null, delta: number, reduced: boolean) {
+function stepRows(
+  rows: Map<string, RowMotion>,
+  list: TargetSpring,
+  element: HTMLOListElement | null,
+  delta: number,
+  reduced: boolean,
+) {
   let moving = false;
   for (const row of rows.values()) {
     if (reduced) snapRow(row);
@@ -1460,7 +1572,13 @@ class ProbesEngine {
   /** New theme colours: the ramp, the baked land and the timeline follow. */
   setInk(ink: GeoInk) {
     this.ink = ink;
-    this.colors = { land: rgba(ink.land), accent: rgba(ink.accent), glint: rgba(ink.glint), hot: rgba(ink.hot), destructive: rgba(ink.destructive) };
+    this.colors = {
+      land: rgba(ink.land),
+      accent: rgba(ink.accent),
+      glint: rgba(ink.glint),
+      hot: rgba(ink.hot),
+      destructive: rgba(ink.destructive),
+    };
     this.stripInk = {
       rest: mixRgb(ink.foreground, ink.card, 0.42),
       slow: ink.warning,
@@ -1579,7 +1697,12 @@ class ProbesEngine {
       }
       if (stripMoving) moving = true;
     }
-    if (this.round && this.round.finished && this.trailLevel(this.round, now) <= 0 && now - this.round.finishedAt > CRACK_FADE_MS) {
+    if (
+      this.round &&
+      this.round.finished &&
+      this.trailLevel(this.round, now) <= 0 &&
+      now - this.round.finishedAt > CRACK_FADE_MS
+    ) {
       this.round = null;
       this.arcsDirty = true;
       this.stripDirty = true;
@@ -1657,14 +1780,20 @@ class ProbesEngine {
     for (const table of site.tables) {
       pointAtDistance(table, table.length * FAIL_AT, this.cursor);
       if (!this.inside(this.cursor.x, this.cursor.y)) continue;
-      this.sparks.add(this.cursor.x + this.effectsX, this.cursor.y + this.effectsY, CRACK_SPARKS, [ink.destructive, mixRgb(ink.destructive, ink.card, 0.35)], {
-        speed: [60, 200],
-        gravity: 180,
-        life: [0.45, 0.95],
-        size: [1.5, 2.5],
-        drag: 2.6,
-        jitter: 1.5,
-      });
+      this.sparks.add(
+        this.cursor.x + this.effectsX,
+        this.cursor.y + this.effectsY,
+        CRACK_SPARKS,
+        [ink.destructive, mixRgb(ink.destructive, ink.card, 0.35)],
+        {
+          speed: [60, 200],
+          gravity: 180,
+          life: [0.45, 0.95],
+          size: [1.5, 2.5],
+          drag: 2.6,
+          jitter: 1.5,
+        },
+      );
     }
   }
 
@@ -1832,7 +1961,14 @@ class ProbesEngine {
   }
 
   /** The comet head: a soft accent glow, an accent square and a glint core. */
-  private heads(context: CanvasRenderingContext2D, site: Site, progress: number, dpr: number, alpha: number, accent: RGB) {
+  private heads(
+    context: CanvasRenderingContext2D,
+    site: Site,
+    progress: number,
+    dpr: number,
+    alpha: number,
+    accent: RGB,
+  ) {
     for (const table of site.tables) {
       pointAtDistance(table, table.length * progress, this.cursor);
       const { x, y } = this.cursor;
@@ -1927,7 +2063,12 @@ class ProbesEngine {
       const c = Math.round((tick / scale) * (columns - 1));
       for (let r = 1; r <= 2; r++) {
         context.globalAlpha = r === 1 ? 1 : 0.45;
-        context.fillRect(snap(left + c * STRIP_PITCH - size / 2, dpr), snap(bottom - r * STRIP_PITCH - size / 2, dpr), size, size);
+        context.fillRect(
+          snap(left + c * STRIP_PITCH - size / 2, dpr),
+          snap(bottom - r * STRIP_PITCH - size / 2, dpr),
+          size,
+          size,
+        );
       }
     }
     context.globalAlpha = 1;

@@ -2,10 +2,17 @@
   "summary": "Unified diff reviewer with dithered add and remove tints and a minimap; accepting or rejecting a hunk dissolves the dropped lines.",
   "attributes": [],
   "events": [
-    { "name": "resolve", "detail": "{ hunk: number, accepted: boolean }", "description": "Fires when a hunk is accepted or rejected. `hunk` is its zero-based index. Accept all fires once per open hunk." }
+    {
+      "name": "resolve",
+      "detail": "{ hunk: number, accepted: boolean }",
+      "description": "Fires when a hunk is accepted or rejected. `hunk` is its zero-based index. Accept all fires once per open hunk."
+    }
   ],
   "methods": [
-    { "signature": "resolve(index: number, accept: boolean)", "description": "Accepts or rejects a hunk by index, as its buttons do. Ignored if the hunk is already resolved or does not exist." }
+    {
+      "signature": "resolve(index: number, accept: boolean)",
+      "description": "Accepts or rejects a hunk by index, as its buttons do. Ignored if the hunk is already resolved or does not exist."
+    }
   ],
   "properties": [],
   "keyboard": [],

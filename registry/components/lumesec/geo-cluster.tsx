@@ -124,7 +124,11 @@ export function GeoCluster({
   const cell = clamp(Number.isFinite(cellSize) ? cellSize : 44, 16, 160);
   const reducedMotion = useReducedMotion();
 
-  const [zoomValue, setZoomValue] = useControllableState<number>({ value: zoom, defaultValue: defaultZoom, onChange: onZoomChange });
+  const [zoomValue, setZoomValue] = useControllableState<number>({
+    value: zoom,
+    defaultValue: defaultZoom,
+    onChange: onZoomChange,
+  });
   const [centerValue, setCenterValue] = useControllableState<LatLon>({
     value: center,
     defaultValue: defaultCenter,
@@ -160,7 +164,15 @@ export function GeoCluster({
   const rendered = React.useRef<RenderedScene>({ view: scene.view, nodes: new Map() });
   const layoutWidthRef = React.useRef(layoutWidth);
   /** Props and callbacks the animation loop and the native listeners read. */
-  const latest = React.useRef({ zoomLimit, defaultZoom, defaultCenter, selected, onPointClick, onClusterClick, popoverOpen: false });
+  const latest = React.useRef({
+    zoomLimit,
+    defaultZoom,
+    defaultCenter,
+    selected,
+    onPointClick,
+    onClusterClick,
+    popoverOpen: false,
+  });
 
   const loop = useAnimationLoop(frameRef, step);
   const colors = usePalette(frameRef, GEO_TOKENS, () => {
@@ -184,7 +196,15 @@ export function GeoCluster({
   }, [layoutWidth]);
 
   React.useEffect(() => {
-    latest.current = { zoomLimit, defaultZoom, defaultCenter, selected, onPointClick, onClusterClick, popoverOpen: popover !== null };
+    latest.current = {
+      zoomLimit,
+      defaultZoom,
+      defaultCenter,
+      selected,
+      onPointClick,
+      onClusterClick,
+      popoverOpen: popover !== null,
+    };
   });
 
   React.useEffect(() => {
@@ -218,7 +238,8 @@ export function GeoCluster({
     const motion = viewRef.current;
     const world = toWorld(centerValue.lat, centerValue.lon);
     const reported = runtimeRef.current.reportedCenter;
-    if (reported && Math.abs(reported.lat - centerValue.lat) < 1e-3 && Math.abs(reported.lon - centerValue.lon) < 1e-3) return;
+    if (reported && Math.abs(reported.lat - centerValue.lat) < 1e-3 && Math.abs(reported.lon - centerValue.lon) < 1e-3)
+      return;
     if (Math.abs(world.u - motion.u.target) < 1e-6 && Math.abs(world.v - motion.v.target) < 1e-6) return;
     motion.anchor = null;
     motion.u.target = world.u;
@@ -360,7 +381,12 @@ export function GeoCluster({
     const size = frameSize();
     const scale = size.width * 2 ** motion.zoomTarget;
     motion.anchor = null;
-    const [u, v] = clampCenter(motion.u.target + dx / scale, motion.v.target + dy / scale, 2 ** motion.zoomTarget, size);
+    const [u, v] = clampCenter(
+      motion.u.target + dx / scale,
+      motion.v.target + dy / scale,
+      2 ** motion.zoomTarget,
+      size,
+    );
     motion.u.target = u;
     motion.v.target = v;
     startMotion();
@@ -494,7 +520,8 @@ export function GeoCluster({
       element.style.translate = `${(x - restX).toFixed(2)}px ${(y - restY).toFixed(2)}px`;
       if (entry?.into) {
         // children fade as they reach the parent they merge into
-        const remaining = Math.hypot(entry.offsetU.position - entry.targetU, entry.offsetV.position - entry.targetV) * scale;
+        const remaining =
+          Math.hypot(entry.offsetU.position - entry.targetU, entry.offsetV.position - entry.targetV) * scale;
         element.style.opacity = clamp((remaining - 2) / 18, 0, 1).toFixed(3);
       } else if (element.style.opacity) {
         element.style.opacity = "";
@@ -513,7 +540,8 @@ export function GeoCluster({
       return;
     }
     let next: string | undefined = key;
-    for (let hops = 0; next && hops < 12 && !nodeElements.current.has(next); hops++) next = modelRef.current.handoff.get(next);
+    for (let hops = 0; next && hops < 12 && !nodeElements.current.has(next); hops++)
+      next = modelRef.current.handoff.get(next);
     const target = next ? nodeElements.current.get(next) : undefined;
     // a parent that is still collecting its children takes focus once it shows; try again on the next scene
     if (target?.dataset.state === "live") target.focus({ preventScroll: true });
@@ -550,7 +578,8 @@ export function GeoCluster({
       state.ripples.push({ u, v, start: performance.now(), reach: rim + 40, strength: 1 });
       // the effects canvas starts FX_INSET px outside the frame's border box
       const border = frameRef.current?.clientLeft ?? 0;
-      if (palette) ringBurst(state.sparks, x + FX_INSET + border, y + FX_INSET + border, rim, 22, [palette.accent, palette.glint]);
+      if (palette)
+        ringBurst(state.sparks, x + FX_INSET + border, y + FX_INSET + border, rim, 22, [palette.accent, palette.glint]);
     }
     loop.kick();
   }
@@ -640,7 +669,11 @@ export function GeoCluster({
         const index = rows.indexOf(target);
         const last = rows.length - 1;
         const next =
-          event.key === "Home" ? 0 : event.key === "End" ? last : clamp(index + (event.key === "ArrowDown" ? 1 : -1), 0, last);
+          event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? last
+              : clamp(index + (event.key === "ArrowDown" ? 1 : -1), 0, last);
         rows[next]?.focus();
       }
       return;
@@ -900,7 +933,7 @@ export function GeoCluster({
   const rovingKey =
     activeKey && liveItems.some((item) => item.key === activeKey)
       ? activeKey
-      : (liveItems.find((item) => insideView(item.node, scene.view)) ?? liveItems[0])?.key ?? null;
+      : ((liveItems.find((item) => insideView(item.node, scene.view)) ?? liveItems[0])?.key ?? null);
   const selectedPath = ancestorKeys(scene.tree, selected);
   const listItem = popover ? (scene.items.find((item) => item.key === popover.key && !item.exiting) ?? null) : null;
   const empty = data.length === 0;
@@ -926,7 +959,7 @@ export function GeoCluster({
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}
         onKeyDown={handleKeyDown}
-        className="group/map relative aspect-[2/1] w-full cursor-grab touch-pan-y overflow-hidden rounded-xl border border-border bg-card outline-none select-none [-webkit-tap-highlight-color:transparent] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec data-[dragging]:cursor-grabbing"
+        className="group/map relative aspect-[2/1] w-full cursor-grab touch-pan-y overflow-hidden rounded-xl border border-border bg-card outline-none select-none [-webkit-tap-highlight-color:transparent] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid data-[dragging]:cursor-grabbing"
       >
         <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute inset-0 block size-full" />
         <div className="absolute inset-0">
@@ -954,9 +987,22 @@ export function GeoCluster({
             No locations to show
           </p>
         ) : null}
-        <MapControls store={store} reducedMotion={reducedMotion} onZoomIn={() => stepZoom(1, null)} onZoomOut={() => stepZoom(-1, null)} onReset={resetView} />
+        <MapControls
+          store={store}
+          reducedMotion={reducedMotion}
+          onZoomIn={() => stepZoom(1, null)}
+          onZoomOut={() => stepZoom(-1, null)}
+          onReset={resetView}
+        />
         {listItem ? (
-          <ClusterList ref={popoverRef} item={listItem} view={scene.view} selected={selected} onPick={pickFromList} onClose={closeList} />
+          <ClusterList
+            ref={popoverRef}
+            item={listItem}
+            view={scene.view}
+            selected={selected}
+            onPick={pickFromList}
+            onClose={closeList}
+          />
         ) : null}
         <div
           aria-hidden="true"
@@ -968,8 +1014,8 @@ export function GeoCluster({
           </span>
         </div>
         <p id={descriptionId} className="sr-only">
-          Arrow keys pan the map, plus and minus zoom, 0 resets the view. Tab moves to the clusters, where arrow keys move
-          between them.
+          Arrow keys pan the map, plus and minus zoom, 0 resets the view. Tab moves to the clusters, where arrow keys
+          move between them.
         </p>
         <LiveRegion store={store} />
       </div>
@@ -1072,8 +1118,15 @@ function ClusterNodeButton({
       onBlur={onBlurNode}
       onPointerEnter={() => onHover(key)}
       onPointerLeave={() => onHover(null)}
-      className="group/node absolute z-[1] grid cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 font-[inherit] text-foreground outline-none [-webkit-tap-highlight-color:transparent] hover:z-10 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec data-[state=exiting]:pointer-events-none"
-      style={{ left: `${left}%`, top: `${top}%`, width: size, height: size, marginLeft: -size / 2, marginTop: -size / 2 }}
+      className="group/node absolute z-[1] grid cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 font-[inherit] text-foreground outline-none [-webkit-tap-highlight-color:transparent] hover:z-10 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid data-[state=exiting]:pointer-events-none"
+      style={{
+        left: `${left}%`,
+        top: `${top}%`,
+        width: size,
+        height: size,
+        marginLeft: -size / 2,
+        marginTop: -size / 2,
+      }}
     >
       {cluster ? (
         <span
@@ -1115,7 +1168,9 @@ function ClusterNodeButton({
           ) : (
             <>
               <span className="block font-medium">{name}</span>
-              <span className="block font-mono text-[10.5px] text-muted-foreground tabular-nums">{formatLatLon(node, "decimal", 2)}</span>
+              <span className="block font-mono text-[10.5px] text-muted-foreground tabular-nums">
+                {formatLatLon(node, "decimal", 2)}
+              </span>
             </>
           )}
         </span>
@@ -1141,7 +1196,10 @@ function MapControls({ store, reducedMotion, onZoomIn, onZoomOut, onReset }: Map
         <ControlButton label="Zoom out" disabled={!snapshot.canZoomOut} onClick={onZoomOut}>
           <path d="M4.5 8h7" />
         </ControlButton>
-        <span aria-hidden="true" className="grid min-w-[38px] place-items-center font-mono text-[11.5px] text-muted-foreground tabular-nums">
+        <span
+          aria-hidden="true"
+          className="grid min-w-[38px] place-items-center font-mono text-[11.5px] text-muted-foreground tabular-nums"
+        >
           <ZoomReadout zoom={snapshot.zoom} reducedMotion={reducedMotion} />
         </span>
         <ControlButton label="Zoom in" disabled={!snapshot.canZoomIn} onClick={onZoomIn}>
@@ -1175,9 +1233,18 @@ function ControlButton({
       // aria-disabled instead of disabled: a button that reaches the zoom limit while focused keeps the focus
       aria-disabled={disabled || undefined}
       onClick={disabled ? undefined : onClick}
-      className="grid size-7 cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-foreground outline-none hover:bg-foreground/8 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-solid focus-visible:outline-lumesec aria-disabled:cursor-default aria-disabled:text-muted-foreground/45 aria-disabled:hover:bg-transparent"
+      className="grid size-7 cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-foreground outline-none hover:bg-foreground/8 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid aria-disabled:cursor-default aria-disabled:text-muted-foreground/45 aria-disabled:hover:bg-transparent"
     >
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="size-3.5">
+      <svg
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        className="size-3.5"
+      >
         {children}
       </svg>
     </button>
@@ -1257,9 +1324,17 @@ function ClusterList({ ref, item, view, selected, onPick, onClose }: ClusterList
           type="button"
           aria-label="Close"
           onClick={onClose}
-          className="grid size-6 shrink-0 cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-muted-foreground outline-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+          className="grid size-6 shrink-0 cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-muted-foreground outline-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-lumesec focus-visible:outline-solid"
         >
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" aria-hidden="true" className="size-3">
+          <svg
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.4}
+            strokeLinecap="round"
+            aria-hidden="true"
+            className="size-3"
+          >
             <path d="M4 4l8 8M12 4l-8 8" />
           </svg>
         </button>
@@ -1274,7 +1349,9 @@ function ClusterList({ ref, item, view, selected, onPick, onClose }: ClusterList
               className="flex w-full cursor-pointer items-baseline gap-3 rounded-md border-0 bg-transparent px-2 py-1 text-left font-[inherit] text-[12.5px] leading-[18px] text-foreground outline-none hover:bg-accent focus-visible:bg-accent aria-pressed:text-lumesec"
             >
               <span className="min-w-0 flex-1 truncate">{pointLabel(point)}</span>
-              <span className="shrink-0 font-mono text-[11px] text-muted-foreground tabular-nums">{formatLatLon(point, "decimal", 1)}</span>
+              <span className="shrink-0 font-mono text-[11px] text-muted-foreground tabular-nums">
+                {formatLatLon(point, "decimal", 1)}
+              </span>
             </button>
           </li>
         ))}
@@ -1325,7 +1402,12 @@ function createViewStore(zoom: number, limit: number): ViewStore {
     getServer: () => server,
     setTarget(value, max) {
       const next = make(value, max, snapshot.announcement);
-      if (next.zoom === snapshot.zoom && next.canZoomIn === snapshot.canZoomIn && next.canZoomOut === snapshot.canZoomOut) return;
+      if (
+        next.zoom === snapshot.zoom &&
+        next.canZoomIn === snapshot.canZoomIn &&
+        next.canZoomOut === snapshot.canZoomOut
+      )
+        return;
       snapshot = next;
       emit();
     },
@@ -1439,7 +1521,8 @@ function clampCenter(u: number, v: number, z: number, size: FrameSize): [number,
 }
 
 /** Whether an event target is part of the controls or the cluster list, which handle their own pointer input. */
-const isInterface = (target: EventTarget | null) => target instanceof Element && target.closest("[data-map-ui]") !== null;
+const isInterface = (target: EventTarget | null) =>
+  target instanceof Element && target.closest("[data-map-ui]") !== null;
 
 /** Whether a node's resting position is inside the frame of a rendered view. */
 function insideView(node: ClusterNode, view: SceneView) {
@@ -1516,7 +1599,14 @@ function startView(zoom: number, center: LatLon, limit: number): SceneView {
 function createView(zoom: number, center: LatLon, limit: number): ViewMotion {
   const start = startView(zoom, center, limit);
   const log = Math.log2(start.z);
-  return { zoom: { position: log, velocity: 0 }, zoomTarget: log, u: spring(start.cu), v: spring(start.cv), anchor: null, gesture: false };
+  return {
+    zoom: { position: log, velocity: 0 },
+    zoomTarget: log,
+    u: spring(start.cu),
+    v: spring(start.cv),
+    anchor: null,
+    gesture: false,
+  };
 }
 
 /** Holds the world point under (x, y) there while the zoom moves, gliding it to (toX, toY) on the way. */
@@ -1617,7 +1707,12 @@ function demoClusterPoints(): readonly ClusterPoint[] {
     const n = (perCity.get(city) ?? 0) + 1;
     perCity.set(city, n);
     const place = nearest && nearest.km > 150 ? `${city} region` : city;
-    return { id: `p${index}`, lat: Math.round(point.lat * 1e4) / 1e4, lon: Math.round(point.lon * 1e4) / 1e4, label: `Site ${n}, ${place}` };
+    return {
+      id: `p${index}`,
+      lat: Math.round(point.lat * 1e4) / 1e4,
+      lon: Math.round(point.lon * 1e4) / 1e4,
+      label: `Site ${n}, ${place}`,
+    };
   });
   return demoCache;
 }
@@ -1841,7 +1936,8 @@ function visibleNodes(tree: ClusterTree, level: number, viewport: Viewport): Clu
   for (const node of nodes) {
     const x = viewport.width / 2 + (node.u - viewport.cu) * scale;
     const y = viewport.height / 2 + (node.v - viewport.cv) * scale;
-    if (x < -CULL_MARGIN || x > viewport.width + CULL_MARGIN || y < -CULL_MARGIN || y > viewport.height + CULL_MARGIN) continue;
+    if (x < -CULL_MARGIN || x > viewport.width + CULL_MARGIN || y < -CULL_MARGIN || y > viewport.height + CULL_MARGIN)
+      continue;
     result.push(node);
     if (result.length >= MAX_NODES) break;
   }
@@ -1851,9 +1947,13 @@ function visibleNodes(tree: ClusterTree, level: number, viewport: Viewport): Clu
 function initialScene(tree: ClusterTree, view: SceneView): Scene {
   const level = levelFor(view.z, tree.maxLevel);
   const viewport: Viewport = { ...view, width: NOMINAL_WIDTH, height: NOMINAL_WIDTH / ASPECT };
-  const items = visibleNodes(tree, level, viewport).map(
-    (node): SceneItem => ({ key: node.key, node, exiting: false, shown: node.count, enter: "none" }),
-  );
+  const items = visibleNodes(tree, level, viewport).map((node): SceneItem => ({
+    key: node.key,
+    node,
+    exiting: false,
+    shown: node.count,
+    enter: "none",
+  }));
   return { tree, view, level, items };
 }
 
@@ -1891,7 +1991,14 @@ interface Model {
   handoff: Map<string, string>;
 }
 
-const createModel = (): Model => ({ tree: null, level: 0, entries: new Map(), dirty: false, cullView: null, handoff: new Map() });
+const createModel = (): Model => ({
+  tree: null,
+  level: 0,
+  entries: new Map(),
+  dirty: false,
+  cullView: null,
+  handoff: new Map(),
+});
 
 const liveEntry = (node: ClusterNode): Entry => ({
   key: node.key,
@@ -1997,7 +2104,13 @@ function reconcile(model: Model, level: number, viewport: Viewport, reduced: boo
 }
 
 /** Springs every node one frame; merging nodes that reach their parent are removed. Returns whether any moves. */
-function stepEntries(model: Model, delta: number, reduced: boolean, viewport: Viewport, focusKey: string | null): boolean {
+function stepEntries(
+  model: Model,
+  delta: number,
+  reduced: boolean,
+  viewport: Viewport,
+  focusKey: string | null,
+): boolean {
   const scale = viewport.width * viewport.z;
   let moving = false;
   for (const entry of model.entries.values()) {
@@ -2048,7 +2161,9 @@ function viewMoved(model: Model, viewport: Viewport) {
   if (!last) return true;
   const scale = viewport.width * viewport.z;
   return (
-    Math.abs(viewport.cu - last.cu) * scale > 12 || Math.abs(viewport.cv - last.cv) * scale > 12 || Math.abs(Math.log2(viewport.z / last.z)) > 0.04
+    Math.abs(viewport.cu - last.cu) * scale > 12 ||
+    Math.abs(viewport.cv - last.cv) * scale > 12 ||
+    Math.abs(Math.log2(viewport.z / last.z)) > 0.04
   );
 }
 
@@ -2067,7 +2182,11 @@ function cull(model: Model, viewport: Viewport) {
   }
   for (const entry of model.entries.values()) {
     if (entry.into || entry.pending > 0 || keep.has(entry.key)) continue;
-    const resting = entry.offsetU.velocity === 0 && entry.offsetV.velocity === 0 && entry.offsetU.position === 0 && entry.offsetV.position === 0;
+    const resting =
+      entry.offsetU.velocity === 0 &&
+      entry.offsetV.velocity === 0 &&
+      entry.offsetU.position === 0 &&
+      entry.offsetV.position === 0;
     if (!resting) continue;
     model.entries.delete(entry.key);
     model.dirty = true;
@@ -2088,7 +2207,9 @@ function sceneOf(model: Model, tree: ClusterTree, viewport: Viewport): Scene {
     entry.enter = "none";
   }
   // live nodes first, largest first: the DOM order screen readers and Tab follow
-  items.sort((a, b) => Number(a.exiting) - Number(b.exiting) || b.node.count - a.node.count || (a.key < b.key ? -1 : 1));
+  items.sort(
+    (a, b) => Number(a.exiting) - Number(b.exiting) || b.node.count - a.node.count || (a.key < b.key ? -1 : 1),
+  );
   return { tree, view: { cu: viewport.cu, cv: viewport.cv, z: viewport.z }, level: model.level, items };
 }
 
@@ -2251,7 +2372,12 @@ function createBake(view: Viewport, world: boolean, ink: GeoInk): Bake {
   const frame = projection.frame;
   const box = world
     ? { x0: frame.x0, y0: frame.y0, x1: frame.x1, y1: frame.y1 }
-    : { x0: -BAKE_MARGIN * width, y0: -BAKE_MARGIN * height, x1: (1 + BAKE_MARGIN) * width, y1: (1 + BAKE_MARGIN) * height };
+    : {
+        x0: -BAKE_MARGIN * width,
+        y0: -BAKE_MARGIN * height,
+        x1: (1 + BAKE_MARGIN) * width,
+        y1: (1 + BAKE_MARGIN) * height,
+      };
   const lattice = mapLattice(projection, { pitch: LATTICE_PITCH, viewport: box });
   const rect = {
     x0: Math.max(box.x0, frame.x0),
@@ -2446,7 +2572,13 @@ function dotRank(lattice: DotLattice, index: number, stride: number): DotRank {
 }
 
 /** The first lattice grows out from the frame centre: near dots first, with jitter so the front is uneven. */
-function drawReveal(context: CanvasRenderingContext2D, state: Runtime, bake: Bake, viewport: Viewport, progress: number) {
+function drawReveal(
+  context: CanvasRenderingContext2D,
+  state: Runtime,
+  bake: Bake,
+  viewport: Viewport,
+  progress: number,
+) {
   const batch = state.batch;
   if (!batch) return;
   const t = bakeTransform(bake.view, viewport);
@@ -2496,7 +2628,9 @@ function drawLight(
   const scale = viewport.width * viewport.z;
   const light = (x: number, y: number, radius: number, shade: (index: number, distance: number) => void) => {
     if (x < -radius || y < -radius || x > viewport.width + radius || y > viewport.height + radius) return;
-    lattice.grid.query((x - t.ox) / t.s, (y - t.oy) / t.s, radius / t.s, (index, distanceSquared) => shade(index, Math.sqrt(distanceSquared) * t.s));
+    lattice.grid.query((x - t.ox) / t.s, (y - t.oy) / t.s, radius / t.s, (index, distanceSquared) =>
+      shade(index, Math.sqrt(distanceSquared) * t.s),
+    );
   };
   const record = (index: number, value: number, shadeTone: number) => {
     if (value <= heat[index] || value < 0.03) return;
@@ -2514,7 +2648,8 @@ function drawLight(
     if (shown <= 0) continue;
     let fadeOut = 1;
     if (entry.into) {
-      const remaining = Math.hypot(entry.offsetU.position - entry.targetU, entry.offsetV.position - entry.targetV) * scale;
+      const remaining =
+        Math.hypot(entry.offsetU.position - entry.targetU, entry.offsetV.position - entry.targetV) * scale;
       fadeOut = clamp((remaining - 2) / 18, 0, 1);
     }
     const isSelected = node.point !== null && node.point.id === selected;
@@ -2554,7 +2689,13 @@ function drawLight(
     const rank = detail.thinned ? dotRank(lattice, index, detail.stride) : 1;
     if (rank === 0) continue;
     const weight = rank === 1 ? alpha : alpha * detail.fade;
-    batch.add(t.s * lattice.x[index] + t.ox, t.s * lattice.y[index] + t.oy, DOT_SIZE * (1 + value * 0.45), tone[index], weight);
+    batch.add(
+      t.s * lattice.x[index] + t.ox,
+      t.s * lattice.y[index] + t.oy,
+      DOT_SIZE * (1 + value * 0.45),
+      tone[index],
+      weight,
+    );
   }
   batch.flush(context);
 }
@@ -2564,7 +2705,12 @@ function ringBurst(sparks: Sparks, x: number, y: number, radius: number, count: 
   for (let i = 0; i < count; i++) {
     const angle = (i / count) * TAU + Math.random() * 0.5;
     const color = colors[i % colors.length];
-    sparks.add(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius, 1, [color], { ...SPARK_OPTIONS, angle, spread: 0.7, jitter: 0.5 });
+    sparks.add(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius, 1, [color], {
+      ...SPARK_OPTIONS,
+      angle,
+      spread: 0.7,
+      jitter: 0.5,
+    });
   }
 }
 

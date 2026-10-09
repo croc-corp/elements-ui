@@ -64,10 +64,7 @@ function inShape(index: number, gx: number, gy: number, r: number, angle: number
   if (index === 1) return (r >= 6 && r <= 8.3) || r <= 1.5;
   const ray = Math.abs(((((angle / (Math.PI / 4)) % 1) + 1) % 1) - 0.5) > 0.4;
   return (
-    r <= 3.3 ||
-    (r >= 6 && r <= 7.2) ||
-    (ray && r > 3.3 && r <= 11) ||
-    (r >= 9.6 && r <= 10.4 && (gx + gy) % 2 === 0)
+    r <= 3.3 || (r >= 6 && r <= 7.2) || (ray && r > 3.3 && r <= 11) || (r >= 9.6 && r <= 10.4 && (gx + gy) % 2 === 0)
   );
 }
 

@@ -2,16 +2,56 @@
   "kind": "react",
   "summary": "Search field with fuzzy matching, highlighted letters and a pixel highlight that springs between results; `hotkey` makes \"/\" focus it.",
   "props": [
-    { "name": "items", "type": "readonly string[]", "default": "demo list", "description": "Entries to search. Defaults to a demo list of 14 settings pages." },
+    {
+      "name": "items",
+      "type": "readonly string[]",
+      "default": "demo list",
+      "description": "Entries to search. Defaults to a demo list of 14 settings pages."
+    },
     { "name": "value", "type": "string", "default": "-", "description": "Controlled query. Use with `onValueChange`." },
     { "name": "defaultValue", "type": "string", "default": "\"\"", "description": "Initial query when uncontrolled." },
-    { "name": "hotkey", "type": "boolean", "default": "false", "description": "Pressing \"/\" anywhere on the page focuses the field, unless focus is already in an input, textarea, select or editable element, or a modifier key is held." },
-    { "name": "label", "type": "string", "default": "\"Search settings\"", "description": "Accessible name of the field." },
-    { "name": "placeholder", "type": "string", "default": "\"Search settings\"", "description": "Placeholder of the field." },
-    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the component, disables the field and turns off the hotkey." },
-    { "name": "onValueChange", "type": "(query: string) => void", "default": "-", "description": "Called with the query on every edit." },
-    { "name": "onSearch", "type": "(query: string, count: number) => void", "default": "-", "description": "Called after each search with the query and the total number of matches. Typing searches 280 ms after the last keystroke." },
-    { "name": "onSelect", "type": "(item: string) => void", "default": "-", "description": "Called when a result is chosen with Enter or a click." }
+    {
+      "name": "hotkey",
+      "type": "boolean",
+      "default": "false",
+      "description": "Pressing \"/\" anywhere on the page focuses the field, unless focus is already in an input, textarea, select or editable element, or a modifier key is held."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Search settings\"",
+      "description": "Accessible name of the field."
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "default": "\"Search settings\"",
+      "description": "Placeholder of the field."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Dims the component, disables the field and turns off the hotkey."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(query: string) => void",
+      "default": "-",
+      "description": "Called with the query on every edit."
+    },
+    {
+      "name": "onSearch",
+      "type": "(query: string, count: number) => void",
+      "default": "-",
+      "description": "Called after each search with the query and the total number of matches. Typing searches 280 ms after the last keystroke."
+    },
+    {
+      "name": "onSelect",
+      "type": "(item: string) => void",
+      "default": "-",
+      "description": "Called when a result is chosen with Enter or a click."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -19,7 +59,10 @@
   "keyboard": [
     { "keys": "/", "action": "Focus the field from anywhere on the page (with `hotkey`)." },
     { "keys": "ArrowDown / ArrowUp", "action": "Move the highlight, wrapping at the ends." },
-    { "keys": "Enter", "action": "Choose the highlighted result. Pressed before the pending search ran, it searches first and chooses the best match." },
+    {
+      "keys": "Enter",
+      "action": "Choose the highlighted result. Pressed before the pending search ran, it searches first and chooses the best match."
+    },
     { "keys": "Escape", "action": "Clear the query and show the suggestions again (when there is a query)." }
   ],
   "accessibility": [

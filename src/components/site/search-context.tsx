@@ -22,7 +22,8 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      const shortcut = (event.key === "k" && (event.metaKey || event.ctrlKey)) || (event.key === "/" && !isTyping(event));
+      const shortcut =
+        (event.key === "k" && (event.metaKey || event.ctrlKey)) || (event.key === "/" && !isTyping(event));
       if (!shortcut) return;
       event.preventDefault();
       setLoaded(true);
@@ -62,6 +63,10 @@ const subscribeNever = () => () => {};
 
 /** The label of the shortcut modifier: ⌘ on Apple devices, Ctrl elsewhere (⌘ on the server). */
 export function useModifierKey() {
-  const mac = React.useSyncExternalStore(subscribeNever, () => /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent), () => true);
+  const mac = React.useSyncExternalStore(
+    subscribeNever,
+    () => /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent),
+    () => true,
+  );
   return mac ? "⌘" : "Ctrl";
 }

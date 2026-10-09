@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-segmented.element";
 /** The `<hf-segmented>` element, with its properties and methods. */
 export type HfSegmentedElement = ElementModule.HSegmented;
 
-export interface HfSegmentedProps extends Omit<LumesecElementProps<HfSegmentedElement>, "options" | "value" | "label" | "name" | "disabled" | "onChange"> {
+export interface HfSegmentedProps extends Omit<
+  LumesecElementProps<HfSegmentedElement>,
+  "options" | "value" | "label" | "name" | "disabled" | "onChange"
+> {
   /** Comma-separated option labels; empty entries are skipped. Observed: a change rebuilds the buttons and keeps the selection when its label is still there. Default: `Chat,Code,Ultracode`. */
   options?: string;
   /** Selected option; must match a label exactly. Falls back to the first option on connect. Observed and reflected; unknown values set later are ignored. */
@@ -31,7 +34,7 @@ export function HfSegmented({ options, value, label, name, disabled, onChange, .
   return useLumesecElement(
     "hf-segmented",
     props,
-    { "options": options, "value": value, "label": label, "name": name, "disabled": disabled },
-    { "change": onChange },
+    { options: options, value: value, label: label, name: name, disabled: disabled },
+    { change: onChange },
   );
 }

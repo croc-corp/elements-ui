@@ -25,3 +25,8 @@ next-env.d.ts
 *.log
 Dockerfile
 .dockerignore
+docker-compose.yml
+.devcontainer
+.mcp.json
+tests
+vitest.config.ts

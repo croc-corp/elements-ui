@@ -359,7 +359,8 @@ class HTerminal extends HF {
     const inputBox = input.getBoundingClientRect();
     const mirror = this.$(".mir");
     mirror.textContent = input.value.slice(0, input.selectionStart ?? input.value.length);
-    const cx = (inputBox.left - frame.left) / scale + Math.min(mirror.offsetWidth - input.scrollLeft, input.offsetWidth - 8);
+    const cx =
+      (inputBox.left - frame.left) / scale + Math.min(mirror.offsetWidth - input.scrollLeft, input.offsetWidth - 8);
     const cy = (inputBox.top - frame.top) / scale + (input.offsetHeight - 16) / 2;
     const cellPitch = F.pitch;
     const typing = t - this.typedT < 0.6;

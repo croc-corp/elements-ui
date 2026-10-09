@@ -20,10 +20,5 @@ export interface PxXypadProps extends Omit<LumesecElementProps<PxXypadElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/xypad
  */
 export function PxXypad({ onInput, onChange, ...props }: PxXypadProps) {
-  return useLumesecElement(
-    "px-xypad",
-    props,
-    {},
-    { "input": onInput, "change": onChange },
-  );
+  return useLumesecElement("px-xypad", props, {}, { input: onInput, change: onChange });
 }

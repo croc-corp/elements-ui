@@ -22,10 +22,5 @@ export interface HfTreeProps extends Omit<LumesecElementProps<HfTreeElement>, "p
  * @see https://elements.lumesec.ai/components/pixel-hd/tree
  */
 export function HfTree({ paths, onSelect, ...props }: HfTreeProps) {
-  return useLumesecElement(
-    "hf-tree",
-    props,
-    { "paths": paths },
-    { "select": onSelect },
-  );
+  return useLumesecElement("hf-tree", props, { paths: paths }, { select: onSelect });
 }

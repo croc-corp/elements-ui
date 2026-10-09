@@ -7,7 +7,11 @@ import { GeoHorizon } from "@/components/lumesec/geo-horizon";
 export default function GeoHorizonDemo() {
   const titleId = React.useId();
   return (
-    <GeoHorizon aria-labelledby={titleId} capHeight={0.4} className="h-[420px] w-full rounded-[14px] border border-border">
+    <GeoHorizon
+      aria-labelledby={titleId}
+      capHeight={0.4}
+      className="h-[420px] w-full rounded-[14px] border border-border"
+    >
       <p className="m-0 flex items-center gap-2 font-mono text-[11px] leading-4 tracking-[0.14em] text-muted-foreground uppercase">
         <span aria-hidden="true" className="size-1.5 rounded-[1px] bg-lumesec" />
         Global network
@@ -24,13 +28,13 @@ export default function GeoHorizonDemo() {
       <div className="mt-1 flex flex-wrap justify-center gap-2">
         <button
           type="button"
-          className="h-[34px] cursor-pointer rounded-lg border border-foreground bg-foreground px-3.5 font-[inherit] text-[13px] font-medium text-background outline-none hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+          className="h-[34px] cursor-pointer rounded-lg border border-foreground bg-foreground px-3.5 font-[inherit] text-[13px] font-medium text-background outline-none hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
         >
           View regions
         </button>
         <button
           type="button"
-          className="h-[34px] cursor-pointer rounded-lg border border-border bg-card px-3.5 font-[inherit] text-[13px] font-medium text-foreground outline-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec"
+          className="h-[34px] cursor-pointer rounded-lg border border-border bg-card px-3.5 font-[inherit] text-[13px] font-medium text-foreground outline-none hover:border-[color-mix(in_srgb,var(--lumesec)_50%,var(--border))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
         >
           Read the docs
         </button>

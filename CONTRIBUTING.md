@@ -120,12 +120,18 @@ in `KNOWN_ISSUES.md`, remove the entry in the same pull request.
 5. every usage snippet in the docs type-checks;
 6. the registry passes the ESLint config of a stock `create-next-app` project with no warnings.
 
-`pnpm lint` must pass as well: ESLint with `eslint-config-next` over the site and the scripts.
+`pnpm lint` must pass as well: ESLint with `eslint-config-next` over the site and the scripts. Code, JSON,
+CSS and YAML are formatted with Prettier, Tailwind classes included: run `pnpm format` before you commit, or let
+your editor format on save (`.vscode/` has the settings). Markdown and MDX are wrapped by hand.
 
-CI runs `pnpm catalog`, `pnpm lint`, `pnpm verify` and `pnpm build` on every pull request, then fails if
-`registry.json`, `registry/` or `src/generated/` differ from what you committed. Run the same scripts before
-you push and commit their output. The registry build writes the public site URL into `registry.json` unless
-`NEXT_PUBLIC_SITE_URL` is set in your shell, so leave it unset when you build the files you commit.
+`pnpm test` must pass too: the Vitest unit tests in `tests/`, which need no database, network or browser. Put
+new tests there, never in `registry/` (the shadcn CLI copies those files into projects) or `src/`.
+
+CI runs `pnpm catalog`, `pnpm lint`, `pnpm format:check`, `pnpm test`, `pnpm verify` and `pnpm build` on every
+pull request, builds the Docker image and checks that the container starts, then fails if `registry.json`,
+`registry/` or `src/generated/` differ from what you committed. Run the same scripts before you push and commit
+their output. The registry build writes the public site URL into `registry.json`
+unless `NEXT_PUBLIC_SITE_URL` is set in your shell, so leave it unset when you build the files you commit.
 
 ## Commit messages
 
@@ -143,15 +149,33 @@ Keep a pull request to one topic. The template asks for:
 - a summary of what changes and why, with the issue it closes;
 - screenshots or a short recording for visual changes, in light and dark theme;
 - this checklist:
-  - [ ] `pnpm lint` and `pnpm verify` pass.
+  - [ ] `pnpm format`, `pnpm lint`, `pnpm test` and `pnpm verify` pass.
   - [ ] `pnpm catalog` ran after changes to a component, a demo, `content/catalog.json` or `content/meta/`,
         and the generated files are committed.
   - [ ] A new component has its docs page (`pnpm docs:generate`).
   - [ ] The notes in `content/meta/{tag}.json` match the code.
   - [ ] Checked in light and dark theme, at 375 px width, with the keyboard and with reduced motion.
   - [ ] No new runtime dependencies.
+  - [ ] A change users can notice has a line under `## Unreleased` in `content/docs/changelog.mdx`.
   - [ ] Text follows [`contributing/writing.md`](contributing/writing.md): plain, precise, no marketing
         words, no exclamation marks, no emoji.
+
+Releases are cut by the maintainers; [RELEASING.md](RELEASING.md) describes how.
+
+## AI-assisted contributions
+
+You may use AI coding assistants. The repository has instructions for them in [AGENTS.md](AGENTS.md), and
+workflows such as adding or reviewing a component in `.claude/skills/`. The same rules apply to every pull
+request, however it was written:
+
+- You are the author. You have read and understood every line you submit and can explain it in review.
+- The quality gates pass, and you checked the component in the browser as described above. A pull request that
+  was not run is not ready for review.
+- Notes, docs and comments describe what the code does, verified against the source, not what a tool assumed.
+- Say in the pull request when an assistant wrote a substantial part of it. It helps the reviewer, and it is
+  not held against the pull request.
+- Do not paste code you are not allowed to license under MIT, and do not send private or customer data to a
+  tool to produce a contribution.
 
 By contributing, you agree that your contribution is licensed under the [MIT license](LICENSE) of this
 repository.

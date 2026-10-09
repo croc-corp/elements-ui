@@ -287,7 +287,9 @@ class HMention extends FormMixin(HF) {
     let m: RegExpExecArray | null;
     while ((m = re.exec(txt))) {
       if (!known.has(m[0])) continue;
-      html += escapeHtml(txt.slice(last, m.index)) + `<span class="m" data-v="${escapeHtml(m[0])}">${escapeHtml(m[0])}</span>`;
+      html +=
+        escapeHtml(txt.slice(last, m.index)) +
+        `<span class="m" data-v="${escapeHtml(m[0])}">${escapeHtml(m[0])}</span>`;
       last = m.index + m[0].length;
     }
     // the zero-width space keeps a trailing line break measurable
@@ -336,7 +338,9 @@ class HMention extends FormMixin(HF) {
             F.put(
               i,
               j,
-              under || sweep ? mix(P.accent, P.shine, 0.3 + fl * 0.4) : mix(P.accent, P.surface, this.dark ? 0.55 : 0.68),
+              under || sweep
+                ? mix(P.accent, P.shine, 0.3 + fl * 0.4)
+                : mix(P.accent, P.surface, this.dark ? 0.55 : 0.68),
               0.9,
               under ? 0.25 + fl * 0.5 : fl * 0.5,
             );

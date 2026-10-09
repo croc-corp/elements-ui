@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/hf-dialog.element";
 /** The `<hf-dialog>` element, with its properties and methods. */
 export type HfDialogElement = ElementModule.HDialog;
 
-export interface HfDialogProps extends Omit<LumesecElementProps<HfDialogElement>, "label" | "heading" | "description" | "onOpen" | "onClose"> {
+export interface HfDialogProps extends Omit<
+  LumesecElementProps<HfDialogElement>,
+  "label" | "heading" | "description" | "onOpen" | "onClose"
+> {
   /** Text of the trigger button. Observed. Default: `Invite teammates`. */
   label?: string;
   /** Dialog title, which also labels the dialog. Observed. Default: `Invite teammates`. */
@@ -29,7 +32,7 @@ export function HfDialog({ label, heading, description, onOpen, onClose, ...prop
   return useLumesecElement(
     "hf-dialog",
     props,
-    { "label": label, "heading": heading, "description": description },
-    { "open": onOpen, "close": onClose },
+    { label: label, heading: heading, description: description },
+    { open: onOpen, close: onClose },
   );
 }

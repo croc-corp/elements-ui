@@ -22,10 +22,5 @@ export interface HfTerminalProps extends Omit<LumesecElementProps<HfTerminalElem
  * @see https://elements.lumesec.ai/components/pixel-hd/terminal
  */
 export function HfTerminal({ autorun, onCommand, ...props }: HfTerminalProps) {
-  return useLumesecElement(
-    "hf-terminal",
-    props,
-    { "autorun": autorun },
-    { "command": onCommand },
-  );
+  return useLumesecElement("hf-terminal", props, { autorun: autorun }, { command: onCommand });
 }

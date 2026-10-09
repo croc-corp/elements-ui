@@ -279,8 +279,7 @@ class Theme extends PxBase {
     });
     this.snap = false;
     ctx.restore();
-    const moving =
-      Math.abs(this.m - target) > 0.001 || this.parts.some((p) => Math.abs(p.vx) + Math.abs(p.vy) > 0.5);
+    const moving = Math.abs(this.m - target) > 0.001 || this.parts.some((p) => Math.abs(p.vx) + Math.abs(p.vy) > 0.5);
     return moving || !still;
   }
 }

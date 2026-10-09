@@ -164,19 +164,29 @@ export function PxAlert({
       )}
       {...props}
     >
-      <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute top-0 left-0 block h-full w-10 [image-rendering:pixelated]" />
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute top-0 left-0 block h-full w-10 [image-rendering:pixelated]"
+      />
       <span className="grid min-w-0 gap-[3px]">
         {heading != null && heading !== "" && <b className="text-[13.5px] font-semibold">{heading}</b>}
-        <span className="text-[13px] leading-[1.5] text-[color-mix(in_srgb,var(--foreground)_80%,var(--muted-foreground))]">{children}</span>
+        <span className="text-[13px] leading-[1.5] text-[color-mix(in_srgb,var(--foreground)_80%,var(--muted-foreground))]">
+          {children}
+        </span>
       </span>
       {dismissible && (
         <button
           type="button"
           aria-label="Dismiss"
           onClick={() => setOpen(false)}
-          className="grid size-[26px] cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-muted-foreground outline-none select-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+          className="grid size-[26px] cursor-pointer place-items-center rounded-md border-0 bg-transparent p-0 text-muted-foreground outline-none select-none hover:bg-foreground/8 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
         >
-          <svg viewBox="0 0 12 12" aria-hidden="true" className="size-[11px] fill-none stroke-current [stroke-linecap:round] [stroke-width:1.8]">
+          <svg
+            viewBox="0 0 12 12"
+            aria-hidden="true"
+            className="size-[11px] fill-none stroke-current [stroke-width:1.8] [stroke-linecap:round]"
+          >
             <path d="M3 3l6 6M9 3l-6 6" />
           </svg>
         </button>

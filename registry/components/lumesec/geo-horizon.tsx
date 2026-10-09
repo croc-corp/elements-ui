@@ -215,7 +215,10 @@ export function GeoHorizon({
     <section
       data-slot="geo-horizon"
       data-align={align}
-      className={cn("relative isolate h-full min-h-[340px] w-full overflow-hidden bg-background text-foreground", className)}
+      className={cn(
+        "relative isolate h-full min-h-[340px] w-full overflow-hidden bg-background text-foreground",
+        className,
+      )}
       {...props}
     >
       <canvas
@@ -518,8 +521,10 @@ function drawHorizon(
     state.nextStill = state.clock;
   }
 
-  const progress = state.revealAnimated && !reduced ? clamp((state.clock - state.revealStart) / REVEAL_SECONDS, 0, 1) : 1;
-  const limbGrowth = state.revealAnimated && !reduced ? easeOutCubic((state.clock - state.revealStart) / LIMB_SECONDS) : 1;
+  const progress =
+    state.revealAnimated && !reduced ? clamp((state.clock - state.revealStart) / REVEAL_SECONDS, 0, 1) : 1;
+  const limbGrowth =
+    state.revealAnimated && !reduced ? easeOutCubic((state.clock - state.revealStart) / LIMB_SECONDS) : 1;
 
   // Drift and the centre springs.
   if (config.drift && !reduced) state.drift = (state.drift + config.driftSpeed * delta + 360) % 360;
@@ -547,7 +552,8 @@ function drawHorizon(
   } else {
     launchFlights(state, config, geometry);
     let alive = 0;
-    for (const flight of state.flights) if (state.clock - flight.start < FLIGHT_SECONDS) state.flights[alive++] = flight;
+    for (const flight of state.flights)
+      if (state.clock - flight.start < FLIGHT_SECONDS) state.flights[alive++] = flight;
     state.flights.length = alive;
   }
 
@@ -560,7 +566,9 @@ function drawHorizon(
   }
   const glintAge = state.clock - state.glintStart;
   const glinting = !reduced && glintAge >= 0 && glintAge < glintSeconds;
-  const glintAt = glinting ? -3 * GLINT_SIGMA + GLINT_EASE(glintAge / glintSeconds) * (limbLength + 6 * GLINT_SIGMA) : 0;
+  const glintAt = glinting
+    ? -3 * GLINT_SIGMA + GLINT_EASE(glintAge / glintSeconds) * (limbLength + 6 * GLINT_SIGMA)
+    : 0;
 
   // Draw.
   const ink = state.ink;
@@ -577,7 +585,8 @@ function drawHorizon(
   batch.flush(context);
   if (glinting) drawGlint(context, geometry, ink, state.hot, glintAt);
 
-  const busy = !reduced && (config.drift || progress < 1 || limbGrowth < 1 || springing || state.flights.length > 0 || glinting);
+  const busy =
+    !reduced && (config.drift || progress < 1 || limbGrowth < 1 || springing || state.flights.length > 0 || glinting);
   if (!busy) {
     if (reduced) state.nextEvent = hasSource ? state.nextStill : Number.POSITIVE_INFINITY;
     else state.nextEvent = Math.min(hasSource ? state.nextLaunch : Number.POSITIVE_INFINITY, state.nextGlint);
@@ -650,16 +659,24 @@ function ensureLattice(state: HorizonState, geometry: HorizonGeometry, facing: n
     measureWindow(state.window, geometry, facing);
   }
   let need = state.window.minLat;
-  if (Math.abs(targetFacing - facing) > 0.01) need = Math.min(need, measureWindow(targetWindow, geometry, targetFacing).minLat);
+  if (Math.abs(targetFacing - facing) > 0.01)
+    need = Math.min(need, measureWindow(targetWindow, geometry, targetFacing).minLat);
   need -= 3;
   const raw = Math.max(MIN_SPACING, spacingForRadius(geometry.radius, DOT_PITCH));
   const spacing = MIN_SPACING * Math.exp(Math.round(Math.log(raw / MIN_SPACING) / SPACING_STEP) * SPACING_STEP);
   const current = state.lattice;
-  if (current && spacing === state.latticeSpacing && state.latticeSouth <= need && state.latticeSouth >= need - 25) return;
+  if (current && spacing === state.latticeSpacing && state.latticeSouth <= need && state.latticeSouth >= need - 25)
+    return;
   const south = Math.max(-90, Math.floor((need - 2) / 5) * 5);
   state.latticeSpacing = spacing;
   state.latticeSouth = south;
-  state.lattice = sphereLattice({ spacingDeg: spacing, method: "rows", landOnly: true, latRange: [south, 90], order: "longitude" });
+  state.lattice = sphereLattice({
+    spacingDeg: spacing,
+    method: "rows",
+    landOnly: true,
+    latRange: [south, 90],
+    order: "longitude",
+  });
 }
 
 const targetWindow: VisibleWindow = { minLat: -90, lonMin: -180, lonMax: 180, all: true };
@@ -736,7 +753,8 @@ const samePlace = (a: LatLon, b: LatLon) => Math.abs(a.lat - b.lat) < 1e-6 && Ma
 function pairInFlight(flights: readonly Flight[], from: LatLon, to: LatLon) {
   return flights.some(
     (flight) =>
-      (samePlace(flight.from, from) && samePlace(flight.to, to)) || (samePlace(flight.from, to) && samePlace(flight.to, from)),
+      (samePlace(flight.from, from) && samePlace(flight.to, to)) ||
+      (samePlace(flight.from, to) && samePlace(flight.to, from)),
   );
 }
 
@@ -776,7 +794,11 @@ function pickDemoPair(state: HorizonState, candidates: readonly DemoPlace[], bus
     if (from === to || toDegrees(centralAngle(from, to)) < MIN_DEMO_DEGREES) continue;
     if (pairInFlight(busy, from, to)) continue;
     // spread the arcs out: a place already at either end of an arc in flight is a last resort
-    if (attempt < 16 && busy.some((flight) => samePlace(flight.from, from) || samePlace(flight.to, to) || samePlace(flight.from, to))) continue;
+    if (
+      attempt < 16 &&
+      busy.some((flight) => samePlace(flight.from, from) || samePlace(flight.to, to) || samePlace(flight.from, to))
+    )
+      continue;
     return { from, to };
   }
   return null;
@@ -853,9 +875,11 @@ function collectPings(state: HorizonState) {
   if (state.reducedMode) return;
   for (const flight of state.flights) {
     const age = state.clock - flight.start;
-    if (age >= 0 && age < LAUNCH_PING.seconds) addPing(state, flight.fromVector, age / LAUNCH_PING.seconds, LAUNCH_PING);
+    if (age >= 0 && age < LAUNCH_PING.seconds)
+      addPing(state, flight.fromVector, age / LAUNCH_PING.seconds, LAUNCH_PING);
     const landed = age - GROW_SECONDS;
-    if (landed >= 0 && landed < LANDING_PING.seconds) addPing(state, flight.toVector, landed / LANDING_PING.seconds, LANDING_PING);
+    if (landed >= 0 && landed < LANDING_PING.seconds)
+      addPing(state, flight.toVector, landed / LANDING_PING.seconds, LANDING_PING);
   }
 }
 
@@ -1108,7 +1132,13 @@ function drawFlight(
       if (s < Math.max(0, tail)) break;
       if (!flightPointAt(flight, s, arcPoint)) continue;
       const fall = c / (COMET_SQUARES - 1);
-      batch.add(arcPoint.x, arcPoint.y, 2.6 - 0.9 * fall, TONE_HOT - (TONE_HOT - TONE_ACCENT) * fall, Math.pow(1 - fall * 0.85, 1.4) * comet);
+      batch.add(
+        arcPoint.x,
+        arcPoint.y,
+        2.6 - 0.9 * fall,
+        TONE_HOT - (TONE_HOT - TONE_ACCENT) * fall,
+        Math.pow(1 - fall * 0.85, 1.4) * comet,
+      );
     }
   }
 

@@ -102,7 +102,8 @@ export function PxAvatar({
       if (status === "online" && !reduced) {
         const k = (time * 0.8) % 1;
         const ring = r + 2 + k * 6;
-        for (let a = 0; a < TAU; a += 0.5) frame.dot(sx + Math.cos(a) * ring - 0.8, sy + Math.sin(a) * ring - 0.8, color, (1 - k) * 0.7, 1.6);
+        for (let a = 0; a < TAU; a += 0.5)
+          frame.dot(sx + Math.cos(a) * ring - 0.8, sy + Math.sin(a) * ring - 0.8, color, (1 - k) * 0.7, 1.6);
       }
     }
     return (status === "online" && !reduced) || age < 0.8;
@@ -136,7 +137,11 @@ export function PxAvatar({
         ref={initialsRef}
         aria-hidden="true"
         className="pointer-events-none absolute top-0 left-0 grid place-items-center leading-none font-semibold tracking-[-0.01em] whitespace-nowrap text-white select-none [text-shadow:0_1px_1px_rgb(0_0_0/0.18)] data-[ink=dark]:text-black/75 data-[ink=dark]:[text-shadow:none]"
-        style={{ width: size, height: size, fontSize: Math.round(size * (Array.from(initials).length > 1 ? 0.36 : 0.42)) }}
+        style={{
+          width: size,
+          height: size,
+          fontSize: Math.round(size * (Array.from(initials).length > 1 ? 0.36 : 0.42)),
+        }}
       >
         {initials}
       </span>

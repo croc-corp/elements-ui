@@ -3,7 +3,8 @@ import "server-only";
 import { getSql } from "@/lib/server/db";
 import { TRACK_TYPES } from "@/lib/track";
 
-const BOT = /bot|crawl|spider|slurp|preview|facebookexternalhit|headless|lighthouse|pingdom|monitor|curl|wget|python|httpclient/i;
+const BOT =
+  /bot|crawl|spider|slurp|preview|facebookexternalhit|headless|lighthouse|pingdom|monitor|curl|wget|python|httpclient/i;
 
 /** Event types the site stores: the browser events plus registry downloads, which the server records. */
 const EVENT_TYPES = new Set<string>([...TRACK_TYPES, "registry_download"]);

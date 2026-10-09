@@ -20,10 +20,5 @@ export interface PxRadarProps extends Omit<LumesecElementProps<PxRadarElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/radar
  */
 export function PxRadar({ onPing, ...props }: PxRadarProps) {
-  return useLumesecElement(
-    "px-radar",
-    props,
-    {},
-    { "ping": onPing },
-  );
+  return useLumesecElement("px-radar", props, {}, { ping: onPing });
 }

@@ -22,10 +22,5 @@ export interface PxReactProps extends Omit<LumesecElementProps<PxReactElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/react
  */
 export function PxReact({ count, onReact, ...props }: PxReactProps) {
-  return useLumesecElement(
-    "px-react",
-    props,
-    { "count": count },
-    { "react": onReact },
-  );
+  return useLumesecElement("px-react", props, { count: count }, { react: onReact });
 }

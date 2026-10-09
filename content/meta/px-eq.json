@@ -2,10 +2,17 @@
   "summary": "Seven-band pixel equalizer with spring-loaded bands, a smooth curve and a live spectrum behind; presets cascade band by band.",
   "attributes": [],
   "events": [
-    { "name": "change", "detail": "{ gains: number[], preset?: string }", "description": "Fires when a drag ends, on each ArrowUp or ArrowDown press, on a double-click reset and when a preset is chosen. `gains` holds seven target values in dB; `preset` is present only for presets." }
+    {
+      "name": "change",
+      "detail": "{ gains: number[], preset?: string }",
+      "description": "Fires when a drag ends, on each ArrowUp or ArrowDown press, on a double-click reset and when a preset is chosen. `gains` holds seven target values in dB; `preset` is present only for presets."
+    }
   ],
   "methods": [
-    { "signature": "preset(name: \"Flat\" | \"Bass\" | \"Vocal\" | \"Air\")", "description": "Applies a preset with a left-to-right cascade and fires `change`. An unknown name is ignored." }
+    {
+      "signature": "preset(name: \"Flat\" | \"Bass\" | \"Vocal\" | \"Air\")",
+      "description": "Applies a preset with a left-to-right cascade and fires `change`. An unknown name is ignored."
+    }
   ],
   "properties": [],
   "keyboard": [

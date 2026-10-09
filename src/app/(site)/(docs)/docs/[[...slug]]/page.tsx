@@ -28,8 +28,19 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     title: page.data.title,
     description: page.data.description,
     alternates: { canonical: url, types: { "text/markdown": `${url}.md` } },
-    openGraph: { type: "article", title: page.data.title, description: page.data.description, url, images: ogImage(url, page.data.title) },
-    twitter: { card: "summary_large_image", title: page.data.title, description: page.data.description, images: ogImage(url, page.data.title) },
+    openGraph: {
+      type: "article",
+      title: page.data.title,
+      description: page.data.description,
+      url,
+      images: ogImage(url, page.data.title),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: page.data.title,
+      description: page.data.description,
+      images: ogImage(url, page.data.title),
+    },
   };
 }
 
@@ -50,7 +61,12 @@ export default async function GuidePage({ params }: { params: Promise<Params> })
     <div className="grid xl:grid-cols-[minmax(0,1fr)_288px]">
       <JsonLd
         data={[
-          articleJsonLd({ title: page.data.title, description: page.data.description, path: page.url, updated: page.data.updated }),
+          articleJsonLd({
+            title: page.data.title,
+            description: page.data.description,
+            path: page.url,
+            updated: page.data.updated,
+          }),
           breadcrumbJsonLd([
             { name: "Docs", path: "/docs" },
             { name: page.data.title, path: page.url },
@@ -70,7 +86,10 @@ export default async function GuidePage({ params }: { params: Promise<Params> })
           </div>
           {/* the rail holds the feedback on wide screens */}
           <Feedback path={page.url} className="mt-12 border-t border-border pt-6 xl:hidden" />
-          <PrevNext prev={prev ? { title: prev.title, href: prev.href, meta: prev.group } : null} next={next ? { title: next.title, href: next.href, meta: next.group } : null} />
+          <PrevNext
+            prev={prev ? { title: prev.title, href: prev.href, meta: prev.group } : null}
+            next={next ? { title: next.title, href: next.href, meta: next.group } : null}
+          />
         </div>
       </article>
       <DocsRail toc={page.data.toc} path={page.url} file={`content/docs/${page.path}`} title={page.data.title} />

@@ -2,20 +2,58 @@
   "kind": "react",
   "summary": "Inbound requests converge on a protected site at the centre of a dotted globe. Blocked ones dent its shield ring and burst off it.",
   "props": [
-    { "name": "target", "type": "ThreatTarget", "default": "{ label: \"eu-central\", lat: 50.1109, lon: 8.6821 }", "description": "`{ label, lat, lon }` of the protected site. The globe faces it, so it sits at the centre of the disc; the label shows in the header and the accessible summary." },
-    { "name": "events", "type": "readonly ThreatEvent[]", "default": "-", "description": "Requests: `{ id, lat, lon, verdict, region?, time? }` with `verdict` `blocked` or `allowed`. Each new `id` animates once, so the array can grow or be replaced. Without it a seeded demo stream runs; an empty array shows an empty window that `push()` can fill." },
-    { "name": "maxInFlight", "type": "number", "default": "24", "description": "Arcs drawn at once. Further requests go straight into the counts." },
-    { "name": "windowSeconds", "type": "number", "default": "60", "description": "Window for the counts, the origin list and the rate chart, in seconds, 1 to 3,600. Requests older than the window are ignored." },
-    { "name": "shieldRadius", "type": "number", "default": "26", "description": "Radius of the shield ring in px, 10 to 120 and at most 60 % of the globe's radius." },
-    { "name": "live", "type": "boolean", "default": "true", "description": "Runs the demo stream while `events` is not given. Off keeps the prefilled demo window as it is, until a request is pushed." },
-    { "name": "onEvent", "type": "(event: ThreatEvent) => void", "default": "-", "description": "Called when a request reaches the shield (blocked) or the site (allowed). Requests without an arc call it as soon as they are counted." },
+    {
+      "name": "target",
+      "type": "ThreatTarget",
+      "default": "{ label: \"eu-central\", lat: 50.1109, lon: 8.6821 }",
+      "description": "`{ label, lat, lon }` of the protected site. The globe faces it, so it sits at the centre of the disc; the label shows in the header and the accessible summary."
+    },
+    {
+      "name": "events",
+      "type": "readonly ThreatEvent[]",
+      "default": "-",
+      "description": "Requests: `{ id, lat, lon, verdict, region?, time? }` with `verdict` `blocked` or `allowed`. Each new `id` animates once, so the array can grow or be replaced. Without it a seeded demo stream runs; an empty array shows an empty window that `push()` can fill."
+    },
+    {
+      "name": "maxInFlight",
+      "type": "number",
+      "default": "24",
+      "description": "Arcs drawn at once. Further requests go straight into the counts."
+    },
+    {
+      "name": "windowSeconds",
+      "type": "number",
+      "default": "60",
+      "description": "Window for the counts, the origin list and the rate chart, in seconds, 1 to 3,600. Requests older than the window are ignored."
+    },
+    {
+      "name": "shieldRadius",
+      "type": "number",
+      "default": "26",
+      "description": "Radius of the shield ring in px, 10 to 120 and at most 60 % of the globe's radius."
+    },
+    {
+      "name": "live",
+      "type": "boolean",
+      "default": "true",
+      "description": "Runs the demo stream while `events` is not given. Off keeps the prefilled demo window as it is, until a request is pushed."
+    },
+    {
+      "name": "onEvent",
+      "type": "(event: ThreatEvent) => void",
+      "default": "-",
+      "description": "Called when a request reaches the shield (blocked) or the site (allowed). Requests without an arc call it as soon as they are counted."
+    },
     { "name": "ref", "type": "React.Ref<GeoThreatsHandle>", "default": "-", "description": "Exposes `push(event)`." }
   ],
   "extends": "div",
   "ref": {
     "type": "GeoThreatsHandle",
     "methods": [
-      { "signature": "push(event: ThreatEvent): void", "description": "Adds one request, with or without `events`. An id that was already seen is ignored." }
+      {
+        "signature": "push(event: ThreatEvent): void",
+        "description": "Adds one request, with or without `events`. An id that was already seen is ignored."
+      }
     ]
   },
   "subcomponents": [],

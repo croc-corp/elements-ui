@@ -20,10 +20,5 @@ export interface HfFunnelProps extends Omit<LumesecElementProps<HfFunnelElement>
  * @see https://elements.lumesec.ai/components/pixel-hd/funnel
  */
 export function HfFunnel({ data, ...props }: HfFunnelProps) {
-  return useLumesecElement(
-    "hf-funnel",
-    props,
-    { "data": data },
-    {},
-  );
+  return useLumesecElement("hf-funnel", props, { data: data }, {});
 }

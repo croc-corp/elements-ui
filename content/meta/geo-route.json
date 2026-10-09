@@ -184,11 +184,7 @@
       {
         "name": "unit",
         "kind": "enum",
-        "options": [
-          "kn",
-          "km/h",
-          "mph"
-        ],
+        "options": ["kn", "km/h", "mph"],
         "default": "kn"
       },
       {

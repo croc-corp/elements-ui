@@ -2,24 +2,82 @@
   "kind": "react",
   "summary": "Select with a menu that unfolds downward, a pixel highlight that springs between options and type-ahead by first letter.",
   "props": [
-    { "name": "options", "type": "readonly PxSelectOption[]", "default": "-", "description": "The choices: `{ value?: string; label: string; description?: string }`. `value` defaults to `label`; `description` is a second line in the menu." },
-    { "name": "value", "type": "string", "default": "-", "description": "Controlled selected value. Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "string", "default": "first option", "description": "Initially selected value when uncontrolled. A form reset restores it." },
-    { "name": "open", "type": "boolean", "default": "-", "description": "Controlled open state of the menu. Use with `onOpenChange`." },
-    { "name": "defaultOpen", "type": "boolean", "default": "false", "description": "Initial open state when uncontrolled." },
-    { "name": "label", "type": "React.ReactNode", "default": "-", "description": "Label above the trigger; also names the listbox." },
-    { "name": "hint", "type": "React.ReactNode", "default": "-", "description": "Help text under the trigger; it also describes the trigger through `aria-describedby`." },
-    { "name": "name", "type": "string", "default": "-", "description": "Form field name; the selected value submits under it." },
-    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the select, disables the trigger and keeps the menu closed." },
-    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called when the user picks a different option." },
-    { "name": "onOpenChange", "type": "(open: boolean) => void", "default": "-", "description": "Called when the menu opens or closes." }
+    {
+      "name": "options",
+      "type": "readonly PxSelectOption[]",
+      "default": "-",
+      "description": "The choices: `{ value?: string; label: string; description?: string }`. `value` defaults to `label`; `description` is a second line in the menu."
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "default": "-",
+      "description": "Controlled selected value. Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "default": "first option",
+      "description": "Initially selected value when uncontrolled. A form reset restores it."
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "default": "-",
+      "description": "Controlled open state of the menu. Use with `onOpenChange`."
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "default": "false",
+      "description": "Initial open state when uncontrolled."
+    },
+    {
+      "name": "label",
+      "type": "React.ReactNode",
+      "default": "-",
+      "description": "Label above the trigger; also names the listbox."
+    },
+    {
+      "name": "hint",
+      "type": "React.ReactNode",
+      "default": "-",
+      "description": "Help text under the trigger; it also describes the trigger through `aria-describedby`."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "default": "-",
+      "description": "Form field name; the selected value submits under it."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Dims the select, disables the trigger and keeps the menu closed."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "default": "-",
+      "description": "Called when the user picks a different option."
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "default": "-",
+      "description": "Called when the menu opens or closes."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
   "subcomponents": [],
   "keyboard": [
     { "keys": "ArrowDown / ArrowUp (on the trigger)", "action": "Open the menu." },
-    { "keys": "ArrowDown / ArrowUp (in the menu)", "action": "Move the highlight; stops at the first and last option." },
+    {
+      "keys": "ArrowDown / ArrowUp (in the menu)",
+      "action": "Move the highlight; stops at the first and last option."
+    },
     { "keys": "Home / End", "action": "Highlight the first / last option." },
     { "keys": "Enter / Space", "action": "Choose the highlighted option and close." },
     { "keys": "Escape", "action": "Close and return focus to the trigger." },

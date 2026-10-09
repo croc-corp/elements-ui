@@ -2,17 +2,43 @@
   "kind": "react",
   "summary": "Toast stack with pixel type icons and a draining timer bar that pauses on hover or focus; it can be pinned to a viewport corner.",
   "props": [
-    { "name": "position", "type": "\"bottom-right\" | \"bottom-left\" | \"top-right\"", "default": "-", "description": "Pins the stack to that viewport corner with `position: fixed`, up to 360 px wide. Without it the stack stays in the flow." },
-    { "name": "max", "type": "number", "default": "4", "description": "Maximum toasts on screen, at least 1; showing one more dismisses the oldest." },
-    { "name": "onShow", "type": "(id: number, type: PxToastType) => void", "default": "-", "description": "Called when a toast is added." },
-    { "name": "onDismiss", "type": "(id: number) => void", "default": "-", "description": "Called when a toast starts leaving: timer, dismiss button, action button, overflow or `dismiss()`." }
+    {
+      "name": "position",
+      "type": "\"bottom-right\" | \"bottom-left\" | \"top-right\"",
+      "default": "-",
+      "description": "Pins the stack to that viewport corner with `position: fixed`, up to 360 px wide. Without it the stack stays in the flow."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "default": "4",
+      "description": "Maximum toasts on screen, at least 1; showing one more dismisses the oldest."
+    },
+    {
+      "name": "onShow",
+      "type": "(id: number, type: PxToastType) => void",
+      "default": "-",
+      "description": "Called when a toast is added."
+    },
+    {
+      "name": "onDismiss",
+      "type": "(id: number) => void",
+      "default": "-",
+      "description": "Called when a toast starts leaving: timer, dismiss button, action button, overflow or `dismiss()`."
+    }
   ],
   "extends": "div",
   "ref": {
     "type": "PxToasterHandle",
     "methods": [
-      { "signature": "show(toast?: PxToastOptions): number", "description": "Adds a toast and returns its id. `PxToastOptions` is `{ title?: React.ReactNode; description?: React.ReactNode; type?: \"info\" | \"success\" | \"warning\" | \"error\"; duration?: number; action?: { label: string; onClick?: () => void } }`. `type` defaults to `info` and `duration` to 4500 ms; 0 or less keeps the toast until dismissed. The action button calls `onClick` and dismisses the toast." },
-      { "signature": "dismiss(id: number): void", "description": "Starts the exit of the toast with that id. Unknown or leaving ids are ignored." }
+      {
+        "signature": "show(toast?: PxToastOptions): number",
+        "description": "Adds a toast and returns its id. `PxToastOptions` is `{ title?: React.ReactNode; description?: React.ReactNode; type?: \"info\" | \"success\" | \"warning\" | \"error\"; duration?: number; action?: { label: string; onClick?: () => void } }`. `type` defaults to `info` and `duration` to 4500 ms; 0 or less keeps the toast until dismissed. The action button calls `onClick` and dismisses the toast."
+      },
+      {
+        "signature": "dismiss(id: number): void",
+        "description": "Starts the exit of the toast with that id. Unknown or leaving ids are ignored."
+      }
     ]
   },
   "subcomponents": [],
@@ -30,12 +56,20 @@
     "Timers run on timeouts, not in the drawing loop, so toasts also expire while the stack is off screen.",
     "Pinning uses `position: fixed` on the root, so an ancestor that creates a containing block for fixed-position descendants (for example through `filter` or `transform`) changes what it is fixed to."
   ],
-  "tokens": ["--card", "--border", "--foreground", "--muted-foreground", "--muted", "--lumesec", "--lumesec-success", "--lumesec-warning", "--destructive"],
+  "tokens": [
+    "--card",
+    "--border",
+    "--foreground",
+    "--muted-foreground",
+    "--muted",
+    "--lumesec",
+    "--lumesec-success",
+    "--lumesec-warning",
+    "--destructive"
+  ],
   "usage": "import * as React from \"react\";\n\nimport { PxToaster, type PxToasterHandle } from \"@/components/lumesec/px-toaster\";\n\nexport function Example() {\n  const toaster = React.useRef<PxToasterHandle>(null);\n  return (\n    <>\n      <button type=\"button\" onClick={() => toaster.current?.show({ title: \"Changes saved\", type: \"success\" })}>\n        Save\n      </button>\n      <PxToaster ref={toaster} position=\"bottom-right\" />\n    </>\n  );\n}\n",
   "playground": {
     "props": {},
-    "controls": [
-      { "name": "max", "kind": "number", "options": null, "default": "4" }
-    ]
+    "controls": [{ "name": "max", "kind": "number", "options": null, "default": "4" }]
   }
 }

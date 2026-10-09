@@ -58,10 +58,16 @@
   },
   "subcomponents": [],
   "keyboard": [
-    { "keys": "Tab", "action": "Moves through the rows' Sign out buttons and the footer button. A focused row previews its session on the map." },
+    {
+      "keys": "Tab",
+      "action": "Moves through the rows' Sign out buttons and the footer button. A focused row previews its session on the map."
+    },
     { "keys": "ArrowDown / ArrowUp", "action": "Moves focus to the next or previous row's Sign out button." },
     { "keys": "Home / End", "action": "Moves focus to the first or last row's Sign out button." },
-    { "keys": "Enter / Space", "action": "On a row: signs out that session. On the footer: arms it, and a second press within 4 seconds signs out all other sessions." },
+    {
+      "keys": "Enter / Space",
+      "action": "On a row: signs out that session. On the footer: arms it, and a second press within 4 seconds signs out all other sessions."
+    },
     { "keys": "Escape", "action": "Disarms the footer button." }
   ],
   "accessibility": [

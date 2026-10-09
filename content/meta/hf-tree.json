@@ -1,14 +1,28 @@
 {
   "summary": "Changed-files tree built from a path list with M, A and D markers; folders count their changes and arrow keys follow the tree pattern.",
   "attributes": [
-    { "name": "paths", "type": "string", "default": "src/auth/session.ts:M,src/auth/token.ts:A,src/auth/legacy.ts:D,src/api/client.ts:M,src/api/routes.ts,src/ui/composer.tsx:M,src/ui/theme.ts,tests/auth.spec.ts:A,docs/README.md:M,package.json:M,tsconfig.json", "description": "Comma-separated file paths, each optionally followed by `:M` (modified), `:A` (added) or `:D` (deleted); other status letters are ignored. Folders come from the `/` segments. Observed: a change rebuilds the tree and keeps expanded folders and the selection where they still exist." }
+    {
+      "name": "paths",
+      "type": "string",
+      "default": "src/auth/session.ts:M,src/auth/token.ts:A,src/auth/legacy.ts:D,src/api/client.ts:M,src/api/routes.ts,src/ui/composer.tsx:M,src/ui/theme.ts,tests/auth.spec.ts:A,docs/README.md:M,package.json:M,tsconfig.json",
+      "description": "Comma-separated file paths, each optionally followed by `:M` (modified), `:A` (added) or `:D` (deleted); other status letters are ignored. Folders come from the `/` segments. Observed: a change rebuilds the tree and keeps expanded folders and the selection where they still exist."
+    }
   ],
   "events": [
-    { "name": "select", "detail": "{ path: string, file: boolean }", "description": "Fires when the user selects a row by click or keyboard, including each arrow-key move. `file` is `false` for folders." }
+    {
+      "name": "select",
+      "detail": "{ path: string, file: boolean }",
+      "description": "Fires when the user selects a row by click or keyboard, including each arrow-key move. `file` is `false` for folders."
+    }
   ],
   "methods": [],
   "properties": [
-    { "name": "entries", "type": "{ path: string; st: \"M\" | \"A\" | \"D\" | \"\" }[]", "readonly": true, "description": "The parsed `paths`; `st` is `M`, `A`, `D` or an empty string. Entries without a path are skipped." }
+    {
+      "name": "entries",
+      "type": "{ path: string; st: \"M\" | \"A\" | \"D\" | \"\" }[]",
+      "readonly": true,
+      "description": "The parsed `paths`; `st` is `M`, `A`, `D` or an empty string. Entries without a path are skipped."
+    }
   ],
   "keyboard": [
     { "keys": "ArrowDown / ArrowUp", "action": "Move to and select the next or previous row." },

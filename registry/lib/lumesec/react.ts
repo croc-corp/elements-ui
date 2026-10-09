@@ -115,7 +115,8 @@ export function useLumesecElement<E extends HTMLElement>(
   const attrs: Record<string, string | boolean> = {};
   for (const [name, value] of Object.entries(attributes)) {
     if (value === undefined || value === null || value === false) continue;
-    attrs[name.toUpperCase()] = value === true ? true : typeof value === "object" ? JSON.stringify(value) : String(value);
+    attrs[name.toUpperCase()] =
+      value === true ? true : typeof value === "object" ? JSON.stringify(value) : String(value);
   }
 
   // an element sets attributes on itself when it connects (roles, state), which can land before hydration

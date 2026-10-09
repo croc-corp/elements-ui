@@ -36,7 +36,12 @@ export function InstallChip({ item = "effort-slider", className }: { item?: stri
 
   return (
     <div className={cn("overflow-hidden rounded-xl border border-border bg-surface/70 backdrop-blur", className)}>
-      <div ref={listRef} role="group" aria-label="Package manager" className="relative flex items-center gap-1 border-b border-border px-2">
+      <div
+        ref={listRef}
+        role="group"
+        aria-label="Package manager"
+        className="relative flex items-center gap-1 border-b border-border px-2"
+      >
         {PACKAGE_MANAGERS.map((p) => (
           <button
             key={p.id}
@@ -44,12 +49,19 @@ export function InstallChip({ item = "effort-slider", className }: { item?: stri
             data-pm={p.id}
             onClick={() => setPm(p.id)}
             aria-pressed={pm === p.id}
-            className={cn("h-8 px-2 font-mono text-[11.5px] transition-colors", pm === p.id ? "text-foreground" : "text-muted-foreground hover:text-foreground")}
+            className={cn(
+              "h-8 px-2 font-mono text-[11.5px] transition-colors",
+              pm === p.id ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+            )}
           >
             {p.id}
           </button>
         ))}
-        <span aria-hidden className="absolute -bottom-px left-0 h-px bg-foreground transition-[transform,width] duration-300 ease-[var(--ease-expo)]" style={{ transform: `translateX(${bar.x}px)`, width: bar.w }} />
+        <span
+          aria-hidden
+          className="absolute -bottom-px left-0 h-px bg-foreground transition-[transform,width] duration-300 ease-[var(--ease-expo)]"
+          style={{ transform: `translateX(${bar.x}px)`, width: bar.w }}
+        />
       </div>
       <button
         type="button"
@@ -66,8 +78,17 @@ export function InstallChip({ item = "effort-slider", className }: { item?: stri
           <span className="text-foreground">{name}</span>
         </span>
         <span className="relative flex size-6 items-center justify-center text-muted-foreground transition-colors group-hover/cmd:text-foreground">
-          <CopyIcon size={14} className={cn("transition-all duration-300", copied ? "scale-50 opacity-0" : "opacity-100")} />
-          <CheckIcon size={14} className={cn("absolute text-success transition-all duration-300", copied ? "scale-100 opacity-100" : "scale-50 opacity-0")} />
+          <CopyIcon
+            size={14}
+            className={cn("transition-all duration-300", copied ? "scale-50 opacity-0" : "opacity-100")}
+          />
+          <CheckIcon
+            size={14}
+            className={cn(
+              "absolute text-success transition-all duration-300",
+              copied ? "scale-100 opacity-100" : "scale-50 opacity-0",
+            )}
+          />
         </span>
       </button>
     </div>

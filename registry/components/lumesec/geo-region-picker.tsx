@@ -127,7 +127,10 @@ export function GeoRegionPicker({
     () => (fromLat === undefined || fromLon === undefined ? null : nominalPoint({ lat: fromLat, lon: fromLon })),
     [fromLat, fromLon],
   );
-  const fromSide = React.useMemo(() => (fromPoint ? labelSide(fromPoint, fromLabel, points) : "right"), [fromPoint, fromLabel, points]);
+  const fromSide = React.useMemo(
+    () => (fromPoint ? labelSide(fromPoint, fromLabel, points) : "right"),
+    [fromPoint, fromLabel, points],
+  );
 
   // The server markup places the reticle with `left` and `top`; the frame loop moves it from there with a transform.
   const [reticleOrigin] = React.useState(() => (selectedIndex >= 0 ? points[selectedIndex] : MAP_MIDDLE));
@@ -370,7 +373,10 @@ export function GeoRegionPicker({
       )}
       {...props}
     >
-      <div hidden={layout === "list"} className="rounded-xl border border-border bg-card p-2 shadow-[0_14px_34px_-20px_rgb(0_0_0/0.4)]">
+      <div
+        hidden={layout === "list"}
+        className="rounded-xl border border-border bg-card p-2 shadow-[0_14px_34px_-20px_rgb(0_0_0/0.4)]"
+      >
         <div
           ref={mapRef}
           aria-hidden="true"
@@ -383,7 +389,11 @@ export function GeoRegionPicker({
           <canvas
             ref={marksRef}
             className="pointer-events-none absolute block"
-            style={{ inset: -MARK_PAD, width: `calc(100% + ${MARK_PAD * 2}px)`, height: `calc(100% + ${MARK_PAD * 2}px)` }}
+            style={{
+              inset: -MARK_PAD,
+              width: `calc(100% + ${MARK_PAD * 2}px)`,
+              height: `calc(100% + ${MARK_PAD * 2}px)`,
+            }}
           />
           {list.map((region, i) => (
             <button
@@ -412,7 +422,11 @@ export function GeoRegionPicker({
             >
               <span className="font-medium text-foreground">{hoverRegion.label}</span>
               <span className="text-muted-foreground">{hoverRegion.city}</span>
-              {hints ? <span className="font-mono text-[11px] text-muted-foreground tabular-nums">{hintText(hints[mapHover])}</span> : null}
+              {hints ? (
+                <span className="font-mono text-[11px] text-muted-foreground tabular-nums">
+                  {hintText(hints[mapHover])}
+                </span>
+              ) : null}
             </span>
           ) : null}
           <div
@@ -467,17 +481,21 @@ export function GeoRegionPicker({
           onKeyDown={handleGroupKeyDown}
           className={cn(
             "relative",
-            layout === "map" ? "flex flex-wrap gap-1.5 p-2" : "grid max-h-[191px] overflow-y-auto p-1 [scrollbar-width:thin]",
+            layout === "map"
+              ? "flex flex-wrap gap-1.5 p-2"
+              : "grid max-h-[191px] [scrollbar-width:thin] overflow-y-auto p-1",
           )}
         >
           {list.length === 0 ? (
-            <p className="m-0 grid h-[68px] w-full place-items-center text-[12.5px] text-muted-foreground">No regions</p>
+            <p className="m-0 grid h-[68px] w-full place-items-center text-[12.5px] text-muted-foreground">
+              No regions
+            </p>
           ) : layout === "map" ? (
             list.map((region, i) => (
               <button
                 key={region.id}
                 {...radioProps(region, i)}
-                className="group/chip inline-flex h-7 cursor-pointer items-center gap-1.5 rounded-md border border-border bg-card px-2 font-[inherit] text-[12px] leading-4 font-medium text-foreground outline-none transition-colors duration-150 hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-solid focus-visible:outline-lumesec data-[active]:bg-muted/60 data-[state=checked]:border-[color-mix(in_srgb,var(--lumesec)_55%,var(--border))] data-[state=checked]:bg-lumesec/8 motion-reduce:transition-none"
+                className="group/chip inline-flex h-7 cursor-pointer items-center gap-1.5 rounded-md border border-border bg-card px-2 font-[inherit] text-[12px] leading-4 font-medium text-foreground transition-colors duration-150 outline-none hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-lumesec focus-visible:outline-solid data-[active]:bg-muted/60 data-[state=checked]:border-[color-mix(in_srgb,var(--lumesec)_55%,var(--border))] data-[state=checked]:bg-lumesec/8 motion-reduce:transition-none"
               >
                 <RadioDot />
                 {region.label}
@@ -488,7 +506,7 @@ export function GeoRegionPicker({
               <button
                 key={region.id}
                 {...radioProps(region, i)}
-                className="group/chip flex h-[34px] w-full min-w-0 shrink-0 cursor-pointer items-center gap-2.5 rounded-lg border-0 bg-transparent px-2.5 text-left font-[inherit] outline-none transition-colors duration-150 hover:bg-muted/60 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-solid focus-visible:outline-lumesec data-[active]:bg-muted/60 motion-reduce:transition-none"
+                className="group/chip flex h-[34px] w-full min-w-0 shrink-0 cursor-pointer items-center gap-2.5 rounded-lg border-0 bg-transparent px-2.5 text-left font-[inherit] transition-colors duration-150 outline-none hover:bg-muted/60 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid data-[active]:bg-muted/60 motion-reduce:transition-none"
               >
                 <RadioDot />
                 <span className="shrink-0 text-[13px] leading-4 font-medium text-foreground">{region.label}</span>
@@ -649,7 +667,11 @@ const LAT_RANGE: readonly [number, number] = [-50, 72];
 const MAP_ASPECT = projectionAspect("equalEarth", LAT_RANGE);
 const NOMINAL_WIDTH = 1000;
 const NOMINAL_HEIGHT = NOMINAL_WIDTH / MAP_ASPECT;
-const NOMINAL_PROJECTION = createProjection("equalEarth", { width: NOMINAL_WIDTH, height: NOMINAL_HEIGHT, latRange: LAT_RANGE });
+const NOMINAL_PROJECTION = createProjection("equalEarth", {
+  width: NOMINAL_WIDTH,
+  height: NOMINAL_HEIGHT,
+  latRange: LAT_RANGE,
+});
 const MAP_MIDDLE: Point = { x: NOMINAL_WIDTH / 2, y: NOMINAL_HEIGHT / 2 };
 const MAP_CANVAS = { maxDpr: 2 } as const;
 /** The marks canvas reaches this far past the map (the map card's padding), so the lens is not cut at the edge. */
@@ -837,7 +859,12 @@ class RegionMap {
     if (key === this.regionsKey) return;
     this.regionsKey = key;
     this.places = regions.map((region) => {
-      const place: Place = { lat: clamp(region.lat, LAT_RANGE[0], LAT_RANGE[1]), lon: wrapLongitude(region.lon), x: 0, y: 0 };
+      const place: Place = {
+        lat: clamp(region.lat, LAT_RANGE[0], LAT_RANGE[1]),
+        lon: wrapLongitude(region.lon),
+        x: 0,
+        y: 0,
+      };
       this.place(place);
       return place;
     });
@@ -883,7 +910,9 @@ class RegionMap {
     const key = from ? `${from.lat},${from.lon}` : "";
     if (key === this.fromKey) return;
     this.fromKey = key;
-    this.from = from ? { lat: clamp(from.lat, LAT_RANGE[0], LAT_RANGE[1]), lon: wrapLongitude(from.lon), x: 0, y: 0 } : null;
+    this.from = from
+      ? { lat: clamp(from.lat, LAT_RANGE[0], LAT_RANGE[1]), lon: wrapLongitude(from.lon), x: 0, y: 0 }
+      : null;
     if (this.from) this.place(this.from);
     const preview = this.preview;
     this.preview = -1;
@@ -1043,7 +1072,12 @@ class RegionMap {
     const projection = this.projection;
     if (!from || !place || !projection) return null;
     if (Math.hypot(place.x - from.x, place.y - from.y) < 6) return null;
-    return { index, tables: flatPaths(projection, from, place, { geodesic: true, segments: ARC_SEGMENTS }), start, fade: -1 };
+    return {
+      index,
+      tables: flatPaths(projection, from, place, { geodesic: true, segments: ARC_SEGMENTS }),
+      start,
+      fade: -1,
+    };
   }
 
   /** The reticle reached the region: the component snaps the brackets; sparks fly, more for longer trips. */
@@ -1197,5 +1231,14 @@ function createTravel(start: LatLon, target: LatLon, km: number, centerLon: numb
   }
   const xs = new Float32Array(count);
   const ys = new Float32Array(count);
-  return { lats, lambdas, xs, ys, table: buildArcLength(xs, ys, count), km, stiffness: travelStiffness(km), arrived: false };
+  return {
+    lats,
+    lambdas,
+    xs,
+    ys,
+    table: buildArcLength(xs, ys, count),
+    km,
+    stiffness: travelStiffness(km),
+    arrived: false,
+  };
 }

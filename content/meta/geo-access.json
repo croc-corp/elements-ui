@@ -159,10 +159,7 @@
       {
         "name": "unit",
         "kind": "enum",
-        "options": [
-          "km",
-          "mi"
-        ],
+        "options": ["km", "mi"],
         "default": "km"
       },
       {

@@ -89,13 +89,17 @@ export function RollText({ text, direction = 1, animate = true, reserve, classNa
 
   return (
     <span
-      className={cn("inline-grid justify-items-start py-[5px] -my-[5px] [perspective:180px]", className)}
+      className={cn("-my-[5px] inline-grid justify-items-start py-[5px] [perspective:180px]", className)}
       style={{ maskImage: EDGE_MASK, WebkitMaskImage: EDGE_MASK, ...style }}
       {...props}
     >
       {reserve?.map((value, index) => (
         // a static list; the prefix keeps these keys apart from the numeric keys of the labels beside them
-        <span key={`reserve-${index}`} aria-hidden="true" className="invisible col-start-1 row-start-1 whitespace-nowrap">
+        <span
+          key={`reserve-${index}`}
+          aria-hidden="true"
+          className="invisible col-start-1 row-start-1 whitespace-nowrap"
+        >
           {value}
         </span>
       ))}
@@ -107,7 +111,7 @@ export function RollText({ text, direction = 1, animate = true, reserve, classNa
             else nodes.current.delete(item.key);
           }}
           aria-hidden={item.key === current.key ? undefined : true}
-          className="col-start-1 row-start-1 whitespace-nowrap [backface-visibility:hidden] [transform-origin:50%_50%_-10px]"
+          className="col-start-1 row-start-1 [transform-origin:50%_50%_-10px] whitespace-nowrap [backface-visibility:hidden]"
         >
           {item.text}
         </span>

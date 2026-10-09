@@ -18,10 +18,5 @@ export interface PxColorProps extends Omit<LumesecElementProps<PxColorElement>, 
  * @see https://elements.lumesec.ai/components/pixel-lab/color
  */
 export function PxColor({ onChange, ...props }: PxColorProps) {
-  return useLumesecElement(
-    "px-color",
-    props,
-    {},
-    { "change": onChange },
-  );
+  return useLumesecElement("px-color", props, {}, { change: onChange });
 }

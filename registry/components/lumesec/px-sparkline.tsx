@@ -80,13 +80,16 @@ export function PxSparkline({
     for (let x = 3; x <= xMax; x += 3) {
       const y = Y(valueAt(x));
       // dithered area under the line, thinning out toward the bottom
-      for (let yy = y + 4; yy < h - 1; yy += 3) if (hash(x * 1.3 + yy * 2.7) < 0.55 - ((yy - y) / h) * 0.5) frame.dot(x - 1, yy - 1, line, 0.25, 2);
+      for (let yy = y + 4; yy < h - 1; yy += 3)
+        if (hash(x * 1.3 + yy * 2.7) < 0.55 - ((yy - y) / h) * 0.5) frame.dot(x - 1, yy - 1, line, 0.25, 2);
       frame.dot(x - 1.2, y - 1.2, line, 1, 2.4);
     }
     if (reveal.current >= 1) {
       const x = X(n - 1);
       const y = Y(values[n - 1]);
-      for (let yy = -1; yy <= 1; yy++) for (let xx = -1; xx <= 1; xx++) frame.dot(x + xx * 2 - 1.1, y + yy * 2 - 1.1, mixRgb(line, palette.shine, 0.3), 1, 2.2);
+      for (let yy = -1; yy <= 1; yy++)
+        for (let xx = -1; xx <= 1; xx++)
+          frame.dot(x + xx * 2 - 1.1, y + yy * 2 - 1.1, mixRgb(line, palette.shine, 0.3), 1, 2.2);
     }
     if (hoverIndex !== null) {
       const x = X(hoverIndex);
@@ -110,7 +113,12 @@ export function PxSparkline({
       : label;
 
   return (
-    <span data-slot="px-sparkline" className={cn("relative inline-block align-middle", className)} style={{ width, ...style }} {...props}>
+    <span
+      data-slot="px-sparkline"
+      className={cn("relative inline-block align-middle", className)}
+      style={{ width, ...style }}
+      {...props}
+    >
       <canvas
         ref={canvasRef}
         role="img"
@@ -129,7 +137,7 @@ export function PxSparkline({
       <span
         aria-hidden="true"
         hidden={hoverIndex === null}
-        className="pointer-events-none absolute bottom-full z-[5] rounded-[5px] bg-foreground px-1.5 py-0.5 font-mono text-[11px] leading-normal whitespace-nowrap text-card [transform:translate(-50%,-4px)]"
+        className="pointer-events-none absolute bottom-full z-[5] [transform:translate(-50%,-4px)] rounded-[5px] bg-foreground px-1.5 py-0.5 font-mono text-[11px] leading-normal whitespace-nowrap text-card"
         style={hoverIndex === null ? undefined : { left: `calc(3px + (100% - 7px) * ${hoverIndex / (n - 1)})` }}
       >
         {hoverIndex === null ? null : withUnit(values[hoverIndex])}

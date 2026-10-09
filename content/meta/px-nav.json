@@ -2,10 +2,30 @@
   "kind": "react",
   "summary": "Sidebar nav with pixel icons and count badges, a hover block and an active bar that slides to the current item.",
   "props": [
-    { "name": "value", "type": "string", "default": "-", "description": "Controlled `href` of the current item. Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "string", "default": "first item", "description": "`href` of the initially current item when uncontrolled." },
-    { "name": "items", "type": "readonly PxNavItem[]", "default": "-", "description": "The links: `{ href: string; label: string; icon?: PxNavIcon; badge?: string }`. `href` also identifies the item in `value`." },
-    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called with the `href` of a link the user clicks without a modifier key, when it is not already current." }
+    {
+      "name": "value",
+      "type": "string",
+      "default": "-",
+      "description": "Controlled `href` of the current item. Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "default": "first item",
+      "description": "`href` of the initially current item when uncontrolled."
+    },
+    {
+      "name": "items",
+      "type": "readonly PxNavItem[]",
+      "default": "-",
+      "description": "The links: `{ href: string; label: string; icon?: PxNavIcon; badge?: string }`. `href` also identifies the item in `value`."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "default": "-",
+      "description": "Called with the `href` of a link the user clicks without a modifier key, when it is not already current."
+    }
   ],
   "extends": "nav",
   "ref": { "type": "HTMLElement", "methods": [] },
@@ -36,7 +56,12 @@
       ]
     },
     "controls": [
-      { "name": "defaultValue", "kind": "enum", "options": ["#home", "#chats", "#projects", "#usage", "#team", "#settings"], "default": "#home" }
+      {
+        "name": "defaultValue",
+        "kind": "enum",
+        "options": ["#home", "#chats", "#projects", "#usage", "#team", "#settings"],
+        "default": "#home"
+      }
     ]
   }
 }

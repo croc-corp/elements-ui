@@ -53,7 +53,9 @@ const parseDays = (value: unknown): Day[] | null =>
 
 /** `Sep 3`, or `Today` for the current day. */
 const dayLabel = (d: Date): string =>
-  d.toDateString() === new Date().toDateString() ? "Today" : d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  d.toDateString() === new Date().toDateString()
+    ? "Today"
+    : d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
 /** Space above the highest value in canvas pixels. */
 const TOP = 10;

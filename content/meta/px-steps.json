@@ -2,12 +2,37 @@
   "kind": "react",
   "summary": "Wizard progress with numbered nodes joined by pixel lines that fill as you advance; finished steps show a check and lead back on click.",
   "props": [
-    { "name": "step", "type": "number", "default": "-", "description": "Controlled current step, from 1. One more than the number of steps marks the flow complete. Rounded and clamped. Use with `onStepChange`." },
+    {
+      "name": "step",
+      "type": "number",
+      "default": "-",
+      "description": "Controlled current step, from 1. One more than the number of steps marks the flow complete. Rounded and clamped. Use with `onStepChange`."
+    },
     { "name": "defaultStep", "type": "number", "default": "1", "description": "Initial step when uncontrolled." },
-    { "name": "steps", "type": "readonly string[]", "default": "[\"Details\", \"Billing\", \"Review\", \"Done\"]", "description": "Step names, in order." },
-    { "name": "controls", "type": "boolean", "default": "false", "description": "Shows Back and Continue buttons; Continue reads Finish on the last step." },
-    { "name": "onStepChange", "type": "(step: number) => void", "default": "-", "description": "Called with the new step when the user moves: Back, Continue, Finish or a click on a finished step. Completing the flow reports the number of steps plus one." },
-    { "name": "onComplete", "type": "() => void", "default": "-", "description": "Called when the user moves past the last step." }
+    {
+      "name": "steps",
+      "type": "readonly string[]",
+      "default": "[\"Details\", \"Billing\", \"Review\", \"Done\"]",
+      "description": "Step names, in order."
+    },
+    {
+      "name": "controls",
+      "type": "boolean",
+      "default": "false",
+      "description": "Shows Back and Continue buttons; Continue reads Finish on the last step."
+    },
+    {
+      "name": "onStepChange",
+      "type": "(step: number) => void",
+      "default": "-",
+      "description": "Called with the new step when the user moves: Back, Continue, Finish or a click on a finished step. Completing the flow reports the number of steps plus one."
+    },
+    {
+      "name": "onComplete",
+      "type": "() => void",
+      "default": "-",
+      "description": "Called when the user moves past the last step."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -25,7 +50,16 @@
     "Moving past the last step, from the buttons or a controlled `step`, throws sparks from every node.",
     "The Back, Continue and Finish labels are in English."
   ],
-  "tokens": ["--lumesec", "--lumesec-shine", "--lumesec-success", "--foreground", "--muted-foreground", "--card", "--border", "--muted"],
+  "tokens": [
+    "--lumesec",
+    "--lumesec-shine",
+    "--lumesec-success",
+    "--foreground",
+    "--muted-foreground",
+    "--card",
+    "--border",
+    "--muted"
+  ],
   "usage": "import { PxSteps } from \"@/components/lumesec/px-steps\";\n\nexport function Example() {\n  return <PxSteps steps={[\"Details\", \"Billing\", \"Review\", \"Done\"]} defaultStep={2} controls />;\n}\n",
   "playground": {
     "props": { "steps": ["Details", "Billing", "Review", "Done"], "defaultStep": 2, "controls": true },

@@ -135,7 +135,9 @@ function dataText(day: Day): string {
 
 /** `Sep 3`, or `Today` for the current day. */
 const dayLabel = (d: Date): string =>
-  d.toDateString() === new Date().toDateString() ? "Today" : d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  d.toDateString() === new Date().toDateString()
+    ? "Today"
+    : d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
 /**
  * Ninety days of uptime per service as pixel columns swept in on load; hovering a day lifts that column across all

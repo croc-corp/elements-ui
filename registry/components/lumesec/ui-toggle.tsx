@@ -108,11 +108,11 @@ export function UiToggle({
         aria-labelledby={labelId}
         aria-describedby={hint ? hintId : undefined}
         data-state={state}
-        className="relative h-6 w-[42px] flex-none cursor-pointer rounded-xl border-0 bg-muted p-0 font-[inherit] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--foreground)_9%,transparent)] outline-none select-none focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-lumesec"
+        className="relative h-6 w-[42px] flex-none cursor-pointer rounded-xl border-0 bg-muted p-0 font-[inherit] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--foreground)_9%,transparent)] outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid"
       >
         <span
           data-state={state}
-          className="absolute inset-0 rounded-xl bg-lumesec [clip-path:circle(0px_at_12px_12px)] transition-[clip-path] duration-450 ease-[cubic-bezier(.3,.7,.2,1)] data-[state=checked]:[clip-path:circle(48px_at_30px_12px)]"
+          className="absolute inset-0 rounded-xl bg-lumesec transition-[clip-path] duration-450 ease-[cubic-bezier(.3,.7,.2,1)] [clip-path:circle(0px_at_12px_12px)] data-[state=checked]:[clip-path:circle(48px_at_30px_12px)]"
         />
         <span
           ref={thumbRef}

@@ -124,7 +124,11 @@ export function GeoSpikes({
   const reducedMotion = useReducedMotion();
   const prepared = React.useMemo(() => prepareData(data ?? DEMO_DATA), [data]);
   const points = prepared.points;
-  const [selection, setSelection] = useControllableState<string | null>({ value, defaultValue, onChange: onValueChange });
+  const [selection, setSelection] = useControllableState<string | null>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
   const [hovered, setHovered] = React.useState<string | null>(null);
   const [focused, setFocused] = React.useState<string | null>(null);
   const [roving, setRoving] = React.useState<string | null>(null);
@@ -305,7 +309,10 @@ export function GeoSpikes({
   return (
     <div
       data-slot="geo-spikes"
-      className={cn("@container relative grid w-full rounded-xl border border-border bg-card text-card-foreground", className)}
+      className={cn(
+        "@container relative grid w-full rounded-xl border border-border bg-card text-card-foreground",
+        className,
+      )}
       {...props}
     >
       <div
@@ -347,7 +354,7 @@ export function GeoSpikes({
             onKeyDown={(event) => handleSpikeKeyDown(event, point.id)}
             onFocus={() => handleSpikeFocus(point.id)}
             onBlur={() => setFocused((current) => (current === point.id ? null : current))}
-            className="pointer-events-none absolute top-0 left-0 z-[2] size-6 rounded-full border-0 bg-transparent p-0 outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-solid focus-visible:outline-lumesec"
+            className="pointer-events-none absolute top-0 left-0 z-[2] size-6 rounded-full border-0 bg-transparent p-0 outline-none focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-lumesec focus-visible:outline-solid"
           />
         ))}
         <div
@@ -366,8 +373,8 @@ export function GeoSpikes({
           )}
         </div>
         <p id={hintId} className="sr-only">
-          Drag or press the arrow keys to turn the globe. Tab moves to the spikes; arrow keys move between them and Enter
-          selects one.
+          Drag or press the arrow keys to turn the globe. Tab moves to the spikes; arrow keys move between them and
+          Enter selects one.
         </p>
       </div>
       <div aria-hidden="true" className="grid min-h-[50px] grid-cols-3 border-t border-border">
@@ -496,7 +503,8 @@ const GLOBE_KEYS: Record<string, readonly [number, number] | undefined> = {
 };
 
 /** The 24 cities of the built-in demo, spread over every continent. */
-const DEMO_CITY_IDS = "lhr cdg fra ams mad ist jfk ord sfo lax yyz mex gru bog eze los cai jnb dxb bom sin nrt icn syd".split(" ");
+const DEMO_CITY_IDS =
+  "lhr cdg fra ams mad ist jfk ord sfo lax yyz mex gru bog eze los cai jnb dxb bom sin nrt icn syd".split(" ");
 
 /** Invented counts for the demo cities, deterministic so server and client render the same numbers. */
 const DEMO_DATA: readonly SpikeDatum[] = buildDemoData();
@@ -581,7 +589,8 @@ function focusView(lat: number, lon: number, fromLon: number): LatLon {
   const phi = lat * DEG;
   const centerPhi = centerLat * DEG;
   const cosLon =
-    (Math.cos(FOCUS_ANGLE * DEG) - Math.sin(phi) * Math.sin(centerPhi)) / Math.max(1e-6, Math.cos(phi) * Math.cos(centerPhi));
+    (Math.cos(FOCUS_ANGLE * DEG) - Math.sin(phi) * Math.sin(centerPhi)) /
+    Math.max(1e-6, Math.cos(phi) * Math.cos(centerPhi));
   const offset = Math.acos(clamp(cosLon, -1, 1)) / DEG;
   const side = angleDelta(fromLon, lon) >= 0 ? 1 : -1;
   return { lat: centerLat, lon: lon - side * offset };
@@ -759,7 +768,14 @@ function createEngine(): Engine {
     chipId: null,
     selectedId: null,
     dim: 0,
-    chip: { id: null, x: 0, y: 0, visible: false, offsetX: { position: 0, velocity: 0 }, offsetY: { position: 0, velocity: 0 } },
+    chip: {
+      id: null,
+      x: 0,
+      y: 0,
+      visible: false,
+      offsetX: { position: 0, velocity: 0 },
+      offsetY: { position: 0, velocity: 0 },
+    },
     interactionAt: Number.NEGATIVE_INFINITY,
   };
 }
@@ -993,7 +1009,8 @@ function landAngles(engine: Engine, lattice: SphereLattice) {
 function stepSpikes(engine: Engine, time: number, delta: number, reduced: boolean, released: string[]) {
   let busy = false;
   const { chipId, selectedId } = engine;
-  const anyLit = (chipId !== null && engine.spikes.has(chipId)) || (selectedId !== null && engine.spikes.has(selectedId));
+  const anyLit =
+    (chipId !== null && engine.spikes.has(chipId)) || (selectedId !== null && engine.spikes.has(selectedId));
   const ease = reduced ? 1 : 1 - Math.exp(-delta / HIGHLIGHT_SECONDS);
   engine.dim = approach(engine.dim, anyLit ? 1 : 0, ease);
   if (engine.dim !== (anyLit ? 1 : 0)) busy = true;
@@ -1100,7 +1117,13 @@ function drawLand(engine: Engine, context: CanvasRenderingContext2D, radius: num
         continue;
       }
     }
-    batch.add(snap(cx + x * radius - half, dpr) + half, snap(cy - y * radius - half, dpr) + half, LAND_DOT, tone, Math.min(1, alpha));
+    batch.add(
+      snap(cx + x * radius - half, dpr) + half,
+      snap(cy - y * radius - half, dpr) + half,
+      LAND_DOT,
+      tone,
+      Math.min(1, alpha),
+    );
   }
   batch.flush(context);
   return ringOn;
@@ -1131,13 +1154,7 @@ function drawSpikes(engine: Engine, context: CanvasRenderingContext2D, radius: n
 
 const footScratch: Vec3 = [0, 0, 0];
 
-function drawSpike(
-  engine: Engine,
-  context: CanvasRenderingContext2D,
-  spike: SpikeState,
-  radius: number,
-  dpr: number,
-) {
+function drawSpike(engine: Engine, context: CanvasRenderingContext2D, spike: SpikeState, radius: number, dpr: number) {
   const { cx, cy } = engine.layout;
   const m = engine.rotation;
   const v = spike.vector;
@@ -1163,7 +1180,12 @@ function drawSpike(
     const x = m[0] * footScratch[0] + m[1] * footScratch[1] + m[2] * footScratch[2];
     const y = m[3] * footScratch[0] + m[4] * footScratch[1] + m[5] * footScratch[2];
     context.globalAlpha = 0.5 * fade;
-    context.fillRect(snap(cx + x * radius - FOOT_DOT / 2, dpr), snap(cy - y * radius - FOOT_DOT / 2, dpr), FOOT_DOT, FOOT_DOT);
+    context.fillRect(
+      snap(cx + x * radius - FOOT_DOT / 2, dpr),
+      snap(cy - y * radius - FOOT_DOT / 2, dpr),
+      FOOT_DOT,
+      FOOT_DOT,
+    );
   }
 
   // column: dots SPIKE_STEP px apart from the base up to the tip, grey at the foot and accent at the top
@@ -1180,7 +1202,12 @@ function drawSpike(
     const tone = Math.pow(t, 0.7);
     context.fillStyle = ramp[Math.round((tone + (1 - tone) * light) * (ramp.length - 1))];
     context.globalAlpha = 0.95 * fade * (z < 0 ? behindAlpha : 1);
-    context.fillRect(snap(cx + x * radius - SPIKE_DOT / 2, dpr), snap(cy - y * radius - SPIKE_DOT / 2, dpr), SPIKE_DOT, SPIKE_DOT);
+    context.fillRect(
+      snap(cx + x * radius - SPIKE_DOT / 2, dpr),
+      snap(cy - y * radius - SPIKE_DOT / 2, dpr),
+      SPIKE_DOT,
+      SPIKE_DOT,
+    );
   }
 
   // tip (the base for zero values, which only show their footprint)
@@ -1293,7 +1320,9 @@ function placeOverlay(
   } else {
     springStep(state.offsetX, 0, delta);
     springStep(state.offsetY, 0, delta);
-    busy = Math.abs(state.offsetX.position) + Math.abs(state.offsetY.position) > 0.1 || Math.abs(state.offsetX.velocity) + Math.abs(state.offsetY.velocity) > 1;
+    busy =
+      Math.abs(state.offsetX.position) + Math.abs(state.offsetY.position) > 0.1 ||
+      Math.abs(state.offsetX.velocity) + Math.abs(state.offsetY.velocity) > 1;
     if (!busy) {
       state.offsetX.position = 0;
       state.offsetY.position = 0;

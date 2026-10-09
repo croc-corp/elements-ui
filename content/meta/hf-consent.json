@@ -1,11 +1,25 @@
 {
   "summary": "Privacy choices card whose shield fills as categories are allowed; saving stamps it and folds the card into a small Change pill.",
   "attributes": [
-    { "name": "label", "type": "string", "default": "Your privacy choices", "description": "Card title; also labels the card region. Observed." },
-    { "name": "description", "type": "string", "default": "We only use what you allow. You can change this any time in Settings.", "description": "Text under the title. Observed." }
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Your privacy choices",
+      "description": "Card title; also labels the card region. Observed."
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "default": "We only use what you allow. You can change this any time in Settings.",
+      "description": "Text under the title. Observed."
+    }
   ],
   "events": [
-    { "name": "consent", "detail": "{ analytics: boolean, personalisation: boolean }", "description": "Fires on Reject all, Save choices or Accept all with the chosen categories. Necessary is always on and not reported." }
+    {
+      "name": "consent",
+      "detail": "{ analytics: boolean, personalisation: boolean }",
+      "description": "Fires on Reject all, Save choices or Accept all with the chosen categories. Necessary is always on and not reported."
+    }
   ],
   "methods": [],
   "properties": [],

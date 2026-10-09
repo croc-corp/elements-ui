@@ -22,10 +22,5 @@ export interface PxMaterializeProps extends Omit<LumesecElementProps<PxMateriali
  * @see https://elements.lumesec.ai/components/pixel-lab/materialize
  */
 export function PxMaterialize({ text, onDone, ...props }: PxMaterializeProps) {
-  return useLumesecElement(
-    "px-materialize",
-    props,
-    { "text": text },
-    { "done": onDone },
-  );
+  return useLumesecElement("px-materialize", props, { text: text }, { done: onDone });
 }

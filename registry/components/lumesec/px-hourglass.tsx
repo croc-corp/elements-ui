@@ -7,7 +7,10 @@ import type * as ElementModule from "@/components/lumesec/px-hourglass.element";
 /** The `<px-hourglass>` element, with its properties and methods. */
 export type PxHourglassElement = ElementModule.Hourglass;
 
-export interface PxHourglassProps extends Omit<LumesecElementProps<PxHourglassElement>, "duration" | "onFlip" | "onReset"> {
+export interface PxHourglassProps extends Omit<
+  LumesecElementProps<PxHourglassElement>,
+  "duration" | "onFlip" | "onReset"
+> {
   /** Countdown length in seconds for a full top chamber; a missing, invalid or non-positive value uses 30. A later change re-times the sand left in the top chamber to run out in that many seconds. Default: `30`. */
   duration?: number;
   /** Fires after the hourglass has turned over. */
@@ -24,10 +27,5 @@ export interface PxHourglassProps extends Omit<LumesecElementProps<PxHourglassEl
  * @see https://elements.lumesec.ai/components/pixel-lab/hourglass
  */
 export function PxHourglass({ duration, onFlip, onReset, ...props }: PxHourglassProps) {
-  return useLumesecElement(
-    "px-hourglass",
-    props,
-    { "duration": duration },
-    { "flip": onFlip, "reset": onReset },
-  );
+  return useLumesecElement("px-hourglass", props, { duration: duration }, { flip: onFlip, reset: onReset });
 }

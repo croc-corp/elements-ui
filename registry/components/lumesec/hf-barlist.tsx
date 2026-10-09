@@ -24,10 +24,5 @@ export interface HfBarlistProps extends Omit<LumesecElementProps<HfBarlistElemen
  * @see https://elements.lumesec.ai/components/pixel-hd/barlist
  */
 export function HfBarlist({ data, label, unit, ...props }: HfBarlistProps) {
-  return useLumesecElement(
-    "hf-barlist",
-    props,
-    { "data": data, "label": label, "unit": unit },
-    {},
-  );
+  return useLumesecElement("hf-barlist", props, { data: data, label: label, unit: unit }, {});
 }

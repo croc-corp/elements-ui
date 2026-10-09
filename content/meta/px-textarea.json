@@ -3,16 +3,51 @@
   "summary": "Auto-growing text area with a pixel character budget that turns amber near the limit and blinks red when over, marking the form invalid.",
   "props": [
     { "name": "value", "type": "string", "default": "-", "description": "Controlled text. Use with `onValueChange`." },
-    { "name": "defaultValue", "type": "string", "default": "\"\"", "description": "Initial text when uncontrolled. A form reset restores it." },
-    { "name": "limit", "type": "number", "default": "280", "description": "Character budget. Typing past it is allowed but marks the field invalid." },
-    { "name": "label", "type": "React.ReactNode", "default": "-", "description": "Label above the field, linked to the textarea." },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "default": "\"\"",
+      "description": "Initial text when uncontrolled. A form reset restores it."
+    },
+    {
+      "name": "limit",
+      "type": "number",
+      "default": "280",
+      "description": "Character budget. Typing past it is allowed but marks the field invalid."
+    },
+    {
+      "name": "label",
+      "type": "React.ReactNode",
+      "default": "-",
+      "description": "Label above the field, linked to the textarea."
+    },
     { "name": "placeholder", "type": "string", "default": "-", "description": "Placeholder of the textarea." },
     { "name": "name", "type": "string", "default": "-", "description": "Form field name; the text submits under it." },
-    { "name": "disabled", "type": "boolean", "default": "false", "description": "Disables the textarea and dims the field." },
-    { "name": "required", "type": "boolean", "default": "false", "description": "Marks the textarea as required for form validation." },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Disables the textarea and dims the field."
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "default": "false",
+      "description": "Marks the textarea as required for form validation."
+    },
     { "name": "readOnly", "type": "boolean", "default": "false", "description": "Makes the textarea read-only." },
-    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called on every edit with the new text." },
-    { "name": "onValueCommit", "type": "(value: string) => void", "default": "-", "description": "Called when the textarea commits a change: on blur after editing (the native `change` event)." }
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "default": "-",
+      "description": "Called on every edit with the new text."
+    },
+    {
+      "name": "onValueCommit",
+      "type": "(value: string) => void",
+      "default": "-",
+      "description": "Called when the textarea commits a change: on blur after editing (the native `change` event)."
+    }
   ],
   "extends": "div",
   "ref": { "type": "HTMLDivElement", "methods": [] },
@@ -31,7 +66,15 @@
     "The root carries `data-zone` set to `ok`, `warn` (from 80% of the limit) or `over`.",
     "`className` and other `div` props go to the wrapper; textarea attributes are the props listed above."
   ],
-  "tokens": ["--foreground", "--muted-foreground", "--card", "--border", "--lumesec", "--lumesec-warning", "--destructive"],
+  "tokens": [
+    "--foreground",
+    "--muted-foreground",
+    "--card",
+    "--border",
+    "--lumesec",
+    "--lumesec-warning",
+    "--destructive"
+  ],
   "usage": "import { PxTextarea } from \"@/components/lumesec/px-textarea\";\n\nexport function Example() {\n  return <PxTextarea name=\"bio\" label=\"Short bio\" limit={120} placeholder=\"A sentence or two about you\" />;\n}\n",
   "playground": {
     "props": { "label": "Short bio", "limit": 120, "placeholder": "A sentence or two about you" },

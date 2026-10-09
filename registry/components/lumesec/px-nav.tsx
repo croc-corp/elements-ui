@@ -87,7 +87,8 @@ export function PxNav({ items, value: valueProp, defaultValue, onValueChange, cl
       hover.current = step(hover.current, target);
       const y0 = hover.current.position;
       if (Math.abs(target - y0) > 0.3) moving = true;
-      for (let y = y0 + 3; y < y0 + 34; y += 4) for (let x = 3; x < width - 3; x += 4) frame.dot(x, y, palette.foreground, 0.06, 2);
+      for (let y = y0 + 3; y < y0 + 34; y += 4)
+        for (let x = 3; x < width - 3; x += 4) frame.dot(x, y, palette.foreground, 0.06, 2);
     } else {
       hover.current = null;
     }
@@ -98,7 +99,8 @@ export function PxNav({ items, value: valueProp, defaultValue, onValueChange, cl
       active.current = step(active.current, target);
       const y0 = active.current.position;
       if (Math.abs(target - y0) > 0.3) moving = true;
-      for (let y = y0 + 3; y < y0 + 34; y += 4) for (let x = 3; x < width - 3; x += 4) frame.dot(x, y, palette.accent, 0.12, 2);
+      for (let y = y0 + 3; y < y0 + 34; y += 4)
+        for (let x = 3; x < width - 3; x += 4) frame.dot(x, y, palette.accent, 0.12, 2);
       for (let y = y0 + 8; y < y0 + 28; y += 3) frame.dot(0, y, palette.accent, 1, 2.4);
     }
 
@@ -112,7 +114,8 @@ export function PxNav({ items, value: valueProp, defaultValue, onValueChange, cl
         const y0 = rowTop + 18 - 7;
         icon.forEach((row, y) => {
           [...row].forEach((cell, x) => {
-            if (cell === "#") frame.dot(12 + x * 2, y0 + y * 2, isActive ? palette.accent : palette.muted, isActive ? 1 : 0.8, 1.7);
+            if (cell === "#")
+              frame.dot(12 + x * 2, y0 + y * 2, isActive ? palette.accent : palette.muted, isActive ? 1 : 0.8, 1.7);
           });
         });
       }
@@ -136,7 +139,7 @@ export function PxNav({ items, value: valueProp, defaultValue, onValueChange, cl
           }}
           href={item.href}
           aria-current={item.href === value ? "page" : undefined}
-          className="group/link relative flex h-9 items-center rounded-lg pr-11 pl-[38px] text-[14px] leading-normal font-medium text-muted-foreground no-underline outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-2 focus-visible:outline-lumesec aria-[current=page]:text-foreground"
+          className="group/link relative flex h-9 items-center rounded-lg pr-11 pl-[38px] text-[14px] leading-normal font-medium text-muted-foreground no-underline outline-none hover:text-foreground focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid aria-[current=page]:text-foreground"
           onClick={(event) => {
             // with a modifier key the browser opens or saves the link elsewhere, so the current item stays
             if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -157,7 +160,11 @@ export function PxNav({ items, value: valueProp, defaultValue, onValueChange, cl
           ) : null}
         </a>
       ))}
-      <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute inset-0 z-[1] block size-full [image-rendering:pixelated]" />
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[1] block size-full [image-rendering:pixelated]"
+      />
     </nav>
   );
 }

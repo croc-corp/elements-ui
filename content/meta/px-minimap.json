@@ -3,13 +3,14 @@
   "attributes": [],
   "events": [],
   "methods": [
-    { "signature": "find(query: string)", "description": "Highlights every line containing `query` (case-insensitive), marks it in the minimap and shows it in the search box." },
+    {
+      "signature": "find(query: string)",
+      "description": "Highlights every line containing `query` (case-insensitive), marks it in the minimap and shows it in the search box."
+    },
     { "signature": "next()", "description": "Scrolls to the next match, wrapping around." }
   ],
   "properties": [],
-  "keyboard": [
-    { "keys": "Enter (in the search box)", "action": "Jump to the next match." }
-  ],
+  "keyboard": [{ "keys": "Enter (in the search box)", "action": "Jump to the next match." }],
   "accessibility": [
     "The search field is a `type=\"search\"` input with `aria-label=\"Find in file\"`; the match count is an `aria-live=\"polite\"` region.",
     "The code view is a focusable (`tabindex=\"0\"`) `role=\"region\"` with `aria-label=\"Sample code\"`, so it can be scrolled with the keyboard.",

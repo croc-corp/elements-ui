@@ -32,7 +32,15 @@ export function fuzzyMatch(query: string, text: string): FuzzyMatch | null {
 }
 
 /** Render `text` with the characters at `indices` wrapped in `<mark>`. */
-export function FuzzyHighlight({ text, indices, markClassName }: { text: string; indices: readonly number[]; markClassName?: string }) {
+export function FuzzyHighlight({
+  text,
+  indices,
+  markClassName,
+}: {
+  text: string;
+  indices: readonly number[];
+  markClassName?: string;
+}) {
   if (indices.length === 0) return <>{text}</>;
   const marked = new Set(indices);
   const parts: React.ReactNode[] = [];
@@ -40,7 +48,15 @@ export function FuzzyHighlight({ text, indices, markClassName }: { text: string;
   let runMarked = false;
   const flush = (key: number) => {
     if (!run) return;
-    parts.push(runMarked ? <mark key={key} className={markClassName}>{run}</mark> : <React.Fragment key={key}>{run}</React.Fragment>);
+    parts.push(
+      runMarked ? (
+        <mark key={key} className={markClassName}>
+          {run}
+        </mark>
+      ) : (
+        <React.Fragment key={key}>{run}</React.Fragment>
+      ),
+    );
     run = "";
   };
   for (let i = 0; i < text.length; i++) {
