@@ -1,0 +1,70 @@
+---
+title: "Sparkline"
+description: "Inline pixel sparkline with a dithered area, coloured green or red by trend unless a colour is set; hovering shows the value."
+tag: px-sparkline
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-sparkline" />
+
+<Callout title="Your data">
+
+Pass your series as `data`. Without it the sparkline shows an invented sample series. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-sparkline" />
+
+## Installation
+
+<Install tag="px-sparkline" />
+
+## Usage
+
+<Usage tag="px-sparkline" />
+
+## Behaviour
+
+An inline pixel line with a dithered area, coloured by trend unless you set a colour. Hovering shows the value under the pointer.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<span>` (`React.ComponentProps<"span">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `readonly number[]` | `[4, 6, 5, 8, 7, 9, 8, 12, 10, 13]` | The series. Non-finite entries (`NaN`, `Infinity`) are dropped, and fewer than two values draw nothing. A change replays the draw-in. |
+| `label` | `string` | `"Trend"` | Start of the canvas `aria-label`, followed by the first, last, lowest and highest value. |
+| `color` | `"accent" \| "success" \| "destructive" \| "warning" \| "info" \| "foreground" \| "muted"` | — | Line colour. Without it the line is `success` when the last value is at least the first, otherwise `destructive`. |
+| `unit` | `string` | `""` | Text appended to every value as written, in the hover value and the `aria-label`; include a leading space for a spaced unit such as `" ms"`. |
+| `width` | `number` | `140` | Width in pixels. |
+| `height` | `number` | `32` | Height in pixels. |
+
+### Ref
+
+`ref` points at the root `HTMLSpanElement`.
+
+## Accessibility
+
+- The canvas has `role="img"` and an `aria-label` that summarises the series, for example "Trend: from 4 to 13, low 4, high 13".
+- The hover value is pointer-only and `aria-hidden`; keyboard and assistive technology users get the summary in the `aria-label`.
+- Reduced motion: the line appears at once instead of drawing in from the left.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-shine`, `--lumesec-success`, `--lumesec-warning`, `--lumesec-info`, `--destructive`, `--foreground`, `--muted-foreground` and `--card`.
+
+## Notes
+
+- The sample series `4, 6, 5, 8, 7, 9, 8, 12, 10, 13` is drawn when `data` is not set.
+- It renders inline (`inline-block`, aligned to the middle), so it sits in table cells and running text.
+
+<RelatedComponents tag="px-sparkline" />

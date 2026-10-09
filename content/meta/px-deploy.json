@@ -1,0 +1,36 @@
+{
+  "summary": "Slide-to-deploy control whose pixel trail heats up as you drag; releasing past 90% bursts, runs a deploy scan and shows Live.",
+  "attributes": [
+    { "name": "version", "type": "string", "default": "v2.14.0", "description": "Version shown in the \"Live · <version>\" label. Read when the deploy goes live." }
+  ],
+  "events": [
+    { "name": "deploy", "detail": "{}", "description": "Fires when the slide is committed and the deploy sequence starts." },
+    { "name": "live", "detail": "{}", "description": "Fires 1.6 seconds after `deploy`, when the label switches to Live." }
+  ],
+  "methods": [
+    { "signature": "commit()", "description": "Runs the deploy sequence immediately, as if the thumb had reached the end. Ignored while deploying or live." }
+  ],
+  "properties": [
+    { "name": "version", "type": "string", "readonly": false, "description": "Version shown in the Live label; reflects the `version` attribute, or `v2.14.0` when it is missing." }
+  ],
+  "keyboard": [
+    { "keys": "Enter / Space", "action": "Slide the thumb to the end on its own and deploy." },
+    { "keys": "ArrowRight", "action": "Move the thumb 10% along; reaching the end deploys." }
+  ],
+  "accessibility": [
+    "The thumb is focusable with `role=\"slider\"`, `aria-label=\"Slide to deploy\"`, `aria-valuemin=\"0\"`, `aria-valuemax=\"100\"` and a live `aria-valuenow`.",
+    "The track label is an `aria-live=\"polite\"` region that announces \"Deploying…\" and \"Live · <version>\".",
+    "Keyboard and pointer input are ignored while a deploy is running or showing Live."
+  ],
+  "motion": "With reduced motion, an early release returns the thumb at once, the trail does not jitter, the label shimmer stops and the burst, sparks and thumb pop are skipped.",
+  "slots": [],
+  "notes": [
+    "The component does not deploy anything; listen for `deploy` and `live` to drive real work.",
+    "The host carries `data-state=\"deploying\"` and then `data-state=\"live\"`; it returns to idle 2.6 seconds after going live.",
+    "The track is 56px tall and fills the host's width."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The deploy run and the Live state are simulated on a timer, not on your deploy; only `version` can be set."
+  }
+}

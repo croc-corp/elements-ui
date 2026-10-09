@@ -1,0 +1,50 @@
+{
+  "kind": "react",
+  "summary": "Six-digit one-time-code field backed by one real input, so typing, paste and code autofill work; a wrong code shakes and falls away.",
+  "props": [
+    { "name": "value", "type": "string", "default": "-", "description": "Controlled digits entered so far. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "string", "default": "\"\"", "description": "Initial digits when uncontrolled." },
+    { "name": "code", "type": "string", "default": "-", "description": "Expected code. When set, a complete entry is compared with it; when missing, any six digits are valid." },
+    { "name": "hint", "type": "string", "default": "\"Enter the 6-digit code\"", "description": "Message under the boxes until a code is checked, and again after `reset()`." },
+    { "name": "name", "type": "string", "default": "-", "description": "Form field name; the digits submit under it." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the boxes and disables the input." },
+    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called with the digits entered so far on every change." },
+    { "name": "onComplete", "type": "(code: string, valid: boolean) => void", "default": "-", "description": "Called when the sixth digit is entered, with the code and whether it matched `code`." }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "PxOtpHandle",
+    "methods": [
+      { "signature": "reset(): void", "description": "Clears the digits and the result, cancels the pending clear after a wrong code, and shows the hint again." },
+      { "signature": "focus(): void", "description": "Moves focus into the code input." }
+    ]
+  },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "ArrowLeft / ArrowRight / Home / End", "action": "Ignored, so the caret stays at the end of the code." }
+  ],
+  "accessibility": [
+    "One native `<input>` with `inputmode=\"numeric\"`, `autocomplete=\"one-time-code\"` and `aria-label=\"6-digit code\"` covers the boxes. The boxes are drawn on an `aria-hidden` canvas and the digits in them are `aria-hidden` text, so assistive technology reads the input's value.",
+    "The message line describes the input (`aria-describedby`) and is an `aria-live=\"polite\"` region, so \"Code verified\" and the mismatch message are announced.",
+    "After a wrong code the field clears and keeps focus (it is focused again if focus fell to the page, never taken from another control); after a correct code the input loses focus."
+  ],
+  "motion": "With reduced motion digits appear in place without rising, and the success sparks and error shake are skipped; removed digits still break into pixels.",
+  "form": "A native `<input>` submits the digits entered so far under `name`. It never reports itself invalid; after a wrong code the value is cleared 650 ms later. Form reset works like `reset()`.",
+  "notes": [
+    "The comparison with `code` runs in the browser, so the expected code is visible to anyone who looks; treat it as a demo aid and verify codes on the server.",
+    "Digits are text in the mono font with tabular figures. They rise into their boxes; a removed digit breaks into pixels sampled from its glyph, and a rejected code falls away as red pixels.",
+    "After a correct code, further typing is ignored until `reset()` is called.",
+    "Non-digits are stripped and input stops at six digits, so a pasted or autofilled \"424 242\" completes. Messages are in English.",
+    "The root carries `data-state=\"ok\"` or `data-state=\"error\"` while a result shows."
+  ],
+  "tokens": ["--foreground", "--muted-foreground", "--lumesec", "--lumesec-shine", "--lumesec-success", "--destructive"],
+  "usage": "import { PxOtp } from \"@/components/lumesec/px-otp\";\n\nexport function Example() {\n  return (\n    <PxOtp\n      name=\"code\"\n      onComplete={(code, valid) => {\n        if (valid) console.log(\"verify\", code);\n      }}\n    />\n  );\n}\n",
+  "playground": {
+    "props": { "code": "424242", "hint": "Demo code: 424242" },
+    "controls": [
+      { "name": "code", "kind": "string", "options": null, "default": "424242" },
+      { "name": "hint", "kind": "string", "options": null, "default": "Demo code: 424242" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

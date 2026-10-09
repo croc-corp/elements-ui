@@ -1,0 +1,32 @@
+{
+  "summary": "Release animation with a pixel rocket: a three-second countdown, smoke on the pad, then liftoff while the stars streak past.",
+  "attributes": [
+    { "name": "version", "type": "string", "default": "v2.14", "description": "Version shown in the \"Launched · <version> is live\" status. Read when the rocket leaves the frame." }
+  ],
+  "events": [
+    { "name": "liftoff", "detail": "{}", "description": "Fires when the countdown reaches zero and the rocket lifts off." },
+    { "name": "launched", "detail": "{}", "description": "Fires when the rocket has left the frame." }
+  ],
+  "methods": [
+    { "signature": "go()", "description": "Starts the countdown when the rocket is on the pad, or lands it again after a launch. Ignored mid-flight." }
+  ],
+  "properties": [
+    { "name": "version", "type": "string", "readonly": false, "description": "Version shown in the Live status; reflects the `version` attribute, or `v2.14` when it is missing." }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"img\"` and a fixed `aria-label=\"Rocket on the launch pad\"`; the countdown numbers are drawn on the canvas in the monospace font and are not announced.",
+    "The status line is an `aria-live=\"polite\"` region that announces Countdown, Liftoff, Launched and Landing.",
+    "The Launch / Land it control is a native button with `aria-disabled=\"true\"` during the countdown, flight and landing; it keeps keyboard focus."
+  ],
+  "motion": "With reduced motion, the rocket does not shake, no exhaust or smoke is drawn and the stars do not twinkle, scroll or streak; the rocket still rises and lands.",
+  "slots": [],
+  "notes": [
+    "The component does not publish anything; use `liftoff` and `launched` to hook in real work.",
+    "The host carries `data-state=\"gone\"` while the rocket is away. The canvas is 236px tall and animates continuously while on screen, except at rest under reduced motion."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The countdown and the live state run on a timer, not on your release; only `version` can be set."
+  }
+}

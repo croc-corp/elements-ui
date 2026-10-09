@@ -1,0 +1,53 @@
+---
+title: "LED ticker"
+description: "LED marquee with glowing text over a grid of unlit dots, coloured up and down arrows and soft edges; hovering eases it to a stop."
+tag: px-ticker
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-ticker" />
+
+<Callout title="Demo data" type="warning">
+
+The ticker items (model, latency, errors, agents, uptime) are invented; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-ticker" />
+
+## Usage
+
+<Usage tag="px-ticker" />
+
+## Behaviour
+
+An LED marquee: glowing text over a grid of unlit dots, coloured up and down arrows and soft edges. Hovering eases it to a stop rather than freezing it.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Space / Enter | Pause or resume the ticker. |
+
+## Accessibility
+
+- The board is focusable with `role="marquee"` and `aria-label="Status ticker"`. The ticker items are text; the repeated copies that fill the loop are `aria-hidden`.
+- Click or tap also toggles the pause; while paused the label reads "Status ticker, paused".
+- Reduced motion: the ticker does not scroll.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--destructive`, `--foreground`, `--lumesec`, `--lumesec-success`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-danger`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-ok` and `--ui-track`.
+
+## Notes
+
+- The ticker items are built-in demo data (model, latency, errors, agents, uptime); there is no attribute for your own text.
+- Hover pausing applies to mouse pointers only. The board is 50px tall and scrolls with a CSS transform; the text is set in the monospace font.
+
+<RelatedComponents tag="px-ticker" />

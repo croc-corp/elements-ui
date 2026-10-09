@@ -1,0 +1,75 @@
+---
+title: Plain HTML
+description: The custom-element collections run without React. Load one ES module per component, or a whole collection, and use the tags in any page or framework.
+updated: "2026-10-09"
+---
+
+Pixel Lab and Pixel HD are standard custom elements. They work in plain HTML and in every framework that renders the DOM, and React is optional for them.
+
+Interaction, Pixel UI and Location are native React components. They are installed with the shadcn CLI and have no HTML build.
+
+## From the CDN
+
+Each custom element has its own module with its engine inlined. Load it once and use the tag anywhere on the page.
+
+```html title="index.html"
+<script type="module" src="https://elements.lumesec.ai/cdn/hf-gauge.js"></script>
+
+<hf-gauge value="72" label="Rate limit" zones="60,85"></hf-gauge>
+```
+
+A collection bundle registers every element in it:
+
+```html
+<script type="module" src="https://elements.lumesec.ai/cdn/pixel-hd.js"></script>
+```
+
+| Bundle | Contains |
+| --- | --- |
+| `/cdn/{tag}.js` | One element and its engine |
+| `/cdn/pixel-lab.js` | Pixel Lab |
+| `/cdn/pixel-hd.js` | Pixel HD |
+
+Loading two modules that share an engine is safe: each tag registers once.
+
+## Events and methods
+
+```html
+<px-orb id="orb" state="thinking"></px-orb>
+
+<script type="module">
+  const orb = document.getElementById("orb");
+  orb.addEventListener("change", (event) => console.log(event.detail.state));
+  orb.set("working");
+</script>
+```
+
+Events bubble and cross the shadow boundary, so a parent can listen too.
+
+## Self-hosting and TypeScript
+
+For production, copy the files from the Manual tab of a component page into your codebase and bundle them with your app. The CDN is for prototypes and pages without a build step.
+
+The element modules are TypeScript. Each one registers its tag in `HTMLElementTagNameMap`, so `document.querySelector("px-orb")` is typed with the element's properties and methods, and exports a typed event map where the element fires events.
+
+## Theme
+
+Elements read your page's CSS variables through their shadow root, the same ones shadcn/ui uses (`--card`, `--foreground`, `--border`…) plus `--lumesec` for the accent. Without them they use built-in light and dark values that follow `prefers-color-scheme`. See [Theming](/docs/theming).
+
+## Vue
+
+Tell Vue that tags with a dash are custom elements:
+
+```ts title="vite.config.ts"
+vue({ template: { compilerOptions: { isCustomElement: (tag) => tag.includes("-") } } });
+```
+
+Then use the tags in templates and listen with `@change`.
+
+## Svelte, Angular and others
+
+Svelte handles custom elements without configuration. Angular needs `CUSTOM_ELEMENTS_SCHEMA` in the component or module that uses them.
+
+## Content Security Policy
+
+The elements do not use `eval`. Each one writes a `<style>` element into its own shadow root, so a policy that restricts `style-src` must allow `'unsafe-inline'` for styles. If your policy restricts `script-src`, allow `https://elements.lumesec.ai` or serve the modules from your own origin.

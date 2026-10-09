@@ -1,0 +1,68 @@
+---
+title: "Sampling pad"
+description: "Two-axis pad for temperature and top-p on a glowing pixel field; on release the puck springs onto the nearest 0.05 step."
+tag: px-xypad
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-xypad" />
+
+## Installation
+
+<Install tag="px-xypad" />
+
+## Usage
+
+<Usage tag="px-xypad" />
+
+## Behaviour
+
+Two dials in one: temperature across, top-p up. The pixel field glows around the puck, leaves a fading trail and throws a ripple when you press. On release it springs onto the nearest 0.05.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `input` | `onInput` | `{ x: number, y: number }` | Fires continuously while dragging. Values are 0 to 1, rounded to two decimals; `x` is temperature, `y` is top-p. |
+| `change` | `onChange` | `{ x: number, y: number }` | Fires when the puck settles: on pointer release (snapped to 0.05), on arrow keys and on double-click reset. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `settle(x: number, y: number)` | Springs the puck to the given position (each axis limited to 0 to 1) and fires `change`. Values that are not finite numbers are ignored. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight | Move temperature down or up by 0.05. |
+| ArrowDown / ArrowUp | Move top-p down or up by 0.05. |
+
+## Accessibility
+
+- The pad is focusable (`tabindex="0"`) with `role="group"` and `aria-label="Sampling pad: temperature and top-p. Arrow keys move, double-click resets."`.
+- Current values are shown as text below the pad. After each arrow key a visually hidden `aria-live="polite"` region announces both values, for example "Temperature 0.75, top-p 0.90".
+- Reduced motion: the puck jumps to its target instead of springing and the dots around it do not orbit; the trail and ripples still draw.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono`, `--ui-muted` and `--ui-track`.
+
+## Notes
+
+- Both axes run from 0 to 1. The starting position, and the double-click reset, is temperature 0.7 and top-p 0.9.
+- There is no attribute for the initial value; call `settle(x, y)` to set it from script.
+- The pad is 200px tall.
+
+<RelatedComponents tag="px-xypad" />

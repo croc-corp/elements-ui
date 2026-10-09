@@ -1,0 +1,43 @@
+{
+  "kind": "react",
+  "summary": "Rotary dial that follows the pointer around a 270° arc, flashing a tick and rolling the value at each detent, then springs onto the step.",
+  "props": [
+    { "name": "value", "type": "number", "default": "-", "description": "Controlled value, snapped to `step` and clamped to `min` and `max`. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "number", "default": "0.7", "description": "Initial value when uncontrolled." },
+    { "name": "min", "type": "number", "default": "0", "description": "Lowest value." },
+    { "name": "max", "type": "number", "default": "1", "description": "Highest value. A `max` below `min` is treated as `min`." },
+    { "name": "step", "type": "number", "default": "0.1", "description": "Detent size, greater than 0 (anything else falls back to 1). Its decimal places set the display precision." },
+    { "name": "label", "type": "string", "default": "\"Temperature\"", "description": "Caption under the dial and the slider's `aria-label`." },
+    { "name": "onValueChange", "type": "(value: number) => void", "default": "-", "description": "Called on every detent change from drag, wheel or keys." },
+    { "name": "onValueCommit", "type": "(value: number) => void", "default": "-", "description": "Called with each wheel or key step, and when a drag ends, even if the value did not change." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "ArrowUp / ArrowRight", "action": "Increase by one step." },
+    { "keys": "ArrowDown / ArrowLeft", "action": "Decrease by one step." },
+    { "keys": "PageUp / PageDown", "action": "Change by ten steps, stopping at `max` or `min`." },
+    { "keys": "Home / End", "action": "Jump to `min` / `max`." }
+  ],
+  "accessibility": [
+    "The dial has `role=\"slider\"`, `tabindex=\"0\"`, `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and an `aria-label` from `label`.",
+    "Pressing on the dial moves focus to it.",
+    "The tick marks are `aria-hidden`, as are the min and max labels."
+  ],
+  "motion": "With reduced motion the knob settles on the step angle without overshoot, ticks do not flash, the knob does not nudge and the value swaps without rolling.",
+  "notes": [
+    "Dragging into the 90° gap at the bottom of the arc sticks to the nearer end. The scroll wheel over the dial changes one step per tick and does not scroll the page; sideways scrolling is ignored.",
+    "With 16 or fewer detents each step gets a major tick plus two minor ticks; with more, one tick per detent, up to 91 evenly spaced ticks.",
+    "Changing `value` from outside springs the knob to it and flashes its tick without calling either callback."
+  ],
+  "tokens": ["--lumesec", "--lumesec-glint", "--foreground", "--muted-foreground", "--card", "--muted", "--border"],
+  "usage": "import { UiDial } from \"@/components/lumesec/ui-dial\";\n\nexport function Example() {\n  return <UiDial defaultValue={0.7} min={0} max={1} step={0.1} label=\"Temperature\" />;\n}\n",
+  "playground": {
+    "props": { "defaultValue": 0.7, "min": 0, "max": 1, "step": 0.1 },
+    "controls": [
+      { "name": "step", "kind": "number", "options": null, "default": "0.1" },
+      { "name": "label", "kind": "string", "options": null, "default": "Temperature" }
+    ]
+  }
+}

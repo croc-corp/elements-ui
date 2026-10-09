@@ -1,0 +1,67 @@
+---
+title: "Privacy choices"
+description: "Privacy choices card whose shield fills as categories are allowed; saving stamps it and folds the card into a small Change pill."
+tag: hf-consent
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-consent" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-consent" />
+
+## Installation
+
+<Install tag="hf-consent" />
+
+## Usage
+
+<Usage tag="hf-consent" />
+
+## Behaviour
+
+The shield fills as you allow more categories. Saving stamps it with a ring and the card folds into a small “Change” pill.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `Your privacy choices` | Card title; also labels the card region. Observed. |
+| `description` | `description` | `string` | `We only use what you allow. You can change this any time in Settings.` | Text under the title. Observed. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `consent` | `onConsent` | `{ analytics: boolean, personalisation: boolean }` | Fires on Reject all, Save choices or Accept all with the chosen categories. Necessary is always on and not reported. |
+
+## Accessibility
+
+- The card is a `role="region"` labelled by its title.
+- Categories are native checkboxes styled as switches, each inside a `<label>` with its description; Necessary is checked and disabled.
+- After saving, the card is replaced by a pill reading `Saved · <n> of 3 categories on` with a Change button. When focus was on one of the card's buttons, it moves to Change. Change moves focus to Save choices.
+- The shield is drawn on an `aria-hidden` canvas.
+- Reduced motion: the shield level changes at once, there is no stamp ring and the card folds immediately.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--lumesec-foreground`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-muted`, `--ui-on-accent`, `--ui-raised`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- The component does not store choices or set cookies; persist the `consent` detail yourself. It always starts with Analytics and Personalisation off.
+- The categories are fixed: Necessary, Analytics and Personalisation.
+- Without reduced motion, the shield redraws every frame while the element is visible.
+
+<RelatedComponents tag="hf-consent" />

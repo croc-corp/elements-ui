@@ -1,0 +1,59 @@
+{
+  "summary": "Announcement banner on a dithered gradient with a passing sheen; dismissing breaks it into dots that blow away before it collapses.",
+  "attributes": [
+    {
+      "name": "action",
+      "type": "string",
+      "default": "Try it",
+      "description": "Label of the action button. An empty value hides the button. Observed."
+    },
+    {
+      "name": "variant",
+      "type": "ok | warn",
+      "description": "Colour scheme: `ok` (green) or `warn` (amber). Without it the accent colour is used. Observed."
+    }
+  ],
+  "events": [
+    {
+      "name": "action",
+      "detail": "{}",
+      "description": "Fires when the action button is clicked."
+    },
+    {
+      "name": "dismiss",
+      "detail": "{}",
+      "description": "Fires when the disintegration ends and the collapse begins: about 0.95 s after dismissing, or at once with reduced motion."
+    }
+  ],
+  "methods": [
+    {
+      "signature": "dismiss()",
+      "description": "Plays the disintegration, then collapses the banner. Same as the dismiss button."
+    },
+    {
+      "signature": "show()",
+      "description": "Restores a dismissed banner and replays the entrance."
+    }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The banner has `role=\"status\"`.",
+    "The dismiss button is a native button with `aria-label=\"Dismiss\"`; the action button is a native button.",
+    "Dismissing makes the content `inert`, so its buttons leave the tab order and the accessibility tree; `show()` restores them."
+  ],
+  "motion": "With reduced motion there is no entrance or sheen, the sparkle is static, and dismissing clears the canvas, emits `dismiss` and collapses the banner at once.",
+  "slots": [
+    {
+      "name": "title",
+      "description": "Heading text. Falls back to `Ultracode is here`."
+    },
+    {
+      "name": "(default)",
+      "description": "Description text. Falls back to a sample sentence."
+    }
+  ],
+  "notes": [
+    "The canvas extends 24px to the left, 72px to the right and 24px above and below the banner so the particles can leave it; an ancestor with `overflow: hidden` clips them."
+  ]
+}

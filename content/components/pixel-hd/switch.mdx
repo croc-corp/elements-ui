@@ -1,0 +1,76 @@
+---
+title: "Switch"
+description: "Form-associated switch whose track fills with a dithered energy field when on; the thumb springs across with a few sparks."
+tag: hf-switch
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-switch" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-switch" />
+
+## Installation
+
+<Install tag="hf-switch" />
+
+## Usage
+
+<Usage tag="hf-switch" />
+
+## Behaviour
+
+The track charges up with a dithered energy field when it turns on and the thumb springs across with a few sparks. Form-associated, like every control here.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `checked` | `checked` | `boolean` | `false` | Presence attribute. Observed: adding or removing it updates the switch, `aria-checked` and the form value. |
+| `value` | `value` | `string` | `on` | Value submitted with the form while checked. Observed. |
+| `name` | `name` | `string` | — | Form field name. |
+| `disabled` | `disabled` | `boolean` | `false` | Presence attribute. Disables the switch; a disabled ancestor `<fieldset>` does the same. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ checked: boolean }` | Fires when the user toggles the switch. Not fired when `checked` is set from code. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `checked` | `boolean` | Reflects the `checked` attribute. |
+
+### Slots
+
+| Slot | Description |
+| --- | --- |
+| `(default)` | Label text. Falls back to `Ultracode`. |
+| `hint` | Secondary text under the label. |
+
+## Accessibility
+
+- The control is a native `<button>` with `role="switch"` and `aria-checked`, so Enter and Space toggle it.
+- `aria-label` is the text in the default slot (`Ultracode` when the slot is empty) and follows changes to that content. The `hint` slot is linked with `aria-describedby`.
+- Clicking anywhere on the row, including the label text, toggles the switch.
+- Submits `name=value` (default `on`) while checked and nothing while unchecked. No validation. Form reset restores the state from the first connect; `disabled` or a disabled fieldset disables the switch.
+- Reduced motion: the thumb moves without the spring, the fill appears without its sweep or flowing pattern, and no sparks are drawn.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-track`.
+
+<RelatedComponents tag="hf-switch" />

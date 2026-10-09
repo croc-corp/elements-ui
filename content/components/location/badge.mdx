@@ -1,0 +1,78 @@
+---
+title: "Region badge"
+description: "A pill with a tiny dotted globe, a region name and its latency. On a region change the globe turns to it and a ring pings across its dots."
+tag: geo-badge
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-badge" />
+
+<Callout title="Your data">
+
+Pass your region as `region` (an id from your `regions` or a region object) and your measured round trip as `latency`. Without them the badge shows the built-in region `eu-central` and no latency. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-badge" />
+
+## Installation
+
+<Install tag="geo-badge" />
+
+## Usage
+
+<Usage tag="geo-badge" />
+
+## Behaviour
+
+A pill with a tiny dotted globe, a region name and its latency, for headers, footers and status bars. The globe shows where the region is.
+
+When the region changes, the globe turns to it on a slightly under-damped spring, overshoots a little and settles, then a ring of light pings across its dots and throws a few sparks past the edge. The name rolls in the direction of the turn and each digit of the latency rolls to the new value.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<span>` (`React.ComponentProps<"span">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `region` | `string \| GeoRegion` | `"eu-central"` | Region id looked up in `regions`, or a region object `{ id, label, city, lat, lon, timeZone }`. An id that is not in `regions` shows the raw id and leaves the globe where it is, without a marker. |
+| `regions` | `readonly GeoRegion[]` | `DEMO_REGIONS` | Lookup list for string ids. The default is 16 generic regions (`us-east`, `eu-central`, `ap-northeast` and others) at real metro coordinates. |
+| `latency` | `number` | — | Round trip in milliseconds, shown after the name as `18 ms` (from 1,000 ms in seconds, `1.24 s`). Each digit rolls toward a new value. Omit to hide it. |
+| `status` | `"operational" \| "degraded" \| "outage"` | — | Adds a status dot: `--lumesec-success`, `--lumesec-warning` or `--destructive`. Degraded and outage get a soft halo; a change pops the dot and sends one ripple out. |
+| `size` | `"sm" \| "md"` | `"md"` | `md` is 30 px tall with a 24 px globe and 12.5 px text, `sm` is 26 px tall with a 20 px globe and 12 px text. |
+| `label` | `string` | — | Text shown instead of the region's label. The globe still follows `region`. |
+| `onClick` | `(event: React.MouseEvent<HTMLButtonElement>) => void` | — | Renders the badge as a native `button type="button"` with a hover border and a focus ring, and calls this on click. |
+| `ref` | `React.Ref<HTMLElement>` | — | The root element: a `span`, or a `button` when `onClick` is set. |
+
+### Ref
+
+`ref` points at the root `HTMLElement`.
+
+## Accessibility
+
+- The visible label, latency and dots are `aria-hidden`; a visually hidden text gives the full reading, for example "Region eu-central, Frankfurt, 18 milliseconds, operational". The city is left out when it equals the label. `aria-label` replaces that text rather than labelling the root, since screen readers ignore a label on a plain `span`.
+- With `onClick` the root is a native `button`, so Tab, Enter and Space work as usual and that text is its accessible name.
+- Changes are not announced: there is no live region. The canvases are `aria-hidden`.
+- Reduced motion: the globe jumps to the new region, there is no ping, spark or border pop, the status dot does not pop, and the label and digits swap without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--lumesec-shine`, `--lumesec-success`, `--lumesec-warning`, `--destructive`, `--foreground`, `--muted-foreground`, `--muted`, `--card` and `--border`.
+
+## Notes
+
+- The globe is a lattice of 480 dots on the sphere (360 at `sm`), land and water, from the embedded world data with no map tiles. Badges of one size share one lattice. The server renders the disc outline; the dots appear after mount.
+- The globe turns the short way round on a slightly under-damped spring and its centre latitude is held within ±50°, so polar regions do not tip it over. The ping fires once the turn has settled: two rings travel out from the region, and where the first leaves the globe it throws a few sparks past the edge of the pill.
+- At rest nothing moves, and the animation loop stops. It also pauses while the badge is off screen.
+- The label rolls up for an eastward turn and down for a westward one while its slot eases to the new width, so the pill stays snug and never jumps. The digits roll up when the latency rises and down when it falls; a digit added or removed on the left grows or shrinks its column.
+- The visually hidden text is English ("Region", "milliseconds"). Pass `aria-label` with your own text for another language.
+
+<RelatedComponents tag="geo-badge" />

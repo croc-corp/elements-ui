@@ -1,0 +1,45 @@
+{
+  "kind": "react",
+  "summary": "Auto-growing text area with a pixel character budget that turns amber near the limit and blinks red when over, marking the form invalid.",
+  "props": [
+    { "name": "value", "type": "string", "default": "-", "description": "Controlled text. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "string", "default": "\"\"", "description": "Initial text when uncontrolled. A form reset restores it." },
+    { "name": "limit", "type": "number", "default": "280", "description": "Character budget. Typing past it is allowed but marks the field invalid." },
+    { "name": "label", "type": "React.ReactNode", "default": "-", "description": "Label above the field, linked to the textarea." },
+    { "name": "placeholder", "type": "string", "default": "-", "description": "Placeholder of the textarea." },
+    { "name": "name", "type": "string", "default": "-", "description": "Form field name; the text submits under it." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Disables the textarea and dims the field." },
+    { "name": "required", "type": "boolean", "default": "false", "description": "Marks the textarea as required for form validation." },
+    { "name": "readOnly", "type": "boolean", "default": "false", "description": "Makes the textarea read-only." },
+    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called on every edit with the new text." },
+    { "name": "onValueCommit", "type": "(value: string) => void", "default": "-", "description": "Called when the textarea commits a change: on blur after editing (the native `change` event)." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "A native `<textarea>` labelled by a `<label htmlFor>`.",
+    "The counter (\"40 left\", or \"−5\" when over) describes the textarea (`aria-describedby`) in words, for example \"40 of 120 characters left\". It is not a live region: a visually hidden `role=\"status\"` announces the budget only when the text reaches 80% of the limit or goes over it.",
+    "Over the limit the textarea has `aria-invalid` and a custom validity message.",
+    "The pixel budget bar is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the budget bar jumps to the new length and the over-limit pixels do not blink.",
+  "form": "A native `<textarea>` submits the text under `name`. Over `limit` it sets the custom validity message \"Keep it to N characters or fewer\", which blocks submission and anchors the browser's validation bubble to the field. Form reset restores `defaultValue` and calls `onValueChange` when that changes the text.",
+  "notes": [
+    "The textarea grows with its content from a minimum height of 84 px, refits when its width changes, and has no resize handle.",
+    "The root carries `data-zone` set to `ok`, `warn` (from 80% of the limit) or `over`.",
+    "`className` and other `div` props go to the wrapper; textarea attributes are the props listed above."
+  ],
+  "tokens": ["--foreground", "--muted-foreground", "--card", "--border", "--lumesec", "--lumesec-warning", "--destructive"],
+  "usage": "import { PxTextarea } from \"@/components/lumesec/px-textarea\";\n\nexport function Example() {\n  return <PxTextarea name=\"bio\" label=\"Short bio\" limit={120} placeholder=\"A sentence or two about you\" />;\n}\n",
+  "playground": {
+    "props": { "label": "Short bio", "limit": 120, "placeholder": "A sentence or two about you" },
+    "controls": [
+      { "name": "label", "kind": "string", "options": null, "default": "Short bio" },
+      { "name": "limit", "kind": "number", "options": null, "default": "120" },
+      { "name": "defaultValue", "kind": "string", "options": null, "default": "" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

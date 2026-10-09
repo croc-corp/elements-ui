@@ -1,0 +1,34 @@
+{
+  "summary": "Mixing-desk fader beside a stereo pixel meter with falling peak-hold segments and a clip light above 0 dB.",
+  "attributes": [],
+  "events": [
+    { "name": "change", "detail": "{ db: number }", "description": "Fires when a drag on the fader ends, on each handled key press and on the double-click snap to 0 dB. `db` is the target level in decibels, `-Infinity` at the bottom, about +6 dB at the top. A quick click on the track reports the level the cap glides to, and the double-click snap reports exactly `0`." }
+  ],
+  "methods": [
+    { "signature": "db(v?: number): number", "description": "Returns the fader level in dB: of position `v` (0 to 1) when given, otherwise the current level." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowUp / ArrowRight", "action": "Raise the fader by 2% of its travel." },
+    { "keys": "ArrowDown / ArrowLeft", "action": "Lower the fader by 2% of its travel." },
+    { "keys": "PageUp / PageDown", "action": "Raise or lower the fader by 10% of its travel." },
+    { "keys": "Home / End", "action": "Move the fader to the bottom (−∞ dB) or the top (about +6 dB)." }
+  ],
+  "accessibility": [
+    "The fader is focusable with `role=\"slider\"`, `aria-label=\"Volume\"`, `aria-valuemin=\"0\"` and `aria-valuemax=\"100\"`. A pointer press focuses it without showing a focus ring.",
+    "`aria-valuenow` is the cap position from 0 to 100 and `aria-valuetext` gives the level in dB.",
+    "The meter canvas has `role=\"img\"` and `aria-label=\"Stereo level meter\"`.",
+    "The Mute button is a native button with `aria-pressed`."
+  ],
+  "motion": "With reduced motion, the cap jumps to keyboard, double-click and track-click targets instead of springing; the meters still animate.",
+  "slots": [],
+  "notes": [
+    "The meter signal is simulated. Mute fades the meter out but does not move the fader or fire an event.",
+    "The host has a `data-clip` attribute for 0.9 seconds after the meter clips. The fader starts at about +0.3 dB.",
+    "The mixer is a fixed 190px tall."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The meter signal is simulated; only the fader position is a real control."
+  }
+}

@@ -1,0 +1,74 @@
+---
+title: "Option cards"
+description: "Radio group rendered as option cards; the selection outline is made of pixels that fly to the newly selected card, then keep circling."
+tag: px-choice
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-choice" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-choice" />
+
+## Installation
+
+<Install tag="px-choice" />
+
+## Usage
+
+<Usage tag="px-choice" />
+
+## Behaviour
+
+A radio group as cards. The selection outline is made of pixels that fly from the old card to the new one, then keep circling slowly.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `options` | `readonly PxChoiceOption[]` | — | The cards: `{ value?: string; label: string; description?: string; price?: string }`. `value` defaults to `label`; `price` is shown in monospace. |
+| `value` | `string` | — | Controlled selected value. Use with `onValueChange`. |
+| `defaultValue` | `string` | `first option` | Initially selected value when uncontrolled. A form reset restores it. |
+| `label` | `React.ReactNode` | — | Label above the cards; names the radio group. |
+| `name` | `string` | — | Form field name; the selected value submits under it. |
+| `disabled` | `boolean` | `false` | Dims the group and disables the cards. |
+| `onValueChange` | `(value: string) => void` | — | Called when a different card is selected. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowDown | Select and focus the next card, wrapping at the end. |
+| ArrowLeft / ArrowUp | Select and focus the previous card, wrapping at the start. |
+
+## Accessibility
+
+- Cards are native buttons with `role="radio"` and `aria-checked` inside a `role="radiogroup"` labelled by `label`.
+- Roving tabindex: only the selected card is in the tab order.
+- The pixel outline and check are drawn on an `aria-hidden` canvas; the selection is exposed through `aria-checked`.
+- With `name`, a hidden input submits the selected card's value. There is no validation. Form reset restores `defaultValue` (or the first option) and calls `onValueChange` when that changes the value.
+- Reduced motion: the outline jumps to the selected card and stops circling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--card`, `--border`, `--lumesec` and `--lumesec-shine`.
+
+## Notes
+
+- Without reduced motion the outline animates continuously while the component is on screen.
+- Cards are laid out in an auto-fit grid with a 120 px minimum width.
+
+<RelatedComponents tag="px-choice" />

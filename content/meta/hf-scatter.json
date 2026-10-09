@@ -1,0 +1,29 @@
+{
+  "summary": "Scatter plot of 270 runs with a drag-to-select brush; the summary rolls to the selection's medians and the legend toggles groups.",
+  "attributes": [
+    { "name": "label", "type": "string", "default": "Latency vs. output", "description": "Heading text. Read once on connect." }
+  ],
+  "events": [
+    { "name": "select", "detail": "{ count: number }", "description": "Fires when a brush drag ends. `count` is the number of visible points inside the box; a click without dragging clears the brush and reports 0." }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"img\"` and an `aria-label` with the point count and the current summary.",
+    "A visually hidden `aria-live=\"polite\"` region announces the summary when a brush ends or a group is toggled, not on every pointer move.",
+    "Legend entries are buttons with `aria-pressed`.",
+    "The brush is pointer-only; there is no keyboard equivalent."
+  ],
+  "motion": "With reduced motion, points appear in place without settling and the summary changes without rolling; legend fades still ease.",
+  "slots": [],
+  "notes": [
+    "Data is built in: 270 seeded points in three groups labelled Large, Medium and Small, on axes of 0–4 s latency and 0–4k output tokens.",
+    "Hidden groups are left out of the summary and the selection count.",
+    "The plot is 190px tall and fills the width."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The 270 runs in three model groups are seeded random points; only `label` can be set."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "summary": "Pixel donut chart of storage use that sweeps in clockwise; pointing at a segment pushes its pixels outward and click pins it.",
+  "attributes": [],
+  "events": [
+    { "name": "select", "detail": "{ segment: string | null }", "description": "Fires when a segment is pinned or unpinned. `segment` is the category name, or `null` when the pin is cleared." }
+  ],
+  "methods": [
+    { "signature": "lock(index: number | null)", "description": "Pins the segment at `index` (0 to 4), or unpins it if it is already pinned or `index` is `null`, and fires `select`. Other values are ignored." }
+  ],
+  "properties": [
+    { "name": "active", "type": "number | null", "readonly": true, "description": "Index of the pinned segment, else the hovered one, else `null`." }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The ring canvas has `role=\"img\"` with an `aria-label` listing every category and its size.",
+    "The legend entries are native buttons with `aria-pressed` for the pinned segment; focusing one highlights its segment like hover.",
+    "The centre readout is plain text without a live region."
+  ],
+  "motion": "With reduced motion, the ring appears without the clockwise sweep, segments move out without easing and the idle shimmer stops.",
+  "slots": [],
+  "notes": [
+    "The categories are built-in demo data: Projects 3.2 GB, Files 2.1 GB, Chats 1.5 GB, Memory 0.9 GB and Free 2.3 GB, out of 10 GB.",
+    "The ring is a fixed 200 by 200px, with the legend beside it or below it when space is narrow."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The storage categories and their sizes are invented; nothing can be set."
+  }
+}

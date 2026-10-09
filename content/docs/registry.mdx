@@ -1,0 +1,52 @@
+---
+title: Registry and MCP
+description: How the @lumesec registry is laid out, how to browse it from the CLI, and how to give your AI editor access through the shadcn MCP server.
+updated: "2026-10-09"
+---
+
+Elements is a standard shadcn registry. Anything that reads shadcn registries can read it: the CLI, the MCP server, v0 and your own tools.
+
+## Addresses
+
+| What | URL |
+| --- | --- |
+| Item | `https://elements.lumesec.ai/r/{name}.json` |
+| Index of all items | `https://elements.lumesec.ai/r/registry.json` |
+| Namespace | `@lumesec` |
+
+Item names are the component tags, for example `ui-dial`, `hf-gauge` or `px-orb`. Shared files are items too, and components list them as dependencies, so the CLI installs each one once:
+
+| Item | What it installs |
+| --- | --- |
+| `lumesec-theme` | The `--lumesec` accent tokens and their Tailwind colours |
+| `lumesec-math`, `lumesec-color`, `lumesec-motion`, `lumesec-canvas` | Helpers the React components share: maths, theme colour reading, motion hooks, canvas sizing |
+| `lumesec-pixel-canvas`, `lumesec-pixel-font`, `lumesec-sparks`, `lumesec-roll-text`, `lumesec-use-controllable-state`, `lumesec-fuzzy` | Building blocks of the React components: pixel canvases and icons, sparks, rolling labels, controllable state, fuzzy search |
+| `lumesec-geo`, `lumesec-geo-data`, `lumesec-geo-world`, `lumesec-geo-countries` | Projections, globe motion and lattices, place and time formatting, and the embedded land, coastline and country data of the Location components |
+| `lumesec-engine-pixel` | The runtime of the custom elements |
+| `lumesec-data` | Reads and validates the `data` attribute and property of the custom elements that take your records |
+| `lumesec-react` | Bindings that render custom elements from React |
+
+React components also depend on shadcn's `utils` item (`cn`), which every shadcn project already has.
+
+Each collection is an item as well: `interaction`, `pixel-lab`, `pixel-ui`, `pixel-hd` and `location` install every component in it.
+
+## Browse from the CLI
+
+```bash
+npx shadcn@latest search @lumesec --query gauge
+npx shadcn@latest view @lumesec/hf-gauge
+```
+
+## MCP
+
+The shadcn MCP server lets an editor agent search the registries in your `components.json` and install items. With `@lumesec` registered:
+
+```bash
+npx shadcn@latest mcp init --client claude
+```
+
+Other clients: `cursor`, `vscode`, `codex`, `opencode`. Then ask, for example, "add a token usage chart from the lumesec registry".
+
+## Open in v0
+
+Each component page has **Open in v0** under **Open in**. v0 loads the registry item, so you can try the component in a new project.

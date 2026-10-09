@@ -1,0 +1,56 @@
+{
+  "summary": "Progress bar drawn as a fluid with rising bubbles; at 100% the label rolls to its done text. Omit `value` for indeterminate.",
+  "attributes": [
+    {
+      "name": "value",
+      "type": "number",
+      "description": "Progress from 0 to 100, clamped. Observed. Without the attribute the bar is indeterminate."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Uploading",
+      "description": "Label above the bar and the progressbar `aria-label`. Observed."
+    },
+    {
+      "name": "done-label",
+      "type": "string",
+      "default": "Complete",
+      "description": "Label shown once `value` reaches 100. Observed."
+    }
+  ],
+  "events": [
+    {
+      "name": "complete",
+      "detail": "{}",
+      "description": "Fires when `value` reaches 100. Fires again only after the value drops below 100 and returns."
+    }
+  ],
+  "methods": [],
+  "properties": [
+    {
+      "name": "value",
+      "type": "number",
+      "readonly": false,
+      "description": "Clamped value. Setting `null` removes the attribute and makes the bar indeterminate."
+    },
+    {
+      "name": "indeterminate",
+      "type": "boolean",
+      "readonly": true,
+      "description": "`true` when there is no `value` attribute."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"progressbar\"` with `aria-valuemin=\"0\"`, `aria-valuemax=\"100\"`, a rounded `aria-valuenow` and `aria-label` from `label`.",
+    "`aria-valuenow` is removed in the indeterminate state.",
+    "The percentage and label are plain text; there is no live region."
+  ],
+  "motion": "With reduced motion the fill jumps to the value without the wobbling front and the bar is drawn once per change, so the bubbles, indeterminate blob and done flash stand still; the label swaps without rolling.",
+  "slots": [],
+  "data": {
+    "kind": "input",
+    "note": "Set `value` from 0 to 100, or omit it for an indeterminate bar. The bubbles are decoration, not data."
+  }
+}

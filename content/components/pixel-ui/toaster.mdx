@@ -1,0 +1,71 @@
+---
+title: "Toasts"
+description: "Toast stack with pixel type icons and a draining timer bar that pauses on hover or focus; it can be pinned to a viewport corner."
+tag: px-toaster
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-toaster" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-toaster" />
+
+## Installation
+
+<Install tag="px-toaster" />
+
+## Usage
+
+<Usage tag="px-toaster" />
+
+## Behaviour
+
+Stacked notifications with pixel icons and a draining timer that pauses while you hover or focus the stack. Add `position="bottom-right"` to pin it to the viewport.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `position` | `"bottom-right" \| "bottom-left" \| "top-right"` | — | Pins the stack to that viewport corner with `position: fixed`, up to 360 px wide. Without it the stack stays in the flow. |
+| `max` | `number` | `4` | Maximum toasts on screen, at least 1; showing one more dismisses the oldest. |
+| `onShow` | `(id: number, type: PxToastType) => void` | — | Called when a toast is added. |
+| `onDismiss` | `(id: number) => void` | — | Called when a toast starts leaving: timer, dismiss button, action button, overflow or `dismiss()`. |
+
+### Ref
+
+`ref` receives a `PxToasterHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `show(toast?: PxToastOptions): number` | Adds a toast and returns its id. `PxToastOptions` is `{ title?: React.ReactNode; description?: React.ReactNode; type?: "info" \| "success" \| "warning" \| "error"; duration?: number; action?: { label: string; onClick?: () => void } }`. `type` defaults to `info` and `duration` to 4500 ms; 0 or less keeps the toast until dismissed. The action button calls `onClick` and dismisses the toast. |
+| `dismiss(id: number): void` | Starts the exit of the toast with that id. Unknown or leaving ids are ignored. |
+
+## Accessibility
+
+- The stack is a `role="region"` labelled "Notifications". Its list of toasts is the only live region (`aria-live="polite"`): toasts carry no role of their own, so each new toast is announced once, error toasts included.
+- Dismiss buttons are native buttons labelled "Dismiss"; action buttons use the action label.
+- A leaving toast is `inert`. If it held focus, focus moves to the dismiss button of the next toast, else of the previous one, else to the region itself (`tabindex="-1"`), never to the page.
+- Hover or focus inside the stack pauses all timers; they run again once both have left.
+- The type icons and timer bars are drawn on an `aria-hidden` canvas.
+- Reduced motion: toasts appear and leave without the slide and collapse animations; the timer bars still drain.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--border`, `--foreground`, `--muted-foreground`, `--muted`, `--lumesec`, `--lumesec-success`, `--lumesec-warning` and `--destructive`.
+
+## Notes
+
+- Toasts appear only through `show()` on the handle; `ref` is the handle, not the DOM element.
+- Timers run on timeouts, not in the drawing loop, so toasts also expire while the stack is off screen.
+- Pinning uses `position: fixed` on the root, so an ancestor that creates a containing block for fixed-position descendants (for example through `filter` or `transform`) changes what it is fixed to.
+
+<RelatedComponents tag="px-toaster" />

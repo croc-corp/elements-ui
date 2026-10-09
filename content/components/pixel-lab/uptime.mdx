@@ -1,0 +1,71 @@
+---
+title: "Uptime history"
+description: "Ninety days of uptime per service as pixel columns swept in on load; hovering a day lifts that column across all services."
+tag: px-uptime
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-uptime" />
+
+<Callout title="Your data">
+
+Pass your daily uptime records per service as `data`. Without it the element shows demo services and statuses. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-uptime" />
+
+## Installation
+
+<Install tag="px-uptime" />
+
+## Usage
+
+<Usage tag="px-uptime" />
+
+## Behaviour
+
+Ninety days per service as pixel columns, swept in on load. Hovering a day lifts that column across every service and shows what happened.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `data` | `data` | `readonly PxUptimeDatum[] (JSON)` | — | Daily uptime records, oldest first: percentages or `{ service, date, uptime, status, note }` records (`date` as an ISO string or epoch ms, `uptime` in percent, `status` one of `ok`, `degraded`, `down`). Records with the same `service` form one row; without `service` they share a row named `Uptime`. Observed: changing it redraws. Without it the element shows demo data. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `data` | `readonly PxUptimeDatum[] \| null` | The same records as the `data` attribute, without JSON. Setting it redraws; `null` returns to the demo data. Reading it returns your records as normalised objects, grouped per service, or `null`. |
+
+## Accessibility
+
+- The canvas has `role="img"`. Its `aria-label` lists the shown days and each service's uptime, e.g. `Uptime for the last 30 days: API 99.95%, Console 100.00%`, for your data and for the demo.
+- Per-day details appear in a tooltip on pointer hover only; there is no keyboard access to individual days.
+- Reduced motion: all columns appear at once instead of sweeping in from the left.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono`, `--ui-muted` and `--ui-surface`.
+
+## Notes
+
+- Each service row shows its average uptime over the shown days, computed from the `uptime` values; days without `uptime` are left out of the average, and a row without any shows a dash.
+- Without `status`, a day's status follows from `uptime`: 99.9% or more is ok, 99% or more degraded, below that down. A record with neither is drawn as a day without data.
+- Services with fewer days than the longest one are aligned to the right, so the latest days share a column. Dates label the ends and the tooltip; without dates the days count back from today. An empty array shows `No data`.
+- The tooltip shows the date, the service, the status, the uptime and your `note`. The demo shows invented services (API, Console, Workflows), statuses and incident durations.
+- Each day is 5px wide, so narrow containers show fewer days (the demo at most 90); the left label states the actual count or the first date.
+- Each service row is 56px tall; the demo canvas is 168px tall.
+
+<RelatedComponents tag="px-uptime" />

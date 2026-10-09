@@ -1,0 +1,74 @@
+{
+  "summary": "Segmented radio group whose selected slab stretches toward the new option on a spring. Form-associated; arrow keys move it.",
+  "attributes": [
+    {
+      "name": "options",
+      "type": "string",
+      "default": "Chat,Code,Ultracode",
+      "description": "Comma-separated option labels; empty entries are skipped. Observed: a change rebuilds the buttons and keeps the selection when its label is still there."
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Selected option; must match a label exactly. Falls back to the first option on connect. Observed and reflected; unknown values set later are ignored."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Mode",
+      "description": "Accessible name of the radio group. Observed."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Form field name."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Disables the options; a disabled ancestor `<fieldset>` does the same."
+    }
+  ],
+  "events": [
+    {
+      "name": "change",
+      "detail": "{ value: string }",
+      "description": "Fires when the user selects a different option. `value` is the option label. Not fired for changes from code."
+    }
+  ],
+  "methods": [],
+  "properties": [
+    {
+      "name": "value",
+      "type": "string",
+      "readonly": false,
+      "description": "Label of the selected option. Setting it writes the `value` attribute; no event fires."
+    },
+    {
+      "name": "options",
+      "type": "string[]",
+      "readonly": true,
+      "description": "Option labels parsed from the `options` attribute."
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": "ArrowLeft / ArrowUp, ArrowRight / ArrowDown",
+      "action": "Select and focus the previous or next option, wrapping at the ends."
+    }
+  ],
+  "accessibility": [
+    "The container has `role=\"radiogroup\"` with `aria-label` from `label`.",
+    "Each option is a native button with `role=\"radio\"` and `aria-checked`.",
+    "Roving tabindex: only the selected option is in the tab order.",
+    "The slab is drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion the slab jumps to the selected option without the spring or wobble, and its texture is drawn once instead of flowing.",
+  "form": "Submits the selected option label under `name`. No validation. Form reset returns to the option selected on the first connect; `disabled` or a disabled fieldset disables the options.",
+  "slots": [],
+  "notes": [
+    "When the selected label contains `ultra` (case-insensitive) the slab uses a faster, brighter pattern.",
+    "The element sizes to its options by default; when it is given a larger width, the options share it equally."
+  ]
+}

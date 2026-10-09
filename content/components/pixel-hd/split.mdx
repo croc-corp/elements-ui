@@ -1,0 +1,92 @@
+---
+title: "Split button"
+description: "Split button with a primary action and a menu of alternatives; choosing an item rolls its label into the main button."
+tag: hf-split
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-split" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-split" />
+
+## Installation
+
+<Install tag="hf-split" />
+
+## Usage
+
+<Usage tag="hf-split" />
+
+## Behaviour
+
+A primary action with a menu of alternatives. Rows sweep in, a highlight springs between them, and choosing one rolls it into the main button.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `items` | `items` | `string` | `Deploy to production\|Ships to everyone after checks;Deploy to staging\|Internal testers only;Create preview\|A unique URL for this branch;Schedule deploy…\|Pick a time tonight` | Menu entries separated by `;`, each `Label\|Description` with an optional description; entries without a label are skipped. The first entry starts selected. Observed: a change rebuilds the menu and keeps the selection when its label is still there. |
+| `menu-label` | `menuLabel` | `string` | `More options` | Accessible name of the caret button that opens the menu. Observed. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `action` | `onAction` | `{ value: string }` | Fires when the main button is clicked. `value` is the selected item's label. |
+| `select` | `onSelect` | `{ value: string }` | Fires when an item is chosen from the menu. `value` is its label. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `toggle(force?: boolean)` | Opens or closes the menu: `true` opens, `false` closes, no argument toggles. Opening focuses the selected item. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `items` (read-only) | `{ label: string; desc: string }[]` | The parsed `items`. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowDown | On the caret button: open the menu and focus the selected item. |
+| ArrowDown / ArrowUp | In the menu: move focus to the next or previous item, wrapping. |
+| Home / End | In the menu: move focus to the first or last item. |
+| Escape | In the menu: close it and return focus to the caret button. |
+| Tab | In the menu: close it and move focus on. |
+
+## Accessibility
+
+- The caret button has `aria-haspopup="menu"`, `aria-expanded`, `aria-controls` and an `aria-label` from `menu-label`.
+- The menu has `role="menu"`; items are buttons with `role="menuitemradio"`, `aria-checked` on the current choice and `tabindex="-1"`.
+- Choosing an item closes the menu and returns focus to the caret button. A pointer press outside the element also closes the menu.
+- Effects are drawn on an `aria-hidden` canvas.
+- Reduced motion: the button's drifting noise stops, menu rows appear without the sweep, the highlight jumps between rows and the label changes without rolling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-muted` and `--ui-surface`.
+
+## Notes
+
+- The host carries an `open` attribute while the menu is open, usable for styling. Setting it yourself does not open the menu; call `toggle()`.
+- The menu is absolutely positioned below the button, up to 320px wide, and overlaps the content that follows.
+- The main button is at least 200px wide and 46px tall.
+
+<RelatedComponents tag="hf-split" />

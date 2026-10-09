@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# one run per branch or pull request; a new push cancels a pull request run that is still going
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  verify:
+    name: Verify and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      # actions are pinned to commits; Dependabot keeps them current
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # pnpm version comes from "packageManager" in package.json
+      - name: Set up pnpm
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      # postinstall runs fumadocs-mdx, which generates .source
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate catalog
+        run: pnpm catalog
+
+      # the site and the scripts, with eslint-config-next
+      - name: Lint
+        run: pnpm lint
+
+      # escape-hatch scan, SSR import and render, strict type-check, usage snippets, registry lint;
+      # no database or network
+      - name: Quality gates
+        run: pnpm verify
+
+      # catalog, registry and CDN modules, then next build
+      - name: Build
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://elements.lumesec.ai
+
+      # the generators write tracked files (metadata, React wrappers, registry.json): they must be committed
+      - name: Check generated files are committed
+        run: |
+          changes="$(git status --porcelain -- registry.json registry src/generated)"
+          if [ -n "$changes" ]; then
+            echo "::error::Generated files are out of date. Run pnpm catalog and pnpm registry:build, then commit the result."
+            echo "$changes"
+            git --no-pager diff --stat -- registry.json registry src/generated
+            exit 1
+          fi

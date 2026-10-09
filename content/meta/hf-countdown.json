@@ -1,0 +1,61 @@
+{
+  "summary": "HH:MM:SS countdown set over a dot grid; changed digits roll over as their tile reprints, the last ten seconds turn red and zero bursts.",
+  "attributes": [
+    {
+      "name": "seconds",
+      "type": "number",
+      "default": "8049",
+      "description": "Starting duration in seconds (8049 is 2 h 14 min 9 s); a negative value counts as zero. Observed: a change restarts the countdown. `restart()` without an argument also reads it."
+    },
+    {
+      "name": "loop",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Restarts from `seconds` 1.6 s after reaching zero."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Usage resets in",
+      "description": "Text above the digits; it also names the timer. Observed."
+    }
+  ],
+  "events": [
+    {
+      "name": "done",
+      "detail": "{}",
+      "description": "Fires once when the countdown reaches zero."
+    }
+  ],
+  "methods": [
+    {
+      "signature": "restart(seconds?: number)",
+      "description": "Starts again from `seconds`, or from the `seconds` attribute when omitted, and updates the end time in the header. A negative duration counts as zero."
+    }
+  ],
+  "properties": [
+    {
+      "name": "remaining",
+      "type": "number",
+      "readonly": true,
+      "description": "Whole seconds left."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The digits are text in the monospace font with tabular figures, inside an element with `role=\"timer\"` named by the label through `aria-labelledby`. A timer is not a live region, so the seconds are not announced; the dot canvas is `aria-hidden`.",
+    "The header shows the end time as text, for example `at 4:30 PM`."
+  ],
+  "motion": "With reduced motion digits change without rolling and their tiles do not reprint, the colons do not pulse, the urgent tiles do not pulse and no sparks are drawn.",
+  "slots": [],
+  "notes": [
+    "The countdown runs against the wall clock from the moment it connects, so it keeps time while off-screen.",
+    "`done` comes from a timer set for zero, so it fires on time while the element is off-screen (the burst only plays on screen). The timers stop while the element is removed from the page and resume when it is inserted again.",
+    "Between digit changes the loop sleeps until the next whole second instead of drawing every frame; during the last ten seconds it animates continuously.",
+    "`seconds` and `label` are observed; changing `seconds` restarts the countdown."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Set the duration in `seconds` or call `restart(seconds)`. Without it a demo countdown of 2 h 14 min 9 s runs."
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "kind": "react",
+  "summary": "Geofence zones as true geodesic circles on a dot map. A device that leaves every zone plucks the fence it crossed, and a wave runs around it.",
+  "props": [
+    {
+      "name": "zones",
+      "type": "readonly GeofenceZone[]",
+      "default": "-",
+      "description": "The zones (controlled): `{ id, label, center: { lat, lon }, radiusKm }`. Use with `onZonesChange`. A radius that would put a pole inside the circle is drawn and checked at the largest radius that does not."
+    },
+    {
+      "name": "defaultZones",
+      "type": "readonly GeofenceZone[]",
+      "default": "2 demo zones",
+      "description": "The zones when uncontrolled. The default is Western Europe (1,200 km around Paris) and East coast (900 km around New York)."
+    },
+    {
+      "name": "onZonesChange",
+      "type": "(zones: readonly GeofenceZone[]) => void",
+      "default": "-",
+      "description": "Called with every zone when a drag ends or a key press moves or resizes a zone."
+    },
+    {
+      "name": "onZonesInput",
+      "type": "(zones: readonly GeofenceZone[]) => void",
+      "default": "-",
+      "description": "Called with every zone on each pointer move while a zone is dragged or resized."
+    },
+    {
+      "name": "devices",
+      "type": "readonly TrackedDevice[]",
+      "default": "6 demo trackers",
+      "description": "The tracked devices: `{ id, label?, lat, lon }`. When a position changes, the device glides there in about half a second and is checked against the zones on the way. Without it, six demo trackers walk slowly in and out of the zones. An empty array shows no devices."
+    },
+    {
+      "name": "editable",
+      "type": "boolean",
+      "default": "true",
+      "description": "Shows the centre and radius handles, so zones can be moved and resized."
+    },
+    {
+      "name": "minRadiusKm",
+      "type": "number",
+      "default": "50",
+      "description": "Smallest radius a drag or key press can set, in km."
+    },
+    {
+      "name": "maxRadiusKm",
+      "type": "number",
+      "default": "3000",
+      "description": "Largest radius a drag or key press can set, in km."
+    },
+    {
+      "name": "onBreach",
+      "type": "(event: GeofenceEvent) => void",
+      "default": "-",
+      "description": "Called once each time a device leaves every zone: `{ device, zone, point }`, with the zone it left last and the point on the fence where it crossed."
+    },
+    {
+      "name": "onEnter",
+      "type": "(event: GeofenceEvent) => void",
+      "default": "-",
+      "description": "Called when a device that was outside every zone comes back into one: `{ device, zone, point }`."
+    },
+    {
+      "name": "bounds",
+      "type": "GeoBounds",
+      "default": "fitted to the zones",
+      "description": "The part of the world the map shows, `{ west, south, east, north }` in degrees (`east` may exceed 180 across the antimeridian), widened to the map's aspect. Without it the map fits the zones, and fits again when zones are added or removed, never while one is dragged."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Geofence map\"",
+      "description": "Accessible name of the map."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "HTMLDivElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "action": "Moves through each zone's centre handle and radius handle, then into the devices, which share one tab stop."
+    },
+    {
+      "keys": "ArrowUp / ArrowDown / ArrowLeft / ArrowRight",
+      "action": "On a centre handle: move the zone 0.5° north, south, west or east (Shift: 5°). The centre stays on the map."
+    },
+    {
+      "keys": "ArrowRight / ArrowUp, ArrowLeft / ArrowDown",
+      "action": "On a radius handle: add or remove 25 km (Shift: 250 km)."
+    },
+    {
+      "keys": "PageUp / PageDown",
+      "action": "On a radius handle: add or remove 250 km."
+    },
+    {
+      "keys": "Home / End",
+      "action": "On a radius handle: set `minRadiusKm` / `maxRadiusKm`. On a device: focus the first / last device."
+    },
+    {
+      "keys": "ArrowUp / ArrowDown / ArrowLeft / ArrowRight",
+      "action": "On a device: focus the nearest device in that direction on the map."
+    }
+  ],
+  "accessibility": [
+    "The map is a `role=\"group\"` with `aria-roledescription=\"map\"` and the `label` as its name; the canvases are `aria-hidden`.",
+    "Each centre handle is a native `<button>` with `aria-roledescription=\"zone centre\"` and a name of the zone label and its coordinates, for example \"Western Europe, 48.9° N, 2.4° E\".",
+    "Each radius handle has `role=\"slider\"` in km, `aria-label` \"Radius of Western Europe\", `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and an `aria-valuetext` such as \"1,200 kilometres\". While it has keyboard focus or is dragged, a chip beside it shows the radius.",
+    "Devices are native `<button>` elements whose names say where they are: \"Tracker 3, inside Western Europe\" or \"Tracker 3, outside every zone\". Hover or keyboard focus shows a chip with the same text.",
+    "Every breach is announced once in a polite live region: \"Tracker 3 left Western Europe\". Returns into a zone show in the status line only.",
+    "The zone list is a `<table>` with column headers for the zone, its radius and the number of devices inside.",
+    "Handles have a 2 px accent focus ring and a hit area of about 30 px for touch; only the handles block page scrolling while dragged."
+  ],
+  "motion": "With reduced motion there is no pluck wave, no sparks and no fence spring: a breach turns the crossed section of the fence to the warning colour for one second, handles move the fence directly, new zones appear at once, passed devices jump to new positions, and numbers change without rolling. The demo trackers keep walking, since their movement is the data.",
+  "notes": [
+    "Each zone is a real geodesic circle: 128 points at even bearings around the centre, projected as one ring and resampled into fence dots every 4 px. On this equirectangular map it stretches east to west toward the poles.",
+    "A device is outside only when it has left every zone. The zone it left last is the one that rings: two pulses leave the crossing point in opposite directions at 220 px/s, pass through each other on the far side and fade within 1.2 s.",
+    "Containment is checked every frame by great-circle distance, so a breach fires as soon as a device crosses a fence, whether the device moved or the zone was dragged or resized off it.",
+    "Pointing at or focusing a zone's handles, or pointing at its row in the list, highlights its fence, its label and the row.",
+    "With no zones every device counts as outside, without breach events. The first check of a device never fires an event.",
+    "While a zone is dragged, the fence dots spring after the handle: when resizing, the dots near the handle follow fastest, so the ring stretches like rubber.",
+    "Devices outside the shown area are pinned to the map's edge.",
+    "Zones and devices with a repeated id, a latitude outside ±90° or a number that is not finite are left out.",
+    "The fence spring, plucks, the demo walk and device glides run only while the map is on screen. With `devices` passed and nothing moving, the animation stops."
+  ],
+  "tokens": [
+    "--lumesec",
+    "--lumesec-foreground",
+    "--lumesec-shine",
+    "--lumesec-success",
+    "--lumesec-warning",
+    "--foreground",
+    "--muted-foreground",
+    "--muted",
+    "--card",
+    "--border"
+  ],
+  "usage": "import * as React from \"react\";\n\nimport { GeoGeofence, type GeofenceZone, type TrackedDevice } from \"@/components/lumesec/geo-geofence\";\n\nconst initialZones: GeofenceZone[] = [\n  { id: \"depot\", label: \"Depot region\", center: { lat: 52.52, lon: 13.405 }, radiusKm: 400 },\n];\n\nexport function Example({ vehicles }: { vehicles: TrackedDevice[] }) {\n  const [zones, setZones] = React.useState<readonly GeofenceZone[]>(initialZones);\n  return (\n    <GeoGeofence\n      zones={zones}\n      onZonesChange={setZones}\n      devices={vehicles}\n      onBreach={({ device, zone }) => console.log(`${device.label} left ${zone.label}`)}\n    />\n  );\n}\n",
+  "playground": {
+    "props": {
+      "label": "Tracker zones"
+    },
+    "controls": [
+      {
+        "name": "editable",
+        "kind": "boolean",
+        "options": null,
+        "default": "true"
+      },
+      {
+        "name": "minRadiusKm",
+        "kind": "number",
+        "options": null,
+        "default": "50"
+      },
+      {
+        "name": "maxRadiusKm",
+        "kind": "number",
+        "options": null,
+        "default": "3000"
+      }
+    ]
+  },
+  "data": {
+    "kind": "input",
+    "note": "Pass your tracked devices as `devices` and your zones as `zones` or `defaultZones`. Without `devices` the component shows six demo trackers on a simulated walk."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "summary": "16x16 pixel drawing pad with mirror mode for symmetric strokes; cells pop as you paint and Clear drops every pixel with gravity.",
+  "attributes": [],
+  "events": [
+    { "name": "change", "detail": "{}", "description": "Fires at the end of each pointer stroke and after each cell painted or erased with Space or Enter." },
+    { "name": "clear", "detail": "{}", "description": "Fires when the pad is cleared." }
+  ],
+  "methods": [
+    { "signature": "clearAll()", "description": "Drops every painted cell off the bottom of the pad (with reduced motion, removes them at once) and fires `clear`." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "Arrow keys", "action": "Move the cell cursor." },
+    { "keys": "Space / Enter", "action": "Paint the cell under the cursor, or erase it if it already has the current colour." }
+  ],
+  "accessibility": [
+    "The canvas is focusable with `role=\"img\"` and `aria-label=\"16 by 16 pixel drawing pad\"`; the drawing itself is not described. A visually hidden `aria-live=\"polite\"` region reports the cursor cell and its colour after each arrow key, Space or Enter, for example \"Row 9, column 9, empty\".",
+    "The colour swatches sit in a `role=\"group\"` labelled \"Colour\"; each is a button with an `aria-label` (Ink, Accent, Success, Warning, Danger) and `aria-pressed`.",
+    "Mirror is a toggle button with `aria-pressed`; Clear is a native button."
+  ],
+  "motion": "With reduced motion painted cells appear without popping and Clear empties the pad at once instead of dropping the cells.",
+  "slots": [],
+  "notes": [
+    "The pad starts with a sample robot drawing. Mirror mode is on by default and reflects strokes across the vertical centre.",
+    "Starting a stroke on a cell of the current colour erases instead of painting.",
+    "Colours follow the theme tokens. There is no API to read or export the drawing. The pad is a fixed 224 by 224px."
+  ]
+}

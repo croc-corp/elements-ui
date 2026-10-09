@@ -1,0 +1,89 @@
+---
+title: "Changed files"
+description: "Changed-files tree built from a path list with M, A and D markers; folders count their changes and arrow keys follow the tree pattern."
+tag: hf-tree
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-tree" />
+
+<Callout title="Your data">
+
+Pass your changed files as `paths` (`path:M`, `:A` or `:D`). Without it a demo path list is shown. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-tree" />
+
+## Installation
+
+<Install tag="hf-tree" />
+
+## Usage
+
+<Usage tag="hf-tree" />
+
+## Behaviour
+
+Builds a tree from a list of paths with M/A/D markers. Pixel icons take the status colour, folders count their changes and the selection springs between rows. Full tree keyboard support.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `paths` | `paths` | `string` | `src/auth/session.ts:M,src/auth/token.ts:A,src/auth/legacy.ts:D,src/api/client.ts:M,src/api/routes.ts,src/ui/composer.tsx:M,src/ui/theme.ts,tests/auth.spec.ts:A,docs/README.md:M,package.json:M,tsconfig.json` | Comma-separated file paths, each optionally followed by `:M` (modified), `:A` (added) or `:D` (deleted); other status letters are ignored. Folders come from the `/` segments. Observed: a change rebuilds the tree and keeps expanded folders and the selection where they still exist. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `select` | `onSelect` | `{ path: string, file: boolean }` | Fires when the user selects a row by click or keyboard, including each arrow-key move. `file` is `false` for folders. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `entries` (read-only) | `{ path: string; st: "M" \| "A" \| "D" \| "" }[]` | The parsed `paths`; `st` is `M`, `A`, `D` or an empty string. Entries without a path are skipped. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowDown / ArrowUp | Move to and select the next or previous row. |
+| ArrowRight | Expand a closed folder; on an open folder, move to its first child. |
+| ArrowLeft | Collapse an open folder; otherwise move to the parent folder. |
+| Home / End | Move to and select the first or last row. |
+| Enter / Space | Select the row; on a folder, also expand or collapse it. |
+
+## Accessibility
+
+- Rows sit in a `role="tree"` named by the heading (for example `8 files changed`) as `role="treeitem"` with `aria-level`, `aria-posinset`, `aria-setsize`, `aria-selected` and, on folders, `aria-expanded`.
+- Focus uses a roving `tabindex`: only the selected row is in the tab order.
+- Status letters have a `title` of Modified, Added or Deleted, and deleted files are struck through.
+- Changed only is a toggle button with `aria-pressed`.
+- Icons, guide lines and the selection highlight are drawn on an `aria-hidden` canvas.
+- Reduced motion: new rows appear without sliding in or the scan line, and the selection highlight jumps instead of springing.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--destructive`, `--foreground`, `--lumesec`, `--lumesec-success`, `--lumesec-warning` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-danger`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-ok`, `--ui-surface` and `--ui-warn`.
+
+## Notes
+
+- Folders that contain changes start expanded, and the first changed file is selected without firing `select`.
+- Changed only hides unchanged files and folders without changes. The header shows the number of changed files.
+- Siblings sort folders first, then by name.
+
+<RelatedComponents tag="hf-tree" />

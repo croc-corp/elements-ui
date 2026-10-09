@@ -1,0 +1,28 @@
+{
+  "summary": "Animated multi-agent workflow on a pixel canvas: a planner fans work out to four agents and a verifier merges the results.",
+  "attributes": [],
+  "events": [
+    { "name": "run", "detail": "{}", "description": "Fires when a run starts, from the button or from `run()`." },
+    { "name": "done", "detail": "{ seconds: number }", "description": "Fires when the verifier finishes. `seconds` is the elapsed run time, rounded to one decimal." }
+  ],
+  "methods": [
+    { "signature": "run()", "description": "Starts the workflow. Ignored while a run is in progress." }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"img\"` and `aria-label=\"Multi-agent workflow\"`.",
+    "The phase text below the canvas is an `aria-live=\"polite\"` region that announces each step (planning, dispatching, agents done, verifying, done).",
+    "The \"Run workflow\" control is a native button; it has `aria-disabled=\"true\"` while a run is in progress, so it keeps keyboard focus, and is relabelled \"Run again\" afterwards."
+  ],
+  "motion": "With reduced motion, spark bursts are skipped, the phase text swaps without the roll and the idle shimmer holds still; node pulses and packets still animate during a run.",
+  "slots": [],
+  "notes": [
+    "The workflow is fixed demo content: one planner, four agents (`explore`, `edit`, `test`, `docs`) and a verifier. Each agent takes a random 1.6 to 3.1 seconds per run.",
+    "The canvas is 212px tall and takes the full width of the host; node positions are recomputed on resize."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The planner, the four agents and their run times are invented; nothing can be set."
+  }
+}

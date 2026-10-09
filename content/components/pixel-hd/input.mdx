@@ -1,0 +1,97 @@
+---
+title: "Text field"
+description: "Form-associated text field with a comet of light on the border while focused; invalid values turn the border to static."
+tag: hf-input
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-input" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-input" />
+
+## Installation
+
+<Install tag="hf-input" />
+
+## Usage
+
+<Usage tag="hf-input" />
+
+## Behaviour
+
+A comet of light runs around the border while you type and sparks off the caret. Invalid input turns the border into static; a valid value gets a green sweep.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | — | Visible label, linked to the inner input. Hidden when absent. |
+| `value` | `value` | `string` | — | Initial value, also restored on form reset. Not observed; use the `value` property to change the text. |
+| `hint` | `hint` | `string` | — | Text under the field when there is no error. |
+| `error` | `error` | `string` | — | Message shown, and used as the validation message, when the value is invalid. Defaults to the browser `validationMessage`. |
+| `success` | `success` | `string` | — | Message shown when a valid value is committed on blur. Falls back to `hint`. |
+| `name` | `name` | `string` | — | Form field name. |
+| `type` | `type` | `string` | — | Passed to the inner `<input>`, for example `email`, `url` or `password`. |
+| `placeholder` | `placeholder` | `string` | — | Passed to the inner input. |
+| `required` | `required` | `boolean` | `false` | Presence attribute, passed to the inner input. |
+| `pattern` | `pattern` | `string` | — | Passed to the inner input. |
+| `minlength` | `minlength` | `number` | — | Passed to the inner input. |
+| `maxlength` | `maxlength` | `number` | — | Passed to the inner input. |
+| `autocomplete` | `autocomplete` | `string` | — | Passed to the inner input. |
+| `inputmode` | `inputmode` | `string` | — | Passed to the inner input. |
+| `spellcheck` | `spellcheck` | `string` | — | Passed to the inner input. |
+| `disabled` | `disabled` | `boolean` | `false` | Presence attribute. Disables the inner input; a disabled ancestor `<fieldset>` does the same. A disabled field is not submitted. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `input` | `onInput` | `{ value: string }` | Fires on every edit. |
+| `change` | `onChange` | `{ value: string }` | Fires when the inner input commits a change, on blur after editing. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `focus(options?: FocusOptions)` | Moves focus to the inner input. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `string` | Current text. Setting it updates the form value and validity, but not the visual state or message. |
+
+## Accessibility
+
+- A `<label for>` in the shadow root names the inner `<input>`.
+- The hint, error and success text sits in an `aria-live="polite"` region that also describes the input (`aria-describedby`).
+- Sets `aria-invalid` on the inner input when it validates on blur; form reset removes it.
+- The host does not delegate focus; call `focus()` on it to focus the input.
+- The canvas is `aria-hidden`.
+- Submits the inner input value under `name`. Validity mirrors the inner input constraints (`required`, `type`, `pattern`, `minlength`, `maxlength`) and reports `customError` with the `error` text or the browser message. The error or success state appears on blur, and while in error it re-checks on every edit. Form reset restores the `value` attribute, the hint and the neutral state. A disabled field is not submitted.
+- Reduced motion: the border comet stays in one place, the error static does not flicker, the caret sparks and error shake are skipped, and messages swap without rolling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--destructive`, `--foreground`, `--lumesec`, `--lumesec-success` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-danger`, `--ui-fg`, `--ui-muted`, `--ui-ok` and `--ui-surface`.
+
+## Notes
+
+- `value` is read on first connect only; the other attributes are observed and passed to the inner input when they change.
+- The inner input's native `input` event stops at the shadow root; listen to the host's `input` event, whose `detail` carries the value.
+
+<RelatedComponents tag="hf-input" />

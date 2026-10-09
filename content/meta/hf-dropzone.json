@@ -1,0 +1,41 @@
+{
+  "summary": "File drop zone drawn as a ripple simulation; dropped or picked files are listed with a simulated dotted progress bar.",
+  "attributes": [],
+  "events": [
+    {
+      "name": "files",
+      "detail": "{ files: File[] }",
+      "description": "Fires once per drop or file-picker selection that contains files, with every selected file."
+    },
+    {
+      "name": "uploaded",
+      "detail": "{ name: string, size: number }",
+      "description": "Fires per file when its simulated progress reaches 100%. `size` is in bytes. Not fired for files over 25 MB."
+    }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    {
+      "keys": "Enter / Space",
+      "action": "Open the file picker."
+    }
+  ],
+  "accessibility": [
+    "The drop area has `role=\"button\"`, `tabindex=\"0\"` and `aria-label=\"Upload files: drop them here or press to browse\"`.",
+    "The file list is an `aria-live=\"polite\"` region.",
+    "A hidden native `<input type=\"file\" multiple>` handles browsing. The ripple canvas is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the wave simulation, pointer ripples, random drips and marching border are off and the surface is static; list rows appear without fading in.",
+  "slots": [],
+  "notes": [
+    "Uploads are simulated and nothing is sent. Progress advances on a timer and `uploaded` fires when it completes; handle real uploads from the `files` event.",
+    "Files over 25 MB are marked too large. The limit and the `up to 25 MB each` text are fixed.",
+    "Up to six files per batch are listed and the list keeps the five most recent rows; `files` still carries every file.",
+    "Not form-associated: a `name` attribute has no effect and files are not submitted with a form."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "Upload progress is simulated on a timer; only the file names and sizes come from the files the user drops."
+  }
+}

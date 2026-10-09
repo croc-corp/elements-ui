@@ -1,0 +1,52 @@
+---
+title: "Pixel avatar"
+description: "Symmetric 7x7 pixel avatar generated from a typed name; changed cells flip in a ring spreading from the centre as the hue drifts."
+tag: px-identicon
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-identicon" />
+
+## Installation
+
+<Install tag="px-identicon" />
+
+## Usage
+
+<Usage tag="px-identicon" />
+
+## Behaviour
+
+A symmetric 7×7 avatar generated from a name. Every keystroke re-hashes it, and the cells that change flip over in a ring spreading from the centre while the hue drifts. Pixels near the pointer lift toward it.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ name: string, hash: number }` | Fires on every edit of the name field and on Shuffle. `name` is the trimmed input (`?` when empty); `hash` is the unsigned 32-bit hash of its lower-cased form. |
+
+## Accessibility
+
+- The canvas has `role="img"` with `aria-label="Pixel avatar for <name>"`, updated on every change.
+- The text field is labelled "Name" with a `<label for>`; Shuffle is a native button.
+- Reduced motion: changed cells and the hue switch at once instead of flipping outward from the centre; the pointer lift still applies.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-muted`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- The name comes from the component's own text field, which starts as "Ada Lovelace"; there is no attribute for it. Shuffle cycles through ten built-in names.
+- The pattern is case-insensitive and mirrored left to right. The first six hex digits of the hash are shown under the field.
+- The avatar canvas is a fixed 142 by 142px.
+
+<RelatedComponents tag="px-identicon" />

@@ -1,0 +1,188 @@
+{
+  "kind": "react",
+  "summary": "Pick a deployment region from a list with a dot map. The reticle travels along the great circle, magnifying the land dots it passes.",
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "default": "-",
+      "description": "Selected region id (controlled). Use with `onValueChange`. An id that is not in `regions` shows no reticle and no checked radio."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "default": "\"eu-central\"",
+      "description": "Selected region id when uncontrolled. A form reset restores it."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "default": "-",
+      "description": "Called with the region id when the user picks a region."
+    },
+    {
+      "name": "regions",
+      "type": "readonly GeoRegion[]",
+      "default": "DEMO_REGIONS",
+      "description": "Regions in list order: `{ id, label, city, timeZone, lat, lon }`. Regions with a repeated id or a non-finite position are skipped. Without it the picker shows the 16 demo regions. An empty array shows \"No regions\"."
+    },
+    {
+      "name": "from",
+      "type": "LatLon & { label?: string }",
+      "default": "-",
+      "description": "Location the latency hints are measured from. It shows on the map as a small accent square with `label` (default `From`) beside it. Without it there are no hints and no lines."
+    },
+    {
+      "name": "stretch",
+      "type": "number",
+      "default": "1.5",
+      "description": "Path stretch over the fibre minimum for the hints: a hint is round(2 × distance / 204 km per ms × `stretch`)."
+    },
+    {
+      "name": "layout",
+      "type": "\"both\" | \"map\" | \"list\"",
+      "default": "\"both\"",
+      "description": "`both`: the map above the list. `map`: the map above a compact wrap of chips. `list`: the list without the map."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "default": "-",
+      "description": "Form field name of the hidden input that carries the selected region id."
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "default": "false",
+      "description": "Sets `aria-required` on the radiogroup."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Dims the picker, ignores the pointer and takes the radios out of the tab order."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Region\"",
+      "description": "Visible heading of the list, and the accessible name of the radiogroup."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "HTMLDivElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "action": "Moves focus to the selected radio, or to the first one when nothing is selected."
+    },
+    {
+      "keys": "ArrowDown / ArrowUp",
+      "action": "Selects the next or previous region in the list, wrapping at the ends."
+    },
+    {
+      "keys": "ArrowRight / ArrowLeft",
+      "action": "Selects the nearest region east or west on the map. Past the last region that way it continues around the globe."
+    },
+    {
+      "keys": "Home / End",
+      "action": "Selects the first or last region."
+    },
+    {
+      "keys": "Space / Enter",
+      "action": "Selects the focused region."
+    }
+  ],
+  "accessibility": [
+    "The list (or the chips with `layout=\"map\"`) is a `role=\"radiogroup\"` labelled by the visible heading, with one tab stop. Each region is a button with `role=\"radio\"` and `aria-checked`.",
+    "Each radio's accessible name is the label and the city, plus the hint when `from` is set, such as \"eu-west, Dublin, about 21 ms round trip\".",
+    "`required` sets `aria-required` and `disabled` sets `aria-disabled` on the group.",
+    "The map, its canvases and its 24 px pointer targets are `aria-hidden`; the targets are not in the tab order. Picking a region on the map moves focus to its radio.",
+    "Keyboard focus on a radio draws the same line from `from` as pointing at it."
+  ],
+  "motion": "With reduced motion the reticle jumps to the new region with no comet, sparks or bracket snap, the lens stays at its resting strength, the line from `from` appears without drawing on, and the hints and the header value change without rolling.",
+  "form": "With `name` and a selected region, a hidden input submits the region id under that name. Nothing is submitted while no region is selected; `required` does not block submission. A form reset restores `defaultValue`.",
+  "notes": [
+    "The map is an Equal Earth strip from 50° S to 72° N, drawn from the embedded world data with no map tiles. Regions outside that band sit on the nearest edge.",
+    "The reticle's progress is a spring whose stiffness falls with distance (180 × √(5000 / max(km, 500))), so long trips take longer. A trip across the 180° meridian leaves one edge of the map and comes back in at the other. A change during travel starts the new trip from where the reticle is.",
+    "The lens is a 28 px disc around the reticle: land dots inside it are pushed outward, enlarged and tinted toward the accent, most at the centre. It is strongest in flight and stays on the selected region at 0.6 strength.",
+    "The hints are estimates from the great-circle distance, not measurements. With `layout=\"map\"` the chips have no hints; the header shows the selected region's hint instead.",
+    "Regions close together share the map's pointer targets; a press picks the region nearest to the pointer."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your regions as `regions` and the user's location as `from`. Without `regions` the picker shows 16 demo regions; nothing about the viewer's location is read or inferred."
+  },
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--card",
+    "--muted",
+    "--muted-foreground",
+    "--foreground",
+    "--border"
+  ],
+  "usage": "import { GeoRegionPicker } from \"@/components/lumesec/geo-region-picker\";\n\nexport function Example() {\n  return (\n    <form>\n      <GeoRegionPicker name=\"region\" defaultValue=\"eu-west\" from={{ lat: 40.4168, lon: -3.7038, label: \"Madrid office\" }} />\n    </form>\n  );\n}\n",
+  "playground": {
+    "props": {
+      "from": {
+        "lat": 40.4168,
+        "lon": -3.7038,
+        "label": "Madrid office"
+      }
+    },
+    "controls": [
+      {
+        "name": "defaultValue",
+        "kind": "enum",
+        "options": [
+          "us-east",
+          "us-west",
+          "sa-east",
+          "eu-west",
+          "eu-central",
+          "eu-north",
+          "me-central",
+          "af-south",
+          "ap-south",
+          "ap-southeast",
+          "ap-northeast",
+          "au-east"
+        ],
+        "default": "eu-central"
+      },
+      {
+        "name": "layout",
+        "kind": "enum",
+        "options": [
+          "both",
+          "map",
+          "list"
+        ],
+        "default": "both"
+      },
+      {
+        "name": "stretch",
+        "kind": "number",
+        "options": null,
+        "default": "1.5"
+      },
+      {
+        "name": "disabled",
+        "kind": "boolean",
+        "options": null,
+        "default": "false"
+      },
+      {
+        "name": "label",
+        "kind": "string",
+        "options": null,
+        "default": "Region"
+      }
+    ]
+  }
+}

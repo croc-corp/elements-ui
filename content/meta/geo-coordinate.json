@@ -1,0 +1,141 @@
+{
+  "kind": "react",
+  "summary": "A text field for coordinates in decimal or DMS notation, with a small world map whose parallel and meridian follow what it reads.",
+  "props": [
+    {
+      "name": "value",
+      "type": "LatLon | null",
+      "default": "-",
+      "description": "The point read from the field (controlled). Use with `onValueChange`. A new value that differs from what the text reads rewrites the field in `format`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "LatLon | null",
+      "default": "null",
+      "description": "Initial point when uncontrolled; shown in `format`. A form reset restores it."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: LatLon | null) => void",
+      "default": "-",
+      "description": "Called when the text reads as a new point, or with null when it stops reading as one."
+    },
+    {
+      "name": "format",
+      "type": "\"decimal\" | \"dms\"",
+      "default": "\"decimal\"",
+      "description": "Notation of the initial text, and of the text when the field is rewritten on blur or by a controlled `value`: `48.85660° N, 2.35220° E` or `48°51′24″ N, 2°21′08″ E`."
+    },
+    {
+      "name": "precision",
+      "type": "number",
+      "default": "5",
+      "description": "Decimals of decimal degrees, 0 to 8. Degrees, minutes and seconds show whole seconds up to 5, and one decimal of the seconds more for each step above 5."
+    },
+    {
+      "name": "normalizeOnBlur",
+      "type": "boolean",
+      "default": "true",
+      "description": "Rewrites readable text in `format` when the field loses focus. The value keeps its full precision."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Coordinates\"",
+      "description": "Visible label of the field."
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "default": "\"48.8566, 2.3522\"",
+      "description": "Placeholder of the empty field. When it reads as a point, the map shows that point as faint dotted lines."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "default": "-",
+      "description": "Prefix of the hidden inputs `${name}-lat` and `${name}-lon`, which submit the point with a surrounding form."
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "default": "false",
+      "description": "Requires a readable point: an empty field is marked invalid on blur and blocks form submission."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Disables the field and the copy button. `setText` on the handle is ignored too."
+    },
+    {
+      "name": "ref",
+      "type": "React.Ref<GeoCoordinateHandle>",
+      "default": "-",
+      "description": "Exposes `setText(text)` and `focus()`; the root `div` takes no ref."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "GeoCoordinateHandle",
+    "methods": [
+      {
+        "signature": "setText(text: string): void",
+        "description": "Puts `text` into the field as if it were typed: the map and the readout follow, and `onValueChange` fires when the point the text reads changes."
+      },
+      {
+        "signature": "focus(): void",
+        "description": "Moves focus to the field."
+      }
+    ]
+  },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Tab", "action": "Moves from the field to the copy button, which is in the tab order once the text reads as a point." },
+    { "keys": "Enter / Space", "action": "On the copy button: copies the coordinates as the readout shows them." }
+  ],
+  "accessibility": [
+    "The field is a native text input with a visible label. `aria-describedby` points at the readout below it, or at the error message while the text is invalid.",
+    "Text that cannot be read sets `aria-invalid` on blur and shows \"Use latitude, longitude, for example 48.8566, 2.3522\" in the destructive colour. The same message is the input's custom validity, so a surrounding form does not submit.",
+    "A polite live region announces the point in the readout's notation once typing pauses for 0.7 seconds, the error message on blur, and \"Coordinates copied\".",
+    "The copy button is a native button named \"Copy coordinates\". It is disabled until the text reads as a point.",
+    "The map and its canvases are `aria-hidden`; the readout below the field carries the same information as text."
+  ],
+  "motion": "With reduced motion the lines appear at their positions without springs or afterimages, the bracket appears without snapping in, and there is no ping, spark or border flash. The readout's digits and hemisphere letters change without rolling or flipping, the land does not fade in, and invalid text is marked without the shake.",
+  "form": "With `name`, two hidden inputs submit the point: `${name}-lat` and `${name}-lon`, in decimal degrees at full precision, empty while there is no point. The visible text field has no name. `required` sets the native `required` attribute, unreadable text sets a custom validity, and a form reset restores `defaultValue`.",
+  "notes": [
+    "The field reads signed decimal pairs separated by a comma, space, semicolon or slash (`48.8566, 2.3522`, `-22.9068 -43.1729`), hemisphere letters or words before or after each number (`N 48.8566 E 2.3522`), degrees, minutes and seconds with ° ′ ″ ' \" or d m s (`35°41′22″N 139°41′30″E`), degrees with decimal minutes (`40 42.768 N 74 0.36 W`), and decimal commas when they are unambiguous (`48,8566; 2,3522`). Letters that say longitude came first swap the pair.",
+    "Half-typed text already moves the map: when only the first part is readable it counts as latitude, or as longitude when it carries E or W. `onValueChange` reports null until the whole text reads as a point.",
+    "The readout below the field uses the other notation than the text: degrees, minutes and seconds under decimal text, decimal degrees under DMS text. Its digits roll in the direction of change and each hemisphere letter flips over when the sign changes. The copy button copies the readout as shown.",
+    "The map is a 112 × 56 px equirectangular view of the whole world with land dots every 2.5 px. Below 340 px of width the map moves under the field and fills the width.",
+    "The parallel and the meridian each ride a spring (stiffness 300, damping 0.75) and slide in from the map centre when their axis becomes known. A line moving faster than 120 px/s leaves three afterimages. When both lines have settled, the crossing locks: a 9 px bracket snaps in from 1.6 times its size and a ring of light runs through the land dots within 10 px. A lock that follows a change in the text also flashes the field's border and sends a few sparks past the map's edge.",
+    "An empty field is valid unless `required`. Invalid text is marked on blur, and the mark clears on the next edit.",
+    "The root carries `data-state`: `empty`, `partial` (one axis read), `complete` or `invalid`, for styling around the field."
+  ],
+  "tokens": [
+    "--lumesec",
+    "--lumesec-soft",
+    "--lumesec-glint",
+    "--lumesec-shine",
+    "--destructive",
+    "--background",
+    "--card",
+    "--muted",
+    "--muted-foreground",
+    "--foreground",
+    "--border",
+    "--input"
+  ],
+  "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { GeoCoordinate, type LatLon } from \"@/components/lumesec/geo-coordinate\";\n\nexport function Example() {\n  const [site, setSite] = React.useState<LatLon | null>({ lat: 48.8566, lon: 2.3522 });\n  return <GeoCoordinate name=\"site\" label=\"Site location\" value={site} onValueChange={setSite} />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      { "name": "format", "kind": "enum", "options": ["decimal", "dms"], "default": "decimal" },
+      { "name": "precision", "kind": "number", "options": null, "default": "5" },
+      { "name": "normalizeOnBlur", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "label", "kind": "string", "options": null, "default": "Coordinates" },
+      { "name": "required", "kind": "boolean", "options": null, "default": "false" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

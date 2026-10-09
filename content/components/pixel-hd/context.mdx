@@ -1,0 +1,75 @@
+---
+title: "Context window"
+description: "Context-window meter with four dithered segments, warnings at 80% and 95% and a compaction sweep; runs on built-in demo data."
+tag: hf-context
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-context" />
+
+<Callout title="Demo data" type="warning">
+
+The 200k window and its four segment sizes are invented; only `addTo()` and `compact()` change them. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="hf-context" />
+
+## Usage
+
+<Usage tag="hf-context" />
+
+## Behaviour
+
+Your favourite, rebuilt in HD: four segments with dithered boundaries, warnings at 80% and 95%, and a compaction sweep that squeezes the conversation back down. Hover the legend to isolate a segment.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ used: number }` | Fires after `addTo()` or a built-in add button grows the context. `used` is in thousands of tokens. |
+| `compact` | `onCompact` | `{ used: number }` | Fires after compaction with the new total, in thousands of tokens. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `addTo(index: number, k: number)` | Adds `k` thousand tokens to segment `index` (0 System, 1 Tools, 2 Files, 3 Conversation), capped at the free space. When the window is full the bar shakes and nothing is emitted. An unknown index or a `k` that is not a positive number is ignored. |
+| `compact()` | Shrinks Conversation to a quarter of its size, at least 6k, with a sweep. Does nothing if it is already that small. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `used` (read-only) | `number` | Total tokens in use, in thousands. |
+
+## Accessibility
+
+- The canvas has `role="meter"`, `aria-label="Context window"`, `aria-valuemin="0"`, `aria-valuemax="100"`, `aria-valuenow` as a percentage and `aria-valuetext` such as `65% used, 130k of 200k tokens`.
+- The percentage is in an `aria-live="polite"` region.
+- Legend items have `tabindex="0"`; focusing one isolates its segment, as hover does.
+- The three actions are native buttons.
+- Reduced motion: segments resize without easing, the edge flicker and the pulse at 95% are off, numbers swap without rolling, and the full-window shake and the compaction sweep are skipped.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--destructive`, `--foreground`, `--lumesec`, `--lumesec-warning` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-danger`, `--ui-fg`, `--ui-mono`, `--ui-muted` and `--ui-warn`.
+
+## Notes
+
+- Runs on built-in demo data: a 200k window holding System 8k, Tools 14k, Files 46k and Conversation 62k. There are no attributes for capacity or segment sizes.
+- The buttons `Send a message (+6k)`, `Attach file (+18k)` and `Compact` are always shown.
+
+<RelatedComponents tag="hf-context" />

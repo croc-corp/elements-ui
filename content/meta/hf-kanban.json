@@ -1,0 +1,30 @@
+{
+  "summary": "Three-column kanban board: a dragged card leaves a dot trail, the target column lights up and a bar marks where it will land.",
+  "attributes": [],
+  "events": [
+    { "name": "move", "detail": "{ card: string, from: string, to: string }", "description": "Fires after a card is dropped or moved by keyboard, including reorders within one column. `card` is the card title; `from` and `to` are column names." }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowLeft / ArrowRight", "action": "Move the focused card to the end of the previous or next column." },
+    { "keys": "ArrowUp / ArrowDown", "action": "Move the focused card up or down within its column." }
+  ],
+  "accessibility": [
+    "Columns are `role=\"list\"` with the column name as `aria-label`; cards are focusable `role=\"listitem\"` elements labelled `<title>. <tag>. Arrow keys move the card.`",
+    "A visually hidden `aria-live=\"polite\"` region announces `<title> moved to <column>`.",
+    "A moved card keeps focus. Column headers show the card count.",
+    "Column highlights, the trail and the insertion bar are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion, moved cards jump to their new place without sliding and dropping into Done gives no spark burst; the drag trail and column highlight remain.",
+  "slots": [],
+  "notes": [
+    "The columns (To do, In progress, Done) and six cards are built-in demo data.",
+    "A pointer drag starts after 5px of movement. Cards in Done are struck through.",
+    "Below 520px of viewport width the columns stack; this is a media query, not a container query."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The three columns and six cards are invented; nothing can be set."
+  }
+}

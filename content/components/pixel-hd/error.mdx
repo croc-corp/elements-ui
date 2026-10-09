@@ -1,0 +1,66 @@
+---
+title: "Error state"
+description: "Error state with the code in large mono type over a dotted scanline halo that glitches now and then; Try again reassembles it."
+tag: hf-error
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-error" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-error" />
+
+## Installation
+
+<Install tag="hf-error" />
+
+## Usage
+
+<Usage tag="hf-error" />
+
+## Behaviour
+
+The code sits in large mono type inside a halo of dotted scanlines. It slips into a glitch now and then (more when your pointer is near), and Try again scatters the halo while the code blurs back in.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `code` | `code` | `string` | `404` | Error code to show. `404`, `500` and `offline` (any case) have built-in titles and messages; any other value shows `Something went wrong`. Observed: a change updates the text and replays the assembly. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `retry` | `onRetry` | `{}` | Fires when Try again is pressed. |
+| `home` | `onHome` | `{}` | Fires when Go home is pressed. |
+
+## Accessibility
+
+- The code is text, read as `Error <code>` through a visually hidden prefix. The canvas and the copy used for the glitch slice are `aria-hidden`.
+- The title is an `<h3>` and the message a paragraph; there is no `role="alert"` or live region.
+- Try again and Go home are native buttons.
+- Reduced motion: the code and halo are static: no glitch bursts, no pointer-driven glitch, and no scatter or blur-in on Try again.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--destructive`, `--foreground`, `--lumesec`, `--lumesec-foreground`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-danger`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-on-accent` and `--ui-raised`.
+
+## Notes
+
+- The component does not retry or navigate; handle `retry` and `home`.
+- `500` is set in the danger colour, `offline` in the muted colour and other codes in the accent colour, in the mono font. Codes up to three characters are 56px, longer ones 40px.
+- Glitches grow as the pointer nears the horizontal centre. The code area is 128px tall.
+
+<RelatedComponents tag="hf-error" />

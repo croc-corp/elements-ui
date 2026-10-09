@@ -1,0 +1,35 @@
+{
+  "kind": "react",
+  "summary": "Loading wrapper that shows shimmering pixel bars over its content and dissolves them as the content fades in when loading ends.",
+  "props": [
+    { "name": "loading", "type": "boolean", "default": "false", "description": "While true the content is transparent and the skeleton shimmers over it; turning it off dissolves the skeleton." },
+    { "name": "lines", "type": "number", "default": "3", "description": "Number of text bars." },
+    { "name": "avatar", "type": "boolean", "default": "false", "description": "Adds a 40 px circle on the left and shifts the bars to its right." },
+    { "name": "children", "type": "React.ReactNode", "default": "-", "description": "The real content. It keeps its size while loading, and the skeleton is drawn over that box." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "The root is an `aria-live=\"polite\"` region with `aria-busy` reflecting `loading`.",
+    "While loading, the content is transparent and `inert`: it keeps its place in the layout but cannot be clicked, focused or read until loading ends.",
+    "The skeleton canvas is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the shimmer wave stops; the dissolve and the content fade still run.",
+  "notes": [
+    "The bars follow a fixed pattern of widths (100%, 90%, 62%, 80%, 50%) and are not traced from the content. Their spacing is computed from at most the first 120 px of height.",
+    "The skeleton fills the content's box, so the content needs its real height while loading.",
+    "The root carries `data-loading` while loading."
+  ],
+  "tokens": ["--foreground", "--lumesec"],
+  "usage": "import { PxSkeleton } from \"@/components/lumesec/px-skeleton\";\n\nexport function Example({ loading }: { loading: boolean }) {\n  return (\n    <PxSkeleton loading={loading} lines={3}>\n      <p>Shared “Notes on the Analytical Engine” in Research. 3 comments, 12 reactions.</p>\n    </PxSkeleton>\n  );\n}\n",
+  "playground": {
+    "props": { "loading": true, "avatar": true, "children": "Shared “Notes on the Analytical Engine” in Research. 3 comments, 12 reactions." },
+    "controls": [
+      { "name": "loading", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "avatar", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "lines", "kind": "number", "options": null, "default": "3" }
+    ]
+  }
+}

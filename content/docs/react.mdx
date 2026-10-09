@@ -1,0 +1,138 @@
+---
+title: React
+description: Native React components with controlled and uncontrolled state, typed callbacks and ref handles. Custom elements with typed wrappers, events and element refs.
+updated: "2026-10-02"
+---
+
+Every component is used from React through a named export from its file: `ui-dial.tsx` exports `UiDial`, `hf-gauge.tsx` exports `HfGauge`. What sits behind the export depends on the collection.
+
+| Collections | Kind | Props | Events | Ref |
+| --- | --- | --- | --- | --- |
+| Interaction, Pixel UI and Location | Native React component | React props, controlled or uncontrolled | Typed callbacks with plain values | Root DOM element, or a typed handle |
+| Pixel Lab, Pixel HD | Custom element with a typed wrapper | Attributes as camelCase props | `on` handlers receiving a typed `CustomEvent` | The element, typed with its methods |
+
+## Native React components
+
+They are ordinary React 19 function components, written like shadcn/ui: Tailwind classes on your theme tokens, `cn()` for `className`, the remaining props spread onto the root element, `data-slot` and `data-state` attributes for styling. Open the file and change anything.
+
+### State
+
+Stateful components follow the Radix naming. Pass `value` and a change callback to control them, or `defaultValue` to let them keep their own state.
+
+```tsx
+import * as React from "react";
+
+import { EffortSlider, type EffortLevel } from "@/components/lumesec/effort-slider";
+
+export function Effort() {
+  const [level, setLevel] = React.useState<EffortLevel>("medium");
+  return <EffortSlider value={level} onValueChange={setLevel} recommended="medium" />;
+}
+```
+
+```tsx
+<UiToggle defaultChecked onCheckedChange={(checked) => save({ thinking: checked })}>
+  Extended thinking
+</UiToggle>
+```
+
+| State | Controlled | Uncontrolled | Callback |
+| --- | --- | --- | --- |
+| Value | `value` | `defaultValue` | `onValueChange(value)` |
+| On or off | `checked` | `defaultChecked` | `onCheckedChange(checked)` |
+| Open or closed | `open` | `defaultOpen` | `onOpenChange(open)` |
+
+Callbacks fire for user actions. Changing a controlled prop from your code animates the component to the new value without calling the callback back. Some controls also report a second moment, such as `onValueCommit` when a drag ends on a dial or slider; each component page lists its callbacks.
+
+### Imperative actions
+
+Where an action is naturally a command (show a toast, compact the context, finish thinking), the component's `ref` is a typed handle instead of a DOM node:
+
+```tsx
+import * as React from "react";
+
+import { UiContextMeter, type UiContextMeterHandle } from "@/components/lumesec/ui-context-meter";
+
+export function Context() {
+  const meter = React.useRef<UiContextMeterHandle>(null);
+  return (
+    <>
+      <UiContextMeter ref={meter} defaultValue={46} capacity={200000} />
+      <button type="button" onClick={() => meter.current?.compact()}>
+        Compact
+      </button>
+    </>
+  );
+}
+```
+
+Each component page lists its ref under **API reference**. Everywhere else, `ref` points at the root element.
+
+### Forms
+
+Pixel UI inputs render native form controls, or a hidden input where the control is custom, so they submit with any `<form>`, including server actions, and reset with it:
+
+```tsx
+<form action={save}>
+  <PxInput name="email" type="email" label="Work email" required />
+  <PxPassword name="password" label="New password" minScore={3} />
+  <PxSelect name="region" label="Region" options={[{ label: "Frankfurt", value: "fra" }, { label: "Paris", value: "par" }]} />
+  <button type="submit">Create account</button>
+</form>
+```
+
+### Server rendering
+
+The components are client components (`"use client"`) and render their full markup on the server, so text, labels and layout are there on first paint. Canvas layers draw after hydration, and animation loops pause while a component is off screen.
+
+## Custom elements with wrappers
+
+The wrapper registers the element, renders it, and types its attributes and events. The element itself is a strict TypeScript class in `{tag}.element.ts`.
+
+### Props are attributes
+
+Attribute names become camelCase props. Numbers can be passed as numbers, presence attributes as booleans. `className`, `style`, `id`, `slot`, `aria-*` and `data-*` pass through to the element, and children render into its slots.
+
+```tsx
+import { HfSlider } from "@/components/lumesec/hf-slider";
+
+<HfSlider min={0} max={100} step={5} value={40} label="Volume" />;
+```
+
+### Events are handlers
+
+Each custom event becomes an `on` prop. The handler receives the `CustomEvent`, typed from the element's event map:
+
+```tsx
+<HfSlider label="Volume" onChange={(event) => setVolume(event.detail.value)} />
+```
+
+Events bubble and cross the shadow boundary, so a parent can also listen with `addEventListener`.
+
+### Refs give you the element
+
+The ref is the element class, with its properties and methods:
+
+```tsx
+import * as React from "react";
+
+import { PxOrb, type PxOrbElement } from "@/components/lumesec/px-orb";
+
+export function Agent() {
+  const orb = React.useRef<PxOrbElement>(null);
+  return (
+    <>
+      <PxOrb ref={orb} state="thinking" />
+      <button type="button" onClick={() => orb.current?.set("done")}>
+        Finish
+      </button>
+    </>
+  );
+}
+```
+
+Outside React, the tags are registered in `HTMLElementTagNameMap`, so `document.querySelector("px-orb")` is typed the same way.
+
+### Why attribute names are upper-cased
+
+React 19 assigns a prop to a same-named element property when one exists. Several elements expose read-only properties, such as `name` on form controls, which would throw. The bindings in `lib/lumesec/react.ts` pass attribute names upper-cased: React finds no property, calls `setAttribute`, and the browser stores the lower-case name. You never see this unless you inspect the props.

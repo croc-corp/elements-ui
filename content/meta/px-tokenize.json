@@ -1,0 +1,21 @@
+{
+  "summary": "Live token view: typed text splits into tinted spans and a strip of pixels where new tokens drop in, using a rough tokenizer.",
+  "attributes": [],
+  "events": [
+    { "name": "change", "detail": "{ tokens: number }", "description": "Fires on every edit with the token count. It does not fire when the element first connects." }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The textarea has `aria-label=\"Text to tokenize\"`.",
+    "The tinted token spans are `aria-hidden`; the pixel strip has `role=\"img\"` with an `aria-label` giving the token count.",
+    "The token, character and ratio summary is plain text; a visually hidden `aria-live=\"polite\"` region announces the token and character count once typing pauses for 0.7 seconds. Token highlighting on hover is pointer-only."
+  ],
+  "motion": "With reduced motion new tokens appear on the pixel strip in place instead of dropping in, and the summary text swaps without rolling.",
+  "slots": [],
+  "notes": [
+    "The tokenizer is a regular-expression approximation for illustration: words, groups of up to three digits and single symbols, with words longer than six letters split into chunks and common suffixes. Counts will not match a real model tokenizer.",
+    "Text comes only from the built-in textarea, which starts with a sample sentence. The strip's height grows with the number of tokens."
+  ]
+}

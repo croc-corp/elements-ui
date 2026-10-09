@@ -1,0 +1,62 @@
+{
+  "summary": "Streaming reply where each word resolves out of noise behind a glowing block caret, with a dotted tokens-per-second sparkline.",
+  "attributes": [
+    {
+      "name": "text",
+      "type": "string",
+      "description": "Text to stream. Defaults to a built-in sample paragraph. Split at whitespace; each word counts as one token. Re-read on each start."
+    },
+    {
+      "name": "delay",
+      "type": "number",
+      "default": "500",
+      "description": "Milliseconds before the first stream starts after connect."
+    },
+    {
+      "name": "loop",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Starts again 3.5 s after a stream completes; not after Stop."
+    }
+  ],
+  "events": [
+    {
+      "name": "start",
+      "detail": "{}",
+      "description": "Fires when a stream starts."
+    },
+    {
+      "name": "done",
+      "detail": "{ tokens: number, stopped: boolean }",
+      "description": "Fires when a stream completes or is stopped."
+    }
+  ],
+  "methods": [
+    {
+      "signature": "start(): Promise<void>",
+      "description": "Clears the text and streams it again, cancelling a stream in progress."
+    },
+    {
+      "signature": "stop()",
+      "description": "Stops the current stream and fires `done` with `stopped: true`. Also cancels a pending automatic start; does nothing else while no stream runs."
+    }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The reply text is an `aria-live=\"polite\"` region with `aria-busy=\"true\"` while it streams, so screen readers can read the reply once instead of word by word.",
+    "The canvas and the sparkline are `aria-hidden`.",
+    "The Stop / Regenerate control is a native button."
+  ],
+  "motion": "With reduced motion words arrive every 10 ms without the decode shimmer or fade-in, the avatar and caret do not pulse, and the caret disappears at once when the stream ends.",
+  "slots": [],
+  "notes": [
+    "Streaming is simulated from `text` with random delays. It starts automatically after `delay`; there is no attribute to turn that off.",
+    "The speaker name `Assistant` is fixed text.",
+    "Removing the element from the page stops the stream and any `loop` restart; inserting it again starts a new stream after `delay`."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The streaming, its timing and the tokens-per-second figures are simulated; only the `text` can be set."
+  }
+}

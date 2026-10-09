@@ -1,0 +1,171 @@
+{
+  "kind": "react",
+  "summary": "Select an area by drawing a latitude and longitude box on a dot map. The land inside fills behind the pointer and the edges snap to whole degrees.",
+  "props": [
+    {
+      "name": "value",
+      "type": "GeoBounds | null",
+      "default": "-",
+      "description": "Selected area `{ west, south, east, north }` in degrees (controlled). Use with `onValueChange`. `east` may exceed 180 when the area crosses the date line; an `east` smaller than `west` reads the same way. `null` selects nothing."
+    },
+    {
+      "name": "defaultValue",
+      "type": "GeoBounds | null",
+      "default": "null",
+      "description": "Selected area when uncontrolled. A form reset restores it. While `points` is not set (the demo), it defaults to a box over Europe."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: GeoBounds | null) => void",
+      "default": "-",
+      "description": "Called with the snapped bounds when a gesture, key press, typed edge or country fit commits, and with null when cleared. Not called when the bounds stay the same."
+    },
+    {
+      "name": "onValueInput",
+      "type": "(value: GeoBounds) => void",
+      "default": "-",
+      "description": "Called with unsnapped bounds, rounded to 0.01°, while drawing, moving or resizing."
+    },
+    {
+      "name": "points",
+      "type": "readonly AreaPoint[]",
+      "default": "2,400 demo points",
+      "description": "`{ lat, lon }` points drawn on the map and counted inside the area. Without it 2,400 seeded demo points around large cities are shown. An empty array hides the count."
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "default": "1",
+      "description": "Snap and keyboard step in degrees, from 0.01 to 30. Released, typed and stepped edges are multiples of it; a country fit rounds outward to it."
+    },
+    {
+      "name": "projection",
+      "type": "\"equirectangular\" | \"mercator\"",
+      "default": "\"equirectangular\"",
+      "description": "Map projection. Both keep the box rectangular; the map's height follows the projection."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "default": "-",
+      "description": "Form field name. With a name and an area, a hidden input submits 'west,south,east,north'."
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "default": "false",
+      "description": "Blocks form submission while no area is selected."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Dims the selector and disables drawing, the edge fields and Clear. Nothing is submitted."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Area\"",
+      "description": "Accessible name of the map; the selected bounds follow it ('Area 12° W to 30° E, 35° N to 60° N')."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "HTMLDivElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [
+    {
+      "keys": "Arrow keys (map)",
+      "action": "Move the area by `step`, or by 10 steps with Shift. Latitudes stop at the map's top and bottom; longitudes continue across the date line."
+    },
+    {
+      "keys": "Delete / Backspace (map)",
+      "action": "Clears the area."
+    },
+    {
+      "keys": "Enter / Space (map)",
+      "action": "Adds an area of 40° by 30° near the middle of the map when there is none."
+    },
+    {
+      "keys": "Escape (map)",
+      "action": "Cancels a draw, move or resize in progress; the box springs back."
+    },
+    {
+      "keys": "ArrowUp / ArrowDown (fields)",
+      "action": "Move that edge by `step`, or by 10 steps with Shift. It stops one step short of the opposite edge."
+    },
+    {
+      "keys": "Enter (fields)",
+      "action": "Commits typed text. On unchanged text it submits the form, like a native field."
+    },
+    {
+      "keys": "Escape (fields)",
+      "action": "Reverts typed text."
+    }
+  ],
+  "accessibility": [
+    "The map is focusable, with `role=\"group\"`, `aria-roledescription=\"area selector\"` and an `aria-label` that states the area, such as 'Area 12° W to 30° E, 35° N to 60° N'. A visually hidden description lists the keys.",
+    "West, South, East and North are labelled native number inputs, the keyboard way to resize the box. Corner handles and edge dragging are pointer-only; the canvases and handles are `aria-hidden`.",
+    "After each commit the count is announced politely, such as '418 points in the area'; with an empty `points` list the bounds are announced instead, and 'No area selected' after Clear.",
+    "Clear is a native button; it moves focus back to the map."
+  ],
+  "motion": "With reduced motion the border does not march, entering dots appear without the flash and leaving dots without the fading wake, the first-view sweep is skipped, edges snap without springs, a country fit jumps, Clear removes the box at once, the handles do not pop, the country name shows without fading and the figures swap without rolling.",
+  "form": "With `name` and an area, a hidden input submits 'west,south,east,north' in degrees (up to two decimals; `east` may exceed 180). Nothing is submitted without an area or while disabled. `required` blocks submission without an area through a hidden input whose custom validity message is 'Select an area on the map.'; the map card turns red and shakes until an area is drawn. A form reset restores `defaultValue`.",
+  "notes": [
+    "The map is a strip from 60° S to 80° N drawn as land dots from the embedded world data, with no map tiles. Latitudes of the area are clamped to it.",
+    "Pressing outside the box and moving more than 3 px draws a new box from that point. With touch, a press must rest for 250 ms first (a ring of dots lights up), so a quick swipe still scrolls the page. Pressing inside moves the box; within 6 px of an edge resizes that edge, and the corner handles resize two edges. A press without movement does nothing.",
+    "While a gesture runs, each land dot keeps the moment it entered the box: it ramps up over 180 ms after a random delay of up to 70 ms and flashes toward the glint for its first 90 ms, so the fill follows the pointer with an uneven bright front. Dots that leave fade over 140 ms, so a moved box leaves a short wake. Points inside are drawn larger in the accent. On first view the fill sweeps across the box from west to east.",
+    "On release each edge springs (stiffness 520, damping 0.72) to the nearest multiple of `step`, at least one step wide and tall, and the handles pop. The dotted border marches clockwise at 28 px/s while the box changes and stands still otherwise.",
+    "Moving or resizing past ±180° keeps going: the box is drawn twice, one map width apart, so both parts show. The fields show wrapped longitudes; the value keeps `east` past 180. Points are counted with the same rule.",
+    "Double-click land to fit the box to that country's bounds, rounded outward to `step`, on a softer spring (stiffness 260, damping 0.8); the country's name shows for 1.6 s. Water does nothing.",
+    "Clear collapses the box into its centre in about 250 ms and the fill fades. Enter on an empty map adds a box; typing into a field without an area starts from that box.",
+    "The count reads '418 of 2,400 points' and the edge fields show rolling figures while a gesture runs, updated up to ten times a second. Typed values snap to `step`; invalid text shakes the field and reverts. A typed longitude keeps the other edge, and the box then spans eastward from West to East.",
+    "`formatArea(bounds)` is exported for echoing a value as text: '12° W to 30° E, 35° N to 60° N'."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your records as `points` (`{ lat, lon }`). Without it the map shows 2,400 seeded demo points around 60 large cities and starts with a box over Europe; with your points nothing invented is added and the area starts empty unless you pass `defaultValue`. An empty array shows no points and hides the count. Nothing about the viewer's location is read or inferred."
+  },
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--card",
+    "--muted",
+    "--muted-foreground",
+    "--foreground",
+    "--border",
+    "--destructive"
+  ],
+  "usage": "import { GeoArea, type AreaPoint, type GeoBounds } from \"@/components/lumesec/geo-area\";\n\nconst events: AreaPoint[] = [\n  { lat: 48.86, lon: 2.35 },\n  { lat: 52.52, lon: 13.4 },\n  { lat: 40.71, lon: -74.01 },\n];\n\nexport function Example() {\n  return (\n    <GeoArea\n      points={events}\n      defaultValue={{ west: -12, south: 35, east: 30, north: 60 }}\n      onValueChange={(area: GeoBounds | null) => console.log(area)}\n    />\n  );\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      {
+        "name": "step",
+        "kind": "number",
+        "options": null,
+        "default": "1"
+      },
+      {
+        "name": "projection",
+        "kind": "enum",
+        "options": ["equirectangular", "mercator"],
+        "default": "equirectangular"
+      },
+      {
+        "name": "disabled",
+        "kind": "boolean",
+        "options": null,
+        "default": "false"
+      },
+      {
+        "name": "label",
+        "kind": "string",
+        "options": null,
+        "default": "Area"
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "summary": "Two-column time picker wheel: rows curve on a cylinder, flings carry inertia and snap to a value that submits as HH:MM.",
+  "attributes": [
+    { "name": "value", "type": "string", "default": "09:30", "description": "Selected time as `HH:MM` (24-hour). Hours clamp to 0–23 and minutes round to the nearest `step`. Observed: a change animates both columns to the new time without firing `change`. Reflects the current selection." },
+    { "name": "step", "type": "number", "default": "5", "description": "Minute increment, rounded and clamped to 1–30. The minute column shows multiples of `step` below 60. Observed: the minute column is rebuilt and the time rounded to the new step." },
+    { "name": "label", "type": "string", "default": "Remind me at", "description": "Text above the wheel; it also names the group of both columns. Observed." },
+    { "name": "name", "type": "string", "description": "Form field name used when the element is inside a form." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Presence attribute. Disables both columns; a disabled ancestor `<fieldset>` does the same." }
+  ],
+  "events": [
+    { "name": "change", "detail": "{ value: string }", "description": "Fires once, after both columns have stopped, when the wheel settles on a new value after a drag, fling, wheel scroll or key press. `value` is `HH:MM`. Not fired when `value` is set from code." }
+  ],
+  "methods": [],
+  "properties": [
+    { "name": "value", "type": "string", "readonly": false, "description": "The selected time as `HH:MM`, including a time the columns are still moving to. Setting it updates the getter and the `value` attribute at once, then animates the columns." },
+    { "name": "step", "type": "number", "readonly": true, "description": "The effective minute step, 1 to 30." },
+    { "name": "form", "type": "HTMLFormElement | null", "readonly": true, "description": "The owning form, from `ElementInternals`." },
+    { "name": "name", "type": "string | null", "readonly": true, "description": "The `name` attribute. There is no setter; set the attribute instead." }
+  ],
+  "keyboard": [
+    { "keys": "ArrowUp / ArrowDown", "action": "Select the previous or next value in the focused column. Values wrap around." },
+    { "keys": "PageUp / PageDown", "action": "Move three values back or forward in the focused column." },
+    { "keys": "Home / End", "action": "Go to the first or last value of the focused column: 00, and 23 or the last minute." }
+  ],
+  "accessibility": [
+    "The two columns form a `role=\"group\"` named by the visible label.",
+    "Each column is focusable with `role=\"spinbutton\"` and `aria-label` `Hours` or `Minutes`.",
+    "Columns expose `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and an `aria-valuetext` such as `9 hours` or `30 minutes`.",
+    "The digits are text in an `aria-hidden` layer over the canvas, so the ARIA values on the columns are the text alternative.",
+    "Form-associated through `ElementInternals`."
+  ],
+  "motion": "With reduced motion, flings stop without inertia, columns jump to the target value instead of springing, and the value label changes without the roll.",
+  "form": "Submits the time as `HH:MM` under `name`. There is no validation. Form reset restores the time from the first connect; `disabled` or a disabled fieldset takes the columns out of use.",
+  "slots": [],
+  "notes": [
+    "Fixed size: the wheel is 236px wide and 188px tall, and the host is `inline-block`.",
+    "The digits are set in the mono font with tabular figures; the selection band behind them is a dotted field.",
+    "Clicking a row without dragging snaps to that row; a mouse wheel or trackpad scrolls the column under the pointer.",
+    "Setting `value` animates the columns without a `change` event. After a key press or a click on a row, the getter reports the target at once, while the attribute and `aria-valuenow` update when the column settles."
+  ]
+}

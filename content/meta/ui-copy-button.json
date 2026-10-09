@@ -1,0 +1,35 @@
+{
+  "kind": "react",
+  "summary": "Copy-to-clipboard button whose icon turns into a drawn check as the label rolls to \"Copied\"; it says so when the browser refuses.",
+  "props": [
+    { "name": "text", "type": "string", "default": "\"\"", "description": "Text written to the clipboard. Read on each click." },
+    { "name": "label", "type": "string", "default": "\"Copy\"", "description": "Idle label." },
+    { "name": "doneLabel", "type": "string", "default": "\"Copied\"", "description": "Label shown for 1.8 s after a successful copy." },
+    { "name": "onCopy", "type": "(ok: boolean, text: string) => void", "default": "-", "description": "Called after each copy attempt; `ok` is false when the clipboard write was rejected." }
+  ],
+  "extends": "button",
+  "ref": { "type": "HTMLButtonElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [{ "keys": "Space / Enter", "action": "Copy." }],
+  "accessibility": [
+    "A native `<button>`; its accessible name is the visible label.",
+    "The label is an `aria-live=\"polite\"` region, so \"Copied\" or \"Couldn’t copy\" is announced.",
+    "The clipboard and check icons are `aria-hidden`."
+  ],
+  "motion": "With reduced motion the label swaps without rolling and the check pop and pixel sparks are skipped; the icon cross-fade still runs.",
+  "notes": [
+    "Uses `navigator.clipboard.writeText`, which requires a secure context (HTTPS or localhost). On failure the label reads \"Couldn’t copy\", built in English.",
+    "The button carries `data-state=\"done\"` or `data-state=\"fail\"` for 1.8 s after a click, `data-state=\"idle\"` otherwise.",
+    "The button keeps the width of its longest label, so it does not change size as the label rolls.",
+    "`onCopy` replaces the native clipboard `copy` event handler of the same name."
+  ],
+  "tokens": ["--card", "--muted", "--border", "--foreground", "--lumesec-success", "--destructive", "--lumesec", "--lumesec-glint"],
+  "usage": "import { UiCopyButton } from \"@/components/lumesec/ui-copy-button\";\n\nexport function Example() {\n  return <UiCopyButton text=\"npx shadcn@latest add @lumesec/ui-copy-button\" />;\n}\n",
+  "playground": {
+    "props": { "text": "npx shadcn@latest add @lumesec/ui-copy-button" },
+    "controls": [
+      { "name": "label", "kind": "string", "options": null, "default": "Copy" },
+      { "name": "doneLabel", "kind": "string", "options": null, "default": "Copied" }
+    ]
+  }
+}

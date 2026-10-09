@@ -1,0 +1,64 @@
+{
+  "kind": "react",
+  "summary": "Labelled form text field whose underline lights from the caret outwards; validation on blur shakes on error or draws a check.",
+  "props": [
+    { "name": "value", "type": "string", "default": "-", "description": "Controlled text. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "string", "default": "\"\"", "description": "Initial text when uncontrolled. A form reset restores it." },
+    { "name": "label", "type": "React.ReactNode", "default": "-", "description": "Label above the field, linked to the input. Nothing is rendered when empty." },
+    { "name": "hint", "type": "string", "default": "-", "description": "Help text under the field, shown when there is no error." },
+    { "name": "error", "type": "string", "default": "-", "description": "Message shown when the value is invalid, and used as the browser's validation message. Defaults to the browser's own message." },
+    { "name": "success", "type": "string", "default": "-", "description": "Message shown when a valid value is confirmed on blur. Falls back to `hint`." },
+    { "name": "name", "type": "string", "default": "-", "description": "Form field name; the text submits under it." },
+    { "name": "type", "type": "React.HTMLInputTypeAttribute", "default": "\"text\"", "description": "Input type, for example `email`, `url` or `tel`. Its constraints are checked during validation." },
+    { "name": "placeholder", "type": "string", "default": "-", "description": "Placeholder of the input." },
+    { "name": "required", "type": "boolean", "default": "false", "description": "An empty field is invalid." },
+    { "name": "pattern", "type": "string", "default": "-", "description": "Pattern the value must match; checked during validation." },
+    { "name": "minLength", "type": "number", "default": "-", "description": "Minimum length; checked during validation." },
+    { "name": "maxLength", "type": "number", "default": "-", "description": "Maximum length." },
+    { "name": "autoComplete", "type": "React.InputHTMLAttributes<HTMLInputElement>[\"autoComplete\"]", "default": "-", "description": "Autofill hint of the input." },
+    { "name": "inputMode", "type": "React.InputHTMLAttributes<HTMLInputElement>[\"inputMode\"]", "default": "-", "description": "Virtual keyboard hint of the input." },
+    { "name": "spellCheck", "type": "boolean", "default": "-", "description": "Spell checking of the input." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the field and disables the input, so it cannot be edited, reached with Tab or submitted." },
+    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called on every edit with the new text." },
+    { "name": "onValueCommit", "type": "(value: string) => void", "default": "-", "description": "Called when the input commits a change: on blur after editing (the native `change` event)." }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "PxInputHandle",
+    "methods": [{ "signature": "focus(): void", "description": "Moves focus into the text field." }]
+  },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "A native `<input>` labelled by a `<label htmlFor>` with the `label` content.",
+    "The message line is an `aria-live=\"polite\"` region, so error and success messages are announced.",
+    "`aria-invalid` is set on the input while an error shows.",
+    "The message line (hint, error or success text) is linked to the input with `aria-describedby` while it has text, and long messages wrap.",
+    "The underline canvas is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the underline lights at once instead of spreading from the caret, the error shake and pixel jitter are skipped, and the message swaps without rolling.",
+  "form": "A native `<input>` submits the text under `name`. Its constraints (`type`, `required`, `pattern`, `minLength`) block submission; when `error` is set it becomes the custom validity message, so the browser's bubble shows it. The visible check runs on blur and, once an error shows, again on every keystroke; an empty optional field shows no state. Form reset restores `defaultValue`, clears the state and calls `onValueChange`.",
+  "notes": [
+    "After validation the root carries `data-state=\"ok\"` or `data-state=\"error\"`.",
+    "`className` and other `div` props go to the wrapper; input attributes are the props listed above."
+  ],
+  "tokens": ["--foreground", "--muted-foreground", "--card", "--border", "--lumesec", "--lumesec-shine", "--destructive", "--lumesec-success"],
+  "usage": "import { PxInput } from \"@/components/lumesec/px-input\";\n\nexport function Example() {\n  return (\n    <PxInput\n      name=\"email\"\n      label=\"Work email\"\n      type=\"email\"\n      required\n      placeholder=\"you@example.com\"\n      hint=\"We’ll send the invite here\"\n      error=\"Enter a valid email address\"\n    />\n  );\n}\n",
+  "playground": {
+    "props": {
+      "label": "Work email",
+      "type": "email",
+      "required": true,
+      "placeholder": "you@example.com",
+      "hint": "We’ll send the invite here",
+      "error": "Enter a valid email address"
+    },
+    "controls": [
+      { "name": "label", "kind": "string", "options": null, "default": "Work email" },
+      { "name": "type", "kind": "enum", "options": ["text", "email", "url", "tel"], "default": "email" },
+      { "name": "required", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "hint", "kind": "string", "options": null, "default": "We’ll send the invite here" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

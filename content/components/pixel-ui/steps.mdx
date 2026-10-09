@@ -1,0 +1,67 @@
+---
+title: "Wizard steps"
+description: "Wizard progress with numbered nodes joined by pixel lines that fill as you advance; finished steps show a check and lead back on click."
+tag: px-steps
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-steps" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-steps" />
+
+## Installation
+
+<Install tag="px-steps" />
+
+## Usage
+
+<Usage tag="px-steps" />
+
+## Behaviour
+
+Numbered nodes joined by pixel lines that fill as you advance. Finished steps show a check and can be clicked to go back.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `step` | `number` | — | Controlled current step, from 1. One more than the number of steps marks the flow complete. Rounded and clamped. Use with `onStepChange`. |
+| `defaultStep` | `number` | `1` | Initial step when uncontrolled. |
+| `steps` | `readonly string[]` | `["Details", "Billing", "Review", "Done"]` | Step names, in order. |
+| `controls` | `boolean` | `false` | Shows Back and Continue buttons; Continue reads Finish on the last step. |
+| `onStepChange` | `(step: number) => void` | — | Called with the new step when the user moves: Back, Continue, Finish or a click on a finished step. Completing the flow reports the number of steps plus one. |
+| `onComplete` | `() => void` | — | Called when the user moves past the last step. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Accessibility
+
+- Step names are native buttons in an ordered list, each with an `aria-label` such as "Billing, step 2 of 4", plus ", done" for finished steps. The current one has `aria-current="step"`.
+- Only finished steps act on click; the others stay focusable but carry `aria-disabled="true"`.
+- The node graphic is an `aria-hidden` canvas. The step numbers over it are `aria-hidden` text, because each button's `aria-label` already carries the number.
+- Back is disabled on step 1, and Continue is disabled once the flow is complete. When the focused button disables itself this way, focus moves to the other one instead of falling to the page.
+- Reduced motion: the connecting lines fill at once, the current step does not pulse and no sparks fire on completion.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-shine`, `--lumesec-success`, `--foreground`, `--muted-foreground`, `--card`, `--border` and `--muted`.
+
+## Notes
+
+- Without reduced motion the pulse around the current step animates continuously while the steps are on screen.
+- Moving past the last step, from the buttons or a controlled `step`, throws sparks from every node.
+- The Back, Continue and Finish labels are in English.
+
+<RelatedComponents tag="px-steps" />

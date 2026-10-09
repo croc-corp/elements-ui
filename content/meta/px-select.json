@@ -1,0 +1,59 @@
+{
+  "kind": "react",
+  "summary": "Select with a menu that unfolds downward, a pixel highlight that springs between options and type-ahead by first letter.",
+  "props": [
+    { "name": "options", "type": "readonly PxSelectOption[]", "default": "-", "description": "The choices: `{ value?: string; label: string; description?: string }`. `value` defaults to `label`; `description` is a second line in the menu." },
+    { "name": "value", "type": "string", "default": "-", "description": "Controlled selected value. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "string", "default": "first option", "description": "Initially selected value when uncontrolled. A form reset restores it." },
+    { "name": "open", "type": "boolean", "default": "-", "description": "Controlled open state of the menu. Use with `onOpenChange`." },
+    { "name": "defaultOpen", "type": "boolean", "default": "false", "description": "Initial open state when uncontrolled." },
+    { "name": "label", "type": "React.ReactNode", "default": "-", "description": "Label above the trigger; also names the listbox." },
+    { "name": "hint", "type": "React.ReactNode", "default": "-", "description": "Help text under the trigger; it also describes the trigger through `aria-describedby`." },
+    { "name": "name", "type": "string", "default": "-", "description": "Form field name; the selected value submits under it." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the select, disables the trigger and keeps the menu closed." },
+    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called when the user picks a different option." },
+    { "name": "onOpenChange", "type": "(open: boolean) => void", "default": "-", "description": "Called when the menu opens or closes." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "ArrowDown / ArrowUp (on the trigger)", "action": "Open the menu." },
+    { "keys": "ArrowDown / ArrowUp (in the menu)", "action": "Move the highlight; stops at the first and last option." },
+    { "keys": "Home / End", "action": "Highlight the first / last option." },
+    { "keys": "Enter / Space", "action": "Choose the highlighted option and close." },
+    { "keys": "Escape", "action": "Close and return focus to the trigger." },
+    { "keys": "Tab / Shift+Tab", "action": "Close and move focus on from the trigger to the next / previous element." },
+    { "keys": "Printable character", "action": "Highlight the next option whose label starts with that character." }
+  ],
+  "accessibility": [
+    "The trigger is a native button with `aria-haspopup=\"listbox\"`, `aria-expanded`, `aria-controls` pointing at the listbox, `aria-labelledby` pointing at the label and the selected value, and `aria-describedby` pointing at the hint.",
+    "The menu is a `role=\"listbox\"` labelled by the label, with `aria-activedescendant` on the highlighted option; options have `role=\"option\"` and `aria-selected`.",
+    "Opening moves focus to the listbox; choosing or Escape return it to the trigger. A pointer press outside, or focus moving to another element, closes the menu without moving focus.",
+    "The highlight canvas is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the menu opens without unfolding, the chevron does not rotate, the highlight jumps and the value swaps without rolling.",
+  "form": "With `name`, a hidden input submits the selected option's value. There is no validation. Form reset restores `defaultValue` (or the first option) and calls `onValueChange` when that changes the value.",
+  "notes": [
+    "The menu opens 6 px below the trigger and overlays the hint and the content after it (`z-index: 30`).",
+    "The root carries `data-state=\"open\"` or `data-state=\"closed\"`."
+  ],
+  "tokens": ["--foreground", "--muted-foreground", "--card", "--border", "--lumesec"],
+  "usage": "import { PxSelect } from \"@/components/lumesec/px-select\";\n\nexport function Example() {\n  return (\n    <PxSelect\n      name=\"model\"\n      label=\"Model\"\n      hint=\"You can change this per chat\"\n      defaultValue=\"medium\"\n      options={[\n        { value: \"large\", label: \"Large\", description: \"Most capable\" },\n        { value: \"medium\", label: \"Medium\", description: \"Balanced\" },\n        { value: \"small\", label: \"Small\", description: \"Fastest\" },\n      ]}\n    />\n  );\n}\n",
+  "playground": {
+    "props": {
+      "label": "Model",
+      "hint": "You can change this per chat",
+      "options": [
+        { "value": "large", "label": "Large", "description": "Most capable" },
+        { "value": "medium", "label": "Medium", "description": "Balanced" },
+        { "value": "small", "label": "Small", "description": "Fastest" }
+      ]
+    },
+    "controls": [
+      { "name": "defaultValue", "kind": "enum", "options": ["large", "medium", "small"], "default": "medium" },
+      { "name": "label", "kind": "string", "options": null, "default": "Model" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

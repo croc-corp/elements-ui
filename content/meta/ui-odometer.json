@@ -1,0 +1,47 @@
+{
+  "kind": "react",
+  "summary": "Number stepper where every digit is its own rolling wheel; supports press-and-hold, sideways drag, the scroll wheel and the keyboard.",
+  "props": [
+    { "name": "value", "type": "number", "default": "-", "description": "Controlled value, rounded to the nearest multiple of `step` and clamped to `min`/`max`. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "number", "default": "8192", "description": "Initial value when uncontrolled." },
+    { "name": "min", "type": "number", "default": "1024", "description": "Lowest value." },
+    { "name": "max", "type": "number", "default": "65536", "description": "Highest value. Also sets the number of digit wheels. A `max` below `min` is treated as `min`." },
+    { "name": "step", "type": "number", "default": "1024", "description": "Increment per step, greater than 0 (anything else falls back to 1)." },
+    { "name": "label", "type": "string", "default": "\"Max output tokens\"", "description": "Caption above the number and the spinbutton's `aria-label`." },
+    { "name": "unit", "type": "string", "default": "-", "description": "Optional monospace caption under the number; hidden when empty." },
+    { "name": "onValueChange", "type": "(value: number) => void", "default": "-", "description": "Called on every value change from the buttons, drag, wheel or keys." },
+    { "name": "onValueCommit", "type": "(value: number) => void", "default": "-", "description": "Called with each change from the buttons, wheel or keys, and once when a drag on the number ends, even if the value did not change." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "ArrowUp / ArrowRight", "action": "Increase by one step." },
+    { "keys": "ArrowDown / ArrowLeft", "action": "Decrease by one step." },
+    { "keys": "PageUp / PageDown", "action": "Change by ten steps, stopping at `max` or `min`." },
+    { "keys": "Home / End", "action": "Jump to `min` / `max`." }
+  ],
+  "accessibility": [
+    "The number has `role=\"spinbutton\"`, `tabindex=\"0\"`, `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and an `aria-label` from `label`.",
+    "The minus and plus buttons are native buttons labelled \"Decrease\" and \"Increase\". They get `aria-disabled=\"true\"` at the limits but stay clickable.",
+    "`unit` is not part of the spinbutton's accessible value.",
+    "The digit wheels are `aria-hidden`; the spinbutton's `aria-valuetext` carries the number as shown, for example \"8,192\"."
+  ],
+  "motion": "With reduced motion the digit wheels, column widths and separators change without transitions, and pushing past a limit does not shake.",
+  "notes": [
+    "Holding a button repeats after 380 ms and speeds up; after 14 repeats it moves four steps at a time.",
+    "Dragging sideways on the number changes it by one step per 12 px. The scroll wheel over the number changes one step per tick and does not scroll the page; sideways scrolling is ignored.",
+    "Digits are grouped with a comma every three places. The display is built for non-negative whole numbers.",
+    "Changing `value` from outside rolls the wheels without calling either callback."
+  ],
+  "tokens": ["--foreground", "--muted-foreground", "--card", "--muted", "--border", "--lumesec"],
+  "usage": "import { UiOdometer } from \"@/components/lumesec/ui-odometer\";\n\nexport function Example() {\n  return <UiOdometer defaultValue={8192} min={1024} max={65536} step={1024} label=\"Max output tokens\" />;\n}\n",
+  "playground": {
+    "props": { "defaultValue": 8192, "min": 1024, "max": 65536, "step": 1024 },
+    "controls": [
+      { "name": "step", "kind": "number", "options": null, "default": "1024" },
+      { "name": "label", "kind": "string", "options": null, "default": "Max output tokens" },
+      { "name": "unit", "kind": "string", "options": null, "default": "" }
+    ]
+  }
+}

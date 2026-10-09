@@ -1,0 +1,204 @@
+{
+  "kind": "react",
+  "summary": "Choose a point on a dot map by click, search or typed coordinates. The pin drops on a spring and lands with a splash that ripples the dots.",
+  "props": [
+    {
+      "name": "value",
+      "type": "LatLon | null",
+      "default": "-",
+      "description": "Pin position (controlled). Use with `onValueChange`. `null` shows no pin."
+    },
+    {
+      "name": "defaultValue",
+      "type": "LatLon | null",
+      "default": "null",
+      "description": "Pin position when uncontrolled. A form reset restores it."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: LatLon | null) => void",
+      "default": "-",
+      "description": "Called when the pin moves or is cleared."
+    },
+    {
+      "name": "places",
+      "type": "readonly PickerPlace[]",
+      "default": "60 demo cities",
+      "description": "`{ id, label, lat, lon }` for the search and for snapping. Without it the 60 demo cities of `DEMO_CITIES` are used. An empty array leaves the search with coordinates only."
+    },
+    {
+      "name": "snap",
+      "type": "number | false",
+      "default": "false",
+      "description": "Snaps a pin dropped on the map (click, tap or Enter) to the nearest place within this many km. Arrow keys and the coordinate fields set exact values."
+    },
+    {
+      "name": "maxZoom",
+      "type": "number",
+      "default": "4",
+      "description": "Largest map zoom, from 1 to 6."
+    },
+    {
+      "name": "precision",
+      "type": "number",
+      "default": "4",
+      "description": "Decimals of the latitude and longitude, from 0 to 6. Dropped, stepped and typed values are rounded to it; snapped values keep the place's coordinates."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "default": "-",
+      "description": "Form field name. With a name and a pin, hidden inputs submit the coordinates."
+    },
+    {
+      "name": "submitAs",
+      "type": "\"fields\" | \"pair\"",
+      "default": "\"fields\"",
+      "description": "`fields` submits `name-lat` and `name-lon`; `pair` submits one `name` field with 'lat,lon'."
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "default": "false",
+      "description": "Blocks form submission while there is no pin."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Dims the picker, ignores the pointer and the keyboard, and submits nothing."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Location\"",
+      "description": "Accessible name of the group."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "HTMLDivElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [
+    {
+      "keys": "ArrowDown / ArrowUp (search)",
+      "action": "Moves through the results; opens them again when closed."
+    },
+    {
+      "keys": "Enter (search)",
+      "action": "Picks the highlighted result: the map flies there and the pin drops on it."
+    },
+    {
+      "keys": "Escape (search)",
+      "action": "Closes the results, or clears the text when they are closed."
+    },
+    {
+      "keys": "Arrow keys (map)",
+      "action": "Move the pin 1°, or 5° with Shift, with a small drop. Without a pin they pan the zoomed map."
+    },
+    {
+      "keys": "+ / − (map)",
+      "action": "Zoom in or out one step about the view centre."
+    },
+    {
+      "keys": "Enter / Space (map)",
+      "action": "Drops a pin at the view centre when there is none."
+    },
+    {
+      "keys": "Delete / Backspace (map)",
+      "action": "Removes the pin."
+    },
+    {
+      "keys": "ArrowUp / ArrowDown (fields)",
+      "action": "Change the coordinate by 0.1°, or 1° with Shift."
+    },
+    {
+      "keys": "PageUp / PageDown (fields)",
+      "action": "Change the coordinate by 10°."
+    },
+    {
+      "keys": "Home / End (fields)",
+      "action": "Set the coordinate to its limit: −90 and 90 for the latitude, −180 and 180 for the longitude."
+    },
+    {
+      "keys": "Enter (fields)",
+      "action": "Commits typed text. On unchanged text it submits the form, like a native field."
+    },
+    {
+      "keys": "Escape (fields)",
+      "action": "Reverts typed text."
+    }
+  ],
+  "accessibility": [
+    "The root is a `role=\"group\"` named by `label`.",
+    "The search is a `role=\"combobox\"` with `aria-expanded`, `aria-controls` and `aria-activedescendant`; the results are a `role=\"listbox\"` of options.",
+    "The map is focusable, with `role=\"application\"`, `aria-roledescription=\"map\"` and the label 'Map: arrow keys move the pin, plus and minus zoom'. The line under the map describes it. Its canvases and the pin are `aria-hidden`.",
+    "Latitude and Longitude are text inputs with `role=\"spinbutton\"`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and an `aria-valuetext` such as '6.5244° N'.",
+    "Pin moves are announced politely, such as 'Pin at 6.52° N, 3.38° E'.",
+    "The zoom buttons have accessible names: Zoom out, Zoom in, Reset view."
+  ],
+  "motion": "With reduced motion the pin is placed without the drop, squash or splash (the lit pool under it stays), search picks jump the view without the flight, zoom and pan jump, the new land fades in at once, and the coordinates swap without rolling.",
+  "form": "With `name` and a pin, hidden inputs submit `name-lat` and `name-lon` (or `name` with 'lat,lon' for `submitAs=\"pair\"`) at `precision` decimals. Nothing is submitted without a pin or while disabled. `required` blocks submission without a pin through a hidden input whose custom validity message is 'Drop a pin on the map.'; the map card turns red and shakes until a pin is dropped. A form reset restores `defaultValue` and the whole-world view.",
+  "notes": [
+    "The map is an equirectangular strip from 60° S to 78° N, drawn as land dots from the embedded world data with no map tiles. A latitude outside the strip is valid; its pin sits on the nearest edge. A `value` with a latitude beyond ±90° or a coordinate that is not finite shows no pin; a longitude beyond ±180° is wrapped.",
+    "Zoom and centre are springs. A search pick flies the map to the place on one spring and zooms in to at least 3× (or `maxZoom`); long flights dip out halfway. The pin waits until the flight is almost there, then drops.",
+    "The land is re-baked at a 4 px pitch for each resting zoom and fades in over 160 ms; while the view moves, the last bake is drawn scaled, so dots spread apart on the way in. A press that moves less than 4 px drops the pin; a drag pans the map when it is zoomed. At 1× a vertical touch swipe scrolls the page.",
+    "The drop is an under-damped spring drawn as one rebound off the ground. At first contact the pin squashes, the dots within 40 px are pushed outward on an uneven ring and brighten toward the glint, a weaker ring pulls them back, and a small lit pool stays under the pin.",
+    "The coordinate fields show rolling figures while they do not have focus. Typed text accepts a sign or a hemisphere letter ('33.87 S'); invalid text shakes the field and reverts. Without a pin, field input starts from the view centre.",
+    "The line under the map shows the place the pin is on ('Lagos', or 'Lagos, 3.4 km away' after a snap), else the pin in degrees, minutes and seconds. The figure on the right is the zoom."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your own places as `places`. Without it the search and snapping use 60 demo cities; nothing about the viewer's location is read or inferred, and the picker starts without a pin unless you pass one."
+  },
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--card",
+    "--popover",
+    "--popover-foreground",
+    "--muted",
+    "--muted-foreground",
+    "--foreground",
+    "--border",
+    "--destructive"
+  ],
+  "usage": "import { GeoLocationPicker } from \"@/components/lumesec/geo-location-picker\";\n\nexport function Example() {\n  return (\n    <form>\n      <GeoLocationPicker name=\"site\" snap={25} defaultValue={{ lat: 6.5244, lon: 3.3792 }} required />\n    </form>\n  );\n}\n",
+  "playground": {
+    "props": {
+      "defaultValue": {
+        "lat": 40.7128,
+        "lon": -74.006
+      },
+      "snap": 25
+    },
+    "controls": [
+      {
+        "name": "maxZoom",
+        "kind": "number",
+        "options": null,
+        "default": "4"
+      },
+      {
+        "name": "precision",
+        "kind": "number",
+        "options": null,
+        "default": "4"
+      },
+      {
+        "name": "disabled",
+        "kind": "boolean",
+        "options": null,
+        "default": "false"
+      },
+      {
+        "name": "label",
+        "kind": "string",
+        "options": null,
+        "default": "Location"
+      }
+    ]
+  }
+}

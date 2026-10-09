@@ -1,0 +1,64 @@
+---
+title: "Progress ring"
+description: "Circular pixel progress ring with the percentage counting up in its centre; it turns green and throws a few sparks when it reaches 100%."
+tag: px-ring
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-ring" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-ring" />
+
+## Installation
+
+<Install tag="px-ring" />
+
+## Usage
+
+<Usage tag="px-ring" />
+
+## Behaviour
+
+A circular version with the percentage counting up in its centre. It turns green and throws a few sparks at 100%.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number \| null` | — | Progress from 0 to 100, clamped; the ring animates to it. `null` or leaving it out shows a spinning arc. |
+| `size` | `number` | `120` | Diameter in pixels. |
+| `children` | `React.ReactNode` | — | Caption under the ring; it also labels the progress bar. |
+| `onComplete` | `() => void` | — | Called when `value` reaches 100, and again each time it drops below 100 and returns, also while the ring is off screen. Not called when the ring starts at 100. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Accessibility
+
+- The ring is a `div` with `role="progressbar"`, `aria-valuemin="0"`, `aria-valuemax="100"` and `aria-valuenow`, which is left out when indeterminate.
+- The canvas and the percentage inside it are `aria-hidden`; the number is the visible form of `aria-valuenow`.
+- With a caption the ring is labelled by it through `aria-labelledby`; without one its `aria-label` is "Progress".
+- There is no live region.
+- Reduced motion: the ring and the number jump to the value, no sparks fire at 100%, and the indeterminate arc holds still.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-shine`, `--lumesec-success`, `--foreground` and `--muted-foreground`.
+
+## Notes
+
+- The ring starts at the first `value` instead of filling up from 0.
+- The percentage is text in the mono font with tabular figures, 27% of `size` high, and counts along with the fill. It turns green at 100%; the indeterminate ring shows no number.
+
+<RelatedComponents tag="px-ring" />

@@ -1,0 +1,69 @@
+---
+title: "Usage heatmap"
+description: "Weekday-by-hour usage heatmap in which dot density is the value; the peak pulses, and hover or arrow keys show a cell's count."
+tag: hf-matrix
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-matrix" />
+
+<Callout title="Demo data" type="warning">
+
+The weekday-by-hour message and token counts are synthetic; only `label` can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-matrix" />
+
+## Installation
+
+<Install tag="hf-matrix" />
+
+## Usage
+
+<Usage tag="hf-matrix" />
+
+## Behaviour
+
+Weekday by hour. Each cell is a block of dots whose density is the value; the peak pulses, hovering adds a crosshair and the metrics morph into each other.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `When your team uses AI` | Heading text. Read once on connect. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight / ArrowUp / ArrowDown | Move the inspected cell by one hour or one day. The first press starts from Wednesday 11:00. |
+
+## Accessibility
+
+- The heatmap canvas is focusable with `role="img"` and `aria-label` `Usage heatmap by weekday and hour. Use arrow keys to inspect cells.`
+- Arrow-key moves announce the inspected cell (day, hour and count) through a visually hidden `aria-live="polite"` region. The visible tooltip is `aria-hidden`, and pointer hover is not announced.
+- The Messages and Tokens switch is a `role="group"` labelled `Metric`, with `aria-pressed` buttons.
+- Moving the pointer off the canvas or moving focus away hides the tooltip.
+- Reduced motion: cells appear without the diagonal intro, metric changes apply at once, the peak cell does not pulse and drawing stops between interactions.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-muted`, `--ui-raised`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- Data is synthetic and built in: 7 × 24 values for messages (up to 420 per cell) and tokens (up to 48,000 per cell).
+- The heatmap is 154px tall and fills the width. Without reduced motion it redraws every frame while visible.
+
+<RelatedComponents tag="hf-matrix" />

@@ -1,0 +1,30 @@
+{
+  "summary": "Unified diff reviewer with dithered add and remove tints and a minimap; accepting or rejecting a hunk dissolves the dropped lines.",
+  "attributes": [],
+  "events": [
+    { "name": "resolve", "detail": "{ hunk: number, accepted: boolean }", "description": "Fires when a hunk is accepted or rejected. `hunk` is its zero-based index. Accept all fires once per open hunk." }
+  ],
+  "methods": [
+    { "signature": "resolve(index: number, accept: boolean)", "description": "Accepts or rejects a hunk by index, as its buttons do. Ignored if the hunk is already resolved or does not exist." }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The code area is a `role=\"table\"` labelled `Changes to <file>`. Each line is a `row` of four cells (old and new line number, marker, text); each hunk header is a `row` with the header text and its buttons.",
+    "Each hunk has native Accept and Reject buttons, named `Accept hunk <n>` and `Reject hunk <n>`. When focus was on a resolved hunk's buttons, it moves to the next open hunk, or to the code area when none is left; Accept all moves it to the code area.",
+    "Resolved hunk headers read `✓ Accepted · …` or `✕ Rejected · …`. The added and removed counters are not a live region.",
+    "Line tints and the minimap are drawn on an `aria-hidden` canvas; the `+` and `−` markers remain in the text."
+  ],
+  "motion": "With reduced motion, dropped lines disappear at once without the dissolve particles or the collapse, and the counters change without rolling.",
+  "slots": [],
+  "notes": [
+    "Pass a unified diff as the element's text content; without text a built-in sample diff is shown. Changing the text renders the new diff with every hunk open again.",
+    "One file per element: the header shows the last `+++` path with `b/` removed, and hunks start at `@@ -a,b +c,d @@` lines. Line numbers count from the hunk headers; `\\ No newline at end of file` markers are skipped, and CRLF line endings work.",
+    "In React, pass the diff as a string expression such as `{diff}` so line breaks survive; plain JSX text collapses newlines and the diff does not parse.",
+    "Accept all accepts every open hunk. The code area scrolls horizontally for long lines; hunk headers with their buttons, the tints and the minimap stay in view."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your unified diff as the element's text content. Without it a built-in sample diff is shown."
+  }
+}

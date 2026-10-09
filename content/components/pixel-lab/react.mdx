@@ -1,0 +1,87 @@
+---
+title: "Pixel reactions"
+description: "Pixel like button whose heart explodes and snaps back filled; press and hold opens four more reactions that the same pixels fly into."
+tag: px-react
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-react" />
+
+<Callout title="Your data">
+
+Pass the starting reaction count as `count`. Without it the count starts at 128. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-react" />
+
+## Installation
+
+<Install tag="px-react" />
+
+## Usage
+
+<Usage tag="px-react" />
+
+## Behaviour
+
+The heart’s pixels explode outward and snap back filled. Unliking drains it row by row to an outline. Press and hold for four more reactions; picking one sends the same pixels flying into its shape.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `count` | `count` | `number` | `128` | Reaction count, rounded to a whole number of at least 0. Changing it updates the count; liking adds one to it. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `react` | `onReact` | `{ liked: boolean, reaction: string }` | Fires on like, unlike and when a reaction is picked. `reaction` is `Love`, `Star`, `Zap`, `Fire` or `Spark`. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `toggle()` | Likes or unlikes with the current reaction and adjusts the count by one. |
+| `pick(index: number)` | Selects reaction 0 to 4 (`Love`, `Star`, `Zap`, `Fire`, `Spark`), marks it liked and moves focus to the button. Other values are ignored. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowUp (on the button) | Open the reaction palette and focus the current reaction. |
+| ArrowLeft / ArrowRight (in the palette) | Move focus between reactions, wrapping around. |
+| Escape (in the palette) | Close the palette and return focus to the button. |
+
+## Accessibility
+
+- The main control is a native button with `aria-pressed` for the liked state, `aria-haspopup="menu"`, `aria-expanded` and `aria-label="Like. Press and hold for more reactions"`; after a pick the label starts with the reaction name.
+- The palette has `role="menu"` with `aria-label="Reactions"`; each reaction is a button with `role="menuitem"` and an `aria-label`. It closes when focus leaves the component.
+- The count is plain text without a live region.
+- Reduced motion: pixels move straight to their new shape without exploding, the palette opens without its pop-in and the spark bursts are skipped.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--destructive`, `--foreground`, `--lumesec`, `--lumesec-shine`, `--lumesec-warning`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-danger`, `--ui-fg`, `--ui-muted`, `--ui-raised`, `--ui-shine`, `--ui-surface` and `--ui-warn`.
+
+## Notes
+
+- A press held for 430 ms opens the palette instead of toggling. Pressing anywhere else in the component, or moving focus out of it, closes it.
+- The button is a fixed 76 by 76px; the palette opens above it.
+
+<RelatedComponents tag="px-react" />

@@ -1,0 +1,72 @@
+---
+title: "Hold to confirm"
+description: "Hold-to-confirm button for destructive actions: holding fills it as the bin lid lifts; letting go early drains it with a shake."
+tag: ui-hold-button
+updated: "2026-09-25"
+---
+
+<ComponentPreview tag="ui-hold-button" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="ui-hold-button" />
+
+## Installation
+
+<Install tag="ui-hold-button" />
+
+## Usage
+
+<Usage tag="ui-hold-button" />
+
+## Behaviour
+
+For destructive actions. Holding fills the button behind a crawling, dithered edge while the bin lid lifts. Let go early and it drains, shakes and asks you to keep holding.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<button>` (`React.ComponentProps<"button">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `duration` | `number` | `1200` | Hold time in milliseconds needed to confirm. |
+| `label` | `string` | `"Hold to delete"` | Idle label. |
+| `doneLabel` | `string` | `"Deleted"` | Label shown after confirming. |
+| `onConfirm` | `() => void` | — | Called once the button has been held for `duration`. |
+
+### Ref
+
+`ref` points at the root `HTMLButtonElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Space / Enter (held) | Fill while held; releasing before `duration`, or moving focus away, drains it. Key repeat is ignored. |
+
+## Accessibility
+
+- A native `<button>`; its accessible name is the visible label. Its click action is prevented, so a single click or key press does nothing.
+- The label is an `aria-live="polite"` region, so "Keep holding" and the done label are announced.
+- Pressing with the pointer moves focus to the button.
+- The bin icon and the fill canvas are `aria-hidden`; the hold progress is not exposed.
+- Reduced motion: the early-release shake and the confirm sparks are skipped and labels swap without rolling; the fill and lid still follow the hold.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--destructive`, `--border`, `--card`, `--lumesec` and `--lumesec-glint`.
+
+## Notes
+
+- After confirming, the button keeps the done state for 2.2 s and ignores presses, then resets. It carries `data-state="done"` during that time.
+- Releasing after more than 4% of the hold shows "Keep holding" (built in English) for 1.3 s. A full fill drains in about 0.3 s.
+- The button keeps the width of its longest label, so it does not change size as the label rolls.
+- With `disabled` the button is dimmed and ignores presses; disabling it during a hold drains the fill without confirming.
+
+<RelatedComponents tag="ui-hold-button" />

@@ -1,0 +1,53 @@
+{
+  "kind": "react",
+  "summary": "One set of land dots that is either a globe or a flat map: switching peels the globe open at the back and lays it flat, routes and packets included.",
+  "props": [
+    { "name": "view", "type": "\"globe\" | \"map\"", "default": "-", "description": "The shown view (controlled). Use with `onViewChange`. A change during the morph turns it around from where it is." },
+    { "name": "defaultView", "type": "\"globe\" | \"map\"", "default": "\"globe\"", "description": "The view when uncontrolled." },
+    { "name": "routes", "type": "readonly UnfoldRoute[]", "default": "8 demo routes", "description": "`{ from: LatLon, to: LatLon, weight? }` records shown in both views. `weight` (0 to 1, default 0.5) sets the packet rate, 0.4 + 1.2 × weight per second. Entries with missing or non-finite coordinates are skipped." },
+    { "name": "center", "type": "LatLon", "default": "{ lat: 20, lon: 10 }", "description": "Initial globe centre, and where Home turns the globe back to. Later changes do not move the globe." },
+    { "name": "title", "type": "React.ReactNode", "default": "-", "description": "Heading shown left of the toggle." },
+    { "name": "projection", "type": "\"equalEarth\" | \"equirectangular\"", "default": "\"equalEarth\"", "description": "Projection of the map view. Both show the whole world." },
+    { "name": "duration", "type": "number", "default": "1100", "description": "Length of the morph in milliseconds. Values below 300 count as 300." },
+    { "name": "packets", "type": "boolean", "default": "true", "description": "Runs packets along the routes." },
+    { "name": "showToggle", "type": "boolean", "default": "true", "description": "Shows the Globe / Map toggle. Hide it to drive `view` from outside." },
+    { "name": "onViewChange", "type": "(view: \"globe\" | \"map\") => void", "default": "-", "description": "Called when the toggle changes the view. A controlled `view` changed from outside does not call it." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Arrow keys (toggle)", "action": "Select and focus the other view." },
+    { "keys": "ArrowLeft / ArrowRight (globe)", "action": "Turn the globe 10°, in Globe view." },
+    { "keys": "Home (globe)", "action": "Turn the globe back to `center`, in Globe view." }
+  ],
+  "accessibility": [
+    "The toggle is a `radiogroup` labelled View, with two buttons that have `role=\"radio\"`, `aria-checked` and a roving tab stop.",
+    "The stage has `role=\"img\"` and an `aria-label` that names the view and the number of routes. In Globe view it is in the tab order, its label mentions the arrow keys and `aria-keyshortcuts` lists them.",
+    "Both canvases are `aria-hidden`; the title and the toggle are text in the DOM."
+  ],
+  "motion": "With reduced motion the views swap with a 150 ms crossfade instead of the morph, the toggle pill jumps, the globe does not coast after a drag, and routes show without packets, sparks or the light along the seam.",
+  "notes": [
+    "The map is cut at the back of the globe: its central meridian is the longitude the globe faces when you switch. Drag the globe first to choose where the map is split.",
+    "Routes that cross the cut leave one edge of the map and continue from the other edge once the map has settled.",
+    "The globe holds still while the map is shown and while the morph runs; dragging and the arrow keys work in Globe view only. Dragging is horizontal, so a vertical swipe on a touch screen scrolls the page.",
+    "The stage keeps a 2:1 aspect ratio and the globe's radius is 46 % of its height. The canvas for packets and sparks reaches 16 px past the stage at the sides and 24 px above and below, so leave that room unclipped.",
+    "Packets run only while the component is on screen. The animation loop stops when nothing moves and packets are off."
+  ],
+  "tokens": ["--foreground", "--muted-foreground", "--muted", "--card", "--border", "--lumesec", "--lumesec-soft", "--lumesec-glint", "--lumesec-shine"],
+  "usage": "import { GeoUnfold, type UnfoldRoute } from \"@/components/lumesec/geo-unfold\";\n\nconst routes: UnfoldRoute[] = [\n  { from: { lat: 50.11, lon: 8.68 }, to: { lat: 39.04, lon: -77.49 }, weight: 0.9 },\n  { from: { lat: 35.68, lon: 139.65 }, to: { lat: 37.77, lon: -122.42 }, weight: 0.6 },\n];\n\nexport function Example() {\n  return <GeoUnfold title=\"Traffic between regions\" routes={routes} />;\n}\n",
+  "playground": {
+    "props": { "title": "Traffic between regions" },
+    "controls": [
+      { "name": "defaultView", "kind": "enum", "options": ["globe", "map"], "default": "globe" },
+      { "name": "projection", "kind": "enum", "options": ["equalEarth", "equirectangular"], "default": "equalEarth" },
+      { "name": "duration", "kind": "number", "options": null, "default": "1100" },
+      { "name": "packets", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "showToggle", "kind": "boolean", "options": null, "default": "true" }
+    ]
+  },
+  "data": {
+    "kind": "input",
+    "note": "Pass your routes as `routes`. Without it the component shows 8 demo routes between cloud regions; an empty array shows the land with no routes."
+  }
+}

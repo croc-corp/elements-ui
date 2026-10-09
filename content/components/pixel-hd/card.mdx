@@ -1,0 +1,66 @@
+---
+title: "Media card"
+description: "Media card with a generated dithered landscape whose ridges shift at different depths as the card tilts toward the pointer."
+tag: hf-card
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-card" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-card" />
+
+## Installation
+
+<Install tag="hf-card" />
+
+## Usage
+
+<Usage tag="hf-card" />
+
+## Behaviour
+
+A procedurally drawn landscape whose ridges move at different depths as the card tilts toward your pointer, with a glare of dots following it.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `hue` | `hue` | `number` | `262` | Base hue in degrees for the sky and ridges. Observed. |
+| `seed` | `seed` | `string` | `valley` | Seed for the ridge shapes. Observed. |
+| `tags` | `tags` | `string` | `Generative,Dither,Parallax` | Comma-separated tag chips; an empty value shows none. Observed. |
+| `alt` | `alt` | `string` | `Pixel landscape illustration` | Accessible name of the landscape canvas. Observed. |
+
+### Slots
+
+| Slot | Description |
+| --- | --- |
+| `title` | Card title. Falls back to `Pixel Valley`. |
+| `(default)` | Description. Falls back to a sample sentence. |
+
+## Accessibility
+
+- The landscape canvas has `role="img"` with `aria-label` from `alt`.
+- Title and description are slotted text.
+- The card has no link, button or focus target of its own.
+- Reduced motion: the card does not tilt and the landscape does not drift; the canvas redraws only on pointer movement.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-border`, `--ui-muted`, `--ui-raised` and `--ui-track`.
+
+## Notes
+
+- Without reduced motion the canvas redraws every frame while the card is visible.
+- Stars twinkle in the sky only in the dark theme.
+
+<RelatedComponents tag="hf-card" />

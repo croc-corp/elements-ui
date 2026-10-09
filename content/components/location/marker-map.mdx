@@ -1,0 +1,101 @@
+---
+title: "Marker map"
+description: "A flat map of land dots with markers. Values light halos of dots sized by area, which spring to new values; labels place themselves."
+tag: geo-marker-map
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-marker-map" />
+
+<Callout title="Your data">
+
+Pass your places as `markers`. Without it the map shows 14 demo cities with invented request counts. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-marker-map" />
+
+## Installation
+
+<Install tag="geo-marker-map" />
+
+## Usage
+
+<Usage tag="geo-marker-map" />
+
+## Behaviour
+
+A flat map of land dots with markers. Markers with a value grow a halo of lit dots sized by that value, so the busiest places read at a glance without circles drawn over the map.
+
+Halos grow and shrink behind an uneven front when values change, markers can pulse as rings of light, and labels place themselves so they do not overlap.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `markers` | `readonly MapMarker[]` | `14 demo cities` | The places: `{ id, label?, lat, lon, value?, tone?, size?, pulse? }`. `tone` is `accent`, `info`, `success`, `warning`, `destructive` or `muted`; `size` is `sm`, `md` or `lg` (a 6, 8 or 10 px dot); `pulse` sends a ring of light through the land dots every 2.4 s. Halos spring to new values when it changes. An empty array shows the plain land with `emptyText`. |
+| `value` | `string \| null` | — | The selected marker id (controlled), or `null` for none. Use with `onValueChange`. |
+| `defaultValue` | `string \| null` | `null` | The marker selected at first when uncontrolled. |
+| `onValueChange` | `(value: string \| null) => void` | — | Called when the user selects a marker or clears the selection (Escape, a second press on the selected marker, a click on the map). |
+| `projection` | `"equalEarth" \| "equirectangular" \| "mercator"` | `"equalEarth"` | Map projection. Equal Earth keeps areas true, so halos compare fairly at every latitude. |
+| `grid` | `"honeycomb" \| "square"` | `"honeycomb"` | Dot arrangement of the land. |
+| `pitch` | `number` | `4` | Dot spacing in px, clamped to 3 to 8. |
+| `latRange` | `readonly [number, number]` | `[-58, 84]` | Latitude crop as `[south, north]` in degrees. Markers outside it are skipped. |
+| `maxHalo` | `number` | `28` | Halo radius in px for the largest value on a map 660 px wide. The radius scales with the map width, from 60% to 150%. |
+| `labels` | `"all" \| "selected" \| "none"` | `"all"` | Which label chips show: the largest values that have room, only the selected one, or none. Hovered and focused markers always show theirs. Without the prop, maps narrower than 480 px use `selected`. |
+| `reveal` | `"view" \| "mount" \| "none"` | `"view"` | When the land prints itself: the first time a third of the map is on screen, right after mount, or never (drawn at once). |
+| `revealFrom` | `string \| LatLon` | `first marker` | Marker id or `{ lat, lon }` point the reveal grows from. |
+| `format` | `(value: number) => string` | `formatCompact` | Formats values for the label chips and the markers' accessible names. The default gives `48.2K`. |
+| `label` | `string` | `"Map"` | Accessible name of the map. |
+| `emptyText` | `string` | `"No locations"` | Text shown when `markers` is an empty array. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves focus into the map. One marker holds the tab stop: the last one focused, else the selected one, else the first. |
+| ArrowLeft / ArrowRight / ArrowUp / ArrowDown | Move focus to the nearest marker in that direction on the map. |
+| Home / End | Move focus to the first / last marker in `markers` order. |
+| Enter / Space | Select the focused marker, or clear the selection when it is already selected. |
+| Escape | Clear the selection. |
+
+## Accessibility
+
+- The root has `role="group"`, `aria-roledescription="map"` and the `label` as its `aria-label`.
+- Each marker is a native `<button>` with `aria-pressed` and an `aria-label` of its label (or id) and formatted value, for example "London, 48.2K".
+- The markers share one roving tab stop, so the map is a single Tab stop however many markers it has.
+- A marker focused from the keyboard shows its label chip and a 2 px accent focus ring.
+- The canvases and the label chips are `aria-hidden`; the chips repeat what the buttons already say.
+- Reduced motion: the land is drawn at once, halos appear at their size without the growth front, pulsing markers show a still ring of brighter dots, a selection changes without the ring, pop and sparks, and chip values change without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--lumesec-shine`, `--lumesec-info`, `--lumesec-success`, `--lumesec-warning`, `--destructive`, `--foreground`, `--muted-foreground`, `--muted`, `--card` and `--border`.
+
+## Notes
+
+- Halo area is proportional to the value: the radius is `maxHalo · √(value / largest value)`, scaled with the map width. Zero, negative and missing values have no halo.
+- Halos light land dots only, so a coastal marker lights the land around it. Some coastal cities fall on water cells of the 0.5° land mask and show a partial halo.
+- Where halos overlap, each dot takes the brighter halo; nothing stacks.
+- With `labels="all"`, the largest values get chips, at most one per 120 px of map width. A chip that would cover another marker stays hidden.
+- Changing `projection`, `grid`, `pitch` or `latRange` after the first reveal prints the new lattice again from the selected marker, or from `revealFrom`.
+- A click on the map outside the markers clears the selection.
+- The root fills its container's width and keeps the projection's aspect ratio, so the server markup reserves the height and already places the markers.
+- Marker ids must be unique; a repeated id keeps its first marker.
+- Pulsing markers keep the animation running while the map is on screen. Without them it stops once everything has settled.
+
+<RelatedComponents tag="geo-marker-map" />

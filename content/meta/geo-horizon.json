@@ -1,0 +1,107 @@
+{
+  "kind": "react",
+  "summary": "The top of a large dotted globe rising from the bottom edge, for page heroes, with arcs that climb into the sky between places.",
+  "props": [
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "default": "-",
+      "description": "Headline, copy and actions. They sit over the sky in a column above the globe and stay fully interactive."
+    },
+    {
+      "name": "connections",
+      "type": "readonly HorizonConnection[]",
+      "default": "-",
+      "description": "Pairs of places to arc between: `{ from: LatLon; to: LatLon }`. Pairs play in order, one every `arcInterval` seconds, when both ends are on the visible cap; the others wait until the drift brings them round. An empty array draws no arcs. Without it, demo pairs play."
+    },
+    {
+      "name": "center",
+      "type": "LatLon",
+      "default": "{ lat: 38, lon: -40 }",
+      "description": "The point shown in the lower third of the visible cap. The default shows the North Atlantic with both coasts. A new value springs into place."
+    },
+    {
+      "name": "capHeight",
+      "type": "number",
+      "default": "0.46",
+      "description": "Share of the root's height the cap takes, 0.25 to 0.7."
+    },
+    {
+      "name": "align",
+      "type": "\"center\" | \"start\"",
+      "default": "\"center\"",
+      "description": "Alignment of the children: a centred column, or left-aligned with a wider inset."
+    },
+    {
+      "name": "atmosphere",
+      "type": "boolean",
+      "default": "true",
+      "description": "Draws the accent glow above the limb. The 1px limb line stays either way."
+    },
+    {
+      "name": "drift",
+      "type": "boolean",
+      "default": "true",
+      "description": "Turns the globe slowly from west to east, like the Earth, while it is on screen."
+    },
+    {
+      "name": "driftSpeed",
+      "type": "number",
+      "default": "1.2",
+      "description": "Drift in degrees of longitude per second."
+    },
+    {
+      "name": "reveal",
+      "type": "\"view\" | \"mount\" | \"none\"",
+      "default": "\"view\"",
+      "description": "When the land reveal plays: once about a third of the component is on screen, right after mount, or never (the land is there from the start)."
+    },
+    {
+      "name": "arcInterval",
+      "type": "number",
+      "default": "1.4",
+      "description": "Seconds between new arcs. At most four arcs are in flight; each grows for 1.6 s, holds for 0.6 s and erases toward its destination over 0.9 s."
+    }
+  ],
+  "extends": "section",
+  "ref": {
+    "type": "HTMLElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "The root is a `section` and takes every `section` prop. Name it with `aria-labelledby` pointing at the headline in `children`.",
+    "The canvas is `aria-hidden` and ignores the pointer. The globe, the arcs and the glint are decoration; nothing a reader needs lives only in the canvas.",
+    "Children render above the canvas in document order and keep their own focus, keyboard and pointer handling.",
+    "The canvas fades in from its top edge and is opaque only from 38% of the height down (from just above the limb when a tall cap reaches higher), so text over the sky sits on the plain background."
+  ],
+  "motion": "With reduced motion the land shows without the reveal, the globe does not drift, the glint along the limb is off, and up to three connections are drawn as still dotted arcs that change every 4 seconds, without comets or landing rings.",
+  "notes": [
+    "Give the root its size, for example `h-[420px]` or a parent with a fixed height. It fills `h-full` with a minimum of 340px. The globe's radius is the larger of 0.95 × width and 1.25 × height, so narrow screens show a flatter, narrower cap.",
+    "On first view the horizon line draws out from its middle, then the land appears behind an uneven, bright front that spreads from the same point. The reveal plays once per mount.",
+    "Each arc leaves its source with a small ring of light, travels as a dotted line with a comet at its head and lands with a wider ring that flattens into an ellipse near the horizon. Arcs between distant places rise higher into the sky.",
+    "The animation runs only while the component is on screen and continues where it left off when it returns. With `drift` off, the loop also sleeps between arcs.",
+    "The globe is drawn from the embedded world data as land dots. There are no map tiles and no network requests."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your pairs of places as `connections`. Without it the component shows arcs between demo cities, and between demo land points where no two cities are on the visible cap."
+  },
+  "tokens": ["--background", "--foreground", "--card", "--lumesec", "--lumesec-glint", "--lumesec-shine"],
+  "usage": "import { GeoHorizon, type HorizonConnection } from \"@/components/lumesec/geo-horizon\";\n\nconst connections: HorizonConnection[] = [\n  { from: { lat: 40.71, lon: -74.01 }, to: { lat: 51.51, lon: -0.13 } },\n  { from: { lat: 38.72, lon: -9.14 }, to: { lat: 43.65, lon: -79.38 } },\n  { from: { lat: 41.88, lon: -87.63 }, to: { lat: 50.11, lon: 8.68 } },\n];\n\nexport function Hero() {\n  return (\n    <GeoHorizon aria-labelledby=\"hero-title\" connections={connections} className=\"h-[480px]\">\n      <h1 id=\"hero-title\" className=\"text-3xl font-semibold tracking-tight\">\n        Requests between regions\n      </h1>\n      <p className=\"text-muted-foreground\">From the edge that receives a request to the region that answers it.</p>\n    </GeoHorizon>\n  );\n}\n",
+  "playground": {
+    "props": {
+      "children": "Requests between regions"
+    },
+    "controls": [
+      { "name": "capHeight", "kind": "number", "options": null, "default": "0.46" },
+      { "name": "align", "kind": "enum", "options": ["center", "start"], "default": "center" },
+      { "name": "atmosphere", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "drift", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "driftSpeed", "kind": "number", "options": null, "default": "1.2" },
+      { "name": "arcInterval", "kind": "number", "options": null, "default": "1.4" },
+      { "name": "reveal", "kind": "enum", "options": ["view", "mount", "none"], "default": "view" }
+    ]
+  }
+}

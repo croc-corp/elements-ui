@@ -1,0 +1,73 @@
+---
+title: "Accordion"
+description: "Accordion whose pixel plus signs fold into minus signs while the panels open smoothly; one or several items can stay open."
+tag: px-accordion
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-accordion" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-accordion" />
+
+## Installation
+
+<Install tag="px-accordion" />
+
+## Usage
+
+<Usage tag="px-accordion" />
+
+## Behaviour
+
+Pixel plus signs fold into minus signs, panels open smoothly and a dotted rail marks the open answer. Set `multiple` to allow several open at once.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string[]` | — | Controlled list of open items (their `value`, or `title`). Use with `onValueChange`. |
+| `defaultValue` | `string[]` | `[]` | Items open initially when uncontrolled. |
+| `items` | `readonly PxAccordionItem[]` | — | The sections: `{ value?: string; title: string; summary?: string; content: React.ReactNode }`. `value` defaults to `title`; `summary` adds muted text at the end of the header. |
+| `multiple` | `boolean` | `false` | Lets several items stay open; without it, opening one closes the others. |
+| `onValueChange` | `(value: string[]) => void` | — | Called with the open items whenever the user opens or closes one. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space | Open or close the focused item. |
+| ArrowDown / ArrowUp | Move focus to the next / previous header, wrapping. |
+| Home / End | Move focus to the first / last header. |
+
+## Accessibility
+
+- Each header is a native button with `aria-expanded` and `aria-controls`, inside an `<h3>`.
+- Each panel has `role="region"` and is labelled by its header through `aria-labelledby`.
+- Closed panels are `inert`, so their content leaves the tab order and the accessibility tree; the closing animation still plays.
+- The plus and minus icon is an `aria-hidden` canvas.
+- Reduced motion: panels open and close without the height and fade transitions, and the plus and minus icon switches at once.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--foreground`, `--muted-foreground` and `--border`.
+
+## Notes
+
+- Panels stay mounted while closed, so their content keeps its state.
+- Each item's `value` (or its `title` when `value` is not set) must be unique within the accordion.
+
+<RelatedComponents tag="px-accordion" />

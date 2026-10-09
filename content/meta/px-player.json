@@ -1,0 +1,33 @@
+{
+  "summary": "Pixel waveform player that fills as it plays, previews ahead of the playhead on hover and ripples from wherever you click.",
+  "attributes": [],
+  "events": [
+    { "name": "play", "detail": "{}", "description": "Fires when playback starts." },
+    { "name": "pause", "detail": "{}", "description": "Fires when playback pauses, including when the track reaches the end." }
+  ],
+  "methods": [
+    { "signature": "toggle()", "description": "Starts or pauses playback and fires `play` or `pause`. Playing at the end starts over." },
+    { "signature": "seek(position: number)", "description": "Moves the playhead to a position from 0 to 1 of the track. A value that is not a finite number is ignored." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowLeft", "action": "Seek forward or back by 5 seconds." },
+    { "keys": "Home / End", "action": "Seek to the start or the end." },
+    { "keys": "Space", "action": "Play or pause." }
+  ],
+  "accessibility": [
+    "The play button is a native button whose `aria-label` switches between \"Play\" and \"Pause\".",
+    "The waveform canvas is focusable with `role=\"slider\"`, `aria-label=\"Seek\"`, `aria-valuemin=\"0\"` and `aria-valuemax=\"222\"` (seconds).",
+    "`aria-valuenow` is the position in seconds and `aria-valuetext` reads like \"1:11 / 3:42\". The hover time tooltip is pointer-only."
+  ],
+  "motion": "With reduced motion, the bars around the playhead stop pulsing during playback; click ripples still play.",
+  "slots": [],
+  "notes": [
+    "The track is demo content: \"Night Drive\", 3:42 long, with a generated waveform and no audio. There is no attribute for a source. Playback starts at 32%.",
+    "The waveform canvas is 64px tall."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The track, its length and its waveform are invented and no audio plays; nothing can be set."
+  }
+}

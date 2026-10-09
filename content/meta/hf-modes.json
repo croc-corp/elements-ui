@@ -1,0 +1,60 @@
+{
+  "summary": "Three mode cards (Chat, Code, Ultracode) on one canvas; the selected card gets an aurora and a comet on its border. Form-associated.",
+  "attributes": [
+    {
+      "name": "value",
+      "type": "chat | code | ultracode",
+      "default": "code",
+      "description": "Selected mode. Observed and reflected. An unknown value on connect selects `code`; unknown values set later are ignored."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Form field name."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Disables the cards; a disabled ancestor `<fieldset>` does the same."
+    }
+  ],
+  "events": [
+    {
+      "name": "change",
+      "detail": "{ value: \"chat\" | \"code\" | \"ultracode\" }",
+      "description": "Fires when the user selects a different card. Not fired for programmatic changes."
+    }
+  ],
+  "methods": [],
+  "properties": [
+    {
+      "name": "value",
+      "type": "\"chat\" | \"code\" | \"ultracode\"",
+      "readonly": false,
+      "description": "Selected mode id. Setting it writes the attribute."
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": "ArrowRight / ArrowDown",
+      "action": "Select and focus the next card, wrapping."
+    },
+    {
+      "keys": "ArrowLeft / ArrowUp",
+      "action": "Select and focus the previous card, wrapping."
+    }
+  ],
+  "accessibility": [
+    "The grid has `role=\"radiogroup\"` with `aria-label=\"Mode\"`.",
+    "Each card is a native button with `role=\"radio\"` and `aria-checked`; only the selected card is in the tab order.",
+    "Card titles and descriptions are text; the canvas only draws decoration and is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the selection switches without fading, the border comet is off, the aurora and twinkles are drawn once without moving, and picking Ultracode throws no sparks.",
+  "form": "Submits the selected mode id under `name`. No validation. Form reset returns to the mode selected on the first connect; `disabled` or a disabled fieldset disables the cards.",
+  "slots": [],
+  "notes": [
+    "The three modes, their descriptions and the `New` badge on Ultracode are built in and cannot be configured.",
+    "Cards sit in an auto-fit grid with a 150px minimum column width."
+  ]
+}

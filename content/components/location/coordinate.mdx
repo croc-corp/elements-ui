@@ -1,0 +1,93 @@
+---
+title: "Coordinate field"
+description: "A text field for coordinates in decimal or DMS notation, with a small world map whose parallel and meridian follow what it reads."
+tag: geo-coordinate
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-coordinate" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-coordinate" />
+
+## Installation
+
+<Install tag="geo-coordinate" />
+
+## Usage
+
+<Usage tag="geo-coordinate" />
+
+## Behaviour
+
+A text field for coordinates that reads the usual ways of writing them: decimal degrees, degrees with minutes and seconds, hemisphere letters, or a signed pair. A small world map beside it shows what it read.
+
+The map has a parallel and a meridian on separate springs: typing the latitude moves the horizontal line, the longitude moves the vertical one, and when both are read the crossing locks with a ping. Below the field the coordinates appear in the other format, with hemisphere letters that flip over when the sign changes.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `LatLon \| null` | — | The point read from the field (controlled). Use with `onValueChange`. A new value that differs from what the text reads rewrites the field in `format`. |
+| `defaultValue` | `LatLon \| null` | `null` | Initial point when uncontrolled; shown in `format`. A form reset restores it. |
+| `onValueChange` | `(value: LatLon \| null) => void` | — | Called when the text reads as a new point, or with null when it stops reading as one. |
+| `format` | `"decimal" \| "dms"` | `"decimal"` | Notation of the initial text, and of the text when the field is rewritten on blur or by a controlled `value`: `48.85660° N, 2.35220° E` or `48°51′24″ N, 2°21′08″ E`. |
+| `precision` | `number` | `5` | Decimals of decimal degrees, 0 to 8. Degrees, minutes and seconds show whole seconds up to 5, and one decimal of the seconds more for each step above 5. |
+| `normalizeOnBlur` | `boolean` | `true` | Rewrites readable text in `format` when the field loses focus. The value keeps its full precision. |
+| `label` | `string` | `"Coordinates"` | Visible label of the field. |
+| `placeholder` | `string` | `"48.8566, 2.3522"` | Placeholder of the empty field. When it reads as a point, the map shows that point as faint dotted lines. |
+| `name` | `string` | — | Prefix of the hidden inputs `${name}-lat` and `${name}-lon`, which submit the point with a surrounding form. |
+| `required` | `boolean` | `false` | Requires a readable point: an empty field is marked invalid on blur and blocks form submission. |
+| `disabled` | `boolean` | `false` | Disables the field and the copy button. `setText` on the handle is ignored too. |
+| `ref` | `React.Ref<GeoCoordinateHandle>` | — | Exposes `setText(text)` and `focus()`; the root `div` takes no ref. |
+
+### Ref
+
+`ref` receives a `GeoCoordinateHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `setText(text: string): void` | Puts `text` into the field as if it were typed: the map and the readout follow, and `onValueChange` fires when the point the text reads changes. |
+| `focus(): void` | Moves focus to the field. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves from the field to the copy button, which is in the tab order once the text reads as a point. |
+| Enter / Space | On the copy button: copies the coordinates as the readout shows them. |
+
+## Accessibility
+
+- The field is a native text input with a visible label. `aria-describedby` points at the readout below it, or at the error message while the text is invalid.
+- Text that cannot be read sets `aria-invalid` on blur and shows "Use latitude, longitude, for example 48.8566, 2.3522" in the destructive colour. The same message is the input's custom validity, so a surrounding form does not submit.
+- A polite live region announces the point in the readout's notation once typing pauses for 0.7 seconds, the error message on blur, and "Coordinates copied".
+- The copy button is a native button named "Copy coordinates". It is disabled until the text reads as a point.
+- The map and its canvases are `aria-hidden`; the readout below the field carries the same information as text.
+- With `name`, two hidden inputs submit the point: `${name}-lat` and `${name}-lon`, in decimal degrees at full precision, empty while there is no point. The visible text field has no name. `required` sets the native `required` attribute, unreadable text sets a custom validity, and a form reset restores `defaultValue`.
+- Reduced motion: the lines appear at their positions without springs or afterimages, the bracket appears without snapping in, and there is no ping, spark or border flash. The readout's digits and hemisphere letters change without rolling or flipping, the land does not fade in, and invalid text is marked without the shake.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-soft`, `--lumesec-glint`, `--lumesec-shine`, `--destructive`, `--background`, `--card`, `--muted`, `--muted-foreground`, `--foreground`, `--border` and `--input`.
+
+## Notes
+
+- The field reads signed decimal pairs separated by a comma, space, semicolon or slash (`48.8566, 2.3522`, `-22.9068 -43.1729`), hemisphere letters or words before or after each number (`N 48.8566 E 2.3522`), degrees, minutes and seconds with ° ′ ″ ' " or d m s (`35°41′22″N 139°41′30″E`), degrees with decimal minutes (`40 42.768 N 74 0.36 W`), and decimal commas when they are unambiguous (`48,8566; 2,3522`). Letters that say longitude came first swap the pair.
+- Half-typed text already moves the map: when only the first part is readable it counts as latitude, or as longitude when it carries E or W. `onValueChange` reports null until the whole text reads as a point.
+- The readout below the field uses the other notation than the text: degrees, minutes and seconds under decimal text, decimal degrees under DMS text. Its digits roll in the direction of change and each hemisphere letter flips over when the sign changes. The copy button copies the readout as shown.
+- The map is a 112 × 56 px equirectangular view of the whole world with land dots every 2.5 px. Below 340 px of width the map moves under the field and fills the width.
+- The parallel and the meridian each ride a spring (stiffness 300, damping 0.75) and slide in from the map centre when their axis becomes known. A line moving faster than 120 px/s leaves three afterimages. When both lines have settled, the crossing locks: a 9 px bracket snaps in from 1.6 times its size and a ring of light runs through the land dots within 10 px. A lock that follows a change in the text also flashes the field's border and sends a few sparks past the map's edge.
+- An empty field is valid unless `required`. Invalid text is marked on blur, and the mark clears on the next edit.
+- The root carries `data-state`: `empty`, `partial` (one axis read), `complete` or `invalid`, for styling around the field.
+
+<RelatedComponents tag="geo-coordinate" />

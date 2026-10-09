@@ -1,0 +1,37 @@
+{
+  "summary": "Split button with a primary action and a menu of alternatives; choosing an item rolls its label into the main button.",
+  "attributes": [
+    { "name": "items", "type": "string", "default": "Deploy to production|Ships to everyone after checks;Deploy to staging|Internal testers only;Create preview|A unique URL for this branch;Schedule deploy…|Pick a time tonight", "description": "Menu entries separated by `;`, each `Label|Description` with an optional description; entries without a label are skipped. The first entry starts selected. Observed: a change rebuilds the menu and keeps the selection when its label is still there." },
+    { "name": "menu-label", "type": "string", "default": "More options", "description": "Accessible name of the caret button that opens the menu. Observed." }
+  ],
+  "events": [
+    { "name": "action", "detail": "{ value: string }", "description": "Fires when the main button is clicked. `value` is the selected item's label." },
+    { "name": "select", "detail": "{ value: string }", "description": "Fires when an item is chosen from the menu. `value` is its label." }
+  ],
+  "methods": [
+    { "signature": "toggle(force?: boolean)", "description": "Opens or closes the menu: `true` opens, `false` closes, no argument toggles. Opening focuses the selected item." }
+  ],
+  "properties": [
+    { "name": "items", "type": "{ label: string; desc: string }[]", "readonly": true, "description": "The parsed `items`." }
+  ],
+  "keyboard": [
+    { "keys": "ArrowDown", "action": "On the caret button: open the menu and focus the selected item." },
+    { "keys": "ArrowDown / ArrowUp", "action": "In the menu: move focus to the next or previous item, wrapping." },
+    { "keys": "Home / End", "action": "In the menu: move focus to the first or last item." },
+    { "keys": "Escape", "action": "In the menu: close it and return focus to the caret button." },
+    { "keys": "Tab", "action": "In the menu: close it and move focus on." }
+  ],
+  "accessibility": [
+    "The caret button has `aria-haspopup=\"menu\"`, `aria-expanded`, `aria-controls` and an `aria-label` from `menu-label`.",
+    "The menu has `role=\"menu\"`; items are buttons with `role=\"menuitemradio\"`, `aria-checked` on the current choice and `tabindex=\"-1\"`.",
+    "Choosing an item closes the menu and returns focus to the caret button. A pointer press outside the element also closes the menu.",
+    "Effects are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion, the button's drifting noise stops, menu rows appear without the sweep, the highlight jumps between rows and the label changes without rolling.",
+  "slots": [],
+  "notes": [
+    "The host carries an `open` attribute while the menu is open, usable for styling. Setting it yourself does not open the menu; call `toggle()`.",
+    "The menu is absolutely positioned below the button, up to 320px wide, and overlaps the content that follows.",
+    "The main button is at least 200px wide and 46px tall."
+  ]
+}

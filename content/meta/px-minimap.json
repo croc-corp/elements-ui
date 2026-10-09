@@ -1,0 +1,28 @@
+{
+  "summary": "Syntax-coloured pixel minimap beside a code view with the visible window outlined; search hits pulse in the margin and dragging scrolls.",
+  "attributes": [],
+  "events": [],
+  "methods": [
+    { "signature": "find(query: string)", "description": "Highlights every line containing `query` (case-insensitive), marks it in the minimap and shows it in the search box." },
+    { "signature": "next()", "description": "Scrolls to the next match, wrapping around." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "Enter (in the search box)", "action": "Jump to the next match." }
+  ],
+  "accessibility": [
+    "The search field is a `type=\"search\"` input with `aria-label=\"Find in file\"`; the match count is an `aria-live=\"polite\"` region.",
+    "The code view is a focusable (`tabindex=\"0\"`) `role=\"region\"` with `aria-label=\"Sample code\"`, so it can be scrolled with the keyboard.",
+    "The minimap canvas is a pointer shortcut and is hidden from assistive technology (`aria-hidden`); the code view itself is focusable and scrolls with the keyboard."
+  ],
+  "motion": "With reduced motion, jumps scroll instantly instead of smoothly and the match markers stop pulsing.",
+  "slots": [],
+  "notes": [
+    "The code is 140 lines of generated sample JavaScript; there is no attribute for your own source. The search box starts with `flush`.",
+    "The code view and minimap are 220px tall; the minimap is 66px wide."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The code is generated sample JavaScript; only the search query can be set with `find()`."
+  }
+}

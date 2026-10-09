@@ -1,0 +1,53 @@
+{
+  "summary": "Media card with a generated dithered landscape whose ridges shift at different depths as the card tilts toward the pointer.",
+  "attributes": [
+    {
+      "name": "hue",
+      "type": "number",
+      "default": "262",
+      "description": "Base hue in degrees for the sky and ridges. Observed."
+    },
+    {
+      "name": "seed",
+      "type": "string",
+      "default": "valley",
+      "description": "Seed for the ridge shapes. Observed."
+    },
+    {
+      "name": "tags",
+      "type": "string",
+      "default": "Generative,Dither,Parallax",
+      "description": "Comma-separated tag chips; an empty value shows none. Observed."
+    },
+    {
+      "name": "alt",
+      "type": "string",
+      "default": "Pixel landscape illustration",
+      "description": "Accessible name of the landscape canvas. Observed."
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The landscape canvas has `role=\"img\"` with `aria-label` from `alt`.",
+    "Title and description are slotted text.",
+    "The card has no link, button or focus target of its own."
+  ],
+  "motion": "With reduced motion the card does not tilt and the landscape does not drift; the canvas redraws only on pointer movement.",
+  "slots": [
+    {
+      "name": "title",
+      "description": "Card title. Falls back to `Pixel Valley`."
+    },
+    {
+      "name": "(default)",
+      "description": "Description. Falls back to a sample sentence."
+    }
+  ],
+  "notes": [
+    "Without reduced motion the canvas redraws every frame while the card is visible.",
+    "Stars twinkle in the sky only in the dark theme."
+  ]
+}

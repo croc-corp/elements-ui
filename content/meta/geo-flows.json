@@ -1,0 +1,59 @@
+{
+  "kind": "react",
+  "summary": "Traffic between regions as dotted curves whose rows and particle rate follow throughput; selecting a region isolates its flows and rolls its totals.",
+  "props": [
+    { "name": "regions", "type": "readonly FlowRegion[]", "default": "12 demo regions", "description": "The regions on the map: `{ id, label, lat, lon }`. Regions with a repeated id or a non-finite coordinate are skipped." },
+    { "name": "flows", "type": "readonly RegionFlow[]", "default": "14 demo flows", "description": "Traffic between regions: `{ from, to, down, up }` with region ids and throughput in `unit`. `down` runs from `from` to `to`, `up` the other way. Flows that name an unknown region or carry no traffic are skipped; an empty array shows an empty map." },
+    { "name": "value", "type": "string | null", "default": "-", "description": "Selected region id (controlled), or null for none. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "string | null", "default": "null", "description": "Selected region when uncontrolled." },
+    { "name": "onValueChange", "type": "(value: string | null) => void", "default": "-", "description": "Called with the region id when a region is selected, and with null when the selection is cleared." },
+    { "name": "unit", "type": "string", "default": "\"Gbps\"", "description": "Unit of `down` and `up`, shown after the totals and used in the accessible names." },
+    { "name": "format", "type": "(value: number) => string", "default": "one decimal", "description": "Formats the totals and the throughput in the map's accessible name. The default gives one decimal with grouping, for example `1,204.5`." },
+    { "name": "maxParticles", "type": "number", "default": "400", "description": "Most particles in flight at once. When the cap is reached the oldest particle is dropped. 0 turns particles off." },
+    { "name": "projection", "type": "\"equalEarth\" | \"equirectangular\"", "default": "\"equalEarth\"", "description": "Map projection. The map is cropped to 50° S to 72° N with its central meridian at 10° E." },
+    { "name": "live", "type": "boolean", "default": "true", "description": "Lets the demo flows drift by up to 12 % every 3 s while the map is on screen. Has no effect when `flows` or `regions` is given." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Tab", "action": "Moves to the region markers, which share one tab stop, then to the clear button of the selection chip." },
+    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "action": "Moves focus to the nearest marker in that direction on the map." },
+    { "keys": "Enter / Space", "action": "Selects the focused region, or clears the selection when it is already selected." },
+    { "keys": "Escape", "action": "Clears the selection." }
+  ],
+  "accessibility": [
+    "Each region marker is a `button` with `aria-pressed`, named by the region's `label`. The markers form one roving tab stop.",
+    "The map has `role=\"img\"` and an `aria-label` that gives the number of regions and the three largest flows with their downstream and upstream throughput.",
+    "The totals are DOM text. A polite live region announces the selected region's inbound and outbound totals when the selection changes, not when the data changes.",
+    "The chip's clear button is named \"Clear selection: \" plus the label. After clearing, focus moves to that region's marker.",
+    "Where markers overlap on small maps, a tap on a dot goes to the marker whose centre is nearest; a tap on a label goes to its own region.",
+    "The canvases are `aria-hidden`."
+  ],
+  "motion": "With reduced motion there are no particles, ping or halo: the number of dot rows carries the throughput, selection and data changes apply at once, and the totals swap without rolling.",
+  "notes": [
+    "Downstream curves use `--lumesec` and bend to the left of their direction of travel; upstream curves use `--lumesec-info` and bend to the other side, so the two directions of a flow separate.",
+    "A curve has 1 + round(2 × √(throughput / largest throughput)) rows of dots, so 1 to 3. Particles start at random along a Poisson process of 1.2 + 10 × throughput / largest particles per second and travel at constant speed.",
+    "With nothing selected, In is the sum of every `down` and Out the sum of every `up`. With a region selected, In is the traffic arriving there (`down` of flows to it plus `up` of flows from it) and Out the traffic leaving it.",
+    "Selecting a region lights its flows from the region outward behind an uneven front, collapses every other flow to a hairline and stops its particles, pings the land around the region and lights the land under it as its traffic arrives.",
+    "When `flows` changes, rows and particle rates spring to the new values; added flows grow out of their origin and removed ones retract into it.",
+    "Flows that cross the map's edge at 170° W continue from the other edge.",
+    "The map's height follows from its width, so set only the width. Below 480 px only the selected region's label shows and the selection chip moves to its own row. Labels that do not fit are hidden; the markers keep their names.",
+    "The animation runs only while the map is on screen. Colours follow the theme and are re-read when it changes."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your regions as `regions` and your traffic as `flows`. Without either the component shows 12 demo cloud regions and 14 demo flows with invented throughput that drifts every 3 s; `regions` alone shows an empty map."
+  },
+  "tokens": ["--lumesec", "--lumesec-shine", "--lumesec-info", "--foreground", "--muted-foreground", "--muted", "--card", "--border"],
+  "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { GeoFlows, type FlowRegion, type RegionFlow } from \"@/components/lumesec/geo-flows\";\n\nconst regions: FlowRegion[] = [\n  { id: \"fra\", label: \"Frankfurt\", lat: 50.11, lon: 8.68 },\n  { id: \"iad\", label: \"Ashburn\", lat: 39.04, lon: -77.49 },\n  { id: \"sin\", label: \"Singapore\", lat: 1.35, lon: 103.82 },\n];\n\nexport function Example({ flows }: { flows: RegionFlow[] }) {\n  const [region, setRegion] = React.useState<string | null>(null);\n  return <GeoFlows regions={regions} flows={flows} value={region} onValueChange={setRegion} unit=\"Gbps\" />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      { "name": "projection", "kind": "enum", "options": ["equalEarth", "equirectangular"], "default": "equalEarth" },
+      { "name": "live", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "maxParticles", "kind": "number", "options": null, "default": "400" },
+      { "name": "unit", "kind": "string", "options": null, "default": "Gbps" }
+    ]
+  }
+}

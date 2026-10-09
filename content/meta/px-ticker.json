@@ -1,0 +1,24 @@
+{
+  "summary": "LED marquee with glowing text over a grid of unlit dots, coloured up and down arrows and soft edges; hovering eases it to a stop.",
+  "attributes": [],
+  "events": [],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    { "keys": "Space / Enter", "action": "Pause or resume the ticker." }
+  ],
+  "accessibility": [
+    "The board is focusable with `role=\"marquee\"` and `aria-label=\"Status ticker\"`. The ticker items are text; the repeated copies that fill the loop are `aria-hidden`.",
+    "Click or tap also toggles the pause; while paused the label reads \"Status ticker, paused\"."
+  ],
+  "motion": "With reduced motion, the ticker does not scroll.",
+  "slots": [],
+  "notes": [
+    "The ticker items are built-in demo data (model, latency, errors, agents, uptime); there is no attribute for your own text.",
+    "Hover pausing applies to mouse pointers only. The board is 50px tall and scrolls with a CSS transform; the text is set in the monospace font."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The ticker items (model, latency, errors, agents, uptime) are invented; nothing can be set."
+  }
+}

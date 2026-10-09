@@ -1,0 +1,53 @@
+{
+  "kind": "react",
+  "summary": "Search field with fuzzy matching, highlighted letters and a pixel highlight that springs between results; `hotkey` makes \"/\" focus it.",
+  "props": [
+    { "name": "items", "type": "readonly string[]", "default": "demo list", "description": "Entries to search. Defaults to a demo list of 14 settings pages." },
+    { "name": "value", "type": "string", "default": "-", "description": "Controlled query. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "string", "default": "\"\"", "description": "Initial query when uncontrolled." },
+    { "name": "hotkey", "type": "boolean", "default": "false", "description": "Pressing \"/\" anywhere on the page focuses the field, unless focus is already in an input, textarea, select or editable element, or a modifier key is held." },
+    { "name": "label", "type": "string", "default": "\"Search settings\"", "description": "Accessible name of the field." },
+    { "name": "placeholder", "type": "string", "default": "\"Search settings\"", "description": "Placeholder of the field." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the component, disables the field and turns off the hotkey." },
+    { "name": "onValueChange", "type": "(query: string) => void", "default": "-", "description": "Called with the query on every edit." },
+    { "name": "onSearch", "type": "(query: string, count: number) => void", "default": "-", "description": "Called after each search with the query and the total number of matches. Typing searches 280 ms after the last keystroke." },
+    { "name": "onSelect", "type": "(item: string) => void", "default": "-", "description": "Called when a result is chosen with Enter or a click." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "/", "action": "Focus the field from anywhere on the page (with `hotkey`)." },
+    { "keys": "ArrowDown / ArrowUp", "action": "Move the highlight, wrapping at the ends." },
+    { "keys": "Enter", "action": "Choose the highlighted result. Pressed before the pending search ran, it searches first and chooses the best match." },
+    { "keys": "Escape", "action": "Clear the query and show the suggestions again (when there is a query)." }
+  ],
+  "accessibility": [
+    "The input has `role=\"combobox\"`, `aria-expanded=\"true\"`, `aria-controls` pointing at the results, `aria-autocomplete=\"list\"` and `aria-activedescendant` on the highlighted result.",
+    "Results are a `role=\"listbox\"` labelled \"Results\" with `role=\"option\"` items and `aria-selected`; the no-match row has `aria-disabled=\"true\"`. The \"Enter\" hint on the highlighted row is `aria-hidden`, so it is not part of the option's name.",
+    "A status line in an `aria-live=\"polite\"` region announces the result count and the chosen entry.",
+    "The highlight canvas is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the search runs without the 280 ms delay and the scanning line, results appear without sliding in, and the highlight jumps instead of springing.",
+  "notes": [
+    "An empty query shows the first five entries as suggestions and the status \"Suggested · 14 entries\" (the number of all entries); a query shows up to six matches, best first, with matched letters wrapped in `<mark>`.",
+    "The result list stays visible; there is no popup to open or close.",
+    "Not a form control: it has no `name` and submits nothing.",
+    "The \"/\" key hint in the field shows only with `hotkey`. Changing `items` searches them again with the current query."
+  ],
+  "tokens": ["--foreground", "--muted-foreground", "--card", "--border", "--lumesec", "--lumesec-shine"],
+  "data": {
+    "kind": "input",
+    "note": "Pass your entries as `items`, and `label` and `placeholder` to describe them. Without `items` it searches 14 invented settings pages."
+  },
+  "usage": "import { PxSearch } from \"@/components/lumesec/px-search\";\n\nexport function Example() {\n  return (\n    <PxSearch\n      hotkey\n      label=\"Search pages\"\n      placeholder=\"Search pages\"\n      items={[\"Billing\", \"API keys\", \"Webhooks\", \"Team members\"]}\n      onSelect={(item) => console.log(\"open\", item)}\n    />\n  );\n}\n",
+  "playground": {
+    "props": { "hotkey": true },
+    "controls": [
+      { "name": "hotkey", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "placeholder", "kind": "string", "options": null, "default": "Search settings" },
+      { "name": "defaultValue", "kind": "string", "options": null, "default": "" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "react",
+  "summary": "Two-step delete button: the first click arms it and a pixel fuse burns down; a second click inside the window confirms with a burst.",
+  "props": [
+    { "name": "children", "type": "string", "default": "\"Delete project\"", "description": "Idle label." },
+    { "name": "timeout", "type": "number", "default": "3", "description": "Seconds the armed state lasts before it cancels." },
+    { "name": "confirmText", "type": "string", "default": "\"Click again to confirm\"", "description": "Label while armed." },
+    { "name": "doneText", "type": "string", "default": "\"Deleted\"", "description": "Label shown for 2 s after confirming." },
+    { "name": "onConfirm", "type": "() => void", "default": "-", "description": "Called on the second click inside the window." },
+    { "name": "onCancel", "type": "() => void", "default": "-", "description": "Called when the armed state ends without confirming: Escape, the button losing focus, or the timeout." }
+  ],
+  "extends": "span",
+  "ref": { "type": "HTMLSpanElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Enter / Space", "action": "Arm, then confirm while armed." },
+    { "keys": "Escape", "action": "Cancel while armed." }
+  ],
+  "accessibility": [
+    "A native `<button>`; its accessible name is the visible label.",
+    "The label is an `aria-live=\"polite\"` region, so the confirm prompt and the done text are announced.",
+    "Moving focus away while armed cancels.",
+    "The fuse is drawn on an `aria-hidden` canvas; the remaining time is not exposed."
+  ],
+  "motion": "With reduced motion labels swap without rolling and the confirm burst is skipped; the fuse still burns down.",
+  "notes": [
+    "After confirming, clicks are ignored for 2 s, then the button returns to idle. The root carries `data-state=\"armed\"` or `data-state=\"done\"` in those states.",
+    "The root is a wrapper `span` around the button, so the sparks can fly past the button's edges.",
+    "The timeout runs on a timer, so it also expires while the button is off screen or the tab is hidden."
+  ],
+  "tokens": ["--destructive", "--border", "--card", "--muted-foreground", "--lumesec", "--lumesec-foreground", "--lumesec-shine"],
+  "usage": "import { PxConfirm } from \"@/components/lumesec/px-confirm\";\n\nexport function Example() {\n  return (\n    <PxConfirm doneText=\"Project deleted\" onConfirm={() => console.log(\"deleted\")}>\n      Delete project\n    </PxConfirm>\n  );\n}\n",
+  "playground": {
+    "props": { "children": "Delete project", "doneText": "Project deleted" },
+    "controls": [
+      { "name": "children", "kind": "string", "options": null, "default": "Delete project" },
+      { "name": "timeout", "kind": "number", "options": null, "default": "3" },
+      { "name": "confirmText", "kind": "string", "options": null, "default": "Click again to confirm" },
+      { "name": "doneText", "kind": "string", "options": null, "default": "Project deleted" }
+    ]
+  }
+}

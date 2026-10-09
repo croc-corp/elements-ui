@@ -1,0 +1,30 @@
+{
+  "summary": "Pixel notification bell that swings with a lagging clapper and pops its badge on new items; clicking it clears the badge in a spray of pixels.",
+  "attributes": [
+    { "name": "count", "type": "number", "default": "2", "description": "Unread count, rounded to a whole number of at least 0. Changing it updates the count without ringing the bell." }
+  ],
+  "events": [
+    { "name": "notify", "detail": "{ unread: number }", "description": "Fires on each new notification with the new unread count." },
+    { "name": "read", "detail": "{}", "description": "Fires when everything is marked as read, from a click on the bell or from `clearAll()`." }
+  ],
+  "methods": [
+    { "signature": "notify()", "description": "Adds one unread notification, rings the bell and fires `notify`." },
+    { "signature": "clearAll()", "description": "Marks everything as read and fires `read`. Does nothing when the count is already zero." }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The bell is a native button whose `aria-label` includes the count (\"Notifications, 2 unread. Mark all as read\" or \"Notifications, all caught up\").",
+    "The \"N unread\" / \"All caught up\" text is an `aria-live=\"polite\"` region.",
+    "\"Notify\" is a native button."
+  ],
+  "motion": "With reduced motion, the bell and clapper do not swing and the clearing sparks are skipped; the sound waves and badge pop still play.",
+  "slots": [],
+  "notes": [
+    "The badge count is drawn in the monospace font and shows `9+` above nine. The bell canvas is a fixed 180 by 116px."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass the unread count as `count` and call `notify()` or `clearAll()`. Without it the bell starts at 2 unread."
+  }
+}

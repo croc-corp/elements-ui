@@ -1,0 +1,64 @@
+---
+title: "Sidebar nav"
+description: "Sidebar nav with pixel icons and count badges, a hover block and an active bar that slides to the current item."
+tag: px-nav
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-nav" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-nav" />
+
+## Installation
+
+<Install tag="px-nav" />
+
+## Usage
+
+<Usage tag="px-nav" />
+
+## Behaviour
+
+Takes a list of links and adds pixel icons, count badges, a soft hover block and an active bar that slides to the current item.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<nav>` (`React.ComponentProps<"nav">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Controlled `href` of the current item. Use with `onValueChange`. |
+| `defaultValue` | `string` | `first item` | `href` of the initially current item when uncontrolled. |
+| `items` | `readonly PxNavItem[]` | — | The links: `{ href: string; label: string; icon?: PxNavIcon; badge?: string }`. `href` also identifies the item in `value`. |
+| `onValueChange` | `(value: string) => void` | — | Called with the `href` of a link the user clicks without a modifier key, when it is not already current. |
+
+### Ref
+
+`ref` points at the root `HTMLElement`.
+
+## Accessibility
+
+- Links are native `<a>` elements inside a `<nav>`; pass `aria-label` to name the nav.
+- The current link has `aria-current="page"`.
+- Icons are drawn on an `aria-hidden` canvas. A badge is text inside its link, so assistive technology reads it as part of the link's name.
+- Focusing a link shows the same hover block as the pointer.
+- Reduced motion: the active bar and the hover block jump instead of springing.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--foreground`, `--muted-foreground`, `--destructive` and `--lumesec-foreground`.
+
+## Notes
+
+- `icon` picks a built-in icon: `home`, `chat`, `folder`, `chart`, `gear`, `users` or `bell`. `badge` shows a small badge with that text at the end of the row, in the mono font: red, or accent on the current item.
+- Clicking a link whose `href` starts with `#` does not navigate; other links navigate as usual after being marked current. A click with Ctrl, ⌘, Shift or Alt is left to the browser (new tab, new window, download) and does not change the current item. To route on the client, handle `onValueChange` or replace the `<a>` with your router's link.
+
+<RelatedComponents tag="px-nav" />

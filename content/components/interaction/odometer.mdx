@@ -1,0 +1,80 @@
+---
+title: "Odometer stepper"
+description: "Number stepper where every digit is its own rolling wheel; supports press-and-hold, sideways drag, the scroll wheel and the keyboard."
+tag: ui-odometer
+updated: "2026-09-25"
+---
+
+<ComponentPreview tag="ui-odometer" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="ui-odometer" />
+
+## Installation
+
+<Install tag="ui-odometer" />
+
+## Usage
+
+<Usage tag="ui-odometer" />
+
+## Behaviour
+
+Every digit is its own wheel, and changes ripple from the right like a mechanical counter. Columns and the thousands separator slide in when the number gets longer.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number` | — | Controlled value, rounded to the nearest multiple of `step` and clamped to `min`/`max`. Use with `onValueChange`. |
+| `defaultValue` | `number` | `8192` | Initial value when uncontrolled. |
+| `min` | `number` | `1024` | Lowest value. |
+| `max` | `number` | `65536` | Highest value. Also sets the number of digit wheels. A `max` below `min` is treated as `min`. |
+| `step` | `number` | `1024` | Increment per step, greater than 0 (anything else falls back to 1). |
+| `label` | `string` | `"Max output tokens"` | Caption above the number and the spinbutton's `aria-label`. |
+| `unit` | `string` | — | Optional monospace caption under the number; hidden when empty. |
+| `onValueChange` | `(value: number) => void` | — | Called on every value change from the buttons, drag, wheel or keys. |
+| `onValueCommit` | `(value: number) => void` | — | Called with each change from the buttons, wheel or keys, and once when a drag on the number ends, even if the value did not change. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowUp / ArrowRight | Increase by one step. |
+| ArrowDown / ArrowLeft | Decrease by one step. |
+| PageUp / PageDown | Change by ten steps, stopping at `max` or `min`. |
+| Home / End | Jump to `min` / `max`. |
+
+## Accessibility
+
+- The number has `role="spinbutton"`, `tabindex="0"`, `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and an `aria-label` from `label`.
+- The minus and plus buttons are native buttons labelled "Decrease" and "Increase". They get `aria-disabled="true"` at the limits but stay clickable.
+- `unit` is not part of the spinbutton's accessible value.
+- The digit wheels are `aria-hidden`; the spinbutton's `aria-valuetext` carries the number as shown, for example "8,192".
+- Reduced motion: the digit wheels, column widths and separators change without transitions, and pushing past a limit does not shake.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--card`, `--muted`, `--border` and `--lumesec`.
+
+## Notes
+
+- Holding a button repeats after 380 ms and speeds up; after 14 repeats it moves four steps at a time.
+- Dragging sideways on the number changes it by one step per 12 px. The scroll wheel over the number changes one step per tick and does not scroll the page; sideways scrolling is ignored.
+- Digits are grouped with a comma every three places. The display is built for non-negative whole numbers.
+- Changing `value` from outside rolls the wheels without calling either callback.
+
+<RelatedComponents tag="ui-odometer" />

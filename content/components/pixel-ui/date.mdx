@@ -1,0 +1,82 @@
+---
+title: "Date picker"
+description: "Month-grid date picker for single dates or ranges, with a springing pixel selection block, a dotted range band and a mark on today."
+tag: px-date
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-date" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-date" />
+
+## Installation
+
+<Install tag="px-date" />
+
+## Usage
+
+<Usage tag="px-date" />
+
+## Behaviour
+
+A month grid with a pixel selection block that springs between days, a dotted band across ranges and a mark on today. Weeks start on Monday; leave out `range` for a single date.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Controlled selection: `YYYY-MM-DD`, or `YYYY-MM-DD/YYYY-MM-DD` with `range`. Use with `onValueChange`. A new value also shows its month. |
+| `defaultValue` | `string` | `""` | Initial selection when uncontrolled; it also sets the month shown. A form reset restores it. |
+| `range` | `boolean` | `false` | Pick a start and an end date instead of a single date. Switching it reads the selection from `value` again. |
+| `firstDay` | `PxDateWeekday` | `1` | First day of the week, from `0` (Sunday) to `6`. The default is Monday. |
+| `name` | `string` | — | Form field name. A range submits as `start/end` and stays empty until both ends are picked. |
+| `disabled` | `boolean` | `false` | Dims the calendar and disables its buttons. |
+| `onValueChange` | `(value: string) => void` | — | Called when a date is picked; in range mode only when the end date is picked. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight | Move to the previous / next day. |
+| ArrowUp / ArrowDown | Move to the previous / next week. |
+| Home / End | Move to the first / last day of the week. |
+| PageUp / PageDown | Move to the same day in the previous / next month, clamped to its length (31 January moves to 28 February). |
+| Shift+PageUp / Shift+PageDown | Move to the same day in the previous / next year, clamped the same way. |
+| Enter / Space | Pick the focused day. |
+
+## Accessibility
+
+- Days are native buttons with `role="gridcell"` in `role="row"` weeks inside a `role="grid"` container labelled by the month title.
+- Each day has an `aria-label` with the full date ("Saturday, 24 October 2026") and `aria-selected` for the selected start and end; today has `aria-current="date"`.
+- Roving tabindex: only the focused day is in the tab order. Moving past the edge of the month shows the next month and keeps focus on the new day.
+- The month title is an `aria-live="polite"` region; the arrow buttons are labelled "Previous month" and "Next month".
+- The weekday header and the selection canvas are `aria-hidden`.
+- With `name`, a hidden input submits `YYYY-MM-DD`, or `YYYY-MM-DD/YYYY-MM-DD` with `range`, which stays empty until both ends are picked. There is no validation. Form reset restores `defaultValue` and shows its month.
+- Reduced motion: the month grid swaps without sliding, the selection block jumps instead of springing, and the title and summary swap without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--card`, `--border`, `--muted`, `--lumesec` and `--lumesec-foreground`.
+
+## Notes
+
+- In range mode, picking a date before the start makes it the new start, and hovering after the start previews the band.
+- The Today button shows the current month and picks today. Today is read in the browser, so server markup carries no today mark; without a value the grid fills in after hydration.
+- The summary line, for example "20 Oct – Sat, 24 Oct 2026 · 4 nights", and all labels are in English. Dates use local time.
+- A range `value` written end first is put in order. Dates that do not exist, such as `2026-02-31`, are ignored.
+
+<RelatedComponents tag="px-date" />

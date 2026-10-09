@@ -1,0 +1,72 @@
+---
+title: "Live leaderboard"
+description: "Leaderboard: rows rank by score, overtaking rows slide past each other with trails, ranks roll, changes flash and the leader gets a ring; takes your rows or shows live demo teams."
+tag: hf-leaderboard
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-leaderboard" />
+
+<Callout title="Your data">
+
+Pass your rows as `data` (`{ name, value }`); they are ranked and re-ranked as you update them. Without it six demo teams receive random score increases. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-leaderboard" />
+
+## Installation
+
+<Install tag="hf-leaderboard" />
+
+## Usage
+
+<Usage tag="hf-leaderboard" />
+
+## Behaviour
+
+Scores tick up live; when a team overtakes another, rows slide past each other with green and red trails and the ranks roll. The leader gets a gold ring.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `Merged PRs this quarter` | Heading text. Observed. |
+| `data` | `data` | `readonly HfLeaderboardDatum[] (JSON)` | — | Rows as `{ name, value }` records, in any order; they are ranked by `value`, highest first. Observed: each change re-ranks the rows with the slide, trail and delta animations. Without it six demo teams receive random score increases. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `data` | `readonly HfLeaderboardDatum[] \| null` | The same rows as the `data` attribute, without JSON. Setting it re-ranks the rows; `null` returns to the demo teams. Reading it returns your rows in the order you gave them, or `null`. |
+
+## Accessibility
+
+- Rows are `role="listitem"` elements in a `role="list"`, each with an `aria-label` such as `1. Platform, 182`. An empty `data` array shows a single No data item.
+- Rank changes are not announced; there is no live region.
+- The Live button (demo only) is a toggle with `aria-pressed`, and its text switches between Live and Paused.
+- Bars, trails and the leader ring are drawn on an `aria-hidden` canvas.
+- Reduced motion: scores and ranks keep updating, but rows move without sliding, ranks and scores change without rolling, bars resize without easing, and there are no trails, sheen or leader ring.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg` and `--ui-muted`.
+
+## Notes
+
+- With `data` nothing is simulated and the Live button is hidden. Rows are matched across updates by `name`: a changed value shows `+n` or `−n` for 1.2 s (an increase also sweeps a sheen over the bar), new names get a row and missing names lose theirs.
+- Bars are scaled to the highest value; zero and negative values have no bar. Whole numbers are grouped (`1,204`), fractions show up to two decimals.
+- Without `data`, six built-in demo teams receive random score increases every 1.7 s. Updates pause while the element is off-screen or Live is off.
+- Rows are 40px apart and the list fills the width. `data` and `label` are observed.
+
+<RelatedComponents tag="hf-leaderboard" />

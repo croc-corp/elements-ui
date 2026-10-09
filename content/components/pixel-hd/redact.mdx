@@ -1,0 +1,80 @@
+---
+title: "PII redaction"
+description: "Shows text next to what a model would see, with names, emails, IBANs and phone numbers swapped for placeholders like EMAIL_1."
+tag: hf-redact
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-redact" />
+
+<Callout title="Your data">
+
+Pass your text as the element's text content and the names to redact as `names`. Without them a built-in sample is redacted. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-redact" />
+
+## Installation
+
+<Install tag="hf-redact" />
+
+## Usage
+
+<Usage tag="hf-redact" />
+
+## Behaviour
+
+Finds names, emails, IBANs and phone numbers and shows what the model would see instead. Placeholders resolve out of noise; switching off dissolves the chips back to the original text. Edit the text to try your own.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `names` | `names` | `string` | `Jane Doe` | Comma-separated names to redact, matched exactly and case-sensitively. |
+| `label` | `label` | `string` | `Before it leaves your device` | Heading text. Read once on connect. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ redacted: boolean, text: string }` | Fires on connect, when the Redact switch changes and 160 ms after the text is edited. `text` is the output pane: placeholders when `redacted` is `true`, the original otherwise. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `names` (read-only) | `string[]` | The parsed `names`. |
+
+## Accessibility
+
+- The Redact control is a button with `role="switch"` and `aria-checked`.
+- The input is a `<textarea>` inside a `<label>`, with `aria-label="Your text"`.
+- The output pane is not a live region. A visually hidden `aria-live="polite"` region announces the count, for example `3 items protected`, when it or the Redact switch changes.
+- Placeholder highlights are drawn on an `aria-hidden` canvas; the placeholders themselves are text.
+- Reduced motion: placeholders appear without resolving out of noise, switching off shows the original text without the dissolve, and the count changes without rolling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-font`, `--ui-mono`, `--ui-muted`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- The initial text is the element's text content, read once on connect; without it a built-in sample is used.
+- Detection is a demo: simple patterns for email addresses, IBANs and international phone numbers starting with `+`, plus the `names` list. It is not a complete PII detector, and it runs in the browser.
+- Placeholders are numbered per kind in order of appearance: `NAME_1`, `EMAIL_1`, `IBAN_1`, `PHONE_1`.
+- The two panes sit side by side when each can be 240px wide and stack otherwise.
+
+<RelatedComponents tag="hf-redact" />

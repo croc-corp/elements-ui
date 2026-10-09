@@ -1,0 +1,95 @@
+---
+title: "Location cell"
+description: "A world thumbnail with one point for table cells. Hover or focus it and a popover grows out of the point while the map inside zooms in on it."
+tag: geo-mini-map
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-mini-map" />
+
+<Callout title="Your data">
+
+Pass your place as `location` (`{ lat, lon, label?, detail?, timeZone? }`) and, for the distance row, a reference point as `from`. Without `location` the cell shows a demo location (Singapore). See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-mini-map" />
+
+## Installation
+
+<Install tag="geo-mini-map" />
+
+## Usage
+
+<Usage tag="geo-mini-map" />
+
+## Behaviour
+
+A 96 × 48 world thumbnail with one point, sized for table cells and list rows.
+
+Hover or focus it and a popover grows out of the point while the map inside dives toward it: finer land resolves outward from the point and a ring of dots pings where it lands. The place name, coordinates, local time and an optional distance appear as text. Thumbnails of one size share one baked lattice, so a table full of them stays light.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<button>` (`React.ComponentProps<"button">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `location` | `MiniMapLocation` | `Singapore (demo)` | The place: `{ lat, lon, label?, detail?, timeZone? }`. `label` titles the popover and starts the accessible name, `detail` is the line under it, and a valid IANA `timeZone` adds the local time. Missing fields are omitted. A latitude outside ±90° or a coordinate that is not finite shows the thumbnail without a point. |
+| `from` | `MiniMapReference` | — | Reference point for the distance row: `{ lat, lon, label? }`, read as 'From Frankfurt 7,406 km'. Without it the row is omitted. |
+| `open` | `boolean` | — | Controlled popover state. Use with `onOpenChange`. |
+| `defaultOpen` | `boolean` | `false` | Popover state when uncontrolled. |
+| `onOpenChange` | `(open: boolean) => void` | — | Called when hover, focus, a click, Escape or another opening popover opens or closes this one. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Thumbnail size: 72 × 36, 96 × 48 or 128 × 64 px, plus a 1 px border. |
+| `side` | `"auto" \| "top" \| "bottom"` | `"auto"` | Where the popover opens. `auto` opens above and flips below when the card does not fit above and there is more room below. |
+| `zoom` | `number` | `4` | Zoom of the popover map, clamped to 2 to 6. At 4 the map shows about 90° of longitude around the point. |
+| `unit` | `"km" \| "mi"` | `"km"` | Unit of the distance row and the scale bar. |
+| `tone` | `"accent" \| "info" \| "success" \| "warning" \| "destructive"` | `"accent"` | Colour of the point, the marker and its ring, for example `warning` for a sign-in from a new place. |
+
+### Ref
+
+`ref` points at the root `HTMLButtonElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the thumbnail. The popover opens at once and closes when focus leaves, unless it is pinned. |
+| Enter / Space | Pin the popover, or unpin and close it. |
+| Escape | Close the most recently opened popover. Focus stays on the thumbnail. |
+
+## Accessibility
+
+- The trigger is a native `button` with `aria-expanded`, `aria-controls` and `aria-pressed` for the pinned state.
+- Its accessible name is the place and its coordinates ('Tokyo, 35.6762° N, 139.6503° E'), so the cell makes sense without opening it. An `aria-label` you pass replaces it.
+- `aria-describedby` points at the popover's detail line and its local time and distance rows; ids you pass in `aria-describedby` are kept.
+- The popover is non-modal text in the top layer. It takes no focus and holds no controls.
+- Both canvases are `aria-hidden`. Every readable value (name, coordinates, time, distance, scale) is DOM text.
+- Focus shows a 2 px accent outline.
+- Reduced motion: the popover fades in over 120 ms at full size with the map already zoomed in, the text rows appear without sliding, numbers swap without rolling, and there is no resolution sweep or ring ping.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--border`, `--popover`, `--popover-foreground`, `--foreground`, `--muted-foreground`, `--lumesec`, `--lumesec-glint`, `--lumesec-info`, `--lumesec-success`, `--lumesec-warning` and `--destructive`.
+
+## Notes
+
+- Opening: the card grows out of the point on a spring (scale 0.04 to 1, with a slight overshoot). The map inside starts on the world and dives toward the point; finer land resolves outward from the point behind an uneven accent front, the point lands as a 4 px marker and a ring of dots pings around it. Closing shrinks the card back into the point on a faster spring.
+- Hover opens the popover after 120 ms; the pointer leaving both the thumbnail and the popover closes it after 150 ms. Focus opens it at once. A click, Enter or Space pins it, and pressing inside the popover pins it too. On touch, a tap toggles the pinned popover.
+- Only one unpinned popover is open per page: opening one closes the others. Pinned popovers stay until they are unpinned or closed with Escape. Pinning an open popover pings its point again.
+- The popover uses the Popover API (`popover="manual"`), so a table cell with `overflow: hidden` cannot clip it. It is centred over the point, kept 8 px inside the viewport, follows the thumbnail on scroll and resize, and closes when the thumbnail scrolls out of view. Without the Popover API it is a fixed card with `z-index: 50`.
+- The component renders the button and the popover as siblings. Clicks inside the popover do not bubble to row handlers around it.
+- With `disabled` the thumbnail neither opens nor pins: hover, focus and clicks are ignored.
+- Thumbnails of one size share a single baked lattice per pixel ratio and theme, so a long table draws one image per row. The zoom levels of a place are built once, while the hover delay runs, and cached for the page.
+- The local time is read after mount and formatted in the place's `timeZone`, never the viewer's. The scale bar gives a 1-2-5 distance at the point's latitude.
+- The land comes from the embedded world dataset at 0.5° resolution. Some coastal cities, Singapore among them, fall on water cells, so the marker can sit just off the dotted coast.
+
+<RelatedComponents tag="geo-mini-map" />

@@ -1,0 +1,35 @@
+{
+  "kind": "react",
+  "summary": "Circular pixel progress ring with the percentage counting up in its centre; it turns green and throws a few sparks when it reaches 100%.",
+  "props": [
+    { "name": "value", "type": "number | null", "default": "-", "description": "Progress from 0 to 100, clamped; the ring animates to it. `null` or leaving it out shows a spinning arc." },
+    { "name": "size", "type": "number", "default": "120", "description": "Diameter in pixels." },
+    { "name": "children", "type": "React.ReactNode", "default": "-", "description": "Caption under the ring; it also labels the progress bar." },
+    { "name": "onComplete", "type": "() => void", "default": "-", "description": "Called when `value` reaches 100, and again each time it drops below 100 and returns, also while the ring is off screen. Not called when the ring starts at 100." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "The ring is a `div` with `role=\"progressbar\"`, `aria-valuemin=\"0\"`, `aria-valuemax=\"100\"` and `aria-valuenow`, which is left out when indeterminate.",
+    "The canvas and the percentage inside it are `aria-hidden`; the number is the visible form of `aria-valuenow`.",
+    "With a caption the ring is labelled by it through `aria-labelledby`; without one its `aria-label` is \"Progress\".",
+    "There is no live region."
+  ],
+  "motion": "With reduced motion the ring and the number jump to the value, no sparks fire at 100%, and the indeterminate arc holds still.",
+  "notes": [
+    "The ring starts at the first `value` instead of filling up from 0.",
+    "The percentage is text in the mono font with tabular figures, 27% of `size` high, and counts along with the fill. It turns green at 100%; the indeterminate ring shows no number."
+  ],
+  "tokens": ["--lumesec", "--lumesec-shine", "--lumesec-success", "--foreground", "--muted-foreground"],
+  "usage": "import { PxRing } from \"@/components/lumesec/px-ring\";\n\nexport function Example() {\n  return <PxRing value={72}>Weekly usage</PxRing>;\n}\n",
+  "playground": {
+    "props": { "value": 72, "children": "Weekly usage" },
+    "controls": [
+      { "name": "value", "kind": "number", "options": null, "default": "72" },
+      { "name": "size", "kind": "number", "options": null, "default": "120" },
+      { "name": "children", "kind": "string", "options": null, "default": "Weekly usage" }
+    ]
+  }
+}

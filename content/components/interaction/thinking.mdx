@@ -1,0 +1,76 @@
+---
+title: "Thinking indicator"
+description: "Thinking indicator with a pixel wave and a rolling seconds counter; when finished it reads \"Thought for Ns\" and expands to show the reasoning."
+tag: ui-thinking
+updated: "2026-09-25"
+---
+
+<ComponentPreview tag="ui-thinking" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="ui-thinking" />
+
+## Installation
+
+<Install tag="ui-thinking" />
+
+## Usage
+
+<Usage tag="ui-thinking" />
+
+## Behaviour
+
+A pixel wave and a shimmering label while the model works, with a seconds counter that rolls on every tick. When it finishes, the glyph draws a check and the label rolls to “Thought for 6s”, which opens the reasoning.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `done` | `boolean` | — | Whether thinking has finished (controlled). Use with `onDoneChange`. When it turns true, the glyph draws a check, the label rolls to "Thought for Ns" and the reasoning becomes expandable. Turning it false returns to thinking; the counter keeps running from the last start. |
+| `defaultDone` | `boolean` | `false` | Whether it starts finished, when uncontrolled. A component that starts done reads "Thought for 1s". |
+| `onDoneChange` | `(done: boolean) => void` | — | Called when `finish()` or `restart()` changes the state. |
+| `onDone` | `(seconds: number) => void` | — | Called when the state changes to done, with the whole seconds elapsed (at least 1). Not called when the component mounts already done. |
+| `children` | `React.ReactNode` | — | The reasoning, shown in a collapsible panel once done. |
+
+### Ref
+
+`ref` receives a `UiThinkingHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `finish(): void` | Finishes thinking. Same as setting `done`. |
+| `restart(): void` | Resets the counter to 0 and returns to the thinking state, collapsing the reasoning. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space | On the label, once done: show or hide the reasoning. |
+
+## Accessibility
+
+- The label is a native `<button>` with `aria-expanded` and `aria-controls` pointing at the reasoning panel. It is disabled while thinking and enabled once done; activating it shows or hides the reasoning.
+- The collapsed reasoning is `inert`, so it is neither read nor reachable with Tab until it opens.
+- The check icon and the pixel-wave canvas are `aria-hidden`.
+- There is no live region, so the counter and the finished label are not announced.
+- Reduced motion: the pixel wave holds at a fixed brightness, the label shimmer stops, and the label and counter swap text without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--foreground`, `--muted` and `--muted-foreground`.
+
+## Notes
+
+- Seconds count from mount, or from `restart()`. The counter runs on a timer, so it stays correct while the component is off screen; the wave pauses there.
+- The labels "Thinking" and "Thought for Ns" are built in English.
+
+<RelatedComponents tag="ui-thinking" />

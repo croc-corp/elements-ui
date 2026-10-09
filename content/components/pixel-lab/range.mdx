@@ -1,0 +1,75 @@
+---
+title: "Histogram range"
+description: "Two-thumb response-time filter over a pixel histogram; columns fill as they enter the range and the run count rolls as you drag."
+tag: px-range
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-range" />
+
+<Callout title="Demo data" type="warning">
+
+The response-time histogram and its run counts are invented; only the selected range is a real control. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-range" />
+
+## Usage
+
+<Usage tag="px-range" />
+
+## Behaviour
+
+A two-thumb filter over a pixel histogram. Columns that enter the range light up from the bottom like filling glasses, columns that leave drain away, and the run count rolls as you drag.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ min: number, max: number }` | Fires when a drag ends and on each handled key press. Values are in milliseconds, in steps of 100; `max` of 4000 means open-ended (4,000+ ms). |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `set(which: "lo" \| "hi", index: number)` | Moves a thumb to bucket `index` (0 to 40, 100 ms each), rounded and clamped so the thumbs never cross. Does not fire `change`. An unknown thumb or an index that is not a finite number is ignored. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowUp | Move the focused thumb up by 100 ms. |
+| ArrowLeft / ArrowDown | Move the focused thumb down by 100 ms. |
+| Home / End | Move the focused thumb as far down or up as it goes. |
+
+## Accessibility
+
+- Each thumb is a native button with `role="slider"`, labelled "Minimum response time" and "Maximum response time".
+- `aria-valuenow` (milliseconds) and `aria-valuetext` (for example "500 ms") are kept up to date; `aria-valuemin` and `aria-valuemax` give each thumb's range, which ends one bucket before the other thumb.
+- The run count is an `aria-live="polite"` region.
+- The histogram canvas has `role="img"` and `aria-label="Histogram of response times"`.
+- Reduced motion: columns switch on and off at once instead of filling and draining, and the labels change without the roll.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono`, `--ui-muted` and `--ui-track`.
+
+## Notes
+
+- The histogram is built-in demo data: 40 buckets of 100 ms with a fixed distribution. The initial range is 500 to 1,700 ms and the thumbs stay at least one bucket apart.
+- Pressing the track moves the nearer thumb to that point.
+
+<RelatedComponents tag="px-range" />

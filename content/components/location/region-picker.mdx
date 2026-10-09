@@ -1,0 +1,94 @@
+---
+title: "Region picker"
+description: "Pick a deployment region from a list with a dot map. The reticle travels along the great circle, magnifying the land dots it passes."
+tag: geo-region-picker
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-region-picker" />
+
+<Callout title="Your data">
+
+Pass your regions as `regions` and the user's location as `from`. Without `regions` the picker shows 16 demo regions; nothing about the viewer's location is read or inferred. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-region-picker" />
+
+## Installation
+
+<Install tag="geo-region-picker" />
+
+## Usage
+
+<Usage tag="geo-region-picker" />
+
+## Behaviour
+
+Pick a deployment region from a list with a map above it. The selection reticle travels to the new region along the great-circle path with a comet tail, and the land dots under it are magnified as it passes.
+
+Give it a `from` location and every region shows an estimated round trip, with a dotted line from that location to the region you point at. It submits with forms through a hidden input.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Selected region id (controlled). Use with `onValueChange`. An id that is not in `regions` shows no reticle and no checked radio. |
+| `defaultValue` | `string` | `"eu-central"` | Selected region id when uncontrolled. A form reset restores it. |
+| `onValueChange` | `(value: string) => void` | — | Called with the region id when the user picks a region. |
+| `regions` | `readonly GeoRegion[]` | `DEMO_REGIONS` | Regions in list order: `{ id, label, city, timeZone, lat, lon }`. Regions with a repeated id or a non-finite position are skipped. Without it the picker shows the 16 demo regions. An empty array shows "No regions". |
+| `from` | `LatLon & { label?: string }` | — | Location the latency hints are measured from. It shows on the map as a small accent square with `label` (default `From`) beside it. Without it there are no hints and no lines. |
+| `stretch` | `number` | `1.5` | Path stretch over the fibre minimum for the hints: a hint is round(2 × distance / 204 km per ms × `stretch`). |
+| `layout` | `"both" \| "map" \| "list"` | `"both"` | `both`: the map above the list. `map`: the map above a compact wrap of chips. `list`: the list without the map. |
+| `name` | `string` | — | Form field name of the hidden input that carries the selected region id. |
+| `required` | `boolean` | `false` | Sets `aria-required` on the radiogroup. |
+| `disabled` | `boolean` | `false` | Dims the picker, ignores the pointer and takes the radios out of the tab order. |
+| `label` | `string` | `"Region"` | Visible heading of the list, and the accessible name of the radiogroup. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves focus to the selected radio, or to the first one when nothing is selected. |
+| ArrowDown / ArrowUp | Selects the next or previous region in the list, wrapping at the ends. |
+| ArrowRight / ArrowLeft | Selects the nearest region east or west on the map. Past the last region that way it continues around the globe. |
+| Home / End | Selects the first or last region. |
+| Space / Enter | Selects the focused region. |
+
+## Accessibility
+
+- The list (or the chips with `layout="map"`) is a `role="radiogroup"` labelled by the visible heading, with one tab stop. Each region is a button with `role="radio"` and `aria-checked`.
+- Each radio's accessible name is the label and the city, plus the hint when `from` is set, such as "eu-west, Dublin, about 21 ms round trip".
+- `required` sets `aria-required` and `disabled` sets `aria-disabled` on the group.
+- The map, its canvases and its 24 px pointer targets are `aria-hidden`; the targets are not in the tab order. Picking a region on the map moves focus to its radio.
+- Keyboard focus on a radio draws the same line from `from` as pointing at it.
+- With `name` and a selected region, a hidden input submits the region id under that name. Nothing is submitted while no region is selected; `required` does not block submission. A form reset restores `defaultValue`.
+- Reduced motion: the reticle jumps to the new region with no comet, sparks or bracket snap, the lens stays at its resting strength, the line from `from` appears without drawing on, and the hints and the header value change without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--card`, `--muted`, `--muted-foreground`, `--foreground` and `--border`.
+
+## Notes
+
+- The map is an Equal Earth strip from 50° S to 72° N, drawn from the embedded world data with no map tiles. Regions outside that band sit on the nearest edge.
+- The reticle's progress is a spring whose stiffness falls with distance (180 × √(5000 / max(km, 500))), so long trips take longer. A trip across the 180° meridian leaves one edge of the map and comes back in at the other. A change during travel starts the new trip from where the reticle is.
+- The lens is a 28 px disc around the reticle: land dots inside it are pushed outward, enlarged and tinted toward the accent, most at the centre. It is strongest in flight and stays on the selected region at 0.6 strength.
+- The hints are estimates from the great-circle distance, not measurements. With `layout="map"` the chips have no hints; the header shows the selected region's hint instead.
+- Regions close together share the map's pointer targets; a press picks the region nearest to the pointer.
+
+<RelatedComponents tag="geo-region-picker" />

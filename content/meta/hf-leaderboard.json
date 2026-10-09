@@ -1,0 +1,45 @@
+{
+  "summary": "Leaderboard: rows rank by score, overtaking rows slide past each other with trails, ranks roll, changes flash and the leader gets a ring; takes your rows or shows live demo teams.",
+  "attributes": [
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Merged PRs this quarter",
+      "description": "Heading text. Observed."
+    },
+    {
+      "name": "data",
+      "type": "json",
+      "tsType": "readonly ElementModule.HfLeaderboardDatum[]",
+      "description": "Rows as `{ name, value }` records, in any order; they are ranked by `value`, highest first. Observed: each change re-ranks the rows with the slide, trail and delta animations. Without it six demo teams receive random score increases."
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [
+    {
+      "name": "data",
+      "type": "readonly HfLeaderboardDatum[] | null",
+      "description": "The same rows as the `data` attribute, without JSON. Setting it re-ranks the rows; `null` returns to the demo teams. Reading it returns your rows in the order you gave them, or `null`."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "Rows are `role=\"listitem\"` elements in a `role=\"list\"`, each with an `aria-label` such as `1. Platform, 182`. An empty `data` array shows a single No data item.",
+    "Rank changes are not announced; there is no live region.",
+    "The Live button (demo only) is a toggle with `aria-pressed`, and its text switches between Live and Paused.",
+    "Bars, trails and the leader ring are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion scores and ranks keep updating, but rows move without sliding, ranks and scores change without rolling, bars resize without easing, and there are no trails, sheen or leader ring.",
+  "slots": [],
+  "notes": [
+    "With `data` nothing is simulated and the Live button is hidden. Rows are matched across updates by `name`: a changed value shows `+n` or `−n` for 1.2 s (an increase also sweeps a sheen over the bar), new names get a row and missing names lose theirs.",
+    "Bars are scaled to the highest value; zero and negative values have no bar. Whole numbers are grouped (`1,204`), fractions show up to two decimals.",
+    "Without `data`, six built-in demo teams receive random score increases every 1.7 s. Updates pause while the element is off-screen or Live is off.",
+    "Rows are 40px apart and the list fills the width. `data` and `label` are observed."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your rows as `data` (`{ name, value }`); they are ranked and re-ranked as you update them. Without it six demo teams receive random score increases."
+  }
+}

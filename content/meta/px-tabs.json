@@ -1,0 +1,41 @@
+{
+  "kind": "react",
+  "summary": "Tabs whose underline is forty pixels that stream from the old tab to the new one, with panels that slide in from the side.",
+  "props": [
+    { "name": "value", "type": "string", "default": "-", "description": "Controlled selected tab (an item's `value`, or its `label`). Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "string", "default": "first tab", "description": "Initially selected tab when uncontrolled." },
+    { "name": "items", "type": "readonly PxTabsItem[]", "default": "-", "description": "The tabs: `{ value?: string; label: string; count?: string | number; content: React.ReactNode }`. `value` defaults to `label`; `count` adds a small badge after the label." },
+    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called when the user selects another tab by click or key." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowLeft", "action": "Select and focus the next / previous tab, wrapping." },
+    { "keys": "Home / End", "action": "Select and focus the first / last tab." }
+  ],
+  "accessibility": [
+    "Tabs are native buttons with `role=\"tab\"` and `aria-selected` in a `role=\"tablist\"`, with roving tabindex: only the selected tab is in the tab order.",
+    "Each tab points to its panel with `aria-controls`. Panels have `role=\"tabpanel\"`, are labelled by their tab through `aria-labelledby` and have `tabindex=\"0\"`; inactive panels are `hidden`.",
+    "The underline canvas is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the underline jumps to the new tab and the panel appears without sliding in.",
+  "notes": [
+    "Every panel stays mounted; inactive ones are hidden, so their state survives switching tabs.",
+    "Selecting the tab that is already selected does nothing."
+  ],
+  "tokens": ["--lumesec", "--lumesec-shine", "--foreground", "--muted-foreground", "--border"],
+  "usage": "import { PxTabs } from \"@/components/lumesec/px-tabs\";\n\nexport function Example() {\n  return (\n    <PxTabs\n      items={[\n        { label: \"Overview\", content: \"Usage is steady this week.\" },\n        { label: \"Activity\", count: 12, content: \"12 events since Monday.\" },\n        { label: \"Settings\", content: \"Default model, retention and notifications.\" },\n      ]}\n    />\n  );\n}\n",
+  "playground": {
+    "props": {
+      "items": [
+        { "label": "Overview", "content": "Usage is steady this week. Most runs come from the Research project." },
+        { "label": "Activity", "count": 12, "content": "12 events since Monday, including 3 deploys and 2 new members." },
+        { "label": "Settings", "content": "Default model, retention and notification settings live here." }
+      ]
+    },
+    "controls": [
+      { "name": "defaultValue", "kind": "enum", "options": ["Overview", "Activity", "Settings"], "default": "Overview" }
+    ]
+  }
+}

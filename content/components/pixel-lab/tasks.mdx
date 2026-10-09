@@ -1,0 +1,78 @@
+---
+title: "Pixel checklist"
+description: "Pixel checklist where checking fills the box from the centre and draws a fizzing strike-through; finishing the list runs a green wave."
+tag: px-tasks
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-tasks" />
+
+<Callout title="Your data">
+
+Pass your tasks in `items`. Without it the list shows demo tasks. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-tasks" />
+
+## Installation
+
+<Install tag="px-tasks" />
+
+## Usage
+
+<Usage tag="px-tasks" />
+
+## Behaviour
+
+Checking a task fills its box from the centre, draws a check, then sends a strike-through across the text with a fizzing head. Finishing the list turns the bar green and runs a wave along it.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `items` | `items` | `string` | `Draft the launch post\|Record the demo video\|Review the pricing page\|Ship v2.14 to production` | Task labels separated by `\|`; empty entries are skipped. Changing it rebuilds the list with every task unchecked. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ done: number, total: number }` | Fires each time a task is checked or unchecked. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `toggle(index: number)` | Checks or unchecks the task at `index` and fires `change`. An index without a task is ignored. |
+
+## Accessibility
+
+- Each task is a native button with `role="checkbox"` and `aria-checked`.
+- The "N of M done" counter is an `aria-live="polite"` region.
+- The pixel canvas is decorative (`aria-hidden="true"`) and ignores pointer input.
+- Reduced motion: boxes and strike-throughs appear at once, without the fizzing head, sparks or the completion wave.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--lumesec-success` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-ok`.
+
+## Notes
+
+- With the built-in demo tasks the first one starts checked; custom `items` all start unchecked.
+- The host gets a `data-all` attribute when every task is checked.
+
+<RelatedComponents tag="px-tasks" />

@@ -1,0 +1,31 @@
+{
+  "summary": "Focus timer drawn as a ring of 60 pixels; one breaks loose each interval and drops into a sand pile, and reset flies them back.",
+  "attributes": [
+    { "name": "duration", "type": "number", "default": "60", "description": "Session length in seconds, split evenly across the 60 ring pixels; a missing, invalid or non-positive value uses 60. A change applies immediately, also to a running session." }
+  ],
+  "events": [
+    { "name": "start", "detail": "{}", "description": "Fires when the timer starts or resumes." },
+    { "name": "pause", "detail": "{}", "description": "Fires when the timer is paused." },
+    { "name": "reset", "detail": "{}", "description": "Fires when the timer is reset." },
+    { "name": "done", "detail": "{}", "description": "Fires when the last pixel falls and the session is complete." }
+  ],
+  "methods": [
+    { "signature": "toggle()", "description": "Starts, pauses or resumes the timer; after completion it resets instead." },
+    { "signature": "reset()", "description": "Stops the timer and flies the fallen pixels back into the ring." }
+  ],
+  "properties": [
+    { "name": "duration", "type": "number", "readonly": false, "description": "Session length in seconds; reflects the `duration` attribute, `60` when it is missing, invalid or not positive." }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The remaining time and the status (Ready, Focus, Paused, Session complete) are text in a `role=\"timer\"` element with `aria-live=\"off\"`, so the countdown is not announced on every tick.",
+    "The ring canvas is decorative and hidden from assistive technology.",
+    "Start/Pause/Resume and Reset are native buttons."
+  ],
+  "motion": "With reduced motion, the next pixel no longer trembles before it drops and the completion sparks are skipped; falling and returning pixels still animate.",
+  "slots": [],
+  "notes": [
+    "The timer keeps time from the clock, so a session runs on in a hidden tab or off screen and `done` fires on time; the ring catches up when it is drawn again.",
+    "The canvas is a fixed 224 by 232px; the time sits in the centre of the ring in the monospace font."
+  ]
+}

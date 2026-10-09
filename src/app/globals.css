@@ -1,0 +1,902 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Screen Line tokens, shared with securegrid.dev */
+:root {
+  --header-height: 56px;
+  --subnav-height: 48px;
+  --banner-height: 36px;
+  --container: 1360px;
+  --dot-pitch: 8px;
+  --radius-sm: 4px;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.3, 1.3, 0.5, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #09090b;
+  --primary: #09090b;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717b;
+  --card: #ffffff;
+  --surface: #fafafa;
+  --border: #e4e4e7;
+  --line: #eeeef0;
+  --input: #e4e4e7;
+  --focus-ring: #71717b;
+  --success: #00a14b;
+  --destructive: #e40014;
+  --electric: #6219f3;
+  --figure-caption: #71717b;
+  --dot-ink: rgb(9 9 11 / 0.13);
+  --selection: #09090b;
+  --selection-foreground: #fafafa;
+  --shadow-kbd: inset 0 0 1px rgb(0 0 0 / 0.1);
+  --shadow-drop-sm: 0 1px 2px rgb(0 0 0 / 0.08);
+  --shadow-pop: 0 0 0 1px rgb(9 9 11 / 0.06), 0 16px 40px -16px rgb(9 9 11 / 0.22);
+  --code-bg: #fafafa;
+  --mark-identifier: #c8800d;
+
+  /* shadcn tokens the components use, mapped onto Screen Line */
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  --secondary-foreground: #09090b;
+  --accent: #f4f4f5;
+  --accent-foreground: #09090b;
+  --ring: #71717b;
+
+  /* LumeSec accent tokens (the lumesec-theme registry item) */
+  --lumesec: #6219f3;
+  --lumesec-foreground: #fafafa;
+  --lumesec-soft: #a685ff;
+  --lumesec-shine: #3f12b0;
+  --lumesec-glint: #c9bdff;
+  --lumesec-success: #00a14b;
+  --lumesec-warning: #d97706;
+  --lumesec-info: #1e40af;
+
+  /* Public theming contract read by every LumeSec element */
+  --ui-page: #fafafa;
+  --ui-surface: #ffffff;
+  --ui-raised: #f4f4f5;
+  --ui-border: #e4e4e7;
+  --ui-border-strong: #d4d4d8;
+  --ui-border-subtle: #ececee;
+  --ui-fg: #09090b;
+  --ui-fg2: #52525c;
+  --ui-muted: #71717b;
+  --ui-faint: #9f9fa9;
+  --ui-track: #f4f4f5;
+  --ui-accent: #6219f3;
+  --ui-accent-soft: #a685ff;
+  --ui-accent-text: #6219f3;
+  --ui-accent-bg: #f2ecff;
+  --ui-accent-border: #c9afff;
+  --ui-on-accent: #fafafa;
+  --ui-shine: #3f12b0;
+  --ui-glint: #c9bdff;
+  --ui-ok: #00a14b;
+  --ui-danger: #e5484d;
+  --ui-warn: #d97706;
+  --ui-info: #1e40af;
+  --ui-font: var(--font-geist-sans), "Geist", ui-sans-serif, system-ui, sans-serif;
+  --ui-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, monospace;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #09090b;
+  --foreground: #fafafa;
+  --primary: #fafafa;
+  --primary-foreground: #09090b;
+  --secondary: #27272a;
+  --muted: #27272a;
+  --muted-foreground: #9f9fa9;
+  --card: #18181b;
+  --surface: #111113;
+  --border: #27272a;
+  --line: #1c1c1e;
+  --input: rgb(255 255 255 / 0.15);
+  --success: #00c758;
+  --destructive: #ff6568;
+  --electric: #8654fb;
+  --figure-caption: #8b8b94;
+  --dot-ink: rgb(255 255 255 / 0.07);
+  --selection: #fafafa;
+  --selection-foreground: #09090b;
+  --shadow-kbd: inset 0 0 1px rgb(255 255 255 / 0.2);
+  --shadow-drop-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-pop: 0 0 0 1px rgb(255 255 255 / 0.06), 0 24px 60px -20px rgb(0 0 0 / 0.7);
+  --code-bg: #111113;
+  --mark-identifier: #eeb154;
+
+  --card-foreground: #fafafa;
+  --popover: #18181b;
+  --popover-foreground: #fafafa;
+  --secondary-foreground: #fafafa;
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
+  --ring: #9f9fa9;
+
+  --lumesec: #8654fb;
+  --lumesec-foreground: #fafafa;
+  --lumesec-soft: #a685ff;
+  --lumesec-shine: #ffffff;
+  --lumesec-glint: #ffffff;
+  --lumesec-success: #00c758;
+  --lumesec-warning: #eeb154;
+  --lumesec-info: #4ab8e8;
+
+  --ui-page: #09090b;
+  --ui-surface: #18181b;
+  --ui-raised: #27272a;
+  --ui-border: #27272a;
+  --ui-border-strong: #3f3f46;
+  --ui-border-subtle: #1f1f22;
+  --ui-fg: #fafafa;
+  --ui-fg2: #d4d4d8;
+  --ui-muted: #9f9fa9;
+  --ui-faint: #71717b;
+  --ui-track: #09090b;
+  --ui-accent: #8654fb;
+  --ui-accent-soft: #a685ff;
+  --ui-accent-text: #a685ff;
+  --ui-accent-bg: rgb(134 84 251 / 0.16);
+  --ui-accent-border: rgb(134 84 251 / 0.4);
+  --ui-on-accent: #fafafa;
+  --ui-shine: #ffffff;
+  --ui-glint: #ffffff;
+  --ui-ok: #00c758;
+  --ui-danger: #ff6568;
+  --ui-warn: #eeb154;
+  --ui-info: #4ab8e8;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-line: var(--line);
+  --color-input: var(--input);
+  --color-electric: var(--electric);
+  --color-success: var(--success);
+  --color-destructive: var(--destructive);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+  --color-lumesec: var(--lumesec);
+  --color-lumesec-foreground: var(--lumesec-foreground);
+  --color-lumesec-soft: var(--lumesec-soft);
+  --color-lumesec-shine: var(--lumesec-shine);
+  --color-lumesec-glint: var(--lumesec-glint);
+  --color-lumesec-success: var(--lumesec-success);
+  --color-lumesec-warning: var(--lumesec-warning);
+  --color-lumesec-info: var(--lumesec-info);
+  --color-caption: var(--figure-caption);
+  --font-sans: var(--font-geist-sans), "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, "SF Mono", monospace;
+  --ease-spring: var(--ease-spring);
+  --ease-expo: var(--ease-expo);
+}
+
+/* Base */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: calc(var(--header-height) + 24px);
+    background: var(--background);
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    min-height: 100dvh;
+  }
+  ::selection {
+    background: var(--selection);
+    color: var(--selection-foreground);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  :where(code, kbd, samp, pre) {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Scrollbars that match the frame (layered, so utilities can override) */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--foreground) 18%, transparent) transparent;
+  }
+}
+
+/* Screen Line primitives */
+.sl-page {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: 8px;
+}
+[data-layout="full"] .sl-page {
+  max-width: none;
+}
+
+/* A section with rails left and right and full-bleed hairlines top and bottom. */
+.sl-panel {
+  position: relative;
+  border-inline: 1px solid var(--border);
+}
+.sl-panel::before,
+.sl-panel::after {
+  content: "";
+  position: absolute;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  pointer-events: none;
+}
+.sl-panel::before {
+  top: 0;
+  background: var(--line);
+}
+.sl-panel::after {
+  bottom: 0;
+  background: var(--border);
+}
+.sl-panel.sl-open-top::before {
+  display: none;
+}
+
+.sl-rule {
+  position: relative;
+}
+.sl-rule::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background: var(--line);
+  pointer-events: none;
+}
+
+/* Hatched band between sections */
+.sl-stripe {
+  position: relative;
+  height: 32px;
+  border-inline: 1px solid var(--border);
+}
+.sl-stripe::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: -100vw;
+  width: 200vw;
+  pointer-events: none;
+  --hatch: color-mix(in oklab, var(--border) 70%, transparent);
+  background-image: repeating-linear-gradient(315deg, var(--hatch) 0, var(--hatch) 1px, transparent 0, transparent 50%);
+  background-size: 10px 10px;
+}
+
+.sl-dot-grid {
+  background-image: radial-gradient(var(--dot-ink) 1px, transparent 0);
+  background-size: var(--dot-pitch) var(--dot-pitch);
+}
+
+/* Dashed construction lines that run past the figure */
+.sl-dash-x {
+  position: absolute;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background: linear-gradient(to right, var(--border) 4px, transparent 4px) 0 0 / 6px 1px;
+  pointer-events: none;
+}
+.sl-dash-y {
+  position: absolute;
+  top: -160px;
+  height: calc(100% + 320px);
+  width: 1px;
+  background: linear-gradient(to bottom, var(--border) 4px, transparent 4px) 0 0 / 1px 6px;
+  pointer-events: none;
+}
+
+/* Crosshair marks at the corners of a figure */
+.sl-cross {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  pointer-events: none;
+}
+.sl-cross::before,
+.sl-cross::after {
+  content: "";
+  position: absolute;
+  background: var(--muted-foreground);
+  opacity: 0.55;
+}
+.sl-cross::before {
+  left: 4px;
+  top: 0;
+  width: 1px;
+  height: 9px;
+}
+.sl-cross::after {
+  top: 4px;
+  left: 0;
+  height: 1px;
+  width: 9px;
+}
+
+.sl-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding-inline: 5px;
+  border-radius: var(--radius-sm);
+  background: color-mix(in oklab, var(--foreground) 6%, transparent);
+  box-shadow: var(--shadow-kbd);
+  color: var(--muted-foreground);
+  font: 500 11px/1 var(--font-sans);
+}
+
+.sl-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.sl-eyebrow > [data-sep] {
+  width: 16px;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Motion */
+@keyframes sl-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sl-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes sl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes sl-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* hidden only once JavaScript is running, so content is always readable without it */
+.js .reveal:not([data-shown]) {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.reveal {
+  transition:
+    opacity 0.7s var(--ease-expo),
+    transform 0.7s var(--ease-expo);
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+
+.page-enter {
+  animation: sl-fade-up 0.5s var(--ease-expo) both;
+}
+
+/* Word-by-word headline rise */
+.rise > span {
+  display: inline-block;
+  animation: sl-rise 0.9s var(--ease-expo) both;
+  animation-delay: calc(var(--w, 0) * 70ms + 80ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Code */
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+  background-color: transparent !important;
+}
+[data-theme="dark"] .shiki,
+[data-theme="dark"] .shiki span {
+  color: var(--shiki-dark);
+}
+.code-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+.code-scroll pre {
+  margin: 0;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.7;
+  tab-size: 2;
+  counter-reset: line;
+  min-width: max-content;
+}
+.code-scroll pre code {
+  display: grid;
+}
+.code-scroll pre .line {
+  min-height: 1lh;
+}
+.code-scroll pre .line.highlighted {
+  background: color-mix(in oklab, var(--electric) 9%, transparent);
+  box-shadow: inset 2px 0 0 var(--electric);
+  margin-inline: -16px;
+  padding-inline: 14px 16px;
+}
+
+/* Prose (MDX) */
+.prose {
+  font-size: 15.5px;
+  line-height: 1.75;
+  color: color-mix(in oklab, var(--foreground) 84%, var(--muted-foreground));
+}
+.prose > * + * {
+  margin-top: 1.1em;
+}
+/* every rule below skips anything inside .not-prose */
+.prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 2.6em;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+  scroll-margin-top: calc(var(--header-height) + var(--subnav-height) + 24px);
+}
+.prose :where(h3):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 2em;
+  font-size: 18px;
+  line-height: 1.35;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+  scroll-margin-top: calc(var(--header-height) + var(--subnav-height) + 24px);
+}
+.prose :where(h4):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 1.6em;
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.prose :where(h2, h3):not(:where(.not-prose, .not-prose *)) + * {
+  margin-top: 0.8em;
+}
+.prose :where(strong):not(:where(.not-prose, .not-prose *)) {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.prose :where(a:not([data-plain])):not(:where(.not-prose, .not-prose *)) {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--foreground) 30%, transparent);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s;
+}
+.prose :where(a:not([data-plain]):hover):not(:where(.not-prose, .not-prose *)) {
+  text-decoration-color: var(--foreground);
+}
+.prose :where(ul, ol):not(:where(.not-prose, .not-prose *)) {
+  padding-left: 1.25em;
+}
+.prose :where(ul):not(:where(.not-prose, .not-prose *)) {
+  list-style: none;
+}
+.prose :where(ul > li):not(:where(.not-prose, .not-prose *)) {
+  position: relative;
+}
+.prose :where(ul > li):not(:where(.not-prose, .not-prose *))::before {
+  content: "";
+  position: absolute;
+  left: -1.05em;
+  top: 0.78em;
+  width: 5px;
+  height: 1px;
+  background: var(--muted-foreground);
+}
+.prose :where(ol):not(:where(.not-prose, .not-prose *)) {
+  list-style: decimal;
+}
+.prose :where(ol > li):not(:where(.not-prose, .not-prose *))::marker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.prose :where(li + li):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 0.4em;
+}
+.prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *)) {
+  font-size: 0.86em;
+  padding: 0.12em 0.38em;
+  border-radius: var(--radius-sm);
+  background: color-mix(in oklab, var(--foreground) 6%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--foreground) 6%, transparent);
+  color: var(--foreground);
+  white-space: nowrap;
+}
+.prose :where(hr):not(:where(.not-prose, .not-prose *)) {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin-block: 2.5em;
+}
+.prose :where(blockquote):not(:where(.not-prose, .not-prose *)) {
+  border-left: 2px solid var(--border);
+  padding-left: 1em;
+  color: var(--muted-foreground);
+}
+.prose :where(table):not(:where(.not-prose *)) {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.prose :where(th):not(:where(.not-prose *)) {
+  text-align: left;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.prose :where(td):not(:where(.not-prose *)) {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.prose :where(td:first-child, th:first-child):not(:where(.not-prose *)) {
+  padding-left: 0;
+}
+.prose :where(td code):not(:where(.not-prose *)) {
+  white-space: nowrap;
+}
+
+/* Live previews: the stages LumeSec elements are shown on */
+.stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 40px 24px;
+  min-height: 300px;
+  font-family: var(--font-sans);
+  color: var(--foreground);
+}
+/* Lab markup gets a default width; React demos size their own root (w-full max-w-*) */
+.stage[data-layout="center"]:not([data-kind="react"]) > * {
+  width: min(380px, 100%);
+}
+.stage[data-layout="center"] > .panel {
+  width: min(400px, 100%);
+}
+.stage[data-layout="center"] > .wide,
+.stage[data-layout="center"] > .panel.wide {
+  width: min(660px, 100%);
+}
+.stage[data-layout="fill"],
+.stage[data-layout="wide"] {
+  display: block;
+  padding: 24px;
+}
+.stage[data-layout="fill"] > * {
+  width: 100%;
+  min-width: 0;
+  max-width: 720px;
+  margin-inline: auto;
+}
+.stage[data-layout="wide"] > * {
+  width: 100%;
+  min-width: 0;
+  max-width: 980px;
+  margin-inline: auto;
+}
+.stage[data-compact] {
+  min-height: 0;
+  padding: 28px 16px;
+}
+.stage.col {
+  flex-direction: column;
+}
+.stage .panel {
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 14px 34px -20px rgb(0 0 0 / 0.4);
+}
+.stage .panel.stack {
+  display: grid;
+  gap: 16px;
+}
+.stage .panel hr {
+  border: 0;
+  border-top: 1px solid var(--ui-border);
+  margin: 0;
+}
+.stage .row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.stage .col {
+  display: grid;
+  gap: 14px;
+  width: min(380px, 100%);
+}
+.stage .composer {
+  width: min(340px, 100%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 16px;
+  padding: 8px 8px 8px 16px;
+  color: var(--muted-foreground);
+  box-shadow: 0 12px 30px -18px rgb(0 0 0 / 0.35);
+}
+.stage .composer span {
+  flex: 1;
+  min-width: 0;
+  font-size: 14.5px;
+}
+.stage .ctl {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.stage :where(.ctl button, .demo-btn) {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--ui-surface);
+  color: var(--foreground);
+}
+.stage :where(.ctl button:hover, .demo-btn:hover) {
+  border-color: color-mix(in srgb, var(--ui-accent) 50%, var(--border));
+}
+.stage form {
+  display: grid;
+  gap: 14px;
+}
+
+/* No transitions while the theme tokens swap */
+[data-switching] *,
+[data-switching] *::before,
+[data-switching] *::after {
+  transition: none !important;
+}
+
+/* Custom elements fade in once their module has defined them (React demos are rendered as they are) */
+.elements-stage:not([data-kind="react"]) :not(:defined) {
+  opacity: 0;
+}
+.elements-stage:not([data-kind="react"]) > *,
+.elements-stage:not([data-kind="react"]) :defined {
+  transition: opacity 0.45s var(--ease-out);
+}
+
+/* Live previews inside grid cards: wide demos render at full size, then scale to fit */
+.stage.card-scaled {
+  zoom: var(--card-zoom, 0.56);
+  inset: 0 auto auto 0;
+  /* with standard CSS zoom, percentages resolve against the unzoomed card, so 100% fills it exactly */
+  width: 100%;
+  height: 100%;
+  padding: 28px;
+  overflow: hidden;
+}
+.stage[data-layout="center"].elements-stage:not(.card-scaled) {
+  padding: 20px 16px;
+}
+.stage[data-compact][data-layout="center"] > * {
+  zoom: 0.9;
+}
+
+/* Demo wrappers used by the lab gallery markup, scoped to previews */
+.elements-stage {
+  --ink: var(--foreground);
+  --line: var(--border);
+}
+.elements-stage .snippet {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 12px;
+  padding: 8px 8px 8px 14px;
+  max-width: 100%;
+}
+.elements-stage .snippet code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.elements-stage .icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--ui-surface);
+  color: var(--foreground);
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+.elements-stage .icon-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.elements-stage .avatars {
+  display: flex;
+}
+.elements-stage .avatars px-avatar + px-avatar {
+  margin-left: -10px;
+}
+.elements-stage .metrics {
+  width: min(380px, 100%);
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.elements-stage .metrics td {
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--ui-border);
+}
+.elements-stage .metrics td.n {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+/* the output line of a demo (#compOut, #splOut, #dlgOut) */
+.elements-stage [id$="Out"] {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--muted-foreground);
+  margin: 0;
+  min-height: 3em;
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.elements-stage .cnt {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-foreground);
+  text-align: center;
+  min-height: 1.4em;
+  margin: 0;
+}
+
+/* FAQ: animate the details content where the browser supports it */
+.faq-item::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size 0.5s var(--ease-expo),
+    content-visibility 0.5s allow-discrete;
+}
+.faq-item[open]::details-content {
+  block-size: auto;
+}
+:root {
+  interpolate-size: allow-keywords;
+}
+
+/* The principles stage shows one component large */
+.principle-stage .stage[data-layout="center"] > * {
+  zoom: 1.3;
+}
+
+/* Grid columns never grow past the frame on small screens */
+.sl-page .grid > * {
+  min-width: 0;
+}
+
+/* Full-bleed hairlines run 200vw wide; clip them at the viewport (clip keeps sticky working) */
+html,
+body {
+  overflow-x: clip;
+}

@@ -1,0 +1,32 @@
+{
+  "summary": "Product tour over a mock app: dithered dimming, a rounded cut-out with a comet on its edge, and a step card that moves between targets.",
+  "attributes": [],
+  "events": [
+    { "name": "step", "detail": "{ index: number, title: string }", "description": "Fires each time a step is shown." },
+    { "name": "finish", "detail": "{}", "description": "Fires when the tour ends through Done, Skip or Escape." }
+  ],
+  "methods": [
+    { "signature": "go(index: number)", "description": "Shows step `index` (0 to 3); 4 or more ends a running tour. Negative values are ignored." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowLeft", "action": "While the tour runs: next or previous step." },
+    { "keys": "Escape", "action": "While the tour runs: end the tour." }
+  ],
+  "accessibility": [
+    "The mock interface is a `role=\"region\"` labelled `Product tour demo`; its buttons are outside the tab order.",
+    "The step card has `role=\"dialog\"`, named by its title and described by its text, and `aria-live=\"polite\"`; it is not modal.",
+    "Focus moves to Next on every step and to the start button when the tour ends. Back is disabled on the first step.",
+    "The dimming and cut-out are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion, the dimming appears at once, the cut-out jumps to each target without easing and the comet is not drawn; the step card still slides.",
+  "slots": [],
+  "notes": [
+    "The mock app and its four steps are built in. The tour targets elements inside the component and cannot point at your page.",
+    "The frame is 236px tall. Next reads Done on the last step. The cut-out and the card follow their target when the element is resized during a tour."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The mock app and its four tour steps are built in; nothing can be set."
+  }
+}

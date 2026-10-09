@@ -1,0 +1,33 @@
+{
+  "summary": "Shows text next to what a model would see, with names, emails, IBANs and phone numbers swapped for placeholders like EMAIL_1.",
+  "attributes": [
+    { "name": "names", "type": "string", "default": "Jane Doe", "description": "Comma-separated names to redact, matched exactly and case-sensitively." },
+    { "name": "label", "type": "string", "default": "Before it leaves your device", "description": "Heading text. Read once on connect." }
+  ],
+  "events": [
+    { "name": "change", "detail": "{ redacted: boolean, text: string }", "description": "Fires on connect, when the Redact switch changes and 160 ms after the text is edited. `text` is the output pane: placeholders when `redacted` is `true`, the original otherwise." }
+  ],
+  "methods": [],
+  "properties": [
+    { "name": "names", "type": "string[]", "readonly": true, "description": "The parsed `names`." }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The Redact control is a button with `role=\"switch\"` and `aria-checked`.",
+    "The input is a `<textarea>` inside a `<label>`, with `aria-label=\"Your text\"`.",
+    "The output pane is not a live region. A visually hidden `aria-live=\"polite\"` region announces the count, for example `3 items protected`, when it or the Redact switch changes.",
+    "Placeholder highlights are drawn on an `aria-hidden` canvas; the placeholders themselves are text."
+  ],
+  "motion": "With reduced motion, placeholders appear without resolving out of noise, switching off shows the original text without the dissolve, and the count changes without rolling.",
+  "slots": [],
+  "notes": [
+    "The initial text is the element's text content, read once on connect; without it a built-in sample is used.",
+    "Detection is a demo: simple patterns for email addresses, IBANs and international phone numbers starting with `+`, plus the `names` list. It is not a complete PII detector, and it runs in the browser.",
+    "Placeholders are numbered per kind in order of appearance: `NAME_1`, `EMAIL_1`, `IBAN_1`, `PHONE_1`.",
+    "The two panes sit side by side when each can be 240px wide and stack otherwise."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your text as the element's text content and the names to redact as `names`. Without them a built-in sample is redacted."
+  }
+}

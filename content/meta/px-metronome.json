@@ -1,0 +1,29 @@
+{
+  "summary": "Pixel metronome with a swinging pendulum whose weight slides with tempo, four beat lamps, tap tempo and optional click sound.",
+  "attributes": [
+    { "name": "bpm", "type": "number", "default": "96", "description": "Tempo, clamped to 40 to 208 and rounded. Changing it updates the tempo without firing `change`." }
+  ],
+  "events": [
+    { "name": "change", "detail": "{ bpm: number }", "description": "Fires whenever the tempo is set by the buttons, tap tempo or `setBpm()`. It does not fire when the element first connects or when the `bpm` attribute changes." }
+  ],
+  "methods": [
+    { "signature": "setBpm(bpm: number)", "description": "Sets the tempo, rounded and clamped to 40 to 208, and fires `change`. A value that is not a finite number is ignored." },
+    { "signature": "toggle()", "description": "Starts or stops the metronome from beat one." },
+    { "signature": "tap()", "description": "Registers a tap; from the second tap on, the tempo is set from the average interval of the last five taps." }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The tempo is text (\"96 BPM\") over the pendulum in an `aria-live=\"polite\"` region, so each new tempo is announced; the outgoing number of the roll is `aria-hidden`. The pendulum canvas is hidden from assistive technology.",
+    "The tempo name and play state (for example \"Andante · playing\") are in an `aria-live=\"polite\"` region.",
+    "Controls are native buttons: \"Slower\" and \"Faster\" (labelled with `aria-label`), Start/Stop, Tap, and Sound with `aria-pressed`."
+  ],
+  "motion": "With reduced motion, the pendulum jumps between its two extremes on each beat instead of swinging, and the beat sparks are skipped.",
+  "slots": [],
+  "notes": [
+    "Sound is off by default. Turning it on creates a Web Audio context and plays a short 1,600 Hz click on beat one and 1,000 Hz on the others; the context is closed when the element is removed.",
+    "The minus and plus buttons change the tempo by 2 BPM. Taps more than two seconds apart start a new measurement.",
+    "The beat runs with the animation, so it pauses, sound included, while the element is off screen or the tab is hidden.",
+    "The canvas is 214px tall."
+  ]
+}

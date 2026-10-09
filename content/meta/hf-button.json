@@ -1,0 +1,82 @@
+{
+  "summary": "Dot-matrix button with a pointer light and press ripples; `run(fn)` shows loading, success and error states around a promise.",
+  "attributes": [
+    {
+      "name": "variant",
+      "type": "danger",
+      "description": "Set to `danger` for the red colour scheme. Without it the accent colour is used. Read directly by CSS and the canvas, so changes apply on the next frame."
+    },
+    {
+      "name": "loading-text",
+      "type": "string",
+      "default": "Working…",
+      "description": "Label shown while the promise passed to `run()` is pending."
+    },
+    {
+      "name": "success-text",
+      "type": "string",
+      "default": "Done",
+      "description": "Label shown for 1.7 s after the promise resolves."
+    },
+    {
+      "name": "error-text",
+      "type": "string",
+      "default": "Try again",
+      "description": "Label shown for 1.7 s after the promise rejects."
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "description": "Set to `submit` to call `requestSubmit()` on the owning form when clicked. Ignored when `demo` is set."
+    },
+    {
+      "name": "demo",
+      "type": "string",
+      "description": "Makes a click run a simulated 1.5 s task. `error` makes it fail; any other non-empty value makes it succeed."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Disables the inner button; a disabled ancestor `<fieldset>` does the same."
+    }
+  ],
+  "events": [
+    {
+      "name": "start",
+      "detail": "{}",
+      "description": "Fires when `run()` enters the loading state."
+    },
+    {
+      "name": "success",
+      "detail": "{}",
+      "description": "Fires when the promise passed to `run()` resolves."
+    },
+    {
+      "name": "error",
+      "detail": "{}",
+      "description": "Fires when the promise passed to `run()` rejects."
+    }
+  ],
+  "methods": [
+    {
+      "signature": "run(fn: () => Promise<unknown>): Promise<unknown>",
+      "description": "Shows the loading state while the promise runs, then success or error for 1.7 s before returning to the label. Resolves with the promise value and rethrows its error."
+    }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "Renders a native `<button type=\"button\">` in the shadow root, so Enter and Space activate it.",
+    "The label sits in an `aria-live=\"polite\"` region, so the loading, success and error text is announced.",
+    "Sets `aria-busy` on the inner button: `true` while loading, `false` otherwise.",
+    "Clicks during loading are stopped at the inner button and do not reach the host.",
+    "The canvas is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the noise and loading fields are static, the label swaps without rolling, the error shake is skipped and the canvas redraws only on pointer movement or press.",
+  "form": "Form-associated but submits no value of its own. With `type=\"submit\"` a click calls `requestSubmit()` on the owning form.",
+  "slots": [],
+  "notes": [
+    "The label is the element's text content (default `Generate`). Text changes are picked up; while a loading, success or error label shows, the new label appears when the state ends."
+  ]
+}

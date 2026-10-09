@@ -1,0 +1,60 @@
+{
+  "summary": "Chat input with an aurora border and an effort chip; Enter sends and fires a `send` event with the text and effort level.",
+  "attributes": [
+    {
+      "name": "placeholder",
+      "type": "string",
+      "default": "Reply to the agent…",
+      "description": "Textarea placeholder. Observed."
+    },
+    {
+      "name": "model",
+      "type": "string",
+      "default": "Large",
+      "description": "Model name shown as plain text in the toolbar. Observed."
+    },
+    {
+      "name": "effort",
+      "type": "low | medium | high | max | ultracode",
+      "default": "high",
+      "description": "Effort level, case-insensitive. An unrecognised value selects `High`. Observed: a change selects the level without an `effort` event."
+    }
+  ],
+  "events": [
+    {
+      "name": "send",
+      "detail": "{ text: string, effort: string }",
+      "description": "Fires when a non-empty message is sent. `text` is trimmed; `effort` is the level label (`Low`, `Medium`, `High`, `Max` or `Ultracode`). The textarea is then cleared."
+    },
+    {
+      "name": "effort",
+      "detail": "{ effort: string }",
+      "description": "Fires when the user cycles the effort chip. `effort` is the new level label."
+    }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    {
+      "keys": "Enter",
+      "action": "Send the message. Ignored during IME composition."
+    },
+    {
+      "keys": "Shift+Enter",
+      "action": "Insert a new line."
+    }
+  ],
+  "accessibility": [
+    "The textarea has `aria-label=\"Message\"`. The canvas is `aria-hidden`.",
+    "The effort chip is a native button labelled `Effort: <level>. Click to change.`",
+    "The send button is a native button labelled `Send` and is disabled while the textarea is empty. Sending with it moves focus back to the textarea.",
+    "A status line in an `aria-live=\"polite\"` region shows the keyboard hint and, for 2.6 s after sending, the effort used."
+  ],
+  "motion": "With reduced motion the aurora is drawn once and does not move, the send wave and sparks are skipped, and the chip and status text swap without rolling.",
+  "slots": [],
+  "notes": [
+    "All attributes are observed. The textarea's native `input` events stop at the shadow root.",
+    "The chip cycles Low, Medium, High, Max, Ultracode and back to Low. Ultracode brightens the band.",
+    "The textarea grows with its content up to 160px."
+  ]
+}

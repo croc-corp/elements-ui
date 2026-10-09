@@ -1,0 +1,71 @@
+---
+title: "Toggle"
+description: "Switch with a label and hint whose thumb stretches as it travels and pops a few pixel sparks when it turns on."
+tag: ui-toggle
+updated: "2026-09-25"
+---
+
+<ComponentPreview tag="ui-toggle" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="ui-toggle" />
+
+## Installation
+
+<Install tag="ui-toggle" />
+
+## Usage
+
+<Usage tag="ui-toggle" />
+
+## Behaviour
+
+The thumb stretches like a drop as it travels, the accent floods out from under it, and a few pixel sparks pop when it switches on. Clicking the label works too.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | `boolean` | — | Controlled state. Use with `onCheckedChange`. |
+| `defaultChecked` | `boolean` | `false` | Initial state when uncontrolled. |
+| `children` | `React.ReactNode` | `"Extended thinking"` | Label text. It is also the switch's accessible name. |
+| `hint` | `React.ReactNode` | — | Secondary text under the label, linked to the switch with `aria-describedby`. |
+| `onCheckedChange` | `(checked: boolean) => void` | — | Called when the user toggles the switch. Changing `checked` from outside does not call it. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Space / Enter | Toggle the focused switch. |
+
+## Accessibility
+
+- The switch is a native `<button>` with `role="switch"` and `aria-checked`.
+- The label is the switch's accessible name (`aria-labelledby`) and the hint its description (`aria-describedby`).
+- Clicking anywhere on the row, including the label and hint, toggles the switch.
+- Reduced motion: the thumb moves without the stretch animation and no sparks fire; the accent fill still transitions.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--muted`, `--foreground` and `--muted-foreground`.
+
+## Notes
+
+- Not a form control: it has no `name` and is not submitted with a form.
+- The root, the switch and its parts carry `data-state="checked"` or `data-state="unchecked"` for styling.
+- Changing `checked` from outside moves the thumb without the stretch and sparks; they play only for user toggles.
+
+<RelatedComponents tag="ui-toggle" />

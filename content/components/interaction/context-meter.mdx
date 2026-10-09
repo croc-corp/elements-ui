@@ -1,0 +1,72 @@
+---
+title: "Context meter"
+description: "Context-window meter that fills a pixel strip behind a glowing front, turns amber at 80% and red at 95%, and animates compaction."
+tag: ui-context-meter
+updated: "2026-09-25"
+---
+
+<ComponentPreview tag="ui-context-meter" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="ui-context-meter" />
+
+## Installation
+
+<Install tag="ui-context-meter" />
+
+## Usage
+
+<Usage tag="ui-context-meter" />
+
+## Behaviour
+
+Usage fills a strip of pixels behind a glowing front, turns amber past 80 % and red near the limit. Compacting sends a bright band back across the strip as the count drops.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number` | — | Controlled share of the context window in percent, clamped to 0–100. The strip animates to each new level. Use with `onValueChange`. |
+| `defaultValue` | `number` | `0` | Initial percentage when uncontrolled. |
+| `capacity` | `number` | `200000` | Window size in tokens, used only for the "used / total" readout, which is shown in thousands. |
+| `label` | `string` | `"Context"` | Caption before the percentage, and the meter's accessible name. |
+| `onValueChange` | `(value: number) => void` | — | Called with the new percentage when `add()` or `compact()` changes it. |
+| `onCompact` | `(from: number, to: number) => void` | — | Called when `compact()` runs, with the percentage before and after. |
+| `ref` | `React.Ref<UiContextMeterHandle>` | — | Exposes `add()` and `compact()`. |
+
+### Ref
+
+`ref` receives a `UiContextMeterHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `add(percent: number): void` | Adds `percent` percentage points (negative to subtract), clamped to 0–100. |
+| `compact(): void` | Drops usage to 28% of its current value (at least 12%), runs a bright sweep and shows "Compacting…" for 1.5 s. Does nothing at 15% or below. |
+
+## Accessibility
+
+- The strip is a canvas with `role="meter"`, `aria-valuemin="0"`, `aria-valuemax="100"`, `aria-valuenow` and an `aria-label` from `label`.
+- Its `aria-valuetext` reads the level and the token count, for example "46%, 92,000 of 200,000 tokens" (built in English).
+- There is no live region; changes are not announced.
+- Reduced motion: the fill jumps to the new level, the compaction sweep is skipped, the percentage stops blinking near the limit and text swaps without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--lumesec-warning`, `--destructive`, `--foreground` and `--muted-foreground`.
+
+## Notes
+
+- `value` is a percentage, not a token count; the token readout is derived from `capacity`.
+- The root carries `data-zone` set to `ok`, `warn` (80% and up) or `full` (95% and up), which can be used for styling.
+- The strip is 18 px tall and fills the available width. Its colours follow the theme and are re-read when it changes.
+
+<RelatedComponents tag="ui-context-meter" />

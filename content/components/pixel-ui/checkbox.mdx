@@ -1,0 +1,74 @@
+---
+title: "Checkbox"
+description: "Form checkbox that fills from the centre and draws its check, with a mixed state for parent and child selections."
+tag: px-checkbox
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-checkbox" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-checkbox" />
+
+## Installation
+
+<Install tag="px-checkbox" />
+
+## Usage
+
+<Usage tag="px-checkbox" />
+
+## Behaviour
+
+Fills from the centre and draws its check, and supports the mixed state. This demo wires an “All channels” parent to three children.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<span>` (`React.ComponentProps<"span">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | `PxCheckedState` | — | Controlled state: `true`, `false` or `"indeterminate"` (drawn as a dash). Use with `onCheckedChange`. |
+| `defaultChecked` | `PxCheckedState` | `false` | Initial state when uncontrolled. A form reset restores it. |
+| `children` | `React.ReactNode` | — | Label, next to the box. |
+| `value` | `string` | `"on"` | Value submitted with the form when checked. |
+| `name` | `string` | — | Form field name. Nothing is submitted while unchecked. |
+| `disabled` | `boolean` | `false` | Dims the checkbox, ignores click and Space and removes it from the tab order. |
+| `onCheckedChange` | `(checked: PxCheckedState) => void` | — | Called when the user toggles the checkbox. Toggling the mixed state checks it. |
+
+### Ref
+
+`ref` points at the root `HTMLSpanElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Space | Toggle. |
+
+## Accessibility
+
+- The root is a `role="checkbox"` element with `tabindex="0"` (`-1` while disabled), `aria-checked` set to `true`, `false` or `mixed`, and `aria-disabled` while disabled.
+- Its accessible name comes from the children.
+- Enter does not toggle; Space and click do.
+- The box is drawn on an `aria-hidden` canvas.
+- With `name`, a hidden input submits `value` while checked, and nothing while unchecked or mixed. There is no validation. Form reset restores `defaultChecked` and calls `onCheckedChange` when that changes the state.
+- Reduced motion: the fill and check appear at once and the box does not pop.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--card` and `--lumesec`.
+
+## Notes
+
+- Parent and child behaviour, such as an "All" box driving its children, is not built in: derive the parent's `checked` (`true`, `false` or `"indeterminate"`) from the children and set the children in its `onCheckedChange`.
+- The root carries `data-state` set to `checked`, `unchecked` or `indeterminate`.
+
+<RelatedComponents tag="px-checkbox" />

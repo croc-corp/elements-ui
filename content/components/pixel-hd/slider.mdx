@@ -1,0 +1,92 @@
+---
+title: "Slider"
+description: "Form-associated range slider with a dithered fill and a lens for a thumb that magnifies the dots beneath it."
+tag: hf-slider
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-slider" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-slider" />
+
+## Installation
+
+<Install tag="hf-slider" />
+
+## Usage
+
+<Usage tag="hf-slider" />
+
+## Behaviour
+
+A dithered fill with a lens for a thumb: the dots under it are magnified, so you can see the exact position.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `value` | `value` | `number` | — | Current value, clamped to `min`–`max` and snapped to `step`. Defaults to `min`. Observed and reflected back with the snapped value; changes from code fire no events. |
+| `min` | `min` | `number` | `0` | Lower bound. Observed. |
+| `max` | `max` | `number` | `100` | Upper bound. Observed. |
+| `step` | `step` | `number` | `1` | Step size. Its decimal places also set the displayed precision. Values at or below 0 fall back to 1. Observed. |
+| `prefix` | `prefix` | `string` | — | Text before the displayed value, for example `$`. Observed. |
+| `unit` | `unit` | `string` | — | Text after the displayed value, for example ` ms`. Observed. |
+| `label` | `label` | `string` | — | Visible label; also names the slider through `aria-labelledby`. Observed. |
+| `name` | `name` | `string` | — | Form field name. |
+| `disabled` | `disabled` | `boolean` | `false` | Presence attribute. Disables the slider; a disabled ancestor `<fieldset>` does the same. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `input` | `onInput` | `{ value: number }` | Fires on every value change from a drag or key press. Not fired when `value` is set from code. |
+| `change` | `onChange` | `{ value: number }` | Fires on pointer release and after each key press that changed the value. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `number` | Current value. Setting it clamps, snaps and reflects to the attribute without firing events. |
+| `min` (read-only) | `number` | Parsed `min`. |
+| `max` (read-only) | `number` | Parsed `max`. |
+| `step` (read-only) | `number` | Parsed `step`. |
+| `frac` (read-only) | `number` | Position of the value in the range, 0 to 1. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowUp | Increase by one step. |
+| ArrowLeft / ArrowDown | Decrease by one step. |
+| PageUp / PageDown | Change by a tenth of the range. |
+| Home / End | Jump to `min` or `max`. |
+
+## Accessibility
+
+- The track has `role="slider"` and `tabindex="0"` and is named by the label through `aria-labelledby`.
+- Sets `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and `aria-valuetext` (formatted with `prefix` and `unit`) on every change.
+- Pressing on the track focuses it.
+- Submits the current value as a string under `name`. No validation. Form reset restores the value from the first connect; `disabled` or a disabled fieldset takes the slider out of the tab order.
+- Reduced motion: the thumb jumps to the value without the spring and the value text swaps without rolling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono` and `--ui-muted`.
+
+## Notes
+
+- All attributes are observed. New bounds or a new `step` re-clamp and re-snap the value without events and update the end labels under the track.
+
+<RelatedComponents tag="hf-slider" />

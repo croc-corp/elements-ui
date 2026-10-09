@@ -1,0 +1,93 @@
+---
+title: "Slide to deploy"
+description: "Slide-to-deploy control whose pixel trail heats up as you drag; releasing past 90% bursts, runs a deploy scan and shows Live."
+tag: px-deploy
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-deploy" />
+
+<Callout title="Demo data" type="warning">
+
+The deploy run and the Live state are simulated on a timer, not on your deploy; only `version` can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-deploy" />
+
+## Installation
+
+<Install tag="px-deploy" />
+
+## Usage
+
+<Usage tag="px-deploy" />
+
+## Behaviour
+
+The Ultracode trail turned into a commit gesture. Sliding charges a pixel trail that heats up and starts to boil near the end. Release early and it drains back; reach the end and it bursts, scans and goes live.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `version` | `version` | `string` | `v2.14.0` | Version shown in the "Live · \<version\>" label. Read when the deploy goes live. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `deploy` | `onDeploy` | `{}` | Fires when the slide is committed and the deploy sequence starts. |
+| `live` | `onLive` | `{}` | Fires 1.6 seconds after `deploy`, when the label switches to Live. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `commit()` | Runs the deploy sequence immediately, as if the thumb had reached the end. Ignored while deploying or live. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `version` | `string` | Version shown in the Live label; reflects the `version` attribute, or `v2.14.0` when it is missing. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space | Slide the thumb to the end on its own and deploy. |
+| ArrowRight | Move the thumb 10% along; reaching the end deploys. |
+
+## Accessibility
+
+- The thumb is focusable with `role="slider"`, `aria-label="Slide to deploy"`, `aria-valuemin="0"`, `aria-valuemax="100"` and a live `aria-valuenow`.
+- The track label is an `aria-live="polite"` region that announces "Deploying…" and "Live · \<version\>".
+- Keyboard and pointer input are ignored while a deploy is running or showing Live.
+- Reduced motion: an early release returns the thumb at once, the trail does not jitter, the label shimmer stops and the burst, sparks and thumb pop are skipped.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--lumesec-success`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-muted`, `--ui-ok`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- The component does not deploy anything; listen for `deploy` and `live` to drive real work.
+- The host carries `data-state="deploying"` and then `data-state="live"`; it returns to idle 2.6 seconds after going live.
+- The track is 56px tall and fills the host's width.
+
+<RelatedComponents tag="px-deploy" />

@@ -1,0 +1,67 @@
+---
+title: "Radio tuner"
+description: "FM radio tuner where static thins out near a station, a waveform appears and the name resolves on lock; release nearby springs onto it."
+tag: px-tuner
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-tuner" />
+
+<Callout title="Demo data" type="warning">
+
+The four radio stations are invented; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-tuner" />
+
+## Usage
+
+<Usage tag="px-tuner" />
+
+## Behaviour
+
+Drag the band to tune. Static thins out as you near a station, a waveform appears, and the station name resolves when it locks. Let go nearby and it springs onto the frequency.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `lock` | `onLock` | `{ station: string, frequency: number }` | Fires each time the dial locks onto a station, with its name and frequency in MHz. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight | Tune down or up by 0.1 MHz, then spring onto a station within 0.6 MHz. |
+| Home / End | Tune to 87.5 or 108 MHz. |
+| PageUp / PageDown | Jump to the next or previous station, wrapping around. |
+
+## Accessibility
+
+- The canvas is focusable with `role="slider"`, `aria-label="Radio frequency"`, `aria-valuemin="87.5"` and `aria-valuemax="108"`.
+- `aria-valuenow` is the frequency; `aria-valuetext` adds the station name when locked, for example "101.1 MHz, Opus FM".
+- The status text ("Searching…" or "Locked · \<station\>") is an `aria-live="polite"` region.
+- Reduced motion: the dial jumps onto a station instead of springing, the static stops flickering and the waveform holds still.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono` and `--ui-muted`.
+
+## Notes
+
+- The stations are built-in demo data: 89.3 LOFI BEATS, 94.7 NEWS 24, 101.1 OPUS FM and 105.5 DEEP CUTS. The band runs from 87.5 to 108 MHz and the dial starts at 97.6.
+- No audio plays. The host has a `data-locked` attribute while a station is locked; the station name fades in on the screen in the page font.
+- The canvas is 176px tall and animates continuously while on screen, except under reduced motion.
+
+<RelatedComponents tag="px-tuner" />

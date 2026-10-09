@@ -1,0 +1,35 @@
+{
+  "summary": "Agent permission prompt: a scan runs over the command, a risk meter fills, and Allow once, Always allow or Deny settles it.",
+  "attributes": [],
+  "events": [
+    { "name": "decision", "detail": "{ decision: 'once' | 'always' | 'deny', tool: string, command: string }", "description": "Fires when a choice is made by click or by keys 1 to 3. `command` is the full command text of the current request." }
+  ],
+  "methods": [
+    { "signature": "request(o: { tool: string; title: string; cmd: string; why: string; risk: 1 | 2 | 3 | 4 | 5 })", "description": "Shows a new request (`HApproveRequest`; `risk` is `HApproveRisk`). Risk 1–2 is Low, 3 Medium, 4 High, 5 Critical. At 4 and above, Always allow is disabled from the start of the scan." },
+    { "signature": "next()", "description": "Shows the next of the four built-in demo requests and focuses Allow once." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "1", "action": "Allow once." },
+    { "keys": "2", "action": "Always allow. Ignored while that button is disabled." },
+    { "keys": "3", "action": "Deny." }
+  ],
+  "accessibility": [
+    "The card has `role=\"alertdialog\"`, is labelled by its title and described by the reason line.",
+    "Actions are native buttons that show their shortcut in a `<kbd>`; they are disabled once a decision is made.",
+    "The shortcuts listen on the document and act while the pointer is over the card or focus is inside it. They are ignored in text fields, selects and editable content, and with Ctrl or Meta held.",
+    "After a decision, the buttons are replaced by a result row with a Next request button, which is described by the result. When focus was on one of the buttons, it moves to Next request.",
+    "The risk level and the result are not live regions. The scan and meter are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion, the scan sweep is skipped and the risk shows at once, the meter fills without easing or pulsing, and the result row appears without the green sweep or red static.",
+  "slots": [],
+  "notes": [
+    "Starts with the first of four built-in demo requests; call `request()` to show your own.",
+    "The risk level appears 1.1 s after a request is shown. For risk 4 and 5, Always allow is disabled as soon as the request is shown, so it cannot be chosen during the scan.",
+    "The component does not run or block anything; act on `decision`."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "It starts on, and its Next request button cycles through, four built-in demo requests; `request()` shows your own."
+  }
+}

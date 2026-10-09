@@ -1,0 +1,79 @@
+{
+  "summary": "Pricing card with a monthly and yearly toggle; the price rolls to the new number while a bright edge wipes through the dot grid behind it.",
+  "attributes": [
+    {
+      "name": "plan",
+      "type": "string",
+      "default": "Pro",
+      "description": "Plan name above the price."
+    },
+    {
+      "name": "monthly",
+      "type": "number",
+      "default": "20",
+      "description": "Price per month on monthly billing."
+    },
+    {
+      "name": "yearly",
+      "type": "number",
+      "default": "16",
+      "description": "Price per month on yearly billing. The note under the price shows twelve times this value."
+    },
+    {
+      "name": "period",
+      "type": "monthly | yearly",
+      "default": "yearly",
+      "description": "Initial billing period. Any value other than `monthly` selects yearly."
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "default": "€",
+      "description": "Currency symbol placed before the price."
+    },
+    {
+      "name": "features",
+      "type": "string",
+      "default": "Ultracode and multi-agent workflows|Priority access at peak times|Projects with shared context",
+      "description": "Feature list, separated by `|`."
+    }
+  ],
+  "events": [
+    {
+      "name": "change",
+      "detail": "{ period: \"monthly\" | \"yearly\", price: number }",
+      "description": "Fires when the user switches billing period. `price` is the per-month price for that period."
+    }
+  ],
+  "methods": [],
+  "properties": [
+    {
+      "name": "price",
+      "type": "number",
+      "readonly": true,
+      "description": "Per-month price for the selected period, read from `monthly` or `yearly`."
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown",
+      "action": "On the billing toggle: select the other period and move focus to it."
+    }
+  ],
+  "accessibility": [
+    "The billing toggle is a `role=\"radiogroup\"` labelled `Billing period`, with two native buttons carrying `role=\"radio\"` and `aria-checked`. Only the selected button is in the tab order; the arrow keys switch periods.",
+    "The price is text in the monospace font with tabular figures. The price row (rolling price, `/ month` and the dot canvas) is `aria-hidden`; a visually hidden `aria-live=\"polite\"` region carries the price and period instead, for example `€16 per month, billed yearly`."
+  ],
+  "motion": "With reduced motion the price and the billing note swap without rolling and the grid shows no wipe.",
+  "slots": [],
+  "notes": [
+    "The `−20%` badge on Yearly is fixed text and is not computed from `monthly` and `yearly`.",
+    "Whole prices show without decimals (`€16`), others with two (`€16.50`); the yearly total is rounded to cents.",
+    "The call to action is a nested `<hf-button>` labelled `Start free trial` with no handler; its clicks bubble out of the host. `hf-pricing` imports `hf-button` itself.",
+    "Attributes are read on first connect and are not observed; `monthly`, `yearly` and `currency` are re-read when the period changes."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The `−20%` badge on Yearly is fixed text, not computed; plan, prices, currency and features can be set."
+  }
+}

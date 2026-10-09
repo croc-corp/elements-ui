@@ -1,0 +1,77 @@
+{
+  "kind": "react",
+  "summary": "A meeting planner: one row of hour blocks per city, dense for working hours, with the hours every city shares lit as an accent band.",
+  "props": [
+    { "name": "cities", "type": "readonly TimeZoneCity[]", "default": "-", "description": "Rows (controlled): `{ id, label, timeZone }` with an IANA zone. Use with `onCitiesChange`. Rows with a repeated id are skipped; an unknown zone reads as UTC and the row shows \"(UTC)\". An empty array shows \"No cities to compare\"." },
+    { "name": "defaultCities", "type": "readonly TimeZoneCity[]", "default": "London, Berlin, New York, São Paulo", "description": "Rows when uncontrolled. The built-in four are used only while neither `cities` nor `defaultCities` is set." },
+    { "name": "onCitiesChange", "type": "(cities: readonly TimeZoneCity[]) => void", "default": "-", "description": "Called with the remaining rows when the user removes one." },
+    { "name": "value", "type": "number", "default": "-", "description": "Cursor instant in epoch ms (controlled). Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "number", "default": "now, after mount", "description": "Cursor instant when uncontrolled. Without it the cursor starts at the current time rounded to `step`, read once after mount; until then the rows show `--:--`." },
+    { "name": "onValueChange", "type": "(value: number) => void", "default": "-", "description": "Called with the new instant in epoch ms as the cursor moves: on press, while dragging (snapped to `step`), on release and on each key press." },
+    { "name": "reference", "type": "string", "default": "first city", "description": "Id of the city whose local midnight starts the window and whose hours label the axis. An unknown id falls back to the first city." },
+    { "name": "workHours", "type": "readonly [number, number]", "default": "[9, 17]", "description": "Working hours in local time, `[from, to)`. A range may wrap past midnight; equal ends mean none." },
+    { "name": "sleepHours", "type": "readonly [number, number]", "default": "[23, 7]", "description": "Sleeping hours in local time, `[from, to)`; may wrap past midnight. Working hours win where both apply." },
+    { "name": "step", "type": "number", "default": "15", "description": "Cursor step in minutes, rounded and clamped to 1 to 180." },
+    { "name": "hour12", "type": "boolean", "default": "false", "description": "Shows times and axis labels on a 12-hour clock. The left column widens from 132 to 150 px." },
+    { "name": "removable", "type": "boolean", "default": "false", "description": "Shows a remove button on every row. It appears on hover or focus, and always on touch screens." },
+    { "name": "locale", "type": "string", "default": "\"en-US\"", "description": "BCP 47 locale for the weekday names. Times always use Latin digits." },
+    { "name": "label", "type": "string", "default": "\"Meeting time\"", "description": "Accessible name of the time cursor." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowUp", "action": "Moves the cursor one step later. An off-step time first moves to the next step." },
+    { "keys": "ArrowLeft / ArrowDown", "action": "Moves the cursor one step earlier." },
+    { "keys": "Shift + Arrow", "action": "Moves by one hour." },
+    { "keys": "PageUp / PageDown", "action": "Moves by three hours." },
+    { "keys": "Home / End", "action": "Moves to the start of the window or to its last step (23:45 with 15-minute steps)." },
+    { "keys": "Tab", "action": "Moves through the remove buttons, row by row, when `removable` is set, then to the cursor." }
+  ],
+  "accessibility": [
+    "The cursor is a `role=\"slider\"` named by `label`. `aria-valuenow` is the minute of the window and `aria-valuetext` lists every city's local time, for example \"15:30 London, 16:30 Berlin, 10:30 New York, 11:30 São Paulo\".",
+    "The rows are a list named \"Cities\"; each row's name, local time and weekday are DOM text. Remove buttons are native buttons named \"Remove London\"; removing a row moves focus to the next row's button, else the previous one, else the cursor.",
+    "The overlap is stated in a polite live region, for example \"Overlap 14:00–16:00 London time\" or \"No common working hours\". The visible header with the same content is `aria-hidden`.",
+    "The dot canvases, the axis labels and the midnight chips are `aria-hidden`. A row that is being removed is `inert` and hidden from assistive technology while it collapses.",
+    "Focus on the cursor shows an accent outline around its handle and brightens the dot column under it."
+  ],
+  "motion": "With reduced motion the cursor moves without the spring, the lit column follows it without lag, times swap without rolling, rows appear and disappear at once, and the band fills at once with no shimmer, no entry light and no sparks.",
+  "notes": [
+    "The window is one local day of the reference city, from its midnight on the cursor's date to the next one, so it is 23 or 25 hours long on the days daylight saving time starts or ends. The cursor stays inside that day.",
+    "Each row splits the window at its own local hours, using offsets from the time zone database. Zones with half-hour or 45-minute offsets get partial hours at the window edges, so their blocks sit shifted against the other rows.",
+    "Every hour is a block of 2 px dots, six rows high, at a 4 px pitch (3 px when an hour is narrower than 15 px). Working hours light every dot, other waking hours half and sleeping hours 18 %, in ordered-dither order. Saturdays and Sundays draw at 60 % opacity but still count as working hours.",
+    "A local midnight inside the window draws a hairline through the row with a chip naming the weekday that starts there.",
+    "Hours when every row is in its working hours form the band: accent dots with a slow shimmer, a faint wash and two hairlines. The header shows the total as a chip (\"2 h overlap\") and the hours in the reference city's time. A new band fills from the top row down; one that disappears drains from the top over 300 ms. One city has no band.",
+    "When the cursor line enters the band, a light runs down through it from the top row to the bottom over 0.45 s, the chip pops, and a few sparks fly out of the band's foot past the edge of the card.",
+    "While dragging, the dot column under the cursor brightens in each row; each row's highlight follows on its own spring, so the column bends slightly behind fast drags. The times roll up when the cursor moves later and down when it moves earlier.",
+    "Rows added later grow in over 240 ms; removed rows collapse before they leave the list.",
+    "The built-in cities London, Berlin, New York and São Paulo share two working hours all year (three in the weeks when only the United States has moved its clocks); adding Singapore removes the overlap.",
+    "Below 480 px the left column narrows to 104 px, the UTC offset and every other axis label are hidden and the times shrink to 13 px.",
+    "The animation runs only while the component is on screen. Colours follow the theme and are re-read when it changes."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your rows as `cities` (or `defaultCities`): `{ id, label, timeZone }`. Without either the component shows London, Berlin, New York and São Paulo. Nothing reads the viewer's time zone: the window follows the reference city, and the cursor starts at the current instant only when neither `value` nor `defaultValue` is set."
+  },
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--lumesec-foreground",
+    "--foreground",
+    "--muted-foreground",
+    "--muted",
+    "--card",
+    "--card-foreground",
+    "--border"
+  ],
+  "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { GeoTimezones, type TimeZoneCity } from \"@/components/lumesec/geo-timezones\";\n\nconst team: TimeZoneCity[] = [\n  { id: \"lon\", label: \"London\", timeZone: \"Europe/London\" },\n  { id: \"nyc\", label: \"New York\", timeZone: \"America/New_York\" },\n  { id: \"blr\", label: \"Bengaluru\", timeZone: \"Asia/Kolkata\" },\n];\n\nexport function Example() {\n  const [meeting, setMeeting] = React.useState<Date | null>(null);\n  return (\n    <div className=\"grid gap-2\">\n      <GeoTimezones defaultCities={team} reference=\"lon\" onValueChange={(time) => setMeeting(new Date(time))} />\n      <p className=\"text-sm text-muted-foreground\">{meeting ? meeting.toISOString() : \"Drag the cursor to pick a time.\"}</p>\n    </div>\n  );\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      { "name": "removable", "kind": "boolean", "options": null, "default": "false" },
+      { "name": "hour12", "kind": "boolean", "options": null, "default": "false" },
+      { "name": "step", "kind": "number", "options": null, "default": "15" },
+      { "name": "label", "kind": "string", "options": null, "default": "Meeting time" }
+    ]
+  }
+}

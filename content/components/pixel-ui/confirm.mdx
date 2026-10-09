@@ -1,0 +1,74 @@
+---
+title: "Two-step delete"
+description: "Two-step delete button: the first click arms it and a pixel fuse burns down; a second click inside the window confirms with a burst."
+tag: px-confirm
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-confirm" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-confirm" />
+
+## Installation
+
+<Install tag="px-confirm" />
+
+## Usage
+
+<Usage tag="px-confirm" />
+
+## Behaviour
+
+The first click arms it and a pixel fuse burns down along the bottom. A second click inside the window confirms with a burst; Escape, blur or the timeout cancel it.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<span>` (`React.ComponentProps<"span">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `string` | `"Delete project"` | Idle label. |
+| `timeout` | `number` | `3` | Seconds the armed state lasts before it cancels. |
+| `confirmText` | `string` | `"Click again to confirm"` | Label while armed. |
+| `doneText` | `string` | `"Deleted"` | Label shown for 2 s after confirming. |
+| `onConfirm` | `() => void` | — | Called on the second click inside the window. |
+| `onCancel` | `() => void` | — | Called when the armed state ends without confirming: Escape, the button losing focus, or the timeout. |
+
+### Ref
+
+`ref` points at the root `HTMLSpanElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space | Arm, then confirm while armed. |
+| Escape | Cancel while armed. |
+
+## Accessibility
+
+- A native `<button>`; its accessible name is the visible label.
+- The label is an `aria-live="polite"` region, so the confirm prompt and the done text are announced.
+- Moving focus away while armed cancels.
+- The fuse is drawn on an `aria-hidden` canvas; the remaining time is not exposed.
+- Reduced motion: labels swap without rolling and the confirm burst is skipped; the fuse still burns down.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--destructive`, `--border`, `--card`, `--muted-foreground`, `--lumesec`, `--lumesec-foreground` and `--lumesec-shine`.
+
+## Notes
+
+- After confirming, clicks are ignored for 2 s, then the button returns to idle. The root carries `data-state="armed"` or `data-state="done"` in those states.
+- The root is a wrapper `span` around the button, so the sparks can fly past the button's edges.
+- The timeout runs on a timer, so it also expires while the button is off screen or the tab is hidden.
+
+<RelatedComponents tag="px-confirm" />

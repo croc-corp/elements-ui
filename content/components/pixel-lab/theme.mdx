@@ -1,0 +1,71 @@
+---
+title: "Day / night switch"
+description: "Day/night switch whose sun pixels rebuild as a crescent moon while night sweeps the sky; it can set the page theme."
+tag: px-theme
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-theme" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-theme" />
+
+## Installation
+
+<Install tag="px-theme" />
+
+## Usage
+
+<Usage tag="px-theme" />
+
+## Behaviour
+
+The sun’s pixels fly apart and rebuild as a crescent moon while night sweeps across the sky and stars come out. In this demo it switches the theme of the whole page.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `controls-page` | `controlsPage` | `boolean` | `false` | Presence attribute. When set, each toggle writes `data-theme="dark"` or `"light"` and toggles the `.dark` class on the `<html>` element, the switch follows theme changes made elsewhere on the page, and a hint under the switch says so. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ dark: boolean }` | Fires on every toggle with the new state; not when the switch follows a page theme change. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `toggle()` | Switches between day and night and fires `change`. With `controls-page`, also sets the page theme. |
+
+## Accessibility
+
+- The control is a native button with `role="switch"`, `aria-label="Dark mode"` and `aria-checked` for the night state.
+- The "Light" / "Dark" label below is an `aria-live="polite"` region.
+- Reduced motion: the switch changes state at once without the pixel morph, the clouds stop drifting and the stars stop twinkling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-muted`.
+
+## Notes
+
+- The initial state comes from `data-theme` on `<html>` (`dark` or `light`), then the `.dark` class, then `prefers-color-scheme`. Without `controls-page`, later page theme changes do not move the switch.
+- The sky, sun and moon use fixed colours rather than theme tokens. The switch is a fixed 156 by 72px.
+
+<RelatedComponents tag="px-theme" />

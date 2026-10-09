@@ -1,0 +1,86 @@
+---
+title: "Carousel"
+description: "Carousel of four procedural pixel scenes with an ordered-dither dissolve between slides; autoplay pauses on hover or focus."
+tag: hf-carousel
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-carousel" />
+
+<Callout title="Demo data" type="warning">
+
+The four slides, generated scenes with built-in captions, cannot be replaced; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-carousel" />
+
+## Installation
+
+<Install tag="hf-carousel" />
+
+## Usage
+
+<Usage tag="hf-carousel" />
+
+## Behaviour
+
+Four procedural scenes. Slides change with an ordered-dither dissolve and a bright front, autoplay pauses on hover or focus, and it swipes.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `autoplay` | `autoplay` | `boolean` | `false` | Presence attribute. Advances every 5 s, draws a progress line along the bottom and shows a button that stops and starts the rotation. Pauses while hovered, focused or off-screen. Observed, so it can be added or removed at any time. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ index: number }` | Fires when the slide changes, by user action or autoplay. `index` is zero-based. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `go(index: number)` | Shows the slide at `index`; values outside 0–3 wrap around. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight | Previous or next slide, wrapping. |
+
+## Accessibility
+
+- The slide area is a focusable `role="region"` with `aria-roledescription="carousel"` and `aria-label="Pixel scenes"`.
+- The canvas has `role="img"` and an `aria-label` such as `Slide 1 of 4: Aurora over the ridge`.
+- The caption is an `aria-live` region: `polite` after a change by the user, `off` while autoplay rotates the slides.
+- Previous and Next buttons have `aria-label`s; dot buttons are labelled `Slide <n>: <title>`, and the current one has `aria-current="true"`.
+- With `autoplay`, a button labelled Stop autoplay or Start autoplay stops and restarts the rotation; autoplay also pauses while the slide area is hovered or holds focus.
+- Reduced motion: autoplay does not advance, slides switch without the dissolve and the scenes are static.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec` and `--muted`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent` and `--ui-track`.
+
+## Notes
+
+- The four scenes are generated in code and cannot be replaced.
+- A horizontal swipe of more than 40px changes the slide. The image is 210px tall and fills the width.
+
+<RelatedComponents tag="hf-carousel" />

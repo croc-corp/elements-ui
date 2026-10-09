@@ -1,0 +1,85 @@
+---
+title: "Voice input"
+description: "Simulated dictation control with a mirrored pixel spectrum and words that fade into focus; stopping collapses the bars to a point."
+tag: px-voice
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-voice" />
+
+<Callout title="Demo data" type="warning">
+
+No microphone is used and the audio levels are generated; only the transcript can be set with `text`. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-voice" />
+
+## Installation
+
+<Install tag="px-voice" />
+
+## Usage
+
+<Usage tag="px-voice" />
+
+## Behaviour
+
+A mirrored pixel spectrum with falling peak dots, and words that drift into focus as they are recognised. Stopping collapses the bars into a line and the line into a point. The audio is simulated, since a shared page can’t use the microphone.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `text` | `text` | `string` | `Make the trail grow out of the thumb toward the left and stop at three quarters of the track.` | The sentence the simulated recognition types out, split on whitespace. Read each time listening starts. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `transcript` | `onTranscript` | `{ text: string }` | Fires when listening stops, with the words recognised so far joined by spaces. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `start()` | Clears the transcript and starts the simulated listening. Ignored while the closing animation runs. |
+| `stop()` | Stops listening and fires `transcript`. Only acts while listening. Removing the element ends a session without firing. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `sentence` | `string` | The sentence the simulated recognition types out; reflects the `text` attribute, or the default sentence when it is missing. |
+
+## Accessibility
+
+- The mic is a native button whose `aria-label` switches between "Start dictation" and "Stop dictation".
+- The transcript paragraph is an `aria-live="polite"` region, so recognised words are announced as they arrive.
+- The spectrum canvas is decorative and has `aria-hidden="true"`.
+- Reduced motion: the mic's pulsing ring, the word fade-in and the idle wave are disabled and the status text swaps without the roll; the spectrum still follows the simulated voice while listening.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--lumesec-foreground` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-muted`, `--ui-on-accent` and `--ui-surface`.
+
+## Notes
+
+- No microphone is used. Audio levels are generated and the transcript is the `text` attribute revealed word by word; listening stops on its own 0.7 seconds after the last word.
+- The host carries `data-state="listening"` or `data-state="closing"` during those phases.
+
+<RelatedComponents tag="px-voice" />

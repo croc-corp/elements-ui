@@ -1,0 +1,37 @@
+---
+title: Accessibility
+description: Keyboard support, ARIA roles and live regions, native form validation, visible focus, and a reduced-motion mode that keeps every number.
+updated: "2026-10-09"
+---
+
+The effects in Elements are decoration on top of working controls. With the effects off, each component is still a usable control. This page describes the shared behaviour; each component page lists its own keyboard map and roles.
+
+## Keyboard
+
+- Sliders, dials and knobs move with the arrow keys and jump with Home and End.
+- Lists, grids and segmented controls use a roving tab index: one Tab stop, arrows inside.
+- Buttons and toggles respond to Enter and Space. Dialogs and popovers close with Escape and return focus.
+
+## Roles and labels
+
+Components set the role that matches their behaviour, such as `slider`, `meter`, `switch`, `tablist` or `grid`, together with `aria-valuenow`, `aria-valuetext` and `aria-checked` as they change. Status text that updates on its own is in an `aria-live` region. Canvases that carry meaning get an `aria-label` with the value they show.
+
+## Forms
+
+Pixel UI inputs are React components built on native form controls, or on a hidden input where the control is custom. They submit under their `name`, take part in native validation where they render a native input, and reset with the form. The Pixel HD form controls are custom elements, form-associated through `ElementInternals`: they submit their value under `name`. Validation and reset differ per control: `hf-input`, for example, reports validity to the form. Each component page states under Accessibility how the control takes part in a form. Every input is labelled by its `label`.
+
+## Focus
+
+Focus rings use `:focus-visible` with a ring in the accent colour, so mouse users do not see them and keyboard users always do.
+
+## Text stays text
+
+Every word and number a person reads is real text in a regular font: labels, body copy, counters and large display numerals alike. Pixels are the effect layer around the text, never the text itself, so values are selectable, translatable and read by assistive technology as they appear.
+
+## Reduced motion
+
+When the system asks for reduced motion, loops stop, traffic and spark pixels switch off, and values jump to their target. Every number and every state remains. See [Motion](/docs/motion).
+
+## Contrast
+
+The default tokens meet WCAG 2.1 AA for text in both themes. If you change `--muted-foreground` or `--lumesec`, check text contrast against `--card`.

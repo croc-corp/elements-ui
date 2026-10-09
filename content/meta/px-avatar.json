@@ -1,0 +1,35 @@
+{
+  "kind": "react",
+  "summary": "Avatar with initials on a pixel field coloured from the name, a status dot that pulses when online and a hover ripple.",
+  "props": [
+    { "name": "name", "type": "string", "default": "\"Guest\"", "description": "Source of the initials (first letters of the first two words), the colour and the accessible name. An empty or blank name shows \"Guest\"." },
+    { "name": "size", "type": "number", "default": "40", "description": "Size of the avatar in pixels. The canvas is 6px larger, so the online pulse has room." },
+    { "name": "status", "type": "\"online\" | \"away\" | \"busy\" | \"offline\"", "default": "-", "description": "Adds a coloured dot in the lower right corner; `online` pulses." },
+    { "name": "shape", "type": "\"circle\" | \"square\"", "default": "\"circle\"", "description": "`square` gives rounded-square corners." }
+  ],
+  "extends": "span",
+  "ref": { "type": "HTMLSpanElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "The root has `role=\"img\"` and an `aria-label` with the name, or the name and status, for example \"Ada Lovelace, online\".",
+    "The canvas and the initials are `aria-hidden`, so the label is read once."
+  ],
+  "motion": "With reduced motion the online pulse and the hover ripple are off.",
+  "notes": [
+    "The hue is a hash of `name`, so the same name always gets the same colour in a given theme.",
+    "Initials are text in the inherited sans font, sized to the avatar (36% of `size` for two letters, 42% for one), so accented letters render too. They are white, or black on light colours, whichever contrasts more.",
+    "Overlap avatars in a stack with a negative margin, for example `className=\"-ml-[10px]\"` on every avatar after the first."
+  ],
+  "tokens": ["--foreground", "--card", "--muted-foreground", "--lumesec-success", "--lumesec-warning", "--destructive"],
+  "usage": "import { PxAvatar } from \"@/components/lumesec/px-avatar\";\n\nexport function Example() {\n  return <PxAvatar name=\"Ada Lovelace\" status=\"online\" size={44} />;\n}\n",
+  "playground": {
+    "props": { "name": "Ada Lovelace", "size": 44 },
+    "controls": [
+      { "name": "name", "kind": "string", "options": null, "default": "Ada Lovelace" },
+      { "name": "size", "kind": "number", "options": null, "default": "44" },
+      { "name": "status", "kind": "enum", "options": ["online", "away", "busy", "offline"], "default": "-" },
+      { "name": "shape", "kind": "enum", "options": ["circle", "square"], "default": "circle" }
+    ]
+  }
+}

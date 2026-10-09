@@ -1,0 +1,83 @@
+---
+title: "Ultracode slider"
+description: "Six-level effort slider whose last stop, Ultracode, grows a pulsing pixel trail from the thumb and fires a burst when the thumb lands."
+tag: effort-slider
+updated: "2026-09-24"
+---
+
+<ComponentPreview tag="effort-slider" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="effort-slider" />
+
+## Installation
+
+<Install tag="effort-slider" />
+
+## Usage
+
+<Usage tag="effort-slider" />
+
+## Behaviour
+
+An effort picker with six levels. Every level is a plain slider stop until the last one: at Ultracode a pixel trail grows from the thumb toward the left, light pulses run along it and a burst fires on arrival.
+
+The label rolls like a picker wheel in the direction of the change. Dragging snaps on a slightly underdamped spring.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `EffortLevel` | — | The committed level (controlled): `low`, `medium`, `high`, `xhigh`, `max` or `ultracode`. Use with `onValueChange`. A new value springs the thumb to it; reaching `ultracode` plays the arrival burst. |
+| `defaultValue` | `EffortLevel` | `"ultracode"` | The level the slider starts at when uncontrolled. Starting at `ultracode` shows the trail without a burst. |
+| `onValueChange` | `(value: EffortLevel) => void` | — | Called when the user commits a new level: on pointer release, or on each key press that changes the level. Not called when `value` changes from outside. |
+| `onValueInput` | `(value: EffortLevel) => void` | — | Called on press and while dragging, each time the level under the pointer changes. Not called on key presses. |
+| `recommended` | `EffortLevel` | `"medium"` | The level that gets the taller tick and the "Recommended" caption. |
+| `lang` | `string` | — | `de` (or any `de-*` tag, in any case) switches the title, end labels, caption, help note and level names to German; anything else is English. Also set as the root's `lang` attribute. |
+| `disabled` | `boolean` | `false` | Dims the slider to 50% opacity and blocks pointer and keyboard changes. The track gets `aria-disabled` and, like the help button, leaves the tab order. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowUp | Next level. |
+| ArrowLeft / ArrowDown | Previous level. |
+| Home / PageDown | First level (`low`). |
+| End / PageUp | Last level (`ultracode`). |
+
+## Accessibility
+
+- The track has `role="slider"`, `tabIndex={0}`, `aria-valuemin={0}`, `aria-valuemax={5}`, `aria-valuenow` set to the level index and `aria-valuetext` set to the level name. While dragging they follow the level under the pointer.
+- The track's `aria-label` is "Effort", or "Aufwand" in German.
+- Pressing on the track moves focus to it.
+- The help button is a native button with `aria-label` "About effort", `aria-expanded` and `aria-controls`; it shows or hides an explanatory note.
+- The rolling level name, the Faster and Smarter end labels and the Recommended caption are `aria-hidden`; the level is exposed through `aria-valuetext`. Both canvases are `aria-hidden`.
+- With `disabled`, the track gets `aria-disabled="true"` and `tabIndex={-1}`, and the help button is disabled.
+- Reduced motion: the thumb jumps without the spring, the level name swaps without rolling, the shimmer and glow stop, and the Ultracode trail appears at full length without pulses, twinkle or the arrival burst.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--card`, `--border`, `--foreground`, `--muted` and `--muted-foreground`.
+
+## Notes
+
+- The six levels are fixed. `EFFORT_LEVELS` exports them as `{ id, en, de }`; `xhigh` is labelled "Extra".
+- The help note text is built in; it is not configurable.
+- The slider is 248px wide by default, with `max-width: 100%`. Pass a width class (`className="w-full"`) to change it.
+- The trail and its sparks are drawn on canvases from the theme tokens and redraw when the theme changes. The lattice grey is mixed from `--muted-foreground` and `--card`. The thumb is white in both themes.
+- The animation loop pauses while the slider is off screen.
+
+<RelatedComponents tag="effort-slider" />

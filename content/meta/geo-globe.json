@@ -1,0 +1,82 @@
+{
+  "kind": "react",
+  "summary": "A dotted globe with connections as dotted arcs. Each landing lights the land around the destination in an uneven ring and throws sparks past the edge.",
+  "props": [
+    { "name": "locations", "type": "readonly GlobeLocation[]", "default": "12 demo regions", "description": "Points on the globe: `{ id, label, lat, lon }`. Connections refer to them by `id`. Entries with an invalid latitude or longitude, or a repeated id, are skipped. An empty array shows the bare globe." },
+    { "name": "connections", "type": "readonly GlobeConnection[]", "default": "-", "description": "Connections to play: `{ id, from, to, tone? }` with location ids; `tone` is `accent`, `info`, `success`, `warning` or `destructive`. Each new `id` plays once, so the array can grow or be replaced. Without it a seeded demo stream runs; pass an empty array to play only what you `push()`." },
+    { "name": "value", "type": "string | null", "default": "-", "description": "Selected location id (controlled). Use with `onValueChange`. A new value turns the globe toward that location." },
+    { "name": "defaultValue", "type": "string | null", "default": "null", "description": "Selected location when uncontrolled." },
+    { "name": "onValueChange", "type": "(value: string | null) => void", "default": "-", "description": "Called when a location is selected or the selection is cleared (Escape, the same location again, or a tap on the globe)." },
+    { "name": "defaultCenter", "type": "LatLon", "default": "{ lat: 24, lon: 12 }", "description": "Where the globe faces on mount and where Home returns to. The latitude is limited to ±35°." },
+    { "name": "autoRotate", "type": "boolean", "default": "false", "description": "Turns the globe slowly while idle (6° per second), resuming 2.5 s after the last drag or key press. Off with reduced motion." },
+    { "name": "density", "type": "\"fine\" | \"regular\" | \"coarse\"", "default": "\"regular\"", "description": "Land dot pitch at the centre of the globe: 3, 4 or 5 px." },
+    { "name": "coastline", "type": "boolean", "default": "true", "description": "Draws the hairline coastline." },
+    { "name": "maxArcs", "type": "number", "default": "24", "description": "Arcs in flight at once. Further connections only add to the counts." },
+    { "name": "onArrive", "type": "(connection: GlobeConnection) => void", "default": "-", "description": "Called when a connection's packet lands. Connections beyond `maxArcs` call it at once." },
+    { "name": "label", "type": "string", "default": "\"Connections between locations\"", "description": "Accessible name of the globe. The number of locations is appended." },
+    { "name": "ref", "type": "React.Ref<GeoGlobeHandle>", "default": "-", "description": "Exposes `push()` and `flyTo()`." }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "GeoGlobeHandle",
+    "methods": [
+      { "signature": "push(connection: GlobeConnection): void", "description": "Plays one connection, with or without `connections`. An id that has already played is ignored. Several pushes in one handler leave as a staggered volley." },
+      { "signature": "flyTo(target: string | LatLon): void", "description": "Turns the globe toward a location id or a point. The zoom stays." }
+    ]
+  },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Arrow keys", "action": "On the globe: turn it 10° (30° with Shift). On a location: move to the nearest location in that direction, which turns the globe toward it." },
+    { "keys": "+ / -", "action": "Zoom in or out, between 0.8 and 1.6." },
+    { "keys": "Home", "action": "Return to `defaultCenter` at zoom 1." },
+    { "keys": "Tab", "action": "Moves from the globe to the locations, which share one tab stop, and on." },
+    { "keys": "Enter / Space", "action": "On a location: select it, or clear the selection when it is already selected." },
+    { "keys": "Escape", "action": "Clear the selection." }
+  ],
+  "accessibility": [
+    "The globe surface is a focusable element with `role=\"group\"`, `aria-roledescription=\"globe\"` and an `aria-label` made of `label` and the number of locations. A visually hidden description lists the keys.",
+    "Each location is a native button with `aria-pressed` and an accessible name with its label and counts, for example \"eu-central, 12 in, 9 out\". The buttons form one roving tab stop.",
+    "Locations on the far side of the globe are hidden visually but stay focusable; focusing one turns the globe toward it.",
+    "A polite live region reports arrivals at most every 10 seconds, for example \"8 connections in the last 10 seconds, most into eu-central\".",
+    "The chip beside the hovered, focused or selected location is `aria-hidden`; its content is in the button's name. Both canvases and the placeholder are `aria-hidden`.",
+    "The globe shows a focus ring around its disc; locations show their own ring."
+  ],
+  "motion": "With reduced motion the globe jumps to a new view without fly-to, inertia or idle spin; arcs appear complete as static dotted lines for 2 s without a packet; arrivals show the glow at the destination without the ring of lit dots, the sparks or the marker pop; and the counts swap without rolling.",
+  "notes": [
+    "Drag with a mouse or pen turns the globe and it coasts after release. On touch only horizontal drags turn it, so vertical swipes still scroll the page. Ctrl or Meta with the wheel (or a trackpad pinch) zooms; a plain wheel scrolls the page.",
+    "Arcs rise higher the farther they travel and take longer to draw: 0.7 s plus up to 0.9 s for the far side of the world. Each arc draws from its origin, rests for 0.5 s, then erases from its origin.",
+    "Selecting a location keeps its own arcs at full strength and dims the others to 15% without their packets. A chip beside the location shows its label and its in and out counts.",
+    "Counts are per location: out when a connection leaves, in when it lands. A marker takes the tone of its latest connection.",
+    "Connection ids are remembered (the last 2,000), so a re-render with the same array never replays them. Connections that refer to an unknown location are skipped with one development warning.",
+    "The stage is square below 480 px of width and 16:11 above. The arcs and sparks draw on a canvas that reaches 40 px above and below it.",
+    "The server markup shows the disc with a 30° graticule and the location buttons in their starting positions; it fades to the dotted globe after the first frame. The animation loop pauses while the globe is off screen and stops when nothing moves.",
+    "Demo regions and the demo stream are invented traffic between real coordinates. Singapore lies in a water cell of the land mask, so no land dots light up right at that marker."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your places as `locations` and your connections as `connections`, or call `push()` on the ref for a live feed. Without `connections` the globe plays a seeded demo stream between 12 demo regions."
+  },
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--lumesec-shine",
+    "--lumesec-info",
+    "--lumesec-success",
+    "--lumesec-warning",
+    "--destructive",
+    "--foreground",
+    "--muted-foreground",
+    "--card",
+    "--border"
+  ],
+  "usage": "import { GeoGlobe, type GlobeConnection, type GlobeLocation } from \"@/components/lumesec/geo-globe\";\n\nconst regions: GlobeLocation[] = [\n  { id: \"us-east\", label: \"us-east\", lat: 39.04, lon: -77.49 },\n  { id: \"eu-central\", label: \"eu-central\", lat: 50.11, lon: 8.68 },\n  { id: \"ap-southeast\", label: \"ap-southeast\", lat: 1.35, lon: 103.82 },\n];\n\nexport function Example({ recent }: { recent: GlobeConnection[] }) {\n  return <GeoGlobe locations={regions} connections={recent} defaultValue=\"eu-central\" />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      { "name": "autoRotate", "kind": "boolean", "options": null, "default": "false" },
+      { "name": "density", "kind": "enum", "options": ["fine", "regular", "coarse"], "default": "regular" },
+      { "name": "coastline", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "maxArcs", "kind": "number", "options": null, "default": "24" }
+    ]
+  }
+}

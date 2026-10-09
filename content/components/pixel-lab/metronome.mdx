@@ -1,0 +1,76 @@
+---
+title: "Metronome"
+description: "Pixel metronome with a swinging pendulum whose weight slides with tempo, four beat lamps, tap tempo and optional click sound."
+tag: px-metronome
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-metronome" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-metronome" />
+
+## Installation
+
+<Install tag="px-metronome" />
+
+## Usage
+
+<Usage tag="px-metronome" />
+
+## Behaviour
+
+A swinging pixel pendulum whose weight slides with the tempo, four beat lamps and sparks at each extreme. Tap tempo works, and sound is off until you turn it on.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `bpm` | `bpm` | `number` | `96` | Tempo, clamped to 40 to 208 and rounded. Changing it updates the tempo without firing `change`. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ bpm: number }` | Fires whenever the tempo is set by the buttons, tap tempo or `setBpm()`. It does not fire when the element first connects or when the `bpm` attribute changes. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `setBpm(bpm: number)` | Sets the tempo, rounded and clamped to 40 to 208, and fires `change`. A value that is not a finite number is ignored. |
+| `toggle()` | Starts or stops the metronome from beat one. |
+| `tap()` | Registers a tap; from the second tap on, the tempo is set from the average interval of the last five taps. |
+
+## Accessibility
+
+- The tempo is text ("96 BPM") over the pendulum in an `aria-live="polite"` region, so each new tempo is announced; the outgoing number of the roll is `aria-hidden`. The pendulum canvas is hidden from assistive technology.
+- The tempo name and play state (for example "Andante · playing") are in an `aria-live="polite"` region.
+- Controls are native buttons: "Slower" and "Faster" (labelled with `aria-label`), Start/Stop, Tap, and Sound with `aria-pressed`.
+- Reduced motion: the pendulum jumps between its two extremes on each beat instead of swinging, and the beat sparks are skipped.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono` and `--ui-muted`.
+
+## Notes
+
+- Sound is off by default. Turning it on creates a Web Audio context and plays a short 1,600 Hz click on beat one and 1,000 Hz on the others; the context is closed when the element is removed.
+- The minus and plus buttons change the tempo by 2 BPM. Taps more than two seconds apart start a new measurement.
+- The beat runs with the animation, so it pauses, sound included, while the element is off screen or the tab is hidden.
+- The canvas is 214px tall.
+
+<RelatedComponents tag="px-metronome" />

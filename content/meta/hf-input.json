@@ -1,0 +1,129 @@
+{
+  "summary": "Form-associated text field with a comet of light on the border while focused; invalid values turn the border to static.",
+  "attributes": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Visible label, linked to the inner input. Hidden when absent."
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "default": "",
+      "description": "Initial value, also restored on form reset. Not observed; use the `value` property to change the text."
+    },
+    {
+      "name": "hint",
+      "type": "string",
+      "description": "Text under the field when there is no error."
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Message shown, and used as the validation message, when the value is invalid. Defaults to the browser `validationMessage`."
+    },
+    {
+      "name": "success",
+      "type": "string",
+      "description": "Message shown when a valid value is committed on blur. Falls back to `hint`."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Form field name."
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "description": "Passed to the inner `<input>`, for example `email`, `url` or `password`."
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Passed to the inner input."
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute, passed to the inner input."
+    },
+    {
+      "name": "pattern",
+      "type": "string",
+      "description": "Passed to the inner input."
+    },
+    {
+      "name": "minlength",
+      "type": "number",
+      "description": "Passed to the inner input."
+    },
+    {
+      "name": "maxlength",
+      "type": "number",
+      "description": "Passed to the inner input."
+    },
+    {
+      "name": "autocomplete",
+      "type": "string",
+      "description": "Passed to the inner input."
+    },
+    {
+      "name": "inputmode",
+      "type": "string",
+      "description": "Passed to the inner input."
+    },
+    {
+      "name": "spellcheck",
+      "type": "string",
+      "description": "Passed to the inner input."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Disables the inner input; a disabled ancestor `<fieldset>` does the same. A disabled field is not submitted."
+    }
+  ],
+  "events": [
+    {
+      "name": "input",
+      "detail": "{ value: string }",
+      "description": "Fires on every edit."
+    },
+    {
+      "name": "change",
+      "detail": "{ value: string }",
+      "description": "Fires when the inner input commits a change, on blur after editing."
+    }
+  ],
+  "methods": [
+    {
+      "signature": "focus(options?: FocusOptions)",
+      "description": "Moves focus to the inner input."
+    }
+  ],
+  "properties": [
+    {
+      "name": "value",
+      "type": "string",
+      "readonly": false,
+      "description": "Current text. Setting it updates the form value and validity, but not the visual state or message."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "A `<label for>` in the shadow root names the inner `<input>`.",
+    "The hint, error and success text sits in an `aria-live=\"polite\"` region that also describes the input (`aria-describedby`).",
+    "Sets `aria-invalid` on the inner input when it validates on blur; form reset removes it.",
+    "The host does not delegate focus; call `focus()` on it to focus the input.",
+    "The canvas is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the border comet stays in one place, the error static does not flicker, the caret sparks and error shake are skipped, and messages swap without rolling.",
+  "form": "Submits the inner input value under `name`. Validity mirrors the inner input constraints (`required`, `type`, `pattern`, `minlength`, `maxlength`) and reports `customError` with the `error` text or the browser message. The error or success state appears on blur, and while in error it re-checks on every edit. Form reset restores the `value` attribute, the hint and the neutral state. A disabled field is not submitted.",
+  "slots": [],
+  "notes": [
+    "`value` is read on first connect only; the other attributes are observed and passed to the inner input when they change.",
+    "The inner input's native `input` event stops at the shadow root; listen to the host's `input` event, whose `detail` carries the value."
+  ]
+}

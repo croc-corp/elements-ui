@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://elements.lumesec.ai/docs
+    about: Installation, theming, use from React and plain HTML, and the API of every component.
+  - name: Report a security vulnerability
+    url: https://github.com/lumesec/elements-ui/blob/main/SECURITY.md
+    about: Do not open a public issue. Report vulnerabilities privately as described in SECURITY.md.

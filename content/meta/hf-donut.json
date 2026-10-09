@@ -1,0 +1,58 @@
+{
+  "summary": "Donut chart that sweeps in clockwise; hovering or arrowing to a segment pops it outward and rolls its share into the centre.",
+  "attributes": [
+    {
+      "name": "data",
+      "type": "string",
+      "default": "Code:42,Writing:23,Analysis:18,Other:17",
+      "description": "Comma-separated `Label:value` pairs, split at the last colon. Values are relative and shown as rounded percentages of their sum; a missing or negative value counts as 0. Observed: a change rebuilds the chart and it sweeps in again."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Usage by task",
+      "description": "Text in the centre and the start of the `aria-label`. Observed."
+    },
+    {
+      "name": "total",
+      "type": "string",
+      "description": "Text in the centre when no segment is focused. Defaults to the sum of the values. Observed."
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [
+    {
+      "name": "data",
+      "type": "Array<{ label: string, v: number }>",
+      "readonly": true,
+      "description": "Segments parsed from the attribute."
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": "ArrowRight / ArrowDown",
+      "action": "Focus the next segment, wrapping."
+    },
+    {
+      "keys": "ArrowLeft / ArrowUp",
+      "action": "Focus the previous segment, wrapping."
+    }
+  ],
+  "accessibility": [
+    "The canvas has `role=\"img\"`, `tabindex=\"0\"` and an `aria-label` listing each segment percentage.",
+    "The centre text is not a live region.",
+    "Legend rows react to pointer hover only. Moving focus away from the canvas clears the highlight."
+  ],
+  "motion": "With reduced motion the donut appears without the sweep and the centre text swaps without rolling; the segment pop still eases.",
+  "slots": [],
+  "notes": [
+    "Colours cycle through accent, ok, warn, danger and muted; a sixth segment reuses the accent colour.",
+    "All attributes are observed.",
+    "The chart is fixed at 176 × 176 px."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your `Label:value` segments as `data` (and `total` for the centre). Without it the chart shows invented usage shares."
+  }
+}

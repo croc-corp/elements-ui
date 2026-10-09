@@ -1,0 +1,27 @@
+# dependencies and build output are recreated in the image
+node_modules
+.next
+.source
+.data
+.registry
+public/cdn
+out
+*.tsbuildinfo
+next-env.d.ts
+
+# secrets never enter the build context
+.env*
+!.env.example
+
+# not needed to build
+.git
+.github
+.claude
+.local
+.vercel
+.vscode
+.idea
+.DS_Store
+*.log
+Dockerfile
+.dockerignore

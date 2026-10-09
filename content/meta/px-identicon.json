@@ -1,0 +1,21 @@
+{
+  "summary": "Symmetric 7x7 pixel avatar generated from a typed name; changed cells flip in a ring spreading from the centre as the hue drifts.",
+  "attributes": [],
+  "events": [
+    { "name": "change", "detail": "{ name: string, hash: number }", "description": "Fires on every edit of the name field and on Shuffle. `name` is the trimmed input (`?` when empty); `hash` is the unsigned 32-bit hash of its lower-cased form." }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"img\"` with `aria-label=\"Pixel avatar for <name>\"`, updated on every change.",
+    "The text field is labelled \"Name\" with a `<label for>`; Shuffle is a native button."
+  ],
+  "motion": "With reduced motion, changed cells and the hue switch at once instead of flipping outward from the centre; the pointer lift still applies.",
+  "slots": [],
+  "notes": [
+    "The name comes from the component's own text field, which starts as \"Ada Lovelace\"; there is no attribute for it. Shuffle cycles through ten built-in names.",
+    "The pattern is case-insensitive and mirrored left to right. The first six hex digits of the hash are shown under the field.",
+    "The avatar canvas is a fixed 142 by 142px."
+  ]
+}

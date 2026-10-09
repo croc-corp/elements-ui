@@ -1,0 +1,76 @@
+---
+title: "Waveform player"
+description: "Pixel waveform player that fills as it plays, previews ahead of the playhead on hover and ripples from wherever you click."
+tag: px-player
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-player" />
+
+<Callout title="Demo data" type="warning">
+
+The track, its length and its waveform are invented and no audio plays; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-player" />
+
+## Usage
+
+<Usage tag="px-player" />
+
+## Behaviour
+
+A pixel waveform that fills as it plays, previews ahead of the playhead on hover and sends a ripple out from wherever you click. The track is silent.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `play` | `onPlay` | `{}` | Fires when playback starts. |
+| `pause` | `onPause` | `{}` | Fires when playback pauses, including when the track reaches the end. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `toggle()` | Starts or pauses playback and fires `play` or `pause`. Playing at the end starts over. |
+| `seek(position: number)` | Moves the playhead to a position from 0 to 1 of the track. A value that is not a finite number is ignored. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowLeft | Seek forward or back by 5 seconds. |
+| Home / End | Seek to the start or the end. |
+| Space | Play or pause. |
+
+## Accessibility
+
+- The play button is a native button whose `aria-label` switches between "Play" and "Pause".
+- The waveform canvas is focusable with `role="slider"`, `aria-label="Seek"`, `aria-valuemin="0"` and `aria-valuemax="222"` (seconds).
+- `aria-valuenow` is the position in seconds and `aria-valuetext` reads like "1:11 / 3:42". The hover time tooltip is pointer-only.
+- Reduced motion: the bars around the playhead stop pulsing during playback; click ripples still play.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--foreground`, `--lumesec`, `--lumesec-foreground` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-on-accent` and `--ui-surface`.
+
+## Notes
+
+- The track is demo content: "Night Drive", 3:42 long, with a generated waveform and no audio. There is no attribute for a source. Playback starts at 32%.
+- The waveform canvas is 64px tall.
+
+<RelatedComponents tag="px-player" />

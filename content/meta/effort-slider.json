@@ -1,0 +1,49 @@
+{
+  "kind": "react",
+  "summary": "Six-level effort slider whose last stop, Ultracode, grows a pulsing pixel trail from the thumb and fires a burst when the thumb lands.",
+  "props": [
+    { "name": "value", "type": "EffortLevel", "default": "-", "description": "The committed level (controlled): `low`, `medium`, `high`, `xhigh`, `max` or `ultracode`. Use with `onValueChange`. A new value springs the thumb to it; reaching `ultracode` plays the arrival burst." },
+    { "name": "defaultValue", "type": "EffortLevel", "default": "\"ultracode\"", "description": "The level the slider starts at when uncontrolled. Starting at `ultracode` shows the trail without a burst." },
+    { "name": "onValueChange", "type": "(value: EffortLevel) => void", "default": "-", "description": "Called when the user commits a new level: on pointer release, or on each key press that changes the level. Not called when `value` changes from outside." },
+    { "name": "onValueInput", "type": "(value: EffortLevel) => void", "default": "-", "description": "Called on press and while dragging, each time the level under the pointer changes. Not called on key presses." },
+    { "name": "recommended", "type": "EffortLevel", "default": "\"medium\"", "description": "The level that gets the taller tick and the \"Recommended\" caption." },
+    { "name": "lang", "type": "string", "default": "-", "description": "`de` (or any `de-*` tag, in any case) switches the title, end labels, caption, help note and level names to German; anything else is English. Also set as the root's `lang` attribute." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the slider to 50% opacity and blocks pointer and keyboard changes. The track gets `aria-disabled` and, like the help button, leaves the tab order." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowUp", "action": "Next level." },
+    { "keys": "ArrowLeft / ArrowDown", "action": "Previous level." },
+    { "keys": "Home / PageDown", "action": "First level (`low`)." },
+    { "keys": "End / PageUp", "action": "Last level (`ultracode`)." }
+  ],
+  "accessibility": [
+    "The track has `role=\"slider\"`, `tabIndex={0}`, `aria-valuemin={0}`, `aria-valuemax={5}`, `aria-valuenow` set to the level index and `aria-valuetext` set to the level name. While dragging they follow the level under the pointer.",
+    "The track's `aria-label` is \"Effort\", or \"Aufwand\" in German.",
+    "Pressing on the track moves focus to it.",
+    "The help button is a native button with `aria-label` \"About effort\", `aria-expanded` and `aria-controls`; it shows or hides an explanatory note.",
+    "The rolling level name, the Faster and Smarter end labels and the Recommended caption are `aria-hidden`; the level is exposed through `aria-valuetext`. Both canvases are `aria-hidden`.",
+    "With `disabled`, the track gets `aria-disabled=\"true\"` and `tabIndex={-1}`, and the help button is disabled."
+  ],
+  "motion": "With reduced motion the thumb jumps without the spring, the level name swaps without rolling, the shimmer and glow stop, and the Ultracode trail appears at full length without pulses, twinkle or the arrival burst.",
+  "notes": [
+    "The six levels are fixed. `EFFORT_LEVELS` exports them as `{ id, en, de }`; `xhigh` is labelled \"Extra\".",
+    "The help note text is built in; it is not configurable.",
+    "The slider is 248px wide by default, with `max-width: 100%`. Pass a width class (`className=\"w-full\"`) to change it.",
+    "The trail and its sparks are drawn on canvases from the theme tokens and redraw when the theme changes. The lattice grey is mixed from `--muted-foreground` and `--card`. The thumb is white in both themes.",
+    "The animation loop pauses while the slider is off screen."
+  ],
+  "tokens": ["--lumesec", "--lumesec-glint", "--card", "--border", "--foreground", "--muted", "--muted-foreground"],
+  "usage": "import { EffortSlider } from \"@/components/lumesec/effort-slider\";\n\nexport function Example() {\n  return <EffortSlider defaultValue=\"ultracode\" recommended=\"medium\" />;\n}\n",
+  "playground": {
+    "props": { "defaultValue": "ultracode", "recommended": "medium" },
+    "controls": [
+      { "name": "defaultValue", "kind": "enum", "options": ["low", "medium", "high", "xhigh", "max", "ultracode"], "default": "ultracode" },
+      { "name": "recommended", "kind": "enum", "options": ["low", "medium", "high", "xhigh", "max", "ultracode"], "default": "medium" },
+      { "name": "lang", "kind": "enum", "options": ["en", "de"], "default": "en" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

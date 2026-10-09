@@ -1,0 +1,28 @@
+{
+  "summary": "Sweeping pixel radar where each service node lights up as the beam passes; Ping sends out a ring that flashes every node it touches.",
+  "attributes": [],
+  "events": [
+    { "name": "ping", "detail": "{}", "description": "Fires when the Ping button is pressed." }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowDown", "action": "Select the next node and show its tooltip." },
+    { "keys": "ArrowLeft / ArrowUp", "action": "Select the previous node and show its tooltip." }
+  ],
+  "accessibility": [
+    "The canvas is focusable with `role=\"img\"` and `aria-label=\"Radar of 6 service nodes. Arrow keys step through them.\"`.",
+    "The node tooltip is drawn for pointer and sighted keyboard users; a visually hidden `aria-live=\"polite\"` region announces each node stepped to with the arrow keys, for example \"edge-tokyo · 131 ms · degraded\". Blurring the canvas clears the selection.",
+    "The summary (\"6 nodes · 1 degraded\") is an `aria-live=\"polite\"` region. Ping is a native button."
+  ],
+  "motion": "With reduced motion, the beam stays at a fixed angle, nodes stop drifting and keep a steady brightness and the selection ring does not turn; the ping ring still expands.",
+  "slots": [],
+  "notes": [
+    "The nodes are built-in demo data: api-eu-1 (42 ms), api-us-2 (88 ms), edge-tokyo (131 ms, degraded), worker-7 (27 ms), db-primary (9 ms) and queue-3 (64 ms).",
+    "The radar is a fixed 232 by 232px and animates continuously while on screen, except under reduced motion."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The six service nodes and their latencies are invented; nothing can be set."
+  }
+}

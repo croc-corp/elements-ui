@@ -1,0 +1,26 @@
+{
+  "summary": "Press-and-hold generate button: pixels spiral in as a ring fills, and release fires a shockwave sized to the charge, one to four variations.",
+  "attributes": [],
+  "events": [
+    { "name": "generate", "detail": "{ count: number, charge: number }", "description": "Fires on release after a long enough hold. `count` is 1 to 4 variations; `charge` is the fill level from 0 to 1, rounded to two decimals." }
+  ],
+  "methods": [
+    { "signature": "start()", "description": "Begins charging, as if the button were pressed. Ignored while charging or during the 2.4 seconds after a release fires." },
+    { "signature": "release()", "description": "Ends charging. Below 18% it shows \"Hold longer\" and fires nothing; otherwise it fires `generate`." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "Space / Enter (held)", "action": "Charge while held; releasing the key fires. Moving focus away mid-hold cancels without firing." }
+  ],
+  "accessibility": [
+    "The control is a native button whose text follows the charge (\"Hold to generate\", \"Charging…\", \"Keep holding…\") and then reports the result (\"N variations ready\").",
+    "The line below the button is an `aria-live=\"polite\"` region that reports the charge level after firing.",
+    "The canvas is decorative and has `aria-hidden=\"true\"`."
+  ],
+  "motion": "With reduced motion, the button does not tremble or pop and no particles spiral in; spark bursts are skipped, while the ring fill and shockwave still draw.",
+  "slots": [],
+  "notes": [
+    "A full charge takes 1.6 seconds. The variation count is the charge times four, rounded, with a minimum of one.",
+    "The component is 196px tall."
+  ]
+}

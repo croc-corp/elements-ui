@@ -1,0 +1,74 @@
+---
+title: "Progress"
+description: "Progress bar drawn as a fluid with rising bubbles; at 100% the label rolls to its done text. Omit `value` for indeterminate."
+tag: hf-progress
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-progress" />
+
+<Callout title="Your data">
+
+Set `value` from 0 to 100, or omit it for an indeterminate bar. The bubbles are decoration, not data. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-progress" />
+
+## Installation
+
+<Install tag="hf-progress" />
+
+## Usage
+
+<Usage tag="hf-progress" />
+
+## Behaviour
+
+A fluid fill with rising bubbles and a meniscus at the front; at 100% the label rolls to its done text and the fluid flashes. Leave out `value` for an indeterminate blob.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `value` | `value` | `number` | — | Progress from 0 to 100, clamped. Observed. Without the attribute the bar is indeterminate. |
+| `label` | `label` | `string` | `Uploading` | Label above the bar and the progressbar `aria-label`. Observed. |
+| `done-label` | `doneLabel` | `string` | `Complete` | Label shown once `value` reaches 100. Observed. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `complete` | `onComplete` | `{}` | Fires when `value` reaches 100. Fires again only after the value drops below 100 and returns. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `number` | Clamped value. Setting `null` removes the attribute and makes the bar indeterminate. |
+| `indeterminate` (read-only) | `boolean` | `true` when there is no `value` attribute. |
+
+## Accessibility
+
+- The canvas has `role="progressbar"` with `aria-valuemin="0"`, `aria-valuemax="100"`, a rounded `aria-valuenow` and `aria-label` from `label`.
+- `aria-valuenow` is removed in the indeterminate state.
+- The percentage and label are plain text; there is no live region.
+- Reduced motion: the fill jumps to the value without the wobbling front and the bar is drawn once per change, so the bubbles, indeterminate blob and done flash stand still; the label swaps without rolling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--lumesec-success` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono`, `--ui-muted` and `--ui-ok`.
+
+<RelatedComponents tag="hf-progress" />

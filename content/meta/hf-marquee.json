@@ -1,0 +1,25 @@
+{
+  "summary": "Two rows of placeholder wordmarks drifting in opposite directions between dotted rules; the row under the pointer slows down.",
+  "attributes": [
+    { "name": "label", "type": "string", "default": "Placeholder logos · teams building with it", "description": "Caption above the rows. Read once on connect." }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The moving rows repeat each wordmark and are `aria-hidden`, as is the canvas; a visually hidden text lists the logo names once.",
+    "The caption above the rows is plain text."
+  ],
+  "motion": "With reduced motion, the rows do not move; the wordmark under the pointer is still highlighted.",
+  "slots": [],
+  "notes": [
+    "The ten wordmarks are fictional placeholders built into the source; there is no attribute to supply logos.",
+    "Wordmarks are text in the page's sans, mono or a serif fallback stack, faded at both edges by a mask; the dotted rules and separators are on the canvas.",
+    "The row under the pointer slows to 15% speed, and the wordmark under it turns the accent colour on a dotted plate. The marquee is 104px tall and fills the width."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The ten wordmarks are fictional placeholder logos; only `label` can be set."
+  }
+}

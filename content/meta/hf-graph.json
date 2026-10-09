@@ -1,0 +1,31 @@
+{
+  "summary": "Agent workflow graph that plays a run from lead agent to planner, three parallel agents and a reviewer, with light along live edges.",
+  "attributes": [
+    { "name": "label", "type": "string", "default": "Ultracode workflow", "description": "Heading text. Observed." },
+    { "name": "autoplay", "type": "boolean", "default": "false", "description": "Presence attribute. Starts a run 800 ms after the element connects." }
+  ],
+  "events": [
+    { "name": "done", "detail": "{}", "description": "Fires when the reviewer finishes a run." }
+  ],
+  "methods": [
+    { "signature": "run(): Promise<void>", "description": "Plays one simulated run of about five seconds and resolves when it ends. Calls during a run return at once and do nothing." }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The status next to the heading is an `aria-live=\"polite\"` region with messages such as `Orchestrating`, `3 agents in parallel` and `Done in 5.1s`.",
+    "Node labels are text. Their running and done states are shown by colour and a `data-s` attribute, and read out through visually hidden text after the label (`, running`, `, done`).",
+    "The Run button has `aria-disabled=\"true\"` during a run and ignores presses; it stays focusable, so keyboard focus is kept.",
+    "Edges, packets and halos are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion, each step waits 60 ms so a run finishes almost at once, and no packets travel along live edges.",
+  "slots": [],
+  "notes": [
+    "The graph, labels and timings are built-in demo data; step durations include some randomness.",
+    "Below 520px of host width the layout switches to vertical and the stage grows from 196px to 262px tall."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The agent graph, its labels and the run timings (partly random) are invented; only `label` and `autoplay` can be set."
+  }
+}

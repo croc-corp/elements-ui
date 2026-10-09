@@ -1,0 +1,67 @@
+---
+title: "Dissolve to delete"
+description: "Chat list where deleting a row turns it into pixels sampled from its own text, which drift away left to right before the gap closes."
+tag: px-dissolve
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-dissolve" />
+
+<Callout title="Demo data" type="warning">
+
+The five chats are invented; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-dissolve" />
+
+## Usage
+
+<Usage tag="px-dissolve" />
+
+## Behaviour
+
+Deleting a chat turns the row into its own pixels, sampled from the real text, and they drift away left to right before the gap closes.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `delete` | `onDelete` | `{ title: string }` | Fires when a row's delete button is pressed, with the chat title. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `restore()` | Puts every deleted chat back in its original position, including rows still dissolving. |
+
+## Accessibility
+
+- The list has `aria-label="Recent chats"`.
+- Each delete control is a native button labelled `Delete “<title>”`; it is shown on hover or keyboard focus, and always on devices without hover. After a delete, focus moves to the next row's delete button, the previous one, or Restore all.
+- The chat count below the list is an `aria-live="polite"` region.
+- The particle canvas is decorative (`aria-hidden="true"`) and ignores pointer input.
+- Reduced motion: a deleted row disappears and collapses at once without particles, and restored rows appear without expanding.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--destructive`, `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-danger`, `--ui-fg`, `--ui-mono` and `--ui-muted`.
+
+## Notes
+
+- The five chats are built-in demo data; there is no attribute for your own rows. Deleting only removes the row inside the component.
+- The particle canvas overhangs the list by 24px on every side, so pixels can drift past its edges.
+
+<RelatedComponents tag="px-dissolve" />

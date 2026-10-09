@@ -1,0 +1,26 @@
+name: Documentation
+description: Something on a docs or component page is wrong, unclear or missing.
+title: "Docs: "
+labels: ["docs"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: The address of the page.
+      placeholder: https://elements.lumesec.ai/docs/theming
+    validations:
+      required: true
+  - type: input
+    id: file
+    attributes:
+      label: Source file
+      description: Filled in when you use "Report an issue" on a page.
+      placeholder: content/docs/theming.mdx
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong or missing?
+      description: Quote the sentence or describe the section, and say what you expected.
+    validations:
+      required: true

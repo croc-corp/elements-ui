@@ -1,0 +1,21 @@
+{
+  "summary": "Six pixel loading indicators (orbit, snake, helix, scan, rain, pulse); clicking one finishes it with a check before it restarts.",
+  "attributes": [],
+  "events": [
+    { "name": "finish", "detail": "{ loader: string }", "description": "Fires when a loader is finished, by click, Finish all or `finish()`. `loader` is `Orbit`, `Snake`, `Helix`, `Scan`, `Rain` or `Pulse`." }
+  ],
+  "methods": [
+    { "signature": "finish(index: number)", "description": "Shows the check on loader 0 to 5 for 1.6 seconds, then restarts it, and fires `finish`. Other values are ignored." }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"img\"` with an `aria-label` naming all six loaders. It is not focusable and exposes no busy or progress state.",
+    "Finishing a single loader requires a pointer; \"Finish all\" is a native button."
+  ],
+  "motion": "With reduced motion, each loader shows a still frame; the finish check still appears.",
+  "slots": [],
+  "notes": [
+    "The loaders are a 3 by 2 gallery on a 216px tall canvas and animate continuously while on screen, except under reduced motion. They are visual only and carry no progress value."
+  ]
+}

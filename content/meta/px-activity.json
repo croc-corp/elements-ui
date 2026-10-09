@@ -1,0 +1,28 @@
+{
+  "summary": "Activity heatmap where each day is nine sub-pixels, so intensity shows as brightness and density; switching metric flips cells in a wave.",
+  "attributes": [],
+  "events": [],
+  "methods": [
+    { "signature": "setMetric(index: 0 | 1)", "description": "Switches the metric: `0` for sessions, `1` for tokens. Other values are ignored." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "action": "In the metric switch: select and focus the other metric." }
+  ],
+  "accessibility": [
+    "The metric switch is a `role=\"radiogroup\"` with `aria-label=\"Metric\"`; its two buttons have `role=\"radio\"` and `aria-checked`. Only the checked radio is in the tab order; arrow keys move the selection.",
+    "The canvas has `role=\"img\"` with an `aria-label` giving the total and the longest streak for the current metric.",
+    "The streak summary above the grid is an `aria-live=\"polite\"` region.",
+    "The per-day tooltip appears on pointer hover only."
+  ],
+  "motion": "With reduced motion, switching metric replaces the cells at once instead of flipping them in a diagonal wave; click ripples still play.",
+  "slots": [],
+  "notes": [
+    "The data is generated demo data, derived deterministically from each date, with weekdays busier than weekends. There is no attribute for real data.",
+    "The grid ends at today and shows one 12px column per week, from 8 to 40 weeks depending on width. The canvas is 86px tall."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The daily activity counts are generated from each date; nothing can be set."
+  }
+}

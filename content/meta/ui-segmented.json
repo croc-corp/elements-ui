@@ -1,0 +1,38 @@
+{
+  "kind": "react",
+  "summary": "Segmented control whose selection pill is driven by two springs, so it stretches between options and recolours labels exactly where it covers them.",
+  "props": [
+    { "name": "value", "type": "string", "default": "-", "description": "Controlled selected label. Use with `onValueChange`. A label that is not in `options` selects the first option." },
+    { "name": "defaultValue", "type": "string", "default": "first option", "description": "Initially selected label when uncontrolled." },
+    { "name": "options", "type": "readonly string[]", "default": "[\"Chat\", \"Code\", \"Design\"]", "description": "Option labels. Each label is also the option's value." },
+    { "name": "label", "type": "string", "default": "\"Options\"", "description": "Accessible name of the radio group." },
+    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called when the user picks a different option by click or arrow key. Changing `value` from outside does not call it." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowDown", "action": "Select and focus the next option, wrapping at the end." },
+    { "keys": "ArrowLeft / ArrowUp", "action": "Select and focus the previous option, wrapping at the start." }
+  ],
+  "accessibility": [
+    "The root has `role=\"radiogroup\"` and an `aria-label` from `label`; options are native buttons with `role=\"radio\"` and `aria-checked`.",
+    "Roving tabindex: only the selected option is in the tab order.",
+    "The pill and a second, recoloured label layer used for the pill effect are `aria-hidden`."
+  ],
+  "motion": "With reduced motion the pill jumps to the selected option without the spring stretch.",
+  "notes": [
+    "The control is as wide as its options. Give it a width (`className=\"w-full\"`) to stretch the track; the options stay at the start.",
+    "Options carry `data-state=\"checked\"` or `data-state=\"unchecked\"`.",
+    "Changing `options` snaps the pill to the selected option without animating."
+  ],
+  "tokens": ["--muted", "--card", "--foreground", "--muted-foreground", "--lumesec"],
+  "usage": "import { UiSegmented } from \"@/components/lumesec/ui-segmented\";\n\nexport function Example() {\n  return <UiSegmented options={[\"Day\", \"Week\", \"Month\", \"Year\"]} defaultValue=\"Week\" label=\"Range\" />;\n}\n",
+  "playground": {
+    "props": { "options": ["Day", "Week", "Month", "Year"], "defaultValue": "Week" },
+    "controls": [
+      { "name": "defaultValue", "kind": "enum", "options": ["Day", "Week", "Month", "Year"], "default": "Week" },
+      { "name": "label", "kind": "string", "options": null, "default": "Options" }
+    ]
+  }
+}

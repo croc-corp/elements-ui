@@ -1,0 +1,66 @@
+{
+  "summary": "Secret field that hides its value under live static; revealing dissolves the noise outward from the click and re-hides after 15 s.",
+  "attributes": [
+    {
+      "name": "secret",
+      "type": "string",
+      "default": "sk-demo-Px9Qz7R4mW2vL8kT5nB1cJ6hD3fY0sA",
+      "description": "Value to hide, reveal and copy. The default is a demo key. Observed: a change replaces the displayed value."
+    },
+    {
+      "name": "hint",
+      "type": "string",
+      "default": "Hidden",
+      "description": "Text beside the `API key` label while the secret is hidden. Observed."
+    }
+  ],
+  "events": [
+    {
+      "name": "toggle",
+      "detail": "{ revealed: boolean }",
+      "description": "Fires on every reveal or hide, including the automatic hide after 15 s."
+    },
+    {
+      "name": "copy",
+      "detail": "{ ok: boolean }",
+      "description": "Fires after the Copy button or `copy()` is used. `ok` is `false` when the clipboard write was rejected."
+    }
+  ],
+  "methods": [
+    {
+      "signature": "toggle(x?: number)",
+      "description": "Reveals or hides the secret. `x` is the horizontal origin of the dissolve in pixels from the left of the value."
+    },
+    {
+      "signature": "copy(): Promise<void>",
+      "description": "Writes the secret to the clipboard and shows `Copied`, or `Failed` when the write is rejected."
+    }
+  ],
+  "properties": [
+    {
+      "name": "secret",
+      "type": "string",
+      "readonly": true,
+      "description": "The secret value."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The secret is monospace text under a noise canvas. It is `aria-hidden` while hidden and readable by screen readers while shown.",
+    "The Reveal button's `aria-label` follows its text: `Reveal secret` or `Hide secret`.",
+    "A visually hidden `aria-live=\"polite\"` region announces `Secret shown`, `Secret hidden`, `Copied to clipboard` and `Copy failed`; it never reads the secret.",
+    "Clicking the value area also toggles it; that area is not focusable."
+  ],
+  "motion": "With reduced motion the static is frozen, revealing and hiding happen at once without the dissolve, and copying shows no green flash; the Copy label swaps without rolling.",
+  "slots": [],
+  "notes": [
+    "The secret is plain text in the shadow DOM and is only masked visually; scripts on the page can read it.",
+    "The `API key` label text is fixed.",
+    "When the clipboard write fails, for example outside a secure context, the button shows `Failed` instead of `Copied` and there is no green flash; `copy` still fires, with `ok: false`.",
+    "Copying selected text inside the field keeps its native `copy` event inside the shadow root, so `copy` listeners on the host only receive the element's own event with `ok` in `detail`."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass the value to hide as `secret`. Without it a demo API key is shown."
+  }
+}

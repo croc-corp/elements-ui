@@ -1,0 +1,29 @@
+{
+  "summary": "Pixel jog wheel that keeps spinning with inertia after release, driving a running timecode and a filmstrip that scrubs underneath.",
+  "attributes": [],
+  "events": [],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowUp", "action": "Step forward one frame." },
+    { "keys": "ArrowLeft / ArrowDown", "action": "Step back one frame." },
+    { "keys": "Shift + Arrow keys", "action": "Step 24 frames (one second)." },
+    { "keys": "Home / End", "action": "Jump to the first or the last frame." }
+  ],
+  "accessibility": [
+    "The canvas is focusable with `role=\"slider\"` and `aria-label=\"Jog wheel. Arrow keys step one frame, Shift steps one second.\"`. A pointer press focuses it without showing a focus ring.",
+    "`aria-valuenow` is the current frame from `aria-valuemin=\"0\"` to `aria-valuemax=\"2880\"`, and `aria-valuetext` carries its timecode.",
+    "The speed label (\"Paused\", \"Scrub 1.2×\", \"Rewind 2.0×\") is plain text, not a live region, so a coasting wheel is not announced step by step."
+  ],
+  "motion": "With reduced motion, the wheel stops as soon as it is released instead of coasting, and fast spins leave no ghosted teeth.",
+  "slots": [],
+  "notes": [
+    "The filmstrip is generated demo footage: two minutes at 24 fps (2,880 frames), 48 frames per wheel revolution, starting at frame 60. The wheel bounces softly off either end.",
+    "The timecode reads `00:MM:SS:FF`. The component fires no events.",
+    "The canvas is 268px tall."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The filmstrip footage and its length are generated; nothing can be set."
+  }
+}

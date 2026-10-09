@@ -1,0 +1,86 @@
+---
+title: "Temperature fire"
+description: "Temperature slider drawn as a pixel fire simulation: low values leave embers, high values burn tall and Wild throws sparks."
+tag: px-flame
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-flame" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-flame" />
+
+## Installation
+
+<Install tag="px-flame" />
+
+## Usage
+
+<Usage tag="px-flame" />
+
+## Behaviour
+
+Model temperature as a real fire simulation. Low values leave embers, “Creative” burns tall, and “Wild” starts throwing sparks.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `value` | `value` | `number` | `0.9` | Temperature from 0 to 2; values outside are limited to that range. Changing it moves the slider without firing `change`. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ value: number }` | Fires when a drag ends and on each handled key press, with the temperature in steps of 0.1. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `set(value: number)` | Sets the temperature, limited to 0 to 2, and updates the readout and ARIA values without firing `change`. A value that is not a finite number is ignored. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `number` | Current temperature from 0 to 2. Setting it works like `set()`. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowUp | Raise the temperature by 0.1. |
+| ArrowLeft / ArrowDown | Lower the temperature by 0.1. |
+| Home / End | Set the temperature to 0 or 2. |
+
+## Accessibility
+
+- The canvas is focusable with `role="slider"`, `aria-label="Temperature"`, `aria-valuemin="0"` and `aria-valuemax="2"`.
+- `aria-valuenow` and `aria-valuetext` (for example "0.9, Balanced") follow the value.
+- The readout above the fire is plain text; assistive technology hears the value through the slider's `aria-valuetext`, so it is not announced twice.
+- Reduced motion: the fire is a still picture that is redrawn when the value changes, the flying embers at high values are skipped and the readout changes without the roll.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg` and `--ui-muted`.
+
+## Notes
+
+- Labels: up to 0.35 Precise, up to 0.85 Balanced, up to 1.35 Creative, above that Wild. Embers start at 1.4.
+- Pointer input snaps to 0.1. The canvas is 190px tall and animates continuously while on screen, except under reduced motion.
+
+<RelatedComponents tag="px-flame" />

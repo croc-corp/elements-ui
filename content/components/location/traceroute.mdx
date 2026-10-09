@@ -1,0 +1,104 @@
+---
+title: "Traceroute"
+description: "A traceroute as a hop table and a dotted map; the packet waits at each hop for its share of the round-trip time, so slow hops are slow to watch."
+tag: geo-traceroute
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-traceroute" />
+
+<Callout title="Your data">
+
+Pass your trace as `hops`. Without it the component shows an invented 11-hop demo trace from a home router through Frankfurt, Marseille and Mumbai to Singapore, with private and documentation-range addresses and example.net names. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-traceroute" />
+
+## Installation
+
+<Install tag="geo-traceroute" />
+
+## Usage
+
+<Usage tag="geo-traceroute" />
+
+## Behaviour
+
+A traceroute as a hop table and a map. The path draws hop by hop, and the packet waits at each hop for its share of the round-trip time, so slow hops are slow to watch.
+
+Jumps of more than 40 ms are drawn as dashed long-haul segments with the added time beside them. Hops without a location, or that did not answer, stay in the table only. Selecting a row highlights its segment.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `hops` | `readonly TraceHop[]` | `11 demo hops` | The hops in order: `{ address, name?, location?, lat?, lon?, rtt }`. `rtt` holds one round-trip time in ms per probe; a non-finite entry is a probe that timed out and an empty array a hop that did not answer. Hops with `lat` and `lon` are drawn on the map; `location` is the place name in the table. An empty array shows an empty table and map. |
+| `target` | `string` | `last answering hop` | The destination shown in the header. Without it the header shows the name, else the address, of the last hop that answered. The demo shows `app.example.com`. |
+| `value` | `number \| null` | — | Index of the selected hop in `hops` (controlled), or null for none. Use with `onValueChange`. |
+| `defaultValue` | `number \| null` | `null` | Selected hop when uncontrolled. |
+| `onValueChange` | `(value: number \| null) => void` | — | Called with the hop index when a row or a map marker is selected, and with null when the selection is cleared. |
+| `playing` | `boolean` | — | Whether the playback runs (controlled). Use with `onPlayingChange`. Setting it to true after the end starts over from hop 1. |
+| `defaultPlaying` | `boolean` | `true` | Whether the playback starts by itself when uncontrolled. It begins once the map is first on screen. With false the path is drawn complete. |
+| `onPlayingChange` | `(playing: boolean) => void` | — | Called by Pause, Play and Replay, with false when the playback reaches the end, and with false when `hops` changes. |
+| `speed` | `number` | `1` | Playback speed. At 1, each millisecond of round-trip time a hop adds is 10 ms of waiting at that hop. |
+| `jumpMs` | `number` | `40` | Added round-trip time in ms above which a segment is drawn as a dashed long-haul jump with a chip such as `+42 ms` on it. |
+| `probes` | `number` | `3` | Probes sent per hop: the number of marks in each row, 1 to 8. A row with more `rtt` entries shows one mark per entry. |
+| `onComplete` | `() => void` | — | Called when the playback reaches the end of the trace. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves to Replay, to Pause or Play, then to the hop rows, which share one tab stop. |
+| ArrowUp / ArrowDown | Moves focus to the previous or next hop. |
+| Home / End | Moves focus to the first or last hop. |
+| Enter / Space | Selects the focused hop, or clears the selection when it is already selected. |
+| Escape | Clears the selection. |
+
+## Accessibility
+
+- The hops are a native `table` with a caption (`Hops to` plus the target) and column headers.
+- The first cell of each row holds a `button` with `aria-pressed`, named by the hop number, its name or address, where it is and its median round-trip time. The buttons form one roving tab stop.
+- The probe marks of each row are one image named, for example, `2 of 3 probes answered`.
+- The map has `role="img"` and an `aria-label` such as `7 located hops from Frankfurt to Singapore, 162 ms. 2 long-haul jumps.` Its markers, labels and chips are hidden from assistive technology; the table carries the same data.
+- Replay and Pause or Play are native buttons named by their label, which stays in the accessible name when the narrow layout shows only the icon.
+- A polite live region announces the end of the playback with the number of hops and the total round-trip time.
+- The canvases are `aria-hidden`.
+- Reduced motion: the land and the whole path are drawn at once: there is no packet, dwell ring, ping or spark, the round-trip times show directly, the total and the Pause label swap without rolling, and selection changes apply at once.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-shine`, `--lumesec-glint`, `--foreground`, `--muted-foreground`, `--muted`, `--card` and `--border`.
+
+## Notes
+
+- The playback walks the table row by row. Rows before the first located hop take a short turn each. The packet then appears at the first located hop and, for each segment, travels the curve in 0.35 s plus 0.25 s per 10,000 km, then waits at the next hop for the time that hop adds: its median minus the median of the located hop before it, 10 ms of animation per ms at `speed` 1, at least 0.18 s. Rows between two located hops take their turns while the packet travels.
+- While the packet waits it circles the hop once, and the lattice dots around the hop fill clockwise from the direction it arrived in, like a progress ring. The row is highlighted with an accent bar, its probe marks fill in turn and its round-trip time counts up from the hop above. Rows the playback has not reached show a dash.
+- At the end two rings of land dots run out from the destination, sparks fly past the map's edge, the header total rolls in and `onComplete` fires.
+- Medians use the answered probes only. A segment's added time never goes below 0, so a hop that answers faster than the hop before it waits the minimum.
+- Addresses in private, shared (carrier-grade NAT), loopback or link-local ranges get a Private tag and never reach the map, even with coordinates. Hops without coordinates and hops that did not answer stay in the table only. Selecting any of these dims the map; a hop without coordinates also shows No location in its row.
+- Selecting a located hop redraws its incoming segment at full strength and 1.5 times the dot size, dims the other segments to a quarter, and lights the ring of dots around the hop.
+- Pause holds the clock, so the packet and the ring stop where they are. Play resumes; Play after the end and Replay start over from hop 1. Changing `hops` stops the playback and shows the new path complete.
+- The map frames the located hops with a 25 % margin and at least 60° on each axis, on a zoomed Equal Earth projection that fills the box, so it has no curved edges. Segments that cross the 180th meridian continue from the other edge.
+- On first view the land dots grow out from the first located hop behind an uneven front, while the playback starts.
+- Hop numbers sit beside their markers and never cover a marker or a jump chip. The first and last located hops, the selected hop and the hop the packet is at also show their place name where there is room for it.
+- Clicking a hop marker on the map selects that hop, like its row.
+- The map's height follows its width. Below 480 px the Name column hides, the RTT unit moves into the column header and the header buttons show only their icons.
+- The animation runs only while the map is on screen. Colours follow the theme and are re-read when it changes.
+
+<RelatedComponents tag="geo-traceroute" />

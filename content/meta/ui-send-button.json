@@ -1,0 +1,45 @@
+{
+  "kind": "react",
+  "summary": "Round send button that turns into a stop button with an orbiting ring while a reply streams, then closes the ring with sparks on completion.",
+  "props": [
+    { "name": "running", "type": "boolean", "default": "-", "description": "Controlled running state. Use with `onRunningChange`. Setting it from outside switches the look with the icon animation but calls no event callback." },
+    { "name": "defaultRunning", "type": "boolean", "default": "false", "description": "Initial running state when uncontrolled." },
+    { "name": "demoDuration", "type": "number", "default": "0", "description": "Seconds after which a send completes on its own, for demos. `0` means the button waits for `complete()` or a stop. Read on each send." },
+    { "name": "onRunningChange", "type": "(running: boolean) => void", "default": "-", "description": "Called when a send, stop or completion changes the running state." },
+    { "name": "onSend", "type": "() => void", "default": "-", "description": "Called when the idle button is pressed or `send()` is called." },
+    { "name": "onStop", "type": "() => void", "default": "-", "description": "Called when a running send is stopped with the button or `stop()`." },
+    { "name": "onComplete", "type": "() => void", "default": "-", "description": "Called when a running send completes, after the ring has closed (about 380 ms after `complete()`)." },
+    { "name": "ref", "type": "React.Ref<UiSendButtonHandle>", "default": "-", "description": "Exposes `send()`, `stop()` and `complete()`." }
+  ],
+  "extends": "button",
+  "ref": {
+    "type": "UiSendButtonHandle",
+    "methods": [
+      { "signature": "send(): void", "description": "Switches to the running state and calls `onSend`. Ignored while running." },
+      { "signature": "stop(): void", "description": "Returns to idle and calls `onStop`. Ignored when idle and while the ring is closing." },
+      { "signature": "complete(): void", "description": "Closes the ring, bursts sparks, returns to idle and calls `onComplete`. Ignored when idle or already completing." }
+    ]
+  },
+  "subcomponents": [],
+  "keyboard": [{ "keys": "Space / Enter", "action": "Send when idle, stop while running." }],
+  "accessibility": [
+    "A native `<button>` whose `aria-label` switches between \"Send\" and \"Stop\".",
+    "The arrow, stop icon and ring are `aria-hidden`.",
+    "There is no live region; completion is not announced."
+  ],
+  "motion": "With reduced motion the arrow and stop icons swap without animation, the ring does not spin, and no sparks fire on completion.",
+  "notes": [
+    "The button carries `data-state=\"running\"` or `data-state=\"idle\"` for styling.",
+    "The button does not stream anything itself: call `complete()` through `ref` when the reply finishes, or set `demoDuration` for a demo.",
+    "Once `complete()` starts, a stop is ignored until the ring has closed, so a send never reports both outcomes."
+  ],
+  "tokens": ["--lumesec", "--lumesec-foreground", "--lumesec-glint", "--muted", "--foreground", "--border"],
+  "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { UiSendButton, type UiSendButtonHandle } from \"@/components/lumesec/ui-send-button\";\n\nexport function Example() {\n  const button = React.useRef<UiSendButtonHandle>(null);\n  const timer = React.useRef(0);\n  return (\n    <UiSendButton\n      ref={button}\n      onSend={() => {\n        // stand-in for a streamed reply\n        timer.current = window.setTimeout(() => button.current?.complete(), 2000);\n      }}\n      onStop={() => window.clearTimeout(timer.current)}\n    />\n  );\n}\n",
+  "playground": {
+    "props": { "demoDuration": 3 },
+    "controls": [
+      { "name": "demoDuration", "kind": "number", "options": null, "default": "3" },
+      { "name": "defaultRunning", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "summary": "Sankey from Chat, Code and API to three models, with particles streaming in proportion to traffic; hovering a band isolates it.",
+  "attributes": [
+    { "name": "label", "type": "string", "default": "Where requests go", "description": "Heading text. Observed." }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"img\"` with an `aria-label` that lists every flow, for example `Chat: 12k to Large, 26k to Medium, 8k to Small`.",
+    "Node names and totals are text beside the chart.",
+    "The band tooltip appears on hover only."
+  ],
+  "motion": "With reduced motion, bands appear at once without growing in, no particles stream and drawing stops.",
+  "slots": [],
+  "notes": [
+    "Data is built in: three sources, three models and 100k requests in total. It cannot be configured.",
+    "The chart is 220px tall and fills the width between the two label columns."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The sources, models and 100k request split are invented; only `label` can be set."
+  }
+}

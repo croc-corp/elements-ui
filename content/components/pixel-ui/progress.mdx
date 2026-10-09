@@ -1,0 +1,62 @@
+---
+title: "Progress bar"
+description: "Pixel progress bar: determinate with a hot leading edge and a green sweep at 100%, or an indeterminate comet when there is no value."
+tag: px-progress
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-progress" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-progress" />
+
+## Installation
+
+<Install tag="px-progress" />
+
+## Usage
+
+<Usage tag="px-progress" />
+
+## Behaviour
+
+Determinate with a hot leading edge and a green sweep when it finishes, or indeterminate (no value) as a moving comet.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number \| null` | — | Progress from 0 to 100, clamped; the bar glides to it. `null` or leaving it out shows the indeterminate comet. |
+| `label` | `string` | `"Uploading"` | Text above the bar, and the bar's accessible name. |
+| `doneLabel` | `string` | `"Complete"` | Text shown once `value` reaches 100. |
+| `onComplete` | `() => void` | — | Called when `value` reaches 100, including on mount when it starts there, and again each time it returns to 100. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Accessibility
+
+- The bar is a canvas with `role="progressbar"`, `aria-valuemin="0"`, `aria-valuemax="100"`, `aria-valuenow` (left out when indeterminate) and `aria-label` from `label`. At 100 its `aria-valuetext` is `doneLabel`.
+- There is no live region; the completion text is not announced on its own.
+- Reduced motion: the bar jumps to each value, the finish sweep is skipped and the indeterminate comet holds still mid-track.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-shine`, `--lumesec-success`, `--foreground` and `--muted-foreground`.
+
+## Notes
+
+- The bar starts at the first `value` instead of gliding up from 0.
+- The root carries `data-done` once the value reaches 100.
+
+<RelatedComponents tag="px-progress" />

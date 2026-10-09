@@ -1,0 +1,23 @@
+{
+  "summary": "Dotted pixel globe with nine regions; requests arc between them as glowing packets, each arrival flashes its node. Drag to spin it.",
+  "attributes": [],
+  "events": [],
+  "methods": [],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"img\"` and `aria-label=\"Spinning globe with requests routed between 9 regions. Drag to spin.\"`.",
+    "The request counter has `aria-live=\"off\"`, so its updates are not announced.",
+    "Region names appear in a tooltip on pointer hover only; the globe has no keyboard interaction."
+  ],
+  "motion": "With reduced motion, the globe stops rotating on its own and no new request arcs are sent; it can still be turned by dragging.",
+  "slots": [],
+  "notes": [
+    "The regions (San Francisco, New York, São Paulo, London, Frankfurt, Mumbai, Singapore, Tokyo, Sydney), the traffic, the latencies and the counter (starting at 128,403) are simulated demo data.",
+    "The globe is a fixed 236 by 236px and animates continuously while on screen, except under reduced motion."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The regions, the traffic between them, the latencies and the request counter are simulated; nothing can be set."
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "summary": "Temperature slider drawn as a pixel fire simulation: low values leave embers, high values burn tall and Wild throws sparks.",
+  "attributes": [
+    { "name": "value", "type": "number", "default": "0.9", "description": "Temperature from 0 to 2; values outside are limited to that range. Changing it moves the slider without firing `change`." }
+  ],
+  "events": [
+    { "name": "change", "detail": "{ value: number }", "description": "Fires when a drag ends and on each handled key press, with the temperature in steps of 0.1." }
+  ],
+  "methods": [
+    { "signature": "set(value: number)", "description": "Sets the temperature, limited to 0 to 2, and updates the readout and ARIA values without firing `change`. A value that is not a finite number is ignored." }
+  ],
+  "properties": [
+    { "name": "value", "type": "number", "readonly": false, "description": "Current temperature from 0 to 2. Setting it works like `set()`." }
+  ],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowUp", "action": "Raise the temperature by 0.1." },
+    { "keys": "ArrowLeft / ArrowDown", "action": "Lower the temperature by 0.1." },
+    { "keys": "Home / End", "action": "Set the temperature to 0 or 2." }
+  ],
+  "accessibility": [
+    "The canvas is focusable with `role=\"slider\"`, `aria-label=\"Temperature\"`, `aria-valuemin=\"0\"` and `aria-valuemax=\"2\"`.",
+    "`aria-valuenow` and `aria-valuetext` (for example \"0.9, Balanced\") follow the value.",
+    "The readout above the fire is plain text; assistive technology hears the value through the slider's `aria-valuetext`, so it is not announced twice."
+  ],
+  "motion": "With reduced motion, the fire is a still picture that is redrawn when the value changes, the flying embers at high values are skipped and the readout changes without the roll.",
+  "slots": [],
+  "notes": [
+    "Labels: up to 0.35 Precise, up to 0.85 Balanced, up to 1.35 Creative, above that Wild. Embers start at 1.4.",
+    "Pointer input snaps to 0.1. The canvas is 190px tall and animates continuously while on screen, except under reduced motion."
+  ]
+}

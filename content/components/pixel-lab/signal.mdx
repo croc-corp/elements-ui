@@ -1,0 +1,59 @@
+---
+title: "Latency scope"
+description: "Scrolling pixel oscilloscope for latency with dithered tails, amber and red spikes over a 400 ms line, and a rolling p50/p95 readout."
+tag: px-signal
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-signal" />
+
+<Callout title="Demo data" type="warning">
+
+The latency samples, spikes and p50/p95 readout are simulated; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-signal" />
+
+## Usage
+
+<Usage tag="px-signal" />
+
+## Behaviour
+
+A scrolling oscilloscope where each sample is a bright head over a dithered tail. Spikes cross the 400 ms line in amber and red, and the readout rolls with p50 and p95 alongside.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `outage` | `onOutage` | `{}` | Fires when the "Simulate outage" button is pressed. |
+
+## Accessibility
+
+- The canvas has `role="img"` and `aria-label="Live latency chart"`.
+- The current value and the p50/p95 line are plain text without a live region.
+- The sample tooltip appears on pointer hover only. "Simulate outage" is a native button with `aria-disabled="true"` for 4.2 seconds after use; it keeps focus while it waits.
+- Reduced motion: the trace advances one sample at a time instead of scrolling smoothly and the readout changes without the roll.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--destructive`, `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-danger`, `--ui-fg`, `--ui-mono`, `--ui-muted` and `--ui-surface`.
+
+## Notes
+
+- All samples are simulated: a random walk around 160 ms with occasional spikes, one sample every 0.12 seconds. An outage pushes values to 820 to 1,300 ms for 3 seconds.
+- The vertical scale runs from 0 to 1,000 ms. Samples above 350 ms are amber and above 600 ms red; a Spike chip shows while the latest reading is 600 ms or more.
+- The canvas is 106px tall and animates continuously while on screen.
+
+<RelatedComponents tag="px-signal" />

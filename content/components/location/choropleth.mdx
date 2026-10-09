@@ -1,0 +1,93 @@
+---
+title: "Country values"
+description: "Values per country as dot density: land dots switch on in an ordered-dither pattern, and a change rebuilds each country's print dot by dot."
+tag: geo-choropleth
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-choropleth" />
+
+<Callout title="Your data">
+
+Pass your values per country as `data`. Without it the component shows demo values for 41 countries. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-choropleth" />
+
+## Installation
+
+<Install tag="geo-choropleth" />
+
+## Usage
+
+<Usage tag="geo-choropleth" />
+
+## Behaviour
+
+Values per country shown as dot density: each country's land dots switch on in an ordered-dither pattern, so a higher class reads as a denser print. Countries without data stay as the plain base.
+
+When the data changes, each country builds up or thins out dot by dot in dither order, outward from its middle behind a bright front. Pointing at a country sends a short light around its border and rolls its value, and a ranked list beside the map stays in sync.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `readonly CountryValue[]` | `demo values for 41 countries` | `{ code, value }` records with ISO 3166-1 alpha-2 codes (any case; Kosovo is `XK`). Changing it rebuilds the print of every country whose class changes. Unknown codes are skipped with one development warning, non-finite values are skipped, and a code listed twice keeps its last value. An empty array shows the plain base and "No data". |
+| `value` | `string \| null` | — | Selected country code (controlled), or null. Use with `onValueChange`. |
+| `defaultValue` | `string \| null` | `null` | Selected country when uncontrolled. |
+| `onValueChange` | `(value: string \| null) => void` | — | Called with the upper-case code when a country is selected on the map or in the list, and with null when the selection is cleared. |
+| `classes` | `number` | `5` | Number of density classes, 3 to 7. Class `k` of `n` lights `(k + 1) / n` of a country's dots. |
+| `scale` | `"quantile" \| "linear" \| "log"` | `"quantile"` | How values are split into classes: the same number of countries per class, equal value steps, or equal steps of the logarithm (values of 0 or less fall into the lowest class). |
+| `format` | `(value: number) => string` | `formatCompact` | Formats values in the list, the legend, the hover chip and the hidden table. The default gives `950`, `12.4K`, `3.1M`. |
+| `unit` | `string` | — | Unit after values in the chip and the hidden table, and above the ranked list. |
+| `listSize` | `number` | `6` | Rows in the ranked list, 0 to 50. 0 hides the list and the map takes the full width. |
+| `projection` | `"equalEarth" \| "equirectangular"` | `"equalEarth"` | Map projection, cropped to latitudes 56° S to 78° N. |
+| `label` | `string` | `"Values by country"` | Accessible name of the map, also the caption of the hidden table. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight / ArrowUp / ArrowDown | On the map: move to the nearest country with data in that direction. The first press starts at the selected or the top-ranked country. |
+| ArrowUp / ArrowDown, Home / End | In the ranked list: move between rows. |
+| Enter / Space | Select the country in focus and run the border light again. |
+| Escape | Clear the selection. |
+
+## Accessibility
+
+- The canvases are `aria-hidden`. A visually hidden table lists every country with data and its value, largest first, with `label` as its caption.
+- The map is a focusable group with `aria-roledescription="map"`, `aria-label` set to `label` and a description of its keys. A polite live region announces the country in keyboard focus with its value and rank.
+- The ranked list is a `listbox` with `aria-activedescendant`; each row is an `option` with `aria-selected` and an accessible name of the form "Germany, 168K requests, rank 3".
+- Countries without data do not respond to the pointer or the keyboard. Hover works with a mouse or a pen; a tap selects.
+- Reduced motion: the dots switch to their new levels at once, with no stagger and no bright front, the border light is a static outline, the chip moves without a spring, list rows do not slide and values change without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--foreground`, `--muted-foreground`, `--muted`, `--card`, `--card-foreground`, `--popover`, `--popover-foreground` and `--border`.
+
+## Notes
+
+- A country's class sets how many of its dots are lit: a dot is lit when its level is above its threshold in a 4×4 Bayer matrix, so a rising level adds dots in a fixed, even order and a falling level removes them in reverse. Lit dots use `--lumesec`, more opaque in higher classes.
+- When a level changes, the change travels outward from the country's label point with an uneven front, and dots glow in `--lumesec-glint` while they switch. Countries start 25 ms apart, the largest change first. Only countries that change are redrawn.
+- Countries with data that get fewer than three dots on the lattice (small islands, city states, small countries on narrow maps) are drawn as a 2×2 cluster at their label point, moved up to two cells when it would cover another cluster or another country with data. Their border light and outline run around the cluster.
+- Pointing at a country runs a short light once around its border and shows a chip with its name and rolling value. The selected country keeps a thin outline and its chip when nothing else is pointed at.
+- The ranked list sits beside the map when the card is at least 560 px wide and below it otherwise. When the country in focus is not in the top rows it appears under them with its rank.
+- The legend shows one dither tile per class with the class breaks under the joins: quantiles for `quantile`, equal steps otherwise.
+- Codes come from the embedded country set of 175 countries (Natural Earth 110m). Places without an outline there, such as Singapore and Hong Kong, count as unknown codes.
+
+<RelatedComponents tag="geo-choropleth" />

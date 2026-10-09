@@ -1,0 +1,208 @@
+{
+  "kind": "react",
+  "summary": "A zoomable dot map for many points: nearby points merge into counted clusters that split apart as you zoom in and pull back together as you zoom out.",
+  "props": [
+    {
+      "name": "points",
+      "type": "readonly ClusterPoint[]",
+      "default": "600 demo points",
+      "description": "The locations, as `{ id, lat, lon, label? }`. Without it the map shows demo points around large cities; an empty array shows an empty map with a note. Entries with a non-finite latitude or longitude, and repeated ids, are skipped. A new array rebuilds the clusters."
+    },
+    {
+      "name": "zoom",
+      "type": "number",
+      "default": "-",
+      "description": "Controlled zoom, 1 to `maxZoom`. Use with `onZoomChange`. A new value springs the view there about the frame centre."
+    },
+    {
+      "name": "defaultZoom",
+      "type": "number",
+      "default": "1",
+      "description": "Zoom when uncontrolled. The reset button and the `0` key return to it."
+    },
+    {
+      "name": "onZoomChange",
+      "type": "(zoom: number) => void",
+      "default": "-",
+      "description": "Called when the view comes to rest at a new zoom (wheel, pinch, double-click, keys, buttons or a cluster click), with the zoom rounded to two decimals."
+    },
+    {
+      "name": "center",
+      "type": "LatLon",
+      "default": "-",
+      "description": "Controlled view centre, `{ lat, lon }`. Use with `onCenterChange`. It is clamped so the map always fills the frame: at zoom 1 the whole width of the world is visible, so only the latitude can move."
+    },
+    {
+      "name": "defaultCenter",
+      "type": "LatLon",
+      "default": "{ lat: 25, lon: 10 }",
+      "description": "View centre when uncontrolled. The reset button and the `0` key return to it."
+    },
+    {
+      "name": "onCenterChange",
+      "type": "(center: LatLon) => void",
+      "default": "-",
+      "description": "Called when a pan or a zoom settles at a new centre, rounded to four decimals."
+    },
+    {
+      "name": "maxZoom",
+      "type": "number",
+      "default": "6",
+      "description": "Largest zoom, 1 to 6. Each whole zoom is one cluster level. The land data has a 0.5° grid, so 6 is the limit."
+    },
+    {
+      "name": "cellSize",
+      "type": "number",
+      "default": "44",
+      "description": "Clustering distance in px, 16 to 160: at each level, points closer than this on screen merge into one cluster."
+    },
+    {
+      "name": "value",
+      "type": "string | null",
+      "default": "-",
+      "description": "Selected point id (controlled). Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string | null",
+      "default": "null",
+      "description": "Selected point id when uncontrolled."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string | null) => void",
+      "default": "-",
+      "description": "Called when a point is selected, or with `null` when the selection is cleared (Escape, or a click on the empty map)."
+    },
+    {
+      "name": "onPointClick",
+      "type": "(point: ClusterPoint) => void",
+      "default": "-",
+      "description": "Called when a single point is clicked, or picked from a cluster's list."
+    },
+    {
+      "name": "onClusterClick",
+      "type": "(points: readonly ClusterPoint[]) => boolean | void",
+      "default": "-",
+      "description": "Called when a cluster is clicked, with all its points. Return `false` to stop the zoom-in (or the list). A second click within 400 ms, the rest of a double-click, is ignored."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Clustered map\"",
+      "description": "Accessible name of the map."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "HTMLDivElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "action": "Moves from the map to one cluster or point (a roving tab stop), then to the zoom buttons."
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown",
+      "action": "On the map: pan by 60 px. On a cluster or point: move to the nearest node in that direction inside the frame."
+    },
+    {
+      "keys": "+ / =",
+      "action": "Zoom in to the next whole zoom."
+    },
+    {
+      "keys": "- / _",
+      "action": "Zoom out to the previous whole zoom."
+    },
+    {
+      "keys": "0",
+      "action": "Reset to `defaultZoom` and `defaultCenter`."
+    },
+    {
+      "keys": "Enter / Space",
+      "action": "On a cluster: zoom in until it splits, or open its list when zooming cannot split it (again: close the list). On a point: select it."
+    },
+    {
+      "keys": "ArrowUp / ArrowDown / Home / End",
+      "action": "In a cluster's list: move between the rows."
+    },
+    {
+      "keys": "Escape",
+      "action": "Close the cluster list and return focus to its cluster, or clear the selection."
+    },
+    {
+      "keys": "Wheel",
+      "action": "Zooms about the pointer with Ctrl or ⌘ held, or while the map or a node in it has keyboard focus. Otherwise the page scrolls and a short hint appears. Over a cluster's list the wheel scrolls the list."
+    }
+  ],
+  "accessibility": [
+    "The map is a focusable `role=\"group\"` with `aria-roledescription=\"map\"`, `aria-label` from `label` and a description of its keys.",
+    "Clusters and points are native buttons in one roving tab stop. A cluster's `aria-label` reads like \"34 locations around Lagos\" (the nearest of 60 reference cities within 900 km, else its coordinates); a point's is its `label` or its coordinates. Points have `aria-pressed` for the selection.",
+    "A cluster that holds the selected point adds \", includes the selected location\" to its label and gets an accent ring.",
+    "Nodes merging into a parent are `inert` and `aria-hidden` while they fly. When the focused node splits or merges, focus moves to its largest child or to its parent. Arrow keys skip nodes outside the frame.",
+    "When the view settles, a polite live region announces the zoom and what is in the frame, for example \"Zoom 3×, 12 clusters, 4 points\".",
+    "The zoom buttons are native buttons with `aria-label` (\"Zoom out\", \"Zoom in\", \"Reset view\"). At a zoom limit the button gets `aria-disabled` instead of `disabled`, so it keeps keyboard focus. The zoom readout is `aria-hidden`.",
+    "A cluster that zooming cannot split has `aria-haspopup=\"dialog\"` and `aria-expanded`. It opens a `role=\"dialog\"` list of its points, sorted by name; focus moves to the first row and returns to the cluster when the list closes.",
+    "Both canvases are `aria-hidden`; every count, name and coordinate is DOM text."
+  ],
+  "motion": "With reduced motion the zoom and pan jump without springs, clusters swap without splitting or merging, counts and the zoom readout swap without rolling, the land dots replace each other without a crossfade or the first reveal, and selections play no ripple or sparks.",
+  "notes": [
+    "The map is Mercator, cut at 78° north and south, with its central meridian at 10° E so the side edges run through the Bering Strait. At zoom 1 the world fills the frame's width; the frame is 2:1 and at most 660 px wide (`max-w-[660px]`), so pass a width class to change it.",
+    "Clusters are computed once per data set, cell size and frame width, for every whole zoom from 1 to `maxZoom`. The current level is the zoom rounded down, so a cluster splits when the zoom crosses the next whole number.",
+    "Clicking a cluster glides it to the centre and zooms in until it splits. Points with identical coordinates, and clusters that are still closer than `cellSize` at `maxZoom`, open a list instead.",
+    "The land dots are re-sampled at a 4 px pitch for each settled view, 120 ms after the zoom comes to rest, and crossfade over the previous lattice. While zooming out, the previous lattice drops every other row and column so its dots keep their spacing.",
+    "Each cluster sits in a pool of land dots lit toward the accent, wider for busier clusters. Hovering a node, or focusing it from the keyboard, brightens its pool; selecting a point sends a ring through the dots and throws sparks that can fly past the map's edge.",
+    "At most 160 nodes are in the DOM: only those in or near the frame are rendered.",
+    "One-finger touch pans only when zoomed in; at zoom 1 the page scrolls. Two fingers pinch to zoom.",
+    "The cluster label uses the nearest reference city only as a place name. Your points and labels are shown as given.",
+    "The animation loop runs only while something moves and pauses while the map is off screen."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your locations as `points` (`{ id, lat, lon, label? }`). Without it the component shows 600 demo points around large cities: tight metro groups plus a wider scatter across each region."
+  },
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--card",
+    "--border",
+    "--foreground",
+    "--muted-foreground",
+    "--popover",
+    "--popover-foreground",
+    "--accent",
+    "--background"
+  ],
+  "usage": "import { GeoCluster, type ClusterPoint } from \"@/components/lumesec/geo-cluster\";\n\nconst stores: ClusterPoint[] = [\n  { id: \"s1\", lat: 51.5072, lon: -0.1276, label: \"London Bridge\" },\n  { id: \"s2\", lat: 51.5155, lon: -0.0922, label: \"Bank\" },\n  { id: \"s3\", lat: 48.8566, lon: 2.3522, label: \"Paris Centre\" },\n];\n\nexport function Example() {\n  return <GeoCluster points={stores} onPointClick={(store) => console.log(store.id)} />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      {
+        "name": "defaultZoom",
+        "kind": "number",
+        "options": null,
+        "default": "1"
+      },
+      {
+        "name": "maxZoom",
+        "kind": "number",
+        "options": null,
+        "default": "6"
+      },
+      {
+        "name": "cellSize",
+        "kind": "number",
+        "options": null,
+        "default": "44"
+      },
+      {
+        "name": "label",
+        "kind": "string",
+        "options": null,
+        "default": "Clustered map"
+      }
+    ]
+  }
+}

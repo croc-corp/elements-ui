@@ -1,0 +1,80 @@
+---
+title: "Checkpoints"
+description: "Checkpoint scrubber for a coding session: each jump runs a rewind glitch over the code, and changed lines get a green bar."
+tag: hf-rewind
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-rewind" />
+
+<Callout title="Demo data" type="warning">
+
+The five checkpoints and their code are invented; only `label` can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-rewind" />
+
+## Installation
+
+<Install tag="hf-rewind" />
+
+## Usage
+
+<Usage tag="hf-rewind" />
+
+## Behaviour
+
+Scrub back through a session. Each jump runs a rewind glitch over the code before it swaps, and lines that changed get a green bar.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `Checkpoints` | Heading text. Read once on connect. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `preview` | `onPreview` | `{ index: number, name: string }` | Fires when the head moves to another checkpoint by drag, click or key. |
+| `restore` | `onRestore` | `{ index: number, name: string }` | Fires when Restore is pressed, including on the latest checkpoint. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowDown | Previous checkpoint. |
+| ArrowRight / ArrowUp | Next checkpoint. |
+| Home / End | First or latest checkpoint. |
+
+## Accessibility
+
+- The timeline is focusable with `role="slider"`, `aria-label="Checkpoint"`, `aria-valuemin="0"`, `aria-valuemax="4"`, `aria-valuenow` and the checkpoint name as `aria-valuetext`.
+- The code pane is not a live region; the slider's `aria-valuetext` names the checkpoint as it moves.
+- Restore is a native button; its result message below is an `aria-live="polite"` region.
+- The head, glitch and change bars are drawn on an `aria-hidden` canvas.
+- Reduced motion: the code swaps at once without the glitch and the head jumps instead of springing; the green change bars remain.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-mono`, `--ui-muted` and `--ui-surface`.
+
+## Notes
+
+- Built-in demo data: five checkpoints of one function (Start, Expiry, Rotate, Skew, Audit). It starts on the latest.
+- The component does not restore anything; `restore` reports the chosen checkpoint.
+
+<RelatedComponents tag="hf-rewind" />

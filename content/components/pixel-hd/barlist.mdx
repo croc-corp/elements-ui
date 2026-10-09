@@ -1,0 +1,70 @@
+---
+title: "Bar list"
+description: "Ranked bar list with dithered bars behind the labels that grow in one after another; hover or focus runs a sheen along a bar."
+tag: hf-barlist
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-barlist" />
+
+<Callout title="Your data">
+
+Pass your `label:value` rows as `data`; the read-only `items` property returns them parsed. Without it the list shows demo file names with invented edit counts. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-barlist" />
+
+## Installation
+
+<Install tag="hf-barlist" />
+
+## Usage
+
+<Usage tag="hf-barlist" />
+
+## Behaviour
+
+Ranked rows with dithered bars behind the labels. They grow in one after another, and hovering a row runs a sheen along its bar.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `data` | `data` | `string` | `src/auth/session.ts:184,src/api/client.ts:121,src/ui/composer.tsx:96,tests/auth.spec.ts:58,README.md:21` | Comma-separated `label:value` rows, split at the last colon; an entry without a colon has the value 0. Rows are sorted by value, highest first. Observed: a new value rebuilds the rows. |
+| `label` | `label` | `string` | `Most edited files` | Header text on the left; also labels the list. Observed. |
+| `unit` | `unit` | `string` | `Edits` | Header text on the right, above the values. Observed. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `items` (read-only) | `Array<{ label: string, v: number }>` | Rows parsed from `data`, sorted by value, highest first. |
+
+## Accessibility
+
+- The rows form a `role="list"` labelled by the header; each row is a `listitem` with `tabindex="0"` and an `aria-label` of the form `label: value`.
+- The canvas is `aria-hidden`.
+- Focusing a row runs the same sheen as hover.
+- Reduced motion: the bars appear at full width without growing and no sheen runs; the hover highlight still fades.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono` and `--ui-muted`.
+
+## Notes
+
+- Bar lengths are relative to the largest value; negative values get no bar.
+- Changing `data` rebuilds the rows and the bars grow in again; focus stays on the same row position.
+
+<RelatedComponents tag="hf-barlist" />

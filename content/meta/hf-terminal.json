@@ -1,0 +1,60 @@
+{
+  "summary": "Simulated shell with phosphor-flash output, dotted progress bars and a glowing block caret; runs a set of built-in demo commands.",
+  "attributes": [
+    {
+      "name": "autorun",
+      "type": "string",
+      "description": "Command typed automatically 0.9 s after the element first connects."
+    }
+  ],
+  "events": [
+    {
+      "name": "command",
+      "detail": "{ command: string }",
+      "description": "Fires when a non-empty command runs, before its output. `command` is trimmed."
+    }
+  ],
+  "methods": [
+    {
+      "signature": "exec(command: string): Promise<void>",
+      "description": "Runs a command as if it were typed and Enter pressed. Ignored while another command is running."
+    },
+    {
+      "signature": "type(command: string): Promise<void>",
+      "description": "Types the command into the prompt character by character, then runs it."
+    },
+    {
+      "signature": "print(text: string, cls?: string): HTMLElement",
+      "description": "Appends an output line and returns it. `cls` can be `dim`, `ok`, `err` or `acc` to colour it."
+    }
+  ],
+  "properties": [],
+  "keyboard": [
+    {
+      "keys": "Enter",
+      "action": "Run the typed command."
+    },
+    {
+      "keys": "ArrowUp / ArrowDown",
+      "action": "Step back and forward through the command history."
+    }
+  ],
+  "accessibility": [
+    "The output area has `role=\"log\"` and `aria-live=\"polite\"`.",
+    "The command input has `aria-label=\"Terminal command\"`; the prompt glyph is `aria-hidden`.",
+    "The input is disabled while a command runs, and focus returns to it afterwards if it had focus.",
+    "Progress rows are `role=\"progressbar\"` elements with an `aria-label` (`tests`, `build`, `upload` or the agent name) and `aria-valuenow`; the percentage is also shown as text.",
+    "The phosphor flash, progress dots and caret are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion waits are capped at 60 ms, so typing and progress finish almost at once, bars fill without easing and the caret does not blink; the brief flash behind new lines still shows.",
+  "slots": [],
+  "notes": [
+    "Commands and output are built-in demo content: `help`, `ls`, `test` (also `npm … test`), `deploy`, `ultracode` and `clear`. Anything else prints `command not found`.",
+    "The terminal uses fixed dark colours in both themes.",
+    "The output area is 196px tall and keeps the last 120 lines."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "Commands and their output are built-in demo content; `print()` adds your own lines."
+  }
+}

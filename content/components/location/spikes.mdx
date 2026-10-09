@@ -1,0 +1,93 @@
+---
+title: "Event spikes"
+description: "Counts per location as dot spikes on a globe; new data grows them in a wave from the biggest increase, led by a ring of light."
+tag: geo-spikes
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-spikes" />
+
+<Callout title="Your data">
+
+Pass your counts per location as `data`. Without it the component shows demo counts for 24 cities. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-spikes" />
+
+## Installation
+
+<Install tag="geo-spikes" />
+
+## Usage
+
+<Usage tag="geo-spikes" />
+
+## Behaviour
+
+Counts per location as spikes of stacked dots standing on a dotted globe. Heights use a log scale by default, so one busy city does not flatten the rest.
+
+When the data changes, spikes grow on springs in a wave that starts at the location with the biggest increase and spreads around the globe, with a ring of light on the land marking the front. Point at a spike, or Tab to it, to roll its count.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `readonly SpikeDatum[]` | `24 demo cities` | Counts per location, `{ id, label, lat, lon, value }`. A new array is matched to the previous one by `id`: spikes grow or shrink from their previous height, new ids grow from zero and missing ids shrink away. Up to 64 locations are drawn, the largest first. |
+| `value` | `string \| null` | — | Selected spike id (controlled), or null for none. Use with `onValueChange`. |
+| `defaultValue` | `string \| null` | `null` | Selected spike when uncontrolled. |
+| `onValueChange` | `(value: string \| null) => void` | — | Called when a spike is selected or the selection is cleared. |
+| `scale` | `"log" \| "linear"` | `"log"` | How values map to heights. `log` spreads the three decades below the largest value evenly over the height, so one busy place does not flatten the rest. `linear` makes height proportional to the value. |
+| `maxHeight` | `number` | `0.5` | Height of the tallest spike as a share of the globe radius, 0.1 to 0.6. |
+| `format` | `(value: number) => string` | `formatCompact` | Formats counts in the chip, the legend and the accessible names. The default gives `950`, `12.4K`, `3.1M`. |
+| `unit` | `string` | `"events"` | Unit after each count. |
+| `defaultCenter` | `LatLon` | — | Where the globe faces on mount, `{ lat, lon }`. Without it the globe faces the value-weighted centre of the data, tilted 30° south so the spikes stand up instead of pointing at the viewer. |
+| `label` | `string` | `"Events by location"` | Accessible name of the globe and of the location list. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves from the globe to the spikes, which share one tab stop. |
+| Arrow keys (globe focused) | Turn the globe 10°; the view moves in the arrow's direction. |
+| Arrow keys (spike focused) | Move to the nearest visible spike in that direction on screen. |
+| Home / End | Move to the largest or the smallest spike. |
+| Enter / Space | Select the focused spike, or clear it when it is already selected. |
+| Escape | Clear the selection. |
+
+## Accessibility
+
+- The globe is a focusable `role="group"` with `aria-roledescription="globe"`, named by `label` and described by a visually hidden hint.
+- Every spike is a native button with the label and the count as its name and `aria-pressed` for the selection. The buttons follow their tips and share one roving tab stop; focusing a spike on the far side turns the globe to it.
+- A visually hidden list mirrors every location and value. With more than 64 locations it says that the globe shows the 64 largest.
+- The canvas, the chip and the legend are `aria-hidden`; the buttons and the list carry the same content.
+- Reduced motion: the spikes take their heights at once with no wave, ring, flicker or sparks, the globe neither coasts nor flies toward an update (focusing a far-side spike turns it at once), and counts and the chip swap without rolling or gliding.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--card-foreground`, `--foreground`, `--muted-foreground`, `--border`, `--popover`, `--popover-foreground`, `--lumesec`, `--lumesec-soft` and `--lumesec-shine`.
+
+## Notes
+
+- On first view every spike grows from zero in a wave from the largest value. After that, each new `data` array starts a wave at the location with the biggest increase (or the largest value when nothing grew): a ring of light runs across the land, each spike starts growing as the ring reaches it, and the counts in the chip and the legend roll at the same moment.
+- When the epicentre is on the far side, nothing is selected and the globe has not been dragged for 4 seconds, the globe first turns toward it and the wave starts as it arrives.
+- Places whose count rose by half or more throw a few sparks from the tip at the top of the overshoot. The sparks are drawn on a canvas that reaches 32 px past the stage on every side (16 px to the sides on screens narrower than 480 px, so a phone page does not scroll sideways).
+- Zero or negative values draw only the three-dot footprint. Entries with a missing id, a repeated id, a non-finite number or a latitude outside ±90° are skipped.
+- The legend shows the three largest locations. Pointing at a legend entry lights its spike. The chip sits beyond the tip, on the side the spike leans to, so it never covers the column.
+- The globe stays still between updates: the animation loop stops once the springs, the ring and the globe have settled, and pauses off screen.
+
+<RelatedComponents tag="geo-spikes" />

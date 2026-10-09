@@ -1,0 +1,33 @@
+{
+  "kind": "react",
+  "summary": "Pixel progress bar: determinate with a hot leading edge and a green sweep at 100%, or an indeterminate comet when there is no value.",
+  "props": [
+    { "name": "value", "type": "number | null", "default": "-", "description": "Progress from 0 to 100, clamped; the bar glides to it. `null` or leaving it out shows the indeterminate comet." },
+    { "name": "label", "type": "string", "default": "\"Uploading\"", "description": "Text above the bar, and the bar's accessible name." },
+    { "name": "doneLabel", "type": "string", "default": "\"Complete\"", "description": "Text shown once `value` reaches 100." },
+    { "name": "onComplete", "type": "() => void", "default": "-", "description": "Called when `value` reaches 100, including on mount when it starts there, and again each time it returns to 100." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "The bar is a canvas with `role=\"progressbar\"`, `aria-valuemin=\"0\"`, `aria-valuemax=\"100\"`, `aria-valuenow` (left out when indeterminate) and `aria-label` from `label`. At 100 its `aria-valuetext` is `doneLabel`.",
+    "There is no live region; the completion text is not announced on its own."
+  ],
+  "motion": "With reduced motion the bar jumps to each value, the finish sweep is skipped and the indeterminate comet holds still mid-track.",
+  "notes": [
+    "The bar starts at the first `value` instead of gliding up from 0.",
+    "The root carries `data-done` once the value reaches 100."
+  ],
+  "tokens": ["--lumesec", "--lumesec-shine", "--lumesec-success", "--foreground", "--muted-foreground"],
+  "usage": "import { PxProgress } from \"@/components/lumesec/px-progress\";\n\nexport function Example() {\n  return <PxProgress value={38} label=\"Uploading dataset\" doneLabel=\"Upload complete\" />;\n}\n",
+  "playground": {
+    "props": { "value": 38, "label": "Uploading dataset", "doneLabel": "Upload complete" },
+    "controls": [
+      { "name": "value", "kind": "number", "options": null, "default": "38" },
+      { "name": "label", "kind": "string", "options": null, "default": "Uploading dataset" },
+      { "name": "doneLabel", "kind": "string", "options": null, "default": "Upload complete" }
+    ]
+  }
+}

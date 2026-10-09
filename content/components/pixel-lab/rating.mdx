@@ -1,0 +1,75 @@
+---
+title: "Pixel stars"
+description: "Five pixel stars that fill like liquid as you hover; picking one pops it with sparks and rolls the label."
+tag: px-rating
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-rating" />
+
+## Installation
+
+<Install tag="px-rating" />
+
+## Usage
+
+<Usage tag="px-rating" />
+
+## Behaviour
+
+Stars fill like liquid as you hover, column by column with a wave at the front. Picking one pops it with sparks and rolls the label.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ value: number }` | Fires when a new rating from 1 to 5 is picked by pointer, keyboard or `pick()`; a key that leaves the rating unchanged fires nothing. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `pick(value: number)` | Sets the rating to 1 to 5 (rounded), pops the star, updates the label and ARIA values and fires `change`. Other values are ignored. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `number` | Current rating from 1 to 5, or `0` before one is picked. Setting it (0 to 5) updates the stars, the label and the ARIA values without firing `change`. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowUp | Raise the rating by one star. |
+| ArrowLeft / ArrowDown | Lower the rating by one star, to a minimum of one. |
+| Home / End | Set one or five stars. |
+| 1 to 5 | Set that rating directly. |
+
+## Accessibility
+
+- The star canvas is focusable with `role="slider"`, `aria-label="Rating"`, `aria-valuemin="0"` and `aria-valuemax="5"`.
+- `aria-valuenow` and `aria-valuetext` (for example "4 of 5, Good") update when a rating is picked.
+- The word label is plain text that also previews the rating under the pointer; it is not a live region, so hovering is not announced.
+- Reduced motion: stars fill at once without the wave and sparks are skipped; the picked star still pops briefly.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg` and `--ui-muted`.
+
+## Notes
+
+- The prompt "How was this answer?" and the labels Terrible, Not great, Okay, Good and Loved it are fixed.
+- The star canvas is a fixed 236 by 52px.
+
+<RelatedComponents tag="px-rating" />

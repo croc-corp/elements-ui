@@ -1,0 +1,79 @@
+---
+title: "Candlesticks"
+description: "Candlestick chart with dithered bodies, wicks, volume and a last-price line; takes your OHLC candles and streams new ones with `push()`, or shows a live demo walk."
+tag: hf-candles
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-candles" />
+
+<Callout title="Your data">
+
+Pass your OHLC candles as `data` and stream new ones with `push()`. Without it the chart shows a demo random walk that ticks live. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-candles" />
+
+## Installation
+
+<Install tag="hf-candles" />
+
+## Usage
+
+<Usage tag="hf-candles" />
+
+## Behaviour
+
+Live OHLC with dithered bodies, wicks, volume and a dotted last-price line. The last candle ticks and a new one opens every few seconds with a flash.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `ticker` | `ticker` | `string` | `GPU·H` | Symbol shown in the header and used in the chart's `aria-label`. Observed. |
+| `data` | `data` | `readonly HfCandlesDatum[] (JSON)` | — | Candles, oldest first: `{ open, high, low, close, volume?, date? }` records (`date` as an ISO string or epoch ms). The chart shows the last 56. Observed: changing it redraws the chart. Without it the chart shows a demo random walk that ticks live. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `push(candle: HfCandlesDatum)` | Appends a candle, or replaces the last one when both have the same `date` (to update the forming candle). Once the series is longer than 56 candles each append drops the oldest. Without `data` it starts your series and ends the demo. Invalid candles are ignored. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `data` | `readonly HfCandlesDatum[] \| null` | The same candles as the `data` attribute, without JSON. Setting it redraws the chart; `null` returns to the demo. Reading it returns your candles (including pushed ones) or `null`. |
+
+## Accessibility
+
+- The canvas has `role="img"` and `aria-label` `<ticker> price, last <n> periods`, or `<ticker> price: no data` for an empty series.
+- The OHLC readout has `aria-live="off"`; price and change are plain text.
+- Per-candle readouts appear on hover only.
+- Reduced motion: the data keeps updating, but candles draw without the intro, a new candle does not flash, the live dot does not blink and the price changes without rolling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--lumesec-foreground`, `--lumesec-success`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-ok`, `--ui-on-accent` and `--ui-raised`.
+
+## Notes
+
+- With `data` nothing is simulated: the chart shows your candles only, the Live badge is hidden until you call `push()`, and an empty array shows No data. The hover readout uses each candle's `date`, or counts periods back from the latest.
+- `high` and `low` are widened to include `open` and `close`; the volume strip is left out when no candle has a volume. Prices show three decimals below 10 and two from 10 up, with a `$` in the header.
+- Without `data`, prices are demo data from a seeded random walk: 56 candles, updated every 700 ms, with a new candle every eighth update. Updates pause while the element is off-screen and stop when it is removed from the page.
+- The change figure compares the last close with the first open. The chart is 200px tall and fills the width. `data` and `ticker` are observed; a `data` value set before the element is defined is picked up when it upgrades.
+
+<RelatedComponents tag="hf-candles" />

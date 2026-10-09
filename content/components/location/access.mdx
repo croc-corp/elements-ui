@@ -1,0 +1,98 @@
+---
+title: "Sign-in travel"
+description: "An account's sign-ins joined by legs on a map, with the time and distance between them. A move faster than travel allows tears apart."
+tag: geo-access
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-access" />
+
+<Callout title="Your data">
+
+Pass your sign-ins as `signIns`. Without it the component shows six invented demo sign-ins. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-access" />
+
+## Installation
+
+<Install tag="geo-access" />
+
+## Usage
+
+<Usage tag="geo-access" />
+
+## Behaviour
+
+An account's sign-ins in order, joined by lines on a map, with the speed each move would have needed. A move faster than travel allows is flagged as impossible.
+
+A flagged leg tears: its line splits in the middle, the halves pull apart, red sparks crackle in the gap and a chip shows the speed, such as 16,272 km/h. The list beside the map shows the time and distance between sign-ins. Locations from IP addresses are approximate, so short jumps are never flagged.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `signIns` | `readonly SignIn[]` | `6 demo sign-ins` | The account's sign-ins: `{ id, time, lat, lon, city?, device?, address? }`, in any order (they are sorted by time). `time` is epoch ms, an ISO 8601 string (read as UTC without an offset) or a Date. Entries with a duplicate id, an invalid time or an invalid position are skipped with a development warning. An empty array shows "No sign-ins yet". |
+| `maxKmh` | `number` | `1000` | Speeds above this, in km/h, are impossible. |
+| `minKm` | `number` | `500` | Moves shorter than this, in km, are never flagged, since IP locations can be off by a few hundred kilometres. |
+| `value` | `string \| null` | — | Selected sign-in id (controlled). Use with `onValueChange`. |
+| `defaultValue` | `string \| null` | `null` | Selected sign-in id when uncontrolled. |
+| `onValueChange` | `(value: string \| null) => void` | — | Called when a sign-in is selected from the list or the map, or the selection is cleared. |
+| `onFlag` | `(flag: TravelFlag) => void` | — | Called once per impossible leg when it first appears in the data: `{ from, to, km, hours, kmh }` with the two sign-in ids. `kmh` is Infinity when both sign-ins share a timestamp. |
+| `replay` | `boolean` | `true` | Plays the legs in order on first view and when the data changes. Appended sign-ins play from the first new one. |
+| `unit` | `"km" \| "mi"` | `"km"` | Unit of distances and speeds: km with km/h, or mi with mph. `maxKmh` and `minKm` stay in km. |
+| `timeZone` | `string` | `"UTC"` | IANA time zone of the times in the list. Invalid zones fall back to UTC. |
+| `locale` | `string` | — | BCP 47 locale for numbers and times. Without it, `en-US`. |
+| `ref` | `React.Ref<GeoAccessHandle>` | — | Exposes `replay()`. |
+
+### Ref
+
+`ref` receives a `GeoAccessHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `replay(): void` | Plays the legs again in order from the first sign-in. Does nothing with reduced motion or `replay={false}`. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves into the list, to the sign-in focused last, else the selected one or the first. The list is one tab stop. |
+| ArrowDown / ArrowUp | Moves focus to the next or previous sign-in. |
+| Home / End | Moves focus to the first or last sign-in. |
+| Enter / Space | Selects the focused sign-in, or clears it when it is already selected. |
+| Escape | Clears the selection. |
+
+## Accessibility
+
+- The root is a group labelled "Sign-in travel". The timeline is an ordered list labelled "Sign-ins, oldest first" with one native button per sign-in, using a roving tab index.
+- Each button is labelled with the place, the time, the device and the address, carries `aria-pressed` for the selection and is described by the leg that leads to it, for example "40 minutes later, 10,848 km away: impossible travel at 16,272 km/h."
+- A polite live region announces each impossible leg once, for example "Impossible travel: London to Singapore, 10,848 km in 40 minutes."
+- The map (canvases, markers, place names and speed chips) is `aria-hidden`; the list carries the same data. Markers respond to the pointer only.
+- Reduced motion: the land shows without its reveal, the legs appear complete without the replay, and impossible legs show a static dashed red gap with their chip, without the wobble or sparks. Rows do not flash and numbers change without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-soft`, `--lumesec-glint`, `--destructive`, `--card`, `--card-foreground`, `--muted`, `--muted-foreground`, `--foreground`, `--background` and `--border`.
+
+## Notes
+
+- Each leg is checked with the great-circle distance and the time between the two sign-ins: it is impossible when it covers more than `minKm` at more than `maxKmh`. Sign-ins within 25 km share one marker, with a count; a leg between them is not drawn and takes only a short beat in the replay.
+- The map is Equal Earth, centred on the sign-ins and zoomed until they fill the box with a margin; a single sign-in shows about 70 degrees around it. Calm legs bend slightly to the left of travel, so a return trip runs beside the outward one.
+- The replay draws each leg in 0.6 s with a packet at its head. A point pings the land dots around it as it is reached and its row lights up. An impossible leg draws to its midpoint, tears there and opens a 7 px gap on a spring; red sparks crackle in the gap for 1.4 s, the chip with the speed and the time pops in, and the far half grows back from the destination.
+- Selecting a sign-in, in the list or on the map, draws its incoming and outgoing legs larger, dims the rest and shows the incoming route and speed under the map. Selecting an end of a torn leg crackles its gap again. Clicking a marker repeatedly steps through the sign-ins at that place; clicking the empty map clears the selection.
+- Times in the list use `formatZonedTime` with a short date. The time between sign-ins is written with `min` for minutes, so it does not read as metres next to a distance.
+- A note under the list says that locations are approximate, since they come from IP addresses.
+
+<RelatedComponents tag="geo-access" />

@@ -1,0 +1,81 @@
+---
+title: "Announcement"
+description: "Announcement banner on a dithered gradient with a passing sheen; dismissing breaks it into dots that blow away before it collapses."
+tag: hf-banner
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-banner" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-banner" />
+
+## Installation
+
+<Install tag="hf-banner" />
+
+## Usage
+
+<Usage tag="hf-banner" />
+
+## Behaviour
+
+A dithered gradient with a passing sheen and a twinkling sparkle. Dismissing it disintegrates it into dots that blow away to the right before the space closes.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `action` | `action` | `string` | `Try it` | Label of the action button. An empty value hides the button. Observed. |
+| `variant` | `variant` | `ok \| warn` | — | Colour scheme: `ok` (green) or `warn` (amber). Without it the accent colour is used. Observed. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `action` | `onAction` | `{}` | Fires when the action button is clicked. |
+| `dismiss` | `onDismiss` | `{}` | Fires when the disintegration ends and the collapse begins: about 0.95 s after dismissing, or at once with reduced motion. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `dismiss()` | Plays the disintegration, then collapses the banner. Same as the dismiss button. |
+| `show()` | Restores a dismissed banner and replays the entrance. |
+
+### Slots
+
+| Slot | Description |
+| --- | --- |
+| `title` | Heading text. Falls back to `Ultracode is here`. |
+| `(default)` | Description text. Falls back to a sample sentence. |
+
+## Accessibility
+
+- The banner has `role="status"`.
+- The dismiss button is a native button with `aria-label="Dismiss"`; the action button is a native button.
+- Dismissing makes the content `inert`, so its buttons leave the tab order and the accessibility tree; `show()` restores them.
+- Reduced motion: there is no entrance or sheen, the sparkle is static, and dismissing clears the canvas, emits `dismiss` and collapses the banner at once.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--lumesec-foreground`, `--lumesec-success`, `--lumesec-warning` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-font`, `--ui-muted`, `--ui-ok`, `--ui-on-accent` and `--ui-warn`.
+
+## Notes
+
+- The canvas extends 24px to the left, 72px to the right and 24px above and below the banner so the particles can leave it; an ancestor with `overflow: hidden` clips them.
+
+<RelatedComponents tag="hf-banner" />

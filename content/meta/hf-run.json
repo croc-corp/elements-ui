@@ -1,0 +1,74 @@
+{
+  "summary": "Simulated agent run: steps show a spinning arc while running and a carved check when done, with elapsed time and tokens on top.",
+  "attributes": [
+    {
+      "name": "steps",
+      "type": "string",
+      "default": "Plan the approach|Read 14 files|Edit src/auth.ts|Run test suite|Write summary",
+      "description": "Step labels separated by `|`; empty labels are skipped. Re-read at the start of each run."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Agent run",
+      "description": "Title in the header. Read once on connect."
+    },
+    {
+      "name": "autoplay",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Starts a run 0.7 s after the element first connects."
+    },
+    {
+      "name": "fail",
+      "type": "number",
+      "description": "Zero-based index of the step that fails; the run stops there. Without the attribute every step succeeds."
+    }
+  ],
+  "events": [
+    {
+      "name": "step",
+      "detail": "{ index: number, label: string, status: \"running\" | \"done\" | \"fail\" }",
+      "description": "Fires when a step starts and when it finishes."
+    },
+    {
+      "name": "done",
+      "detail": "{ ok: boolean, elapsed: number }",
+      "description": "Fires when the run ends. `ok` is `false` when a step failed; `elapsed` is in seconds."
+    }
+  ],
+  "methods": [
+    {
+      "signature": "run(): Promise<void>",
+      "description": "Resets the list and plays the simulated run. Ignored while a run is in progress. Same as the Run button."
+    },
+    {
+      "signature": "reset()",
+      "description": "Rebuilds the step list from `steps` and clears the header counters. Cancels a run in progress, which then fires no `done`."
+    }
+  ],
+  "properties": [
+    {
+      "name": "steps",
+      "type": "string[]",
+      "readonly": true,
+      "description": "Step labels parsed from the attribute."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "A visually hidden `aria-live=\"polite\"` region announces each finished step, for example `Read 14 files: done in 1.2 seconds`, and the end of the run.",
+    "Status icons are drawn on an `aria-hidden` canvas; pending and failed steps are also shown by text colour.",
+    "The Run button is a native button, disabled while running and relabelled `Running…`, `Run again` or `Retry`."
+  ],
+  "motion": "With reduced motion each simulated step lasts 0.15 s, the spinner, connector flow and label shimmer stand still, finished icons do not pop, and durations appear without rolling.",
+  "slots": [],
+  "notes": [
+    "Runs are simulated: each step lasts a random 0.6 to 1.7 s and the token count is generated. There is no API for reporting real progress.",
+    "`elapsed` in `done`, the final header time and the token count are derived from the clock when the run ends, so they are correct even if the element was off screen during the run."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "Step durations are random and the token count is generated; only the step labels, `label` and the failing step can be set."
+  }
+}

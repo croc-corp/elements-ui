@@ -1,0 +1,37 @@
+{
+  "kind": "react",
+  "summary": "Wizard progress with numbered nodes joined by pixel lines that fill as you advance; finished steps show a check and lead back on click.",
+  "props": [
+    { "name": "step", "type": "number", "default": "-", "description": "Controlled current step, from 1. One more than the number of steps marks the flow complete. Rounded and clamped. Use with `onStepChange`." },
+    { "name": "defaultStep", "type": "number", "default": "1", "description": "Initial step when uncontrolled." },
+    { "name": "steps", "type": "readonly string[]", "default": "[\"Details\", \"Billing\", \"Review\", \"Done\"]", "description": "Step names, in order." },
+    { "name": "controls", "type": "boolean", "default": "false", "description": "Shows Back and Continue buttons; Continue reads Finish on the last step." },
+    { "name": "onStepChange", "type": "(step: number) => void", "default": "-", "description": "Called with the new step when the user moves: Back, Continue, Finish or a click on a finished step. Completing the flow reports the number of steps plus one." },
+    { "name": "onComplete", "type": "() => void", "default": "-", "description": "Called when the user moves past the last step." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "Step names are native buttons in an ordered list, each with an `aria-label` such as \"Billing, step 2 of 4\", plus \", done\" for finished steps. The current one has `aria-current=\"step\"`.",
+    "Only finished steps act on click; the others stay focusable but carry `aria-disabled=\"true\"`.",
+    "The node graphic is an `aria-hidden` canvas. The step numbers over it are `aria-hidden` text, because each button's `aria-label` already carries the number.",
+    "Back is disabled on step 1, and Continue is disabled once the flow is complete. When the focused button disables itself this way, focus moves to the other one instead of falling to the page."
+  ],
+  "motion": "With reduced motion the connecting lines fill at once, the current step does not pulse and no sparks fire on completion.",
+  "notes": [
+    "Without reduced motion the pulse around the current step animates continuously while the steps are on screen.",
+    "Moving past the last step, from the buttons or a controlled `step`, throws sparks from every node.",
+    "The Back, Continue and Finish labels are in English."
+  ],
+  "tokens": ["--lumesec", "--lumesec-shine", "--lumesec-success", "--foreground", "--muted-foreground", "--card", "--border", "--muted"],
+  "usage": "import { PxSteps } from \"@/components/lumesec/px-steps\";\n\nexport function Example() {\n  return <PxSteps steps={[\"Details\", \"Billing\", \"Review\", \"Done\"]} defaultStep={2} controls />;\n}\n",
+  "playground": {
+    "props": { "steps": ["Details", "Billing", "Review", "Done"], "defaultStep": 2, "controls": true },
+    "controls": [
+      { "name": "defaultStep", "kind": "number", "options": null, "default": "2" },
+      { "name": "controls", "kind": "boolean", "options": null, "default": "true" }
+    ]
+  }
+}

@@ -1,0 +1,70 @@
+---
+title: "Context waffle"
+description: "Context window as a 200-cell waffle, one cell per thousand tokens; attached files fly in and compacting crumbles the conversation."
+tag: px-waffle
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-waffle" />
+
+<Callout title="Demo data" type="warning">
+
+The starting context usage per source is invented; `add()` and `compact()` change it but it cannot be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-waffle" />
+
+## Usage
+
+<Usage tag="px-waffle" />
+
+## Behaviour
+
+The context window as 200 cells, one per thousand tokens, grouped by source. Attaching a file flies new cells in and pushes the rest along; compacting crumbles the conversation and closes the gap.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ used: number }` | Fires when cells are added. `used` is the number of filled cells, in thousands of tokens. |
+| `compact` | `onCompact` | `{ used: number }` | Fires after compacting, with the new number of filled cells. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `add(category: number, cells: number)` | Adds cells to a source (0 System prompt, 1 Tools, 2 Files, 3 Conversation), up to the 200-cell limit, and fires `change`. When full, the grid shakes and nothing is added. An unknown category or a count below one is ignored; counts are rounded. |
+| `compact()` | Keeps a quarter of the Conversation cells (at least 8), crumbles the rest and fires `compact`. Does nothing if there is nothing to remove. |
+
+## Accessibility
+
+- The canvas has `role="img"` with an `aria-label` such as "Context window 110k of 200k tokens used", updated on every change.
+- The total above the grid is an `aria-live="polite"` region.
+- Legend entries are focusable (`tabindex="0"`); focusing one isolates its source, as hover does.
+- "Attach file (+18k)" and "Compact" are native buttons.
+- Reduced motion: cells jump into place instead of flying and a full grid does not shake; compacted cells still crumble away.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--destructive`, `--foreground`, `--lumesec`, `--lumesec-warning` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-danger`, `--ui-fg`, `--ui-mono`, `--ui-muted` and `--ui-warn`.
+
+## Notes
+
+- The starting usage is built-in demo data: System prompt 6k, Tools 14k, Files 38k and Conversation 52k, 110k in total.
+- The host carries `data-zone="ok"`, `"warn"` from 160 cells or `"full"` from 190 cells.
+- The grid is 20 cells wide on a 164px tall canvas.
+
+<RelatedComponents tag="px-waffle" />

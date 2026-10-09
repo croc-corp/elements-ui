@@ -1,0 +1,65 @@
+---
+title: "Service radar"
+description: "Sweeping pixel radar where each service node lights up as the beam passes; Ping sends out a ring that flashes every node it touches."
+tag: px-radar
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-radar" />
+
+<Callout title="Demo data" type="warning">
+
+The six service nodes and their latencies are invented; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-radar" />
+
+## Usage
+
+<Usage tag="px-radar" />
+
+## Behaviour
+
+A sweeping radar where each service lights up as the beam passes and fades over a revolution. Ping sends a ring out that flashes every node it touches.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `ping` | `onPing` | `{}` | Fires when the Ping button is pressed. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowDown | Select the next node and show its tooltip. |
+| ArrowLeft / ArrowUp | Select the previous node and show its tooltip. |
+
+## Accessibility
+
+- The canvas is focusable with `role="img"` and `aria-label="Radar of 6 service nodes. Arrow keys step through them."`.
+- The node tooltip is drawn for pointer and sighted keyboard users; a visually hidden `aria-live="polite"` region announces each node stepped to with the arrow keys, for example "edge-tokyo · 131 ms · degraded". Blurring the canvas clears the selection.
+- The summary ("6 nodes · 1 degraded") is an `aria-live="polite"` region. Ping is a native button.
+- Reduced motion: the beam stays at a fixed angle, nodes stop drifting and keep a steady brightness and the selection ring does not turn; the ping ring still expands.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-surface`.
+
+## Notes
+
+- The nodes are built-in demo data: api-eu-1 (42 ms), api-us-2 (88 ms), edge-tokyo (131 ms, degraded), worker-7 (27 ms), db-primary (9 ms) and queue-3 (64 ms).
+- The radar is a fixed 232 by 232px and animates continuously while on screen, except under reduced motion.
+
+<RelatedComponents tag="px-radar" />

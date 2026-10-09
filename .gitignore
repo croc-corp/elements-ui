@@ -1,0 +1,27 @@
+# dependencies
+node_modules
+
+# build output and generated caches (pnpm catalog and registry:build write the tracked ones)
+.next
+.source
+.registry
+/public/cdn
+out
+*.tsbuildinfo
+next-env.d.ts
+
+# scratch space: pnpm verify output and temporary type-check files
+.data
+
+# environment; .env.example documents every variable
+.env*
+!.env.example
+
+# logs and editor or OS files
+*.log
+.DS_Store
+.vercel
+
+# local tooling and notes
+.claude/
+.local/

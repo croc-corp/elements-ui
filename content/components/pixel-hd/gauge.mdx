@@ -1,0 +1,76 @@
+---
+title: "Gauge"
+description: "Semicircular gauge of green, amber and red cells with a sprung pointer; the zone word rolls when the value crosses a threshold."
+tag: hf-gauge
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-gauge" />
+
+<Callout title="Your data">
+
+Set `value` (with `min`, `max` and `zones`). Without it the gauge shows a demo value. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-gauge" />
+
+## Installation
+
+<Install tag="hf-gauge" />
+
+## Usage
+
+<Usage tag="hf-gauge" />
+
+## Behaviour
+
+A semicircle of green, amber and red cells with a sprung pointer and a shimmer in the filled part. Past the last zone it pulses. The status word rolls when the zone changes.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `value` | `value` | `number` | `42` | Current value, clamped to `min`–`max`. Observed. |
+| `min` | `min` | `number` | `0` | Lower bound. Observed. |
+| `max` | `max` | `number` | `100` | Upper bound. Observed. |
+| `zones` | `zones` | `string` | `60,85` | Two thresholds in value units, comma-separated: `Elevated` from the first, `Critical` from the second. A missing or invalid threshold uses 60 or 85. Observed. |
+| `decimals` | `decimals` | `number` | `0` | Decimal places in the displayed number. Observed. |
+| `label` | `label` | `string` | `Rate limit` | Text under the gauge and the start of the `aria-label`. Observed. |
+| `unit` | `unit` | `string` | `%` | Text after the number. An empty value hides it. Observed. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `number` | Clamped value. Setting it writes the attribute. |
+| `min` (read-only) | `number` | Parsed `min`. |
+| `max` (read-only) | `number` | Parsed `max`. |
+| `frac` (read-only) | `number` | Position of the value in the range, 0 to 1. |
+| `zones` (read-only) | `[number, number]` | The two thresholds as fractions of the range, 0 to 1. |
+
+## Accessibility
+
+- The canvas has `role="meter"` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and an `aria-label` such as `Rate limit: 72%, Elevated`.
+- The number and zone word are plain text; there is no live region.
+- Reduced motion: the pointer jumps without the spring, the shimmer and the critical pulse are off, and the number and zone word swap without rolling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--lumesec-success` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-ok`.
+
+## Notes
+
+- All attributes are observed; a change animates the pointer to the new position.
+
+<RelatedComponents tag="hf-gauge" />

@@ -1,0 +1,84 @@
+---
+title: "Select"
+description: "Select with a menu that unfolds downward, a pixel highlight that springs between options and type-ahead by first letter."
+tag: px-select
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-select" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-select" />
+
+## Installation
+
+<Install tag="px-select" />
+
+## Usage
+
+<Usage tag="px-select" />
+
+## Behaviour
+
+Takes a typed list of options. The menu unfolds downward, a pixel highlight follows your pointer or the arrow keys, and typing a letter jumps to it.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `options` | `readonly PxSelectOption[]` | — | The choices: `{ value?: string; label: string; description?: string }`. `value` defaults to `label`; `description` is a second line in the menu. |
+| `value` | `string` | — | Controlled selected value. Use with `onValueChange`. |
+| `defaultValue` | `string` | `first option` | Initially selected value when uncontrolled. A form reset restores it. |
+| `open` | `boolean` | — | Controlled open state of the menu. Use with `onOpenChange`. |
+| `defaultOpen` | `boolean` | `false` | Initial open state when uncontrolled. |
+| `label` | `React.ReactNode` | — | Label above the trigger; also names the listbox. |
+| `hint` | `React.ReactNode` | — | Help text under the trigger; it also describes the trigger through `aria-describedby`. |
+| `name` | `string` | — | Form field name; the selected value submits under it. |
+| `disabled` | `boolean` | `false` | Dims the select, disables the trigger and keeps the menu closed. |
+| `onValueChange` | `(value: string) => void` | — | Called when the user picks a different option. |
+| `onOpenChange` | `(open: boolean) => void` | — | Called when the menu opens or closes. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowDown / ArrowUp (on the trigger) | Open the menu. |
+| ArrowDown / ArrowUp (in the menu) | Move the highlight; stops at the first and last option. |
+| Home / End | Highlight the first / last option. |
+| Enter / Space | Choose the highlighted option and close. |
+| Escape | Close and return focus to the trigger. |
+| Tab / Shift+Tab | Close and move focus on from the trigger to the next / previous element. |
+| Printable character | Highlight the next option whose label starts with that character. |
+
+## Accessibility
+
+- The trigger is a native button with `aria-haspopup="listbox"`, `aria-expanded`, `aria-controls` pointing at the listbox, `aria-labelledby` pointing at the label and the selected value, and `aria-describedby` pointing at the hint.
+- The menu is a `role="listbox"` labelled by the label, with `aria-activedescendant` on the highlighted option; options have `role="option"` and `aria-selected`.
+- Opening moves focus to the listbox; choosing or Escape return it to the trigger. A pointer press outside, or focus moving to another element, closes the menu without moving focus.
+- The highlight canvas is `aria-hidden`.
+- With `name`, a hidden input submits the selected option's value. There is no validation. Form reset restores `defaultValue` (or the first option) and calls `onValueChange` when that changes the value.
+- Reduced motion: the menu opens without unfolding, the chevron does not rotate, the highlight jumps and the value swaps without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--card`, `--border` and `--lumesec`.
+
+## Notes
+
+- The menu opens 6 px below the trigger and overlays the hint and the content after it (`z-index: 30`).
+- The root carries `data-state="open"` or `data-state="closed"`.
+
+<RelatedComponents tag="px-select" />

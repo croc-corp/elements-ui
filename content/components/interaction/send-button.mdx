@@ -1,0 +1,80 @@
+---
+title: "Send / stop button"
+description: "Round send button that turns into a stop button with an orbiting ring while a reply streams, then closes the ring with sparks on completion."
+tag: ui-send-button
+updated: "2026-09-25"
+---
+
+<ComponentPreview tag="ui-send-button" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="ui-send-button" />
+
+## Installation
+
+<Install tag="ui-send-button" />
+
+## Usage
+
+<Usage tag="ui-send-button" />
+
+## Behaviour
+
+The arrow launches up and out, a stop square spins in, and a ring orbits while the reply streams. On completion the ring closes, sparks fly and the arrow drops back in.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<button>` (`React.ComponentProps<"button">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `running` | `boolean` | — | Controlled running state. Use with `onRunningChange`. Setting it from outside switches the look with the icon animation but calls no event callback. |
+| `defaultRunning` | `boolean` | `false` | Initial running state when uncontrolled. |
+| `demoDuration` | `number` | `0` | Seconds after which a send completes on its own, for demos. `0` means the button waits for `complete()` or a stop. Read on each send. |
+| `onRunningChange` | `(running: boolean) => void` | — | Called when a send, stop or completion changes the running state. |
+| `onSend` | `() => void` | — | Called when the idle button is pressed or `send()` is called. |
+| `onStop` | `() => void` | — | Called when a running send is stopped with the button or `stop()`. |
+| `onComplete` | `() => void` | — | Called when a running send completes, after the ring has closed (about 380 ms after `complete()`). |
+| `ref` | `React.Ref<UiSendButtonHandle>` | — | Exposes `send()`, `stop()` and `complete()`. |
+
+### Ref
+
+`ref` receives a `UiSendButtonHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `send(): void` | Switches to the running state and calls `onSend`. Ignored while running. |
+| `stop(): void` | Returns to idle and calls `onStop`. Ignored when idle and while the ring is closing. |
+| `complete(): void` | Closes the ring, bursts sparks, returns to idle and calls `onComplete`. Ignored when idle or already completing. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Space / Enter | Send when idle, stop while running. |
+
+## Accessibility
+
+- A native `<button>` whose `aria-label` switches between "Send" and "Stop".
+- The arrow, stop icon and ring are `aria-hidden`.
+- There is no live region; completion is not announced.
+- Reduced motion: the arrow and stop icons swap without animation, the ring does not spin, and no sparks fire on completion.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-foreground`, `--lumesec-glint`, `--muted`, `--foreground` and `--border`.
+
+## Notes
+
+- The button carries `data-state="running"` or `data-state="idle"` for styling.
+- The button does not stream anything itself: call `complete()` through `ref` when the reply finishes, or set `demoDuration` for a demo.
+- Once `complete()` starts, a stop is ignored until the ring has closed, so a send never reports both outcomes.
+
+<RelatedComponents tag="ui-send-button" />

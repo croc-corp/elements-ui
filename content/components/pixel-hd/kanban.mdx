@@ -1,0 +1,67 @@
+---
+title: "Kanban board"
+description: "Three-column kanban board: a dragged card leaves a dot trail, the target column lights up and a bar marks where it will land."
+tag: hf-kanban
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-kanban" />
+
+<Callout title="Demo data" type="warning">
+
+The three columns and six cards are invented; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="hf-kanban" />
+
+## Usage
+
+<Usage tag="hf-kanban" />
+
+## Behaviour
+
+Drag cards between columns: a trail of dots follows, the target column lights up and a bar shows where it will land. Dropping into Done bursts. Arrow keys move the focused card.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `move` | `onMove` | `{ card: string, from: string, to: string }` | Fires after a card is dropped or moved by keyboard, including reorders within one column. `card` is the card title; `from` and `to` are column names. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight | Move the focused card to the end of the previous or next column. |
+| ArrowUp / ArrowDown | Move the focused card up or down within its column. |
+
+## Accessibility
+
+- Columns are `role="list"` with the column name as `aria-label`; cards are focusable `role="listitem"` elements labelled `<title>. <tag>. Arrow keys move the card.`
+- A visually hidden `aria-live="polite"` region announces `<title> moved to <column>`.
+- A moved card keeps focus. Column headers show the card count.
+- Column highlights, the trail and the insertion bar are drawn on an `aria-hidden` canvas.
+- Reduced motion: moved cards jump to their new place without sliding and dropping into Done gives no spark burst; the drag trail and column highlight remain.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-muted`, `--ui-raised` and `--ui-surface`.
+
+## Notes
+
+- The columns (To do, In progress, Done) and six cards are built-in demo data.
+- A pointer drag starts after 5px of movement. Cards in Done are struck through.
+- Below 520px of viewport width the columns stack; this is a media query, not a container query.
+
+<RelatedComponents tag="hf-kanban" />

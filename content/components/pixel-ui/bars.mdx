@@ -1,0 +1,76 @@
+---
+title: "Bar chart"
+description: "Pixel bar chart whose bars grow cell by cell and spring to new data; hover or the arrow keys show exact values in a tooltip."
+tag: px-bars
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-bars" />
+
+<Callout title="Your data">
+
+Pass your bars as `data`. Without it the chart shows a sample week of seven invented values. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-bars" />
+
+## Installation
+
+<Install tag="px-bars" />
+
+## Usage
+
+<Usage tag="px-bars" />
+
+## Behaviour
+
+Bars stacked from pixel cells that grow in one after another and spring to new data. Hover or use the arrow keys for exact values.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `readonly PxBarsDatum[]` | `Mon to Sun sample` | The bars, left to right: `{ label: string; value: number }`. Bars spring to new values when it changes. Negative and non-finite values draw an empty bar. |
+| `max` | `number` | `0` | Top of the value axis. With 0 the axis tops out at 110% of the largest value. |
+| `label` | `string` | `"Bar chart"` | Start of the canvas `aria-label`, followed by every label and value. |
+| `unit` | `string` | — | Unit shown after each value in the tooltip and the `aria-label`, separated by a space. |
+| `height` | `number` | `170` | Canvas height in pixels. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowLeft | Highlight the next / previous bar and show its tooltip, wrapping. |
+
+## Accessibility
+
+- The canvas has `role="img"`, `tabindex="0"` and an `aria-label` listing every label and value, for example "Runs per day: Mon 12 runs, Tue 18 runs, …".
+- The tooltip is visual only and is not announced; losing focus or the pointer hides it.
+- Reduced motion: bars appear at their final height without the staggered spring.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-shine`, `--foreground`, `--muted-foreground` and `--card`.
+
+## Notes
+
+- The sample data Mon 12, Tue 18, Wed 9, Thu 22, Fri 17, Sat 6, Sun 4 is drawn when `data` is not set.
+- On first view the bars grow in one after another, 50 ms apart; bars added later spring up at once.
+- The value axis has five gridlines labelled from 0 to the axis maximum, in the monospace font.
+
+<RelatedComponents tag="px-bars" />

@@ -1,0 +1,108 @@
+---
+title: "Range filter"
+description: "Dual-thumb range filter over a dithered histogram; bars inside the range light up and a result count follows as you drag or type."
+tag: hf-range
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-range" />
+
+<Callout title="Your data">
+
+Pass your histogram as `data` and the count factor as `scale`. Without `data` the histogram is a generated demo distribution. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-range" />
+
+## Installation
+
+<Install tag="hf-range" />
+
+## Usage
+
+<Usage tag="hf-range" />
+
+## Behaviour
+
+Two thumbs over a dithered histogram. Bars inside the range light up, the result count rolls, and the min and max fields stay in sync both ways.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `min` | `min` | `number` | `0` | Lower bound of the scale. Observed. |
+| `max` | `max` | `number` | `500` | Upper bound of the scale. Observed. |
+| `step` | `step` | `number` | `5` | Snap increment, counted from `min`. Also the arrow-key step and the minimum gap between the two thumbs. Values at or below 0 fall back to 5. Observed. |
+| `low` | `low` | `number` | — | Lower value. Defaults to `min` plus 20% of the range, snapped to `step`. Observed: a change moves the thumb without firing events. |
+| `high` | `high` | `number` | — | Upper value. Defaults to `min` plus 70% of the range, snapped to `step`. Observed: a change moves the thumb without firing events. |
+| `prefix` | `prefix` | `string` | `€` | Text before values in the Min and Max fields and in `aria-valuetext`. An empty attribute removes it. Observed. |
+| `data` | `data` | `string` | — | Comma-separated bar heights for the histogram, spread evenly from `min` to `max`. Needs at least four numbers; otherwise a built-in demo distribution of 44 bars is used. Observed. |
+| `scale` | `scale` | `number` | `3` | Multiplier from the summed heights of the bars in range to the result count in the header. Observed. |
+| `label` | `label` | `string` | `Price` | Heading text. Observed. |
+| `unit-label` | `unitLabel` | `string` | `results` | Word after the result count. Observed. |
+| `name` | `name` | `string` | — | Form field name. With a name, the form receives `<name>-min` and `<name>-max`. |
+| `disabled` | `disabled` | `boolean` | `false` | Presence attribute. Disables both thumbs and fields; a disabled ancestor `<fieldset>` does the same. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `input` | `onInput` | `{ min: number, max: number }` | Fires on every value change by the user: while dragging, on key presses and when a Min or Max field is committed. Not fired for attribute changes. |
+| `change` | `onChange` | `{ min: number, max: number }` | Fires when a drag ends, after an arrow, Page, Home or End key press that moved a thumb, and when a Min or Max field is committed with a new value. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `min` (read-only) | `number` | The `min` attribute, or 0. |
+| `max` (read-only) | `number` | The `max` attribute, or 500. |
+| `step` (read-only) | `number` | The `step` attribute, or 5. |
+| `bins` (read-only) | `number[]` | The histogram bar heights in use, from `data` or the demo distribution. |
+| `form` (read-only) | `HTMLFormElement \| null` | The owning form, from `ElementInternals`. |
+| `name` (read-only) | `string \| null` | The `name` attribute. There is no setter; set the attribute instead. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowUp | Raise the focused thumb by `step`. |
+| ArrowLeft / ArrowDown | Lower the focused thumb by `step`. |
+| PageUp / PageDown | Move the focused thumb by a tenth of the range. |
+| Home / End | Move the focused thumb to `min` or `max`, stopping one `step` from the other thumb. |
+
+## Accessibility
+
+- Both thumbs are focusable with `role="slider"`, `aria-label` `Minimum` or `Maximum`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and an `aria-valuetext` that includes the prefix.
+- The Min and Max text fields carry matching `aria-label`s and `inputmode="numeric"`.
+- The result count is an `aria-live="polite"` region.
+- Pressing on the track moves and focuses the nearest thumb. The histogram canvas is `aria-hidden`.
+- Form-associated through `ElementInternals`.
+- With `name`, submits two entries, `<name>-min` and `<name>-max`; without a name the internal value is `low-high`. There is no validation. Form reset restores the range from the first connect; `disabled` or a disabled fieldset takes the thumbs and fields out of use.
+- Reduced motion: histogram bars switch between lit and unlit at once and the result count changes without the roll; the thumb glow still eases.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-muted` and `--ui-surface`.
+
+## Notes
+
+- The host is `display: block`; the plot is 118px tall and fills the host's width.
+- All attributes are observed: new bounds, a new `step` or new `data` re-clamp the thumbs and recount without events. The thumbs always stay at least one `step` apart.
+- A Min or Max field always shows the value in use after it is committed, also when the typed value was invalid or out of range.
+- There is no `value` property; read the range from the `input` and `change` details or from the form data.
+- The Min and Max fields' native `input` events stay inside the shadow root; only the element's own `input` and `change` events, with `min` and `max` in `detail`, reach the host.
+
+<RelatedComponents tag="hf-range" />

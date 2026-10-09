@@ -1,0 +1,62 @@
+name: Feature request
+description: Propose a new component, a new option for an existing one, or a change to the site or the docs.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Open a request before you start work on a new component, so the scope and the collection are agreed first.
+        The conventions every component follows are in [contributing/conventions.md](https://github.com/lumesec/elements-ui/blob/main/contributing/conventions.md).
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Type of request
+      options:
+        - New component
+        - Change to an existing component
+        - Site or documentation
+        - Registry or tooling
+    validations:
+      required: true
+  - type: dropdown
+    id: collection
+    attributes:
+      label: Collection
+      options:
+        - Interaction
+        - Pixel UI
+        - Pixel Lab
+        - Pixel HD
+        - Location
+        - New collection
+        - Not applicable
+  - type: input
+    id: component
+    attributes:
+      label: Component
+      description: The tag of the existing component this is about, if any.
+      placeholder: px-tabs
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What you are trying to do and what is missing or in the way today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: The behaviour, API (props, attributes, events) and keyboard and accessibility behaviour you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I would like to open a pull request for this.

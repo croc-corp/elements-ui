@@ -1,0 +1,81 @@
+---
+title: "Tag input"
+description: "Tag input where Enter or comma adds a chip and Backspace twice removes the last; duplicates shake and removed tags break into pixels."
+tag: px-tags
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-tags" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-tags" />
+
+## Installation
+
+<Install tag="px-tags" />
+
+## Usage
+
+<Usage tag="px-tags" />
+
+## Behaviour
+
+Enter or comma adds a tag, Backspace on an empty field marks the last one and a second press removes it. Removed tags break into pixels; duplicates shake instead of being added.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `readonly string[]` | — | Controlled tags. Use with `onValueChange`. |
+| `defaultValue` | `readonly string[]` | `[]` | Initial tags when uncontrolled. A form reset restores them. |
+| `label` | `React.ReactNode` | `"Tags"` | Label above the field, linked to the input. |
+| `placeholder` | `string` | `"Add a tag and press Enter"` | Placeholder of the input. |
+| `suggestions` | `readonly string[]` | `[]` | Shown as "+ name" buttons under the field; clicking one adds it. |
+| `max` | `number` | `8` | Maximum number of tags. Adding beyond it shakes the field and shows a message. |
+| `name` | `string` | — | Form field name; the tags submit joined with commas. |
+| `disabled` | `boolean` | `false` | Dims the field and disables the input, the remove buttons and the suggestion buttons. |
+| `onValueChange` | `(value: string[]) => void` | — | Called when tags are added (Enter, comma, a suggestion or a paste) or removed. A paste that adds several tags reports once. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / , | Add the typed text as a tag. |
+| Backspace (empty field) | First press marks the last tag; a second press removes it. |
+| Any other key | Clears the mark. |
+
+## Accessibility
+
+- A native `<input>` labelled by a `<label htmlFor>`.
+- Each chip's remove button has an `aria-label` of "Remove" followed by the tag.
+- The counter ("2 of 6 tags") and the limit message describe the input (`aria-describedby`) and are in an `aria-live="polite"` region.
+- A tag marked by the first Backspace is announced through a visually hidden `role="status"`, for example "design selected. Press Backspace again to remove it."
+- Chips are plain elements without a list role. Removing one returns focus to the input. The pixel canvas is `aria-hidden`.
+- With `name`, a hidden input submits the tags joined with commas. There is no validity check; `max` is enforced by refusing new tags. Form reset restores `defaultValue`, clears the typed text and calls `onValueChange` when that changes the tags.
+- Reduced motion: chips appear without scaling in or a pixel spray, removed chips vanish without breaking into pixels and the duplicate and limit shakes are skipped.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--card`, `--border`, `--muted`, `--lumesec`, `--lumesec-shine` and `--destructive`.
+
+## Notes
+
+- Tags are trimmed and inner whitespace is collapsed; case-insensitive duplicates are refused.
+- Pasting text that contains commas adds each part as a tag.
+- A long tag is truncated with an ellipsis inside its chip.
+- The pixel canvas reaches 20 px past the field on the left, top and bottom but not on the right, so it never widens the page.
+
+<RelatedComponents tag="px-tags" />

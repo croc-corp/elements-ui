@@ -1,0 +1,32 @@
+{
+  "summary": "Roadmap Gantt chart with dithered progress bars, a pulsing milestone and a today line; bars drag or resize, snapping by day.",
+  "attributes": [
+    { "name": "label", "type": "string", "default": "Q4 roadmap", "description": "Heading text. Observed." }
+  ],
+  "events": [
+    { "name": "change", "detail": "{ task: string, start: number, end: number }", "description": "Fires when a drag that moved or resized a bar ends, and on each arrow-key move or resize. `task` is the task name; `start` and `end` are day offsets from 5 October 2026, from 0 to 41." }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowLeft / ArrowRight", "action": "Move the focused bar one day earlier or later." },
+    { "keys": "Shift + ArrowLeft / ArrowRight", "action": "Shorten or lengthen the focused bar by one day at its end." }
+  ],
+  "accessibility": [
+    "Each bar is a native button with an `aria-label` such as `Design: Oct 9 to Oct 18, 100% done`; the milestone reads `Launch: Nov 11`.",
+    "The status next to the heading is an `aria-live=\"polite\"` region that announces the dates of the focused or moved task.",
+    "Task names are text in a column beside the chart. Bars, grid and today line are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion, bars appear without growing in, moves snap instead of easing, the milestone does not pulse and the today-line glint is hidden.",
+  "slots": [],
+  "notes": [
+    "Tasks are built-in demo data: six rows over 42 days (weeks 41 to 46 of 2026), ending in a Launch milestone that cannot be moved.",
+    "Drag a bar to move it, or drag within 10px of its right end to resize it. Bars snap to whole days.",
+    "The today line is fixed at 25 October 2026, not the current date.",
+    "Rows are 34px tall and the chart fills the width."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The six tasks, their dates and progress and the today line are invented; only `label` can be set."
+  }
+}

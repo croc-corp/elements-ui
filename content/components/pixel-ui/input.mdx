@@ -1,0 +1,85 @@
+---
+title: "Text field"
+description: "Labelled form text field whose underline lights from the caret outwards; validation on blur shakes on error or draws a check."
+tag: px-input
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-input" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-input" />
+
+## Installation
+
+<Install tag="px-input" />
+
+## Usage
+
+<Usage tag="px-input" />
+
+## Behaviour
+
+A labelled field whose underline lights up from the caret outwards. Validation runs on blur: an invalid value shakes the field, scatters the pixels and rolls in the message; a valid one draws a check.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Controlled text. Use with `onValueChange`. |
+| `defaultValue` | `string` | `""` | Initial text when uncontrolled. A form reset restores it. |
+| `label` | `React.ReactNode` | — | Label above the field, linked to the input. Nothing is rendered when empty. |
+| `hint` | `string` | — | Help text under the field, shown when there is no error. |
+| `error` | `string` | — | Message shown when the value is invalid, and used as the browser's validation message. Defaults to the browser's own message. |
+| `success` | `string` | — | Message shown when a valid value is confirmed on blur. Falls back to `hint`. |
+| `name` | `string` | — | Form field name; the text submits under it. |
+| `type` | `React.HTMLInputTypeAttribute` | `"text"` | Input type, for example `email`, `url` or `tel`. Its constraints are checked during validation. |
+| `placeholder` | `string` | — | Placeholder of the input. |
+| `required` | `boolean` | `false` | An empty field is invalid. |
+| `pattern` | `string` | — | Pattern the value must match; checked during validation. |
+| `minLength` | `number` | — | Minimum length; checked during validation. |
+| `maxLength` | `number` | — | Maximum length. |
+| `autoComplete` | `React.InputHTMLAttributes<HTMLInputElement>["autoComplete"]` | — | Autofill hint of the input. |
+| `inputMode` | `React.InputHTMLAttributes<HTMLInputElement>["inputMode"]` | — | Virtual keyboard hint of the input. |
+| `spellCheck` | `boolean` | — | Spell checking of the input. |
+| `disabled` | `boolean` | `false` | Dims the field and disables the input, so it cannot be edited, reached with Tab or submitted. |
+| `onValueChange` | `(value: string) => void` | — | Called on every edit with the new text. |
+| `onValueCommit` | `(value: string) => void` | — | Called when the input commits a change: on blur after editing (the native `change` event). |
+
+### Ref
+
+`ref` receives a `PxInputHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `focus(): void` | Moves focus into the text field. |
+
+## Accessibility
+
+- A native `<input>` labelled by a `<label htmlFor>` with the `label` content.
+- The message line is an `aria-live="polite"` region, so error and success messages are announced.
+- `aria-invalid` is set on the input while an error shows.
+- The message line (hint, error or success text) is linked to the input with `aria-describedby` while it has text, and long messages wrap.
+- The underline canvas is `aria-hidden`.
+- A native `<input>` submits the text under `name`. Its constraints (`type`, `required`, `pattern`, `minLength`) block submission; when `error` is set it becomes the custom validity message, so the browser's bubble shows it. The visible check runs on blur and, once an error shows, again on every keystroke; an empty optional field shows no state. Form reset restores `defaultValue`, clears the state and calls `onValueChange`.
+- Reduced motion: the underline lights at once instead of spreading from the caret, the error shake and pixel jitter are skipped, and the message swaps without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--card`, `--border`, `--lumesec`, `--lumesec-shine`, `--destructive` and `--lumesec-success`.
+
+## Notes
+
+- After validation the root carries `data-state="ok"` or `data-state="error"`.
+- `className` and other `div` props go to the wrapper; input attributes are the props listed above.
+
+<RelatedComponents tag="px-input" />

@@ -1,0 +1,36 @@
+{
+  "kind": "react",
+  "summary": "Switch with a label and hint whose thumb stretches as it travels and pops a few pixel sparks when it turns on.",
+  "props": [
+    { "name": "checked", "type": "boolean", "default": "-", "description": "Controlled state. Use with `onCheckedChange`." },
+    { "name": "defaultChecked", "type": "boolean", "default": "false", "description": "Initial state when uncontrolled." },
+    { "name": "children", "type": "React.ReactNode", "default": "\"Extended thinking\"", "description": "Label text. It is also the switch's accessible name." },
+    { "name": "hint", "type": "React.ReactNode", "default": "-", "description": "Secondary text under the label, linked to the switch with `aria-describedby`." },
+    { "name": "onCheckedChange", "type": "(checked: boolean) => void", "default": "-", "description": "Called when the user toggles the switch. Changing `checked` from outside does not call it." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [{ "keys": "Space / Enter", "action": "Toggle the focused switch." }],
+  "accessibility": [
+    "The switch is a native `<button>` with `role=\"switch\"` and `aria-checked`.",
+    "The label is the switch's accessible name (`aria-labelledby`) and the hint its description (`aria-describedby`).",
+    "Clicking anywhere on the row, including the label and hint, toggles the switch."
+  ],
+  "motion": "With reduced motion the thumb moves without the stretch animation and no sparks fire; the accent fill still transitions.",
+  "notes": [
+    "Not a form control: it has no `name` and is not submitted with a form.",
+    "The root, the switch and its parts carry `data-state=\"checked\"` or `data-state=\"unchecked\"` for styling.",
+    "Changing `checked` from outside moves the thumb without the stretch and sparks; they play only for user toggles."
+  ],
+  "tokens": ["--lumesec", "--lumesec-glint", "--muted", "--foreground", "--muted-foreground"],
+  "usage": "import { UiToggle } from \"@/components/lumesec/ui-toggle\";\n\nexport function Example() {\n  return (\n    <UiToggle defaultChecked hint=\"Think longer before answering\">\n      Extended thinking\n    </UiToggle>\n  );\n}\n",
+  "playground": {
+    "props": { "children": "Extended thinking", "hint": "Think longer before answering" },
+    "controls": [
+      { "name": "defaultChecked", "kind": "boolean", "options": null, "default": "false" },
+      { "name": "children", "kind": "string", "options": null, "default": "Extended thinking" },
+      { "name": "hint", "kind": "string", "options": null, "default": "Think longer before answering" }
+    ]
+  }
+}

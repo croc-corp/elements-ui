@@ -1,0 +1,28 @@
+{
+  "summary": "Weekday-by-hour usage heatmap in which dot density is the value; the peak pulses, and hover or arrow keys show a cell's count.",
+  "attributes": [
+    { "name": "label", "type": "string", "default": "When your team uses AI", "description": "Heading text. Read once on connect." }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "action": "Move the inspected cell by one hour or one day. The first press starts from Wednesday 11:00." }
+  ],
+  "accessibility": [
+    "The heatmap canvas is focusable with `role=\"img\"` and `aria-label` `Usage heatmap by weekday and hour. Use arrow keys to inspect cells.`",
+    "Arrow-key moves announce the inspected cell (day, hour and count) through a visually hidden `aria-live=\"polite\"` region. The visible tooltip is `aria-hidden`, and pointer hover is not announced.",
+    "The Messages and Tokens switch is a `role=\"group\"` labelled `Metric`, with `aria-pressed` buttons.",
+    "Moving the pointer off the canvas or moving focus away hides the tooltip."
+  ],
+  "motion": "With reduced motion, cells appear without the diagonal intro, metric changes apply at once, the peak cell does not pulse and drawing stops between interactions.",
+  "slots": [],
+  "notes": [
+    "Data is synthetic and built in: 7 × 24 values for messages (up to 420 per cell) and tokens (up to 48,000 per cell).",
+    "The heatmap is 154px tall and fills the width. Without reduced motion it redraws every frame while visible."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The weekday-by-hour message and token counts are synthetic; only `label` can be set."
+  }
+}

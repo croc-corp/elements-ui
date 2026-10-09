@@ -1,0 +1,71 @@
+---
+title: "Copy button"
+description: "Copy-to-clipboard button whose icon turns into a drawn check as the label rolls to \"Copied\"; it says so when the browser refuses."
+tag: ui-copy-button
+updated: "2026-09-25"
+---
+
+<ComponentPreview tag="ui-copy-button" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="ui-copy-button" />
+
+## Installation
+
+<Install tag="ui-copy-button" />
+
+## Usage
+
+<Usage tag="ui-copy-button" />
+
+## Behaviour
+
+The clipboard icon spins away as a check draws itself in, the label rolls to “Copied”, and a small pop of pixels confirms it. If the browser refuses the copy, it says so instead.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<button>` (`React.ComponentProps<"button">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | `""` | Text written to the clipboard. Read on each click. |
+| `label` | `string` | `"Copy"` | Idle label. |
+| `doneLabel` | `string` | `"Copied"` | Label shown for 1.8 s after a successful copy. |
+| `onCopy` | `(ok: boolean, text: string) => void` | — | Called after each copy attempt; `ok` is false when the clipboard write was rejected. |
+
+### Ref
+
+`ref` points at the root `HTMLButtonElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Space / Enter | Copy. |
+
+## Accessibility
+
+- A native `<button>`; its accessible name is the visible label.
+- The label is an `aria-live="polite"` region, so "Copied" or "Couldn’t copy" is announced.
+- The clipboard and check icons are `aria-hidden`.
+- Reduced motion: the label swaps without rolling and the check pop and pixel sparks are skipped; the icon cross-fade still runs.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--muted`, `--border`, `--foreground`, `--lumesec-success`, `--destructive`, `--lumesec` and `--lumesec-glint`.
+
+## Notes
+
+- Uses `navigator.clipboard.writeText`, which requires a secure context (HTTPS or localhost). On failure the label reads "Couldn’t copy", built in English.
+- The button carries `data-state="done"` or `data-state="fail"` for 1.8 s after a click, `data-state="idle"` otherwise.
+- The button keeps the width of its longest label, so it does not change size as the label rolls.
+- `onCopy` replaces the native clipboard `copy` event handler of the same name.
+
+<RelatedComponents tag="ui-copy-button" />

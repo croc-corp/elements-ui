@@ -1,0 +1,66 @@
+---
+title: "Stat tile"
+description: "Stat tile with a rolling value, a change chip against a previous value and a pixel history; invert makes a drop read as good."
+tag: px-kpi
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-kpi" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-kpi" />
+
+## Installation
+
+<Install tag="px-kpi" />
+
+## Usage
+
+<Usage tag="px-kpi" />
+
+## Behaviour
+
+A metric with a rolling value, a change chip and a pixel history. Set `invert` when lower is better, so a drop shows green.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number` | `0` | The metric. Changes roll in, upward when the value grows. |
+| `previous` | `number` | — | Comparison value. When set and not 0, a chip shows the percentage change with ▲ or ▼. |
+| `invert` | `boolean` | `false` | For metrics where lower is better: a drop is coloured green and a rise red. |
+| `format` | `"number" \| "currency" \| "percent" \| "compact" \| "ms"` | `"number"` | `percent` shows one decimal and %, `compact` shortens large numbers (48.2K). Uses en-US formatting. |
+| `currency` | `string` | `"EUR"` | ISO currency code used with `format="currency"`. Amounts from 1,000 up show whole units. |
+| `label` | `React.ReactNode` | — | Caption above the value. |
+| `note` | `React.ReactNode` | — | Muted text at the end of the value row, such as "vs. last month". |
+| `data` | `readonly number[]` | `[]` | History drawn as pixel columns; needs at least two finite values (others are dropped). A change replays the draw-in. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Accessibility
+
+- The value is an `aria-live="polite"` region, so updates are announced.
+- The history canvas is `aria-hidden`. The change chip shows ▲ or ▼ visually and reads as words, for example "Up 12.4%".
+- Reduced motion: the value and change chip swap without rolling and the history appears at once.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec-success`, `--destructive`, `--foreground` and `--muted-foreground`.
+
+## Notes
+
+- The history has the colour of the change chip: green when the change is good, red when it is bad. Without a chip (no `previous`, or 0) it is green.
+- `percent` shows the value as given, so `12.5` reads 12.5%.
+
+<RelatedComponents tag="px-kpi" />

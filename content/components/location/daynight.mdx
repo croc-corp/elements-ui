@@ -1,0 +1,94 @@
+---
+title: "Day and night"
+description: "A dotted globe split by the terminator, with a dithered twilight band and city lights that switch on as night reaches them."
+tag: geo-daynight
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-daynight" />
+
+<Callout title="Your data">
+
+Pass your places as `cities`. Without it the globe shows lights for 60 demo cities. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-daynight" />
+
+## Installation
+
+<Install tag="geo-daynight" />
+
+## Usage
+
+<Usage tag="geo-daynight" />
+
+## Behaviour
+
+A dotted globe split by the terminator. The twilight band is drawn with an ordered dither, so day thins into night dot by dot, and city lights shine on the night side.
+
+Scrub up to 12 hours either way: as night reaches a city its lights switch on one after another with a small flash, and at dawn they go out. The UTC time and the offset roll as you drag.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number \| Date` | — | Instant shown, as epoch ms or a Date (controlled). Use with `onValueChange`. Set it back to `undefined` to return the globe to the clock. |
+| `defaultValue` | `number \| Date` | — | Instant shown first when uncontrolled. Without it the globe shows the current time after mount. |
+| `live` | `boolean` | `true` | Follows the clock (every 30 s) while uncontrolled and not scrubbed away from now. When false, the globe keeps the time it first read. |
+| `cities` | `readonly DaylightCity[]` | `DEMO_CITIES` | `{ id, name, lat, lon, weight }`. Weight 0 to 1 sets how many lights a city has (10 to 40) and how far they spread. Entries with invalid coordinates are skipped; an empty array shows no lights. |
+| `twilight` | `"civil" \| "nautical" \| "astronomical"` | `"nautical"` | How far into the night the dithered band reaches (−6°, −12° or −18° of sun elevation). |
+| `scrubRange` | `number` | `12` | Hours the slider reaches either side of now. Ticks mark every 3 hours, fewer on long ranges. |
+| `view` | `"terminator" \| "subsolar" \| LatLon` | `"terminator"` | Where the globe faces. `terminator` faces dusk, so day and night split the disc; `subsolar` faces the point under the sun. It turns there on a soft spring when this changes or Now is pressed, never while scrubbing. |
+| `showSun` | `boolean` | `true` | Marks the point where the sun is overhead with a small square and three dotted rays. |
+| `hour12` | `boolean` | `false` | 12-hour clock in the readout. |
+| `onValueChange` | `(value: number) => void` | — | Called while scrubbing and when Now is pressed, with the shown instant in epoch ms. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight (slider) | Move the shown time 15 minutes back or ahead. ArrowDown and ArrowUp do the same. |
+| Shift + Arrow (slider) | Move 1 hour. |
+| PageDown / PageUp (slider) | Move 3 hours. |
+| Home (slider) | Return to now and turn the globe back to its view, like the Now button. |
+| Arrow keys (globe) | Turn the globe 10° west, east, north or south. |
+| Enter / Space (Now) | Return to now. |
+
+## Accessibility
+
+- The time control is `role="slider"` with `aria-valuenow` in hours from now and `aria-valuetext` such as "14:30 UTC, 3 hours ahead".
+- The globe is a focusable `role="img"` whose `aria-label` names the cities in darkness, heaviest first: "Night in Tokyo, Sydney and 9 more". A hidden description explains dragging and the arrow keys.
+- Now is a native button.
+- The UTC time, the offset and the sun's position are real text; the canvases are `aria-hidden`.
+- Reduced motion: lights switch without the flash or the stagger, the drawn time, the slider thumb and view changes jump, and digits swap without rolling. The dither and the terminator still follow the shown time.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--card`, `--muted`, `--border`, `--lumesec`, `--lumesec-glint`, `--lumesec-shine` and `--lumesec-warning`.
+
+## Notes
+
+- The globe draws land dots only, from the embedded world data; there are no map tiles and no network requests.
+- Day and night come from the sun's position at the shown instant (about 0.5° accuracy). Land dots between the twilight limit and 3° of sun elevation are dithered with a 4×4 ordered pattern.
+- Each city's lights are scattered around it, seeded by its `id`, and drawn on the nearest land dots, so a city becomes a patch of lit dots that stays in place between renders. A dot switches on when the sun is 4° to 6° below the horizon.
+- When the shown time changes, the drawn time follows on a critically damped spring, so the terminator sweeps across the still globe and the lights switch on in the order night reaches them.
+- The time readout is UTC. The component never reads the viewer's time zone, language or location.
+- Before mount the globe shows a plain disc and the readout shows --:--, so server and client markup match.
+- Drag the globe to turn it; on touch only horizontal drags turn it, so vertical swipes scroll the page.
+
+<RelatedComponents tag="geo-daynight" />

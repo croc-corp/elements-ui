@@ -1,0 +1,89 @@
+---
+title: "Agent run"
+description: "Simulated agent run: steps show a spinning arc while running and a carved check when done, with elapsed time and tokens on top."
+tag: hf-run
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-run" />
+
+<Callout title="Demo data" type="warning">
+
+Step durations are random and the token count is generated; only the step labels, `label` and the failing step can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-run" />
+
+## Installation
+
+<Install tag="hf-run" />
+
+## Usage
+
+<Usage tag="hf-run" />
+
+## Behaviour
+
+Steps with a spinning arc while running, a check carved out of a disc when done, and light flowing down the connector into the next step. Header shows elapsed time and tokens.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `steps` | `steps` | `string` | `Plan the approach\|Read 14 files\|Edit src/auth.ts\|Run test suite\|Write summary` | Step labels separated by `\|`; empty labels are skipped. Re-read at the start of each run. |
+| `label` | `label` | `string` | `Agent run` | Title in the header. Read once on connect. |
+| `autoplay` | `autoplay` | `boolean` | `false` | Presence attribute. Starts a run 0.7 s after the element first connects. |
+| `fail` | `fail` | `number` | — | Zero-based index of the step that fails; the run stops there. Without the attribute every step succeeds. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `step` | `onStep` | `{ index: number, label: string, status: "running" \| "done" \| "fail" }` | Fires when a step starts and when it finishes. |
+| `done` | `onDone` | `{ ok: boolean, elapsed: number }` | Fires when the run ends. `ok` is `false` when a step failed; `elapsed` is in seconds. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `run(): Promise<void>` | Resets the list and plays the simulated run. Ignored while a run is in progress. Same as the Run button. |
+| `reset()` | Rebuilds the step list from `steps` and clears the header counters. Cancels a run in progress, which then fires no `done`. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `steps` (read-only) | `string[]` | Step labels parsed from the attribute. |
+
+## Accessibility
+
+- A visually hidden `aria-live="polite"` region announces each finished step, for example `Read 14 files: done in 1.2 seconds`, and the end of the run.
+- Status icons are drawn on an `aria-hidden` canvas; pending and failed steps are also shown by text colour.
+- The Run button is a native button, disabled while running and relabelled `Running…`, `Run again` or `Retry`.
+- Reduced motion: each simulated step lasts 0.15 s, the spinner, connector flow and label shimmer stand still, finished icons do not pop, and durations appear without rolling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--destructive`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-danger`, `--ui-fg`, `--ui-font`, `--ui-mono`, `--ui-muted` and `--ui-raised`.
+
+## Notes
+
+- Runs are simulated: each step lasts a random 0.6 to 1.7 s and the token count is generated. There is no API for reporting real progress.
+- `elapsed` in `done`, the final header time and the token count are derived from the clock when the run ends, so they are correct even if the element was off screen during the run.
+
+<RelatedComponents tag="hf-run" />

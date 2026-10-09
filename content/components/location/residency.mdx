@@ -1,0 +1,92 @@
+---
+title: "Data residency"
+description: "Where data is stored and processed, measured against a jurisdiction. Transfers that cross the zone's border flare there and turn into warning lines."
+tag: geo-residency
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-residency" />
+
+<Callout title="Your data">
+
+Pass your jurisdiction as `zone`, your sites as `sites` and the data moving between them as `transfers`. Without `sites` and `transfers` the component shows invented demo data: the zone Germany, five sites (Frankfurt, Berlin, Hamburg, Dublin and a us-east region) and three transfers. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-residency" />
+
+## Installation
+
+<Install tag="geo-residency" />
+
+## Usage
+
+<Usage tag="geo-residency" />
+
+## Behaviour
+
+Where data is stored and processed, measured against a jurisdiction. The zone's land is lit, sites are marked inside or outside it, and transfers between sites are drawn as lines with data moving along them.
+
+Transfers that stay inside the zone run quietly. When data on a transfer crosses the zone's border, the crossing point flares and the part outside turns into a dashed warning line; a chip counts the transfers that leave the zone.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `zone` | `ResidencyZone` | `Germany (demo)` | The jurisdiction: `{ label, countries?, polygon? }` with ISO 3166-1 alpha-2 codes and/or a lat/lon polygon of at least three points (their union). A zone with neither treats every site as outside and says "No zone defined". The demo zone applies only while `sites` and `transfers` are both unset; with your own sites or transfers and no `zone`, no zone is defined. |
+| `sites` | `readonly ResidencySite[]` | `5 demo sites` | Where data is stored and processed: `{ id, label, lat, lon, role }` with role `storage`, `processing` or `backup`. Entries with a repeated id or an invalid position are skipped with a development warning. An empty array shows "No sites". |
+| `transfers` | `readonly ResidencyTransfer[]` | `3 demo transfers` | Data moving between sites: `{ id, from, to, volume? }` with site ids; `volume` from 0 to 1 (default 0.5) sets the packet rate. Transfers that name an unknown site, or the same site twice, are skipped with a development warning. |
+| `value` | `string \| null` | — | Selected site id (controlled). Use with `onValueChange`. |
+| `defaultValue` | `string \| null` | `null` | Selected site when uncontrolled. |
+| `onValueChange` | `(value: string \| null) => void` | — | Called when a site is selected, or with null when the selection is cleared. |
+| `focus` | `"zone" \| "world"` | `"zone"` | `zone` fits the map around the zone; `world` shows the whole world in Equal Earth, centred on the zone. |
+| `onViolation` | `(transfers: readonly ResidencyTransfer[]) => void` | — | Called after mount with the transfers that leave the zone, and again whenever that set changes. It follows the data at once, without waiting for the animation. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves to the sites, which share one tab stop: the site focused last, else the selected one or the first. |
+| ArrowLeft / ArrowRight / ArrowUp / ArrowDown | Moves focus to the nearest site in that direction on the map, including the chips of sites pinned to the edge. |
+| Enter / Space | Selects the focused site, or clears the selection when it is already selected. |
+| Escape | Clears the selection. |
+
+## Accessibility
+
+- The root is a group labelled "Data residency". The sites are native buttons in a group labelled "Sites", with one roving tab stop and `aria-pressed` for the selection.
+- Each site button is named by its label, role and place, for example "Dublin, processing, outside Germany"; a site pinned to the map's edge adds "off the map".
+- The status chip is a polite live region (`role="status"`, `aria-atomic="true"`), so a change such as "2 transfers leave Germany" is announced.
+- Every transfer is listed with its status in a visually hidden list labelled "Transfers", for example "Berlin to Dublin: leaves Germany" or "Frankfurt to Berlin: stays in Germany".
+- The canvases, the gate marks, the site names on the map and the legend are `aria-hidden`; the buttons and the list carry the same information.
+- Reduced motion: there are no packets, flares, sparks or twinkle, and transfers appear and disappear without growing. Crossings show static gate marks, and the status chip changes at once, without the pop or the rolling count.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-warning`, `--lumesec-success`, `--foreground`, `--muted-foreground`, `--muted`, `--card` and `--border`.
+
+## Notes
+
+- A site is in the zone when the zone contains it: inside one of the zone's countries (simplified outlines embedded in the library) or inside `polygon`. Country names are never shown; the zone's label is the only name.
+- Each transfer is a curve between its two sites, sampled at 65 points that are tested against the zone; every change between two samples is bisected eight times to find the crossing. A transfer leaves the zone when any part of its line lies outside it: from a site in the zone to one outside, from outside into the zone, between two sites in the zone but outside it on the way, or between two sites outside it. The chip and `onViolation` count all of these. A transfer between two sites outside the zone is drawn as a warning line without crossings or flares.
+- With `focus="zone"` the map is an equirectangular crop around the zone's countries and polygon, with an 18 % margin, at least 40 degrees of longitude wide and widened to the map's 2:1 box. Without a zone it fits the sites. Sites outside the map become chips on the nearest edge with an arrow toward them, and their transfers run to the chip. A transfer between two sites off the map is listed and counted but not drawn.
+- Lines are dotted every 3.5 px: quiet ink inside the zone and a dashed warning line (two dots on, two off) outside it, with a gate mark of two short ticks across the line at each crossing. Packets leave at 0.4 + 1.6 × `volume` per second and travel at 70 px/s. A packet that passes a crossing lights the dots around it in an uneven warning ring for 0.6 s and pulses the gate mark, at most once per crossing every 1.2 s, and keeps the warning colour for the rest of its way. Packets that start outside the zone carry it from the start.
+- A new transfer grows out of its sending site behind an uneven front. When the front breaks out of the zone the border flares wider, sparks fly along the line and the gate mark pops in; the status chip changes at that moment, popping and rolling its count. A removed transfer retracts into its site, and the chip follows once its part outside the zone is gone. The hidden list and `onViolation` follow the data at once.
+- The zone's land dots are lit in the accent colour at 0.32 with a slow twinkle, the only motion at rest apart from the packets, and the zone is outlined with a 0.5 px accent hairline. Land outside the zone stays in the quiet base grey.
+- Selecting a site draws its transfers at full strength and dims the others to 0.3. Clicking the selected site again, clicking the empty map or pressing Escape clears the selection.
+- Site markers, chips and gate marks render on the server in their final positions; the dots draw after mount.
+
+<RelatedComponents tag="geo-residency" />

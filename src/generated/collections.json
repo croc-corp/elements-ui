@@ -1,0 +1,84 @@
+[
+  {
+    "slug": "interaction",
+    "title": "Interaction",
+    "prefix": "ui-",
+    "summary": "Micro-interactions on everyday controls: send buttons, toggles, dials, meters.",
+    "description": "Ordinary controls with one considered motion each. The effect switches on for the state that matters and stays out of the way for the rest.",
+    "count": 11,
+    "kind": "react",
+    "groups": [
+      "Controls",
+      "Feedback",
+      "Data"
+    ],
+    "updated": "2026-09-25"
+  },
+  {
+    "slug": "pixel-lab",
+    "title": "Pixel Lab",
+    "prefix": "px-",
+    "summary": "Components that live in a pixel lattice: meters, gauges, orbs, radars, AI moments.",
+    "description": "The visual is the data. Meters, gauges, clocks and model moments drawn on a 4 px lattice, with shine near the active edge.",
+    "count": 50,
+    "kind": "element",
+    "groups": [
+      "Model & agent",
+      "Data, in pixels",
+      "Moments",
+      "Controls you can feel"
+    ],
+    "updated": "2026-09-27"
+  },
+  {
+    "slug": "pixel-ui",
+    "title": "Pixel UI",
+    "prefix": "px-",
+    "summary": "Form controls you can ship, each with one pixel detail.",
+    "description": "Text fields, selects, date pickers, toasts, tabs and charts as React components on your Tailwind theme. They submit with native forms and are keyboard complete, with a single pixel detail each.",
+    "count": 30,
+    "kind": "react",
+    "groups": [
+      "Forms",
+      "Actions & feedback",
+      "Navigation & data"
+    ],
+    "updated": "2026-09-28"
+  },
+  {
+    "slug": "pixel-hd",
+    "title": "Pixel HD",
+    "prefix": "hf-",
+    "summary": "Regular controls on a high-fidelity dot field with bloom and ordered dither.",
+    "description": "A fine dot grid with bloom and ordered dither behind regular controls. Numerals and labels are real text; the field reacts around them.",
+    "count": 60,
+    "kind": "element",
+    "groups": [
+      "Controls",
+      "Feedback",
+      "Ultracode",
+      "Data",
+      "Surfaces",
+      "Inputs",
+      "Agent"
+    ],
+    "updated": "2026-09-30"
+  },
+  {
+    "slug": "location",
+    "title": "Location",
+    "prefix": "geo-",
+    "summary": "Globes, maps and connection lines for locations, visitors, sign-ins, latency and traffic between regions.",
+    "description": "Where things happen and how they connect: dot globes, partial globes and flat maps drawn from an embedded world dataset, with no map tiles. The dots carry the motion; every label and number stays real text.",
+    "count": 30,
+    "kind": "react",
+    "groups": [
+      "Globes",
+      "Maps & traffic",
+      "Network & latency",
+      "Access & security",
+      "Inputs & time"
+    ],
+    "updated": "2026-10-03"
+  }
+]

@@ -1,0 +1,71 @@
+---
+title: "Uptime"
+description: "Uptime chart of daily bars coloured by incidents, with today pulsing; hover or use the arrow keys to read a day's figures."
+tag: hf-status
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-status" />
+
+<Callout title="Demo data" type="warning">
+
+Daily status and uptime are generated from a hash of `name`; only `incidents` and `state` override them. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-status" />
+
+## Installation
+
+<Install tag="hf-status" />
+
+## Usage
+
+<Usage tag="hf-status" />
+
+## Behaviour
+
+Daily bars that rise in from the left, coloured by incidents, with today pulsing. Hover or use the arrow keys for the day’s numbers; the number of days adapts to the width.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `name` | `name` | `string` | `API` | Service name in the header. Also seeds the generated history. |
+| `incidents` | `incidents` | `string` | — | Comma-separated `daysAgo:kind` entries that force a day's status. `kind` is `down` for a partial outage; any other value means degraded. `0` is today. |
+| `state` | `state` | `operational \| degraded \| outage` | — | Overrides the status pill. Defaults to today's status. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight | Select the previous or next day, starting from today. |
+| Home / End | Select the first or last day. |
+
+## Accessibility
+
+- The canvas has `role="img"`, `tabindex="0"` and an `aria-label` with the average uptime, the number of days with incidents and a hint to use the arrow keys.
+- The day tooltip has `role="status"`, so the selected date and figures are announced.
+- Leaving the canvas or moving focus away clears the selection.
+- Reduced motion: the bars appear without rising in, today's bar does not pulse and the status dot ping is off.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--foreground`, `--lumesec`, `--lumesec-success`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-ok` and `--ui-raised`.
+
+## Notes
+
+- History is generated demo data: each day's status and uptime come from a hash of `name`. Only `incidents` and `state` override it; there is no attribute for real data.
+- The day count adapts to the width: one bar per 6px, between 20 and 90 days. All three attributes are observed; a change rebuilds the history and refreshes an open tooltip.
+
+<RelatedComponents tag="hf-status" />

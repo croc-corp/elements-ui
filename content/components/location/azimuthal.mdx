@@ -1,0 +1,96 @@
+---
+title: "Distance from here"
+description: "A round map with one place at the centre and every other place at its true distance and direction. Re-centring grows the map outward."
+tag: geo-azimuthal
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-azimuthal" />
+
+<Callout title="Your data">
+
+Pass your places as `places`. Without it the component shows 15 demo cities, centred on London. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-azimuthal" />
+
+## Installation
+
+<Install tag="geo-azimuthal" />
+
+## Usage
+
+<Usage tag="geo-azimuthal" />
+
+## Behaviour
+
+A round map that puts one place at the centre and every other place at its true distance and direction from it. Dotted rings mark every 2,000 km, or every 50 ms of round-trip time, and the outer edge is the point on the other side of the world.
+
+Pick another place and the map re-centres there: every dot moves to its new position, starting with those nearest the new centre, so the map grows outward from it. The distances in the list roll to their new values.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `center` | `string \| LatLon` | — | The centre (controlled): a place id, or any `{ lat, lon }` point. A point at a place's exact coordinates centres on that place; any other point shows as an unlabelled crosshair. Use with `onCenterChange`. |
+| `defaultCenter` | `string \| LatLon` | `"lhr"` | The centre when uncontrolled. An id that is not in `places` falls back to the first place, and to 0° N, 0° E when there are none. |
+| `onCenterChange` | `(center: string \| LatLon) => void` | — | Called when the user picks a new centre: the place id for a place, a `{ lat, lon }` point for a click on the map away from the places. |
+| `places` | `readonly AzimuthalPlace[]` | `15 demo cities` | The places to measure: `{ id, label, lat, lon }`. Ids must be unique; a repeated id keeps its first place. An empty array shows the land and the rings, with `emptyText` in the list. |
+| `rings` | `"distance" \| "latency"` | — | What the rings and the list measure (controlled): great-circle distance, or the round trip in fibre. Use with `onRingsChange`. |
+| `defaultRings` | `"distance" \| "latency"` | `"distance"` | What the rings and the list measure when uncontrolled. |
+| `onRingsChange` | `(rings: "distance" \| "latency") => void` | — | Called when the user switches between Distance and Latency. |
+| `ringStep` | `number` | `2000 km, 1000 mi or 50 ms` | Spacing of the rings in the unit shown: km or mi for distance, ms of round trip for latency. |
+| `unit` | `"km" \| "mi"` | `"km"` | Distance unit of the rings and the list. |
+| `stretch` | `number` | `1.5` | How much longer the fibre path is than the great circle. The round trip is `2 × distance ÷ 204 km/ms × stretch`. |
+| `label` | `string` | `"Distance from the centre"` | Accessible name of the map. The map's `aria-label` adds the centre and the ring step. |
+| `emptyText` | `string` | `"No places"` | Text shown in the list when `places` is an empty array. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves focus to the places on the map, then to the Distance / Latency switch. The places share one tab stop: the last one focused, else the centre. |
+| ArrowLeft / ArrowRight / ArrowUp / ArrowDown | On a place: move focus to the nearest place in that direction on the map. On the switch: select the other option. |
+| Home / End | Move focus to the centre / the farthest place. |
+| Enter / Space | Re-centre the map on the focused place. |
+
+## Accessibility
+
+- The map has `role="group"`, `aria-roledescription="map"` and an `aria-label` made of `label`, the centre and the ring step, for example "Distance from the centre: London. Rings every 2,000 km."
+- Each place is a native `<button>` with an `aria-label` of its name and distance; the centre has `aria-pressed="true"`.
+- The Distance / Latency switch is a `radiogroup` of two `radio` buttons with a roving tab stop.
+- The heading above the list is a polite live region, so a new centre is announced.
+- The list is an ordered list of real text, sorted by distance. Its values stay text while they roll; outgoing values are hidden from assistive technology. A click on a row re-centres the map too; from the keyboard, places are picked on the map.
+- The canvases, the ring labels and the place labels on the map are `aria-hidden`; the buttons and the list carry the same information.
+- Reduced motion: the land appears at once, re-centring jumps without the staggered move, the ping, the sparks or the ring draw-on, the route of a pointed place appears without growing, list rows move to their new order at once, and values change without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-soft`, `--lumesec-glint`, `--foreground`, `--muted-foreground`, `--muted`, `--card` and `--border`.
+
+## Notes
+
+- The projection is azimuthal equidistant: the distance from the centre is the true great-circle distance, the direction is the initial bearing with north up, and the rim is the antipode. Land on the far side spreads along the rim, as it does on every map of this kind.
+- Latency is an estimate, not a measurement: the round trip in fibre at 204 km per ms, over a path `stretch` times the great-circle distance. Pass real measurements to your own list if you have them.
+- Pointing at a place draws its great-circle route, which is a straight line on this map, and the circle of everything just as far from the centre.
+- A click on the map away from the places re-centres it on that point, shown as an unlabelled crosshair, and calls `onCenterChange` with `{ lat, lon }` rounded to 4 decimals. Keyboard users re-centre on places; `center` takes any point.
+- The root is at most 660 px wide; pass a `max-w-*` class to change that. From 560 px wide the list sits beside the map; below that it sits underneath, in two columns from 400 px.
+- Place labels place themselves around their points and stay clear of the ring labels and of each other. A label that has no room stays hidden until its place is pointed at.
+- The animation runs only while something moves and pauses off screen.
+
+<RelatedComponents tag="geo-azimuthal" />

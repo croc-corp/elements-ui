@@ -1,0 +1,29 @@
+{
+  "summary": "Paragraph with numbered citations; hovering or focusing one draws a dotted beam to its source chip and loads a preview card.",
+  "attributes": [],
+  "events": [
+    { "name": "open", "detail": "{ source: { t: string, d: string, s: string } }", "description": "Fires when a citation or source chip is clicked. `t` is the title, `d` the domain and `s` the snippet." }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "Citations are buttons with an `aria-label` such as `Source 1: <title>`.",
+    "Source chips are buttons in a list labelled `Sources`, each named like `Source 1: docs.example.com`. They fire `open` and do not navigate.",
+    "Focusing a citation or chip with Tab selects it, the same as hovering.",
+    "The preview card is an `aria-live=\"polite\"` region.",
+    "Favicon letters are `aria-hidden` text; their tiles, the beam and the loading skeleton are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion, the preview fills in without the skeleton delay, the beam is drawn whole without packets, and drawing stops between interactions.",
+  "slots": [],
+  "notes": [
+    "The paragraph, three citations and three sources are built-in demo content and cannot be configured.",
+    "Chips do not open URLs; handle `open` to navigate.",
+    "Favicons are the first letter of the domain, set as text on a dotted tile in a colour derived from the domain.",
+    "Without reduced motion, the packets keep the canvas redrawing every frame while the element is visible."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The paragraph, citations and sources are invented; nothing can be set."
+  }
+}

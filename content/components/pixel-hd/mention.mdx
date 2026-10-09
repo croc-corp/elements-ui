@@ -1,0 +1,95 @@
+---
+title: "@mention field"
+description: "Textarea with @mention suggestions for files, people and agents; matched letters are marked and inserted mentions become dotted chips."
+tag: hf-mention
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-mention" />
+
+<Callout title="Demo data" type="warning">
+
+The six suggestions (files, people and an agent) are invented; only `label`, `placeholder` and `value` can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-mention" />
+
+## Installation
+
+<Install tag="hf-mention" />
+
+## Usage
+
+<Usage tag="hf-mention" />
+
+## Behaviour
+
+Type @ for files, people and agents. Suggestions filter as you type with matched letters marked; inserted mentions become dotted chips that flash in.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `Message` | Visible label of the textarea, associated with it through `<label for>`. Observed. |
+| `placeholder` | `placeholder` | `string` | `Type @ to mention a file, person or agent` | Placeholder for the empty textarea. Observed. |
+| `value` | `value` | `string` | `Can @grace look at @src/auth/session.ts before we ship?` | Initial text. Read once on connect; omitting it or leaving it empty loads the demo sentence. Form reset restores it. |
+| `name` | `name` | `string` | — | Form field name used when the element is inside a form. |
+| `disabled` | `disabled` | `boolean` | `false` | Presence attribute. Disables the textarea; a disabled ancestor `<fieldset>` does the same. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `input` | `onInput` | `{ value: string }` | Fires on each edit and after a mention is inserted, with the full text. |
+| `mention` | `onMention` | `{ value: string }` | Fires when a suggestion is inserted. `value` is the mention without the `@`, for example `src/auth/session.ts`. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `string` | The textarea text. Setting it replaces the text and updates the chips and form value without firing events. |
+| `form` (read-only) | `HTMLFormElement \| null` | The owning form, from `ElementInternals`. |
+| `name` (read-only) | `string \| null` | The `name` attribute. There is no setter; set the attribute instead. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowDown / ArrowUp | While suggestions are open: move the highlight, wrapping. |
+| Enter / Tab | While suggestions are open: insert the highlighted mention. |
+| Escape | While suggestions are open: close the list. |
+
+## Accessibility
+
+- The textarea is named by the visible label and described by the hint line. It has `aria-autocomplete="list"`, `aria-haspopup="listbox"` and `aria-controls` pointing at the suggestion list.
+- Suggestions use `role="listbox"` and `role="option"`. Focus stays in the textarea; while the list is open, `aria-activedescendant` points at the highlighted option, which also carries `aria-selected`.
+- Chips and suggestion icons are drawn on an `aria-hidden` canvas.
+- Form-associated through `ElementInternals`.
+- Submits the full text under `name`. There is no validation. Form reset restores the text from the first connect; `disabled` or a disabled fieldset disables the textarea.
+- Reduced motion: the highlight jumps between suggestions instead of springing and the hint line changes without rolling; the flash on an inserted chip still plays.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-font`, `--ui-mono`, `--ui-muted` and `--ui-surface`.
+
+## Notes
+
+- Suggestions come from a built-in list of six demo entries (three files, two people and one reviewer agent) and cannot be configured. Up to five matches show; the query matches the name or the description.
+- The list opens after an `@` at the start of the text or after whitespace, followed by letters, digits, `.`, `/`, `_` or `-`.
+- Only mentions from the built-in list are drawn as chips. The textarea grows with its content from a minimum of 92px.
+- The inner textarea's native `input` events stay inside the shadow root, so `input` listeners on the host receive one event per keystroke, the element's own, with `detail.value`.
+
+<RelatedComponents tag="hf-mention" />

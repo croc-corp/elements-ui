@@ -1,0 +1,105 @@
+---
+title: "Connection globe"
+description: "A dotted globe with connections as dotted arcs. Each landing lights the land around the destination in an uneven ring and throws sparks past the edge."
+tag: geo-globe
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-globe" />
+
+<Callout title="Your data">
+
+Pass your places as `locations` and your connections as `connections`, or call `push()` on the ref for a live feed. Without `connections` the globe plays a seeded demo stream between 12 demo regions. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-globe" />
+
+## Installation
+
+<Install tag="geo-globe" />
+
+## Usage
+
+<Usage tag="geo-globe" />
+
+## Behaviour
+
+A dotted globe of the land masses with a hairline coastline. Each connection is a dotted arc that rises higher the farther it travels, with a packet at its head. When the packet lands, the land dots around the destination light up in an uneven ring and a few sparks fly off past the edge of the globe.
+
+Drag to turn the globe; it coasts and settles. Locations are buttons over the canvas: Tab and the arrow keys move between them, focusing one turns the globe toward it, and selecting one keeps only its connections lit. Pass `connections` for your own data, or call `push()` on the ref for a live feed.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `locations` | `readonly GlobeLocation[]` | `12 demo regions` | Points on the globe: `{ id, label, lat, lon }`. Connections refer to them by `id`. Entries with an invalid latitude or longitude, or a repeated id, are skipped. An empty array shows the bare globe. |
+| `connections` | `readonly GlobeConnection[]` | — | Connections to play: `{ id, from, to, tone? }` with location ids; `tone` is `accent`, `info`, `success`, `warning` or `destructive`. Each new `id` plays once, so the array can grow or be replaced. Without it a seeded demo stream runs; pass an empty array to play only what you `push()`. |
+| `value` | `string \| null` | — | Selected location id (controlled). Use with `onValueChange`. A new value turns the globe toward that location. |
+| `defaultValue` | `string \| null` | `null` | Selected location when uncontrolled. |
+| `onValueChange` | `(value: string \| null) => void` | — | Called when a location is selected or the selection is cleared (Escape, the same location again, or a tap on the globe). |
+| `defaultCenter` | `LatLon` | `{ lat: 24, lon: 12 }` | Where the globe faces on mount and where Home returns to. The latitude is limited to ±35°. |
+| `autoRotate` | `boolean` | `false` | Turns the globe slowly while idle (6° per second), resuming 2.5 s after the last drag or key press. Off with reduced motion. |
+| `density` | `"fine" \| "regular" \| "coarse"` | `"regular"` | Land dot pitch at the centre of the globe: 3, 4 or 5 px. |
+| `coastline` | `boolean` | `true` | Draws the hairline coastline. |
+| `maxArcs` | `number` | `24` | Arcs in flight at once. Further connections only add to the counts. |
+| `onArrive` | `(connection: GlobeConnection) => void` | — | Called when a connection's packet lands. Connections beyond `maxArcs` call it at once. |
+| `label` | `string` | `"Connections between locations"` | Accessible name of the globe. The number of locations is appended. |
+| `ref` | `React.Ref<GeoGlobeHandle>` | — | Exposes `push()` and `flyTo()`. |
+
+### Ref
+
+`ref` receives a `GeoGlobeHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `push(connection: GlobeConnection): void` | Plays one connection, with or without `connections`. An id that has already played is ignored. Several pushes in one handler leave as a staggered volley. |
+| `flyTo(target: string \| LatLon): void` | Turns the globe toward a location id or a point. The zoom stays. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Arrow keys | On the globe: turn it 10° (30° with Shift). On a location: move to the nearest location in that direction, which turns the globe toward it. |
+| + / - | Zoom in or out, between 0.8 and 1.6. |
+| Home | Return to `defaultCenter` at zoom 1. |
+| Tab | Moves from the globe to the locations, which share one tab stop, and on. |
+| Enter / Space | On a location: select it, or clear the selection when it is already selected. |
+| Escape | Clear the selection. |
+
+## Accessibility
+
+- The globe surface is a focusable element with `role="group"`, `aria-roledescription="globe"` and an `aria-label` made of `label` and the number of locations. A visually hidden description lists the keys.
+- Each location is a native button with `aria-pressed` and an accessible name with its label and counts, for example "eu-central, 12 in, 9 out". The buttons form one roving tab stop.
+- Locations on the far side of the globe are hidden visually but stay focusable; focusing one turns the globe toward it.
+- A polite live region reports arrivals at most every 10 seconds, for example "8 connections in the last 10 seconds, most into eu-central".
+- The chip beside the hovered, focused or selected location is `aria-hidden`; its content is in the button's name. Both canvases and the placeholder are `aria-hidden`.
+- The globe shows a focus ring around its disc; locations show their own ring.
+- Reduced motion: the globe jumps to a new view without fly-to, inertia or idle spin; arcs appear complete as static dotted lines for 2 s without a packet; arrivals show the glow at the destination without the ring of lit dots, the sparks or the marker pop; and the counts swap without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--lumesec-shine`, `--lumesec-info`, `--lumesec-success`, `--lumesec-warning`, `--destructive`, `--foreground`, `--muted-foreground`, `--card` and `--border`.
+
+## Notes
+
+- Drag with a mouse or pen turns the globe and it coasts after release. On touch only horizontal drags turn it, so vertical swipes still scroll the page. Ctrl or Meta with the wheel (or a trackpad pinch) zooms; a plain wheel scrolls the page.
+- Arcs rise higher the farther they travel and take longer to draw: 0.7 s plus up to 0.9 s for the far side of the world. Each arc draws from its origin, rests for 0.5 s, then erases from its origin.
+- Selecting a location keeps its own arcs at full strength and dims the others to 15% without their packets. A chip beside the location shows its label and its in and out counts.
+- Counts are per location: out when a connection leaves, in when it lands. A marker takes the tone of its latest connection.
+- Connection ids are remembered (the last 2,000), so a re-render with the same array never replays them. Connections that refer to an unknown location are skipped with one development warning.
+- The stage is square below 480 px of width and 16:11 above. The arcs and sparks draw on a canvas that reaches 40 px above and below it.
+- The server markup shows the disc with a 30° graticule and the location buttons in their starting positions; it fades to the dotted globe after the first frame. The animation loop pauses while the globe is off screen and stops when nothing moves.
+- Demo regions and the demo stream are invented traffic between real coordinates. Singapore lies in a water cell of the land mask, so no land dots light up right at that marker.
+
+<RelatedComponents tag="geo-globe" />

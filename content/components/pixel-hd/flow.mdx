@@ -1,0 +1,62 @@
+---
+title: "Flow"
+description: "Sankey from Chat, Code and API to three models, with particles streaming in proportion to traffic; hovering a band isolates it."
+tag: hf-flow
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-flow" />
+
+<Callout title="Demo data" type="warning">
+
+The sources, models and 100k request split are invented; only `label` can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-flow" />
+
+## Installation
+
+<Install tag="hf-flow" />
+
+## Usage
+
+<Usage tag="hf-flow" />
+
+## Behaviour
+
+A sankey from surfaces to models, with particles streaming along each band in proportion to its traffic. Hover a band to isolate it.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `Where requests go` | Heading text. Observed. |
+
+## Accessibility
+
+- The canvas has `role="img"` with an `aria-label` that lists every flow, for example `Chat: 12k to Large, 26k to Medium, 8k to Small`.
+- Node names and totals are text beside the chart.
+- The band tooltip appears on hover only.
+- Reduced motion: bands appear at once without growing in, no particles stream and drawing stops.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-muted` and `--ui-raised`.
+
+## Notes
+
+- Data is built in: three sources, three models and 100k requests in total. It cannot be configured.
+- The chart is 220px tall and fills the width between the two label columns.
+
+<RelatedComponents tag="hf-flow" />

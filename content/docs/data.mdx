@@ -1,0 +1,47 @@
+---
+title: Your data
+description: Which components take your records through a data input, and which only show demo data and are templates.
+updated: "2026-10-09"
+---
+
+Every component runs on its own, so the ones that display records (series, rows, certificates, rules) come with demo data. The demo data is invented. It is there so a preview works, never to be shown to your users.
+
+Each component page says, right under the preview, which kind it is:
+
+- **Your data**: the component takes your records or values, through `data` or the attributes its note names. It shows demo data only until you pass them, and with your data nothing invented is mixed in: no generated values, no simulated live updates.
+- **Demo data**: the component cannot show your own data yet. Some of them take a label or a single value, but the records they show are invented. Use them as templates: the source is yours, so replace the invented data before it shows anything real.
+
+Components without a note display no data of their own, such as buttons, sliders and inputs.
+
+## Passing data
+
+Components with records to show take them as `data`, a property and an attribute. As a property it takes the records directly; as an attribute it takes the same records as JSON. The React wrappers accept arrays and objects and write the JSON for you.
+
+```tsx title="React"
+import { HfArea } from "@/components/lumesec/hf-area";
+
+export function TokenUsage({ days }: { days: { date: string; value: number }[] }) {
+  return <HfArea label="Tokens per day" data={days} />;
+}
+```
+
+```html title="HTML"
+<hf-area id="usage" label="Tokens per day"></hf-area>
+
+<script type="module">
+  const res = await fetch("/api/usage");
+  document.getElementById("usage").data = await res.json();
+</script>
+```
+
+`data` is observed: set it again and the component updates, animating where it can. Invalid entries are skipped, invalid JSON logs a warning, and an empty array shows an empty state rather than demo data. Each component page lists the exact record type under Attributes and Properties, and some add methods such as `push()` for live feeds.
+
+The native React components (Location and some Pixel UI components) take your records through typed props instead, such as `region` and `latency` on the region badge. Each component page names them.
+
+## Components that take your data
+
+<DataList kind="input" />
+
+## Components with demo data only
+
+<DataList kind="demo" />

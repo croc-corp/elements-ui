@@ -1,0 +1,58 @@
+{
+  "kind": "react",
+  "summary": "A pill with a tiny dotted globe, a region name and its latency. On a region change the globe turns to it and a ring pings across its dots.",
+  "props": [
+    { "name": "region", "type": "string | GeoRegion", "default": "\"eu-central\"", "description": "Region id looked up in `regions`, or a region object `{ id, label, city, lat, lon, timeZone }`. An id that is not in `regions` shows the raw id and leaves the globe where it is, without a marker." },
+    { "name": "regions", "type": "readonly GeoRegion[]", "default": "DEMO_REGIONS", "description": "Lookup list for string ids. The default is 16 generic regions (`us-east`, `eu-central`, `ap-northeast` and others) at real metro coordinates." },
+    { "name": "latency", "type": "number", "default": "-", "description": "Round trip in milliseconds, shown after the name as `18 ms` (from 1,000 ms in seconds, `1.24 s`). Each digit rolls toward a new value. Omit to hide it." },
+    { "name": "status", "type": "\"operational\" | \"degraded\" | \"outage\"", "default": "-", "description": "Adds a status dot: `--lumesec-success`, `--lumesec-warning` or `--destructive`. Degraded and outage get a soft halo; a change pops the dot and sends one ripple out." },
+    { "name": "size", "type": "\"sm\" | \"md\"", "default": "\"md\"", "description": "`md` is 30 px tall with a 24 px globe and 12.5 px text, `sm` is 26 px tall with a 20 px globe and 12 px text." },
+    { "name": "label", "type": "string", "default": "-", "description": "Text shown instead of the region's label. The globe still follows `region`." },
+    { "name": "onClick", "type": "(event: React.MouseEvent<HTMLButtonElement>) => void", "default": "-", "description": "Renders the badge as a native `button type=\"button\"` with a hover border and a focus ring, and calls this on click." },
+    { "name": "ref", "type": "React.Ref<HTMLElement>", "default": "-", "description": "The root element: a `span`, or a `button` when `onClick` is set." }
+  ],
+  "extends": "span",
+  "ref": { "type": "HTMLElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "The visible label, latency and dots are `aria-hidden`; a visually hidden text gives the full reading, for example \"Region eu-central, Frankfurt, 18 milliseconds, operational\". The city is left out when it equals the label. `aria-label` replaces that text rather than labelling the root, since screen readers ignore a label on a plain `span`.",
+    "With `onClick` the root is a native `button`, so Tab, Enter and Space work as usual and that text is its accessible name.",
+    "Changes are not announced: there is no live region. The canvases are `aria-hidden`."
+  ],
+  "motion": "With reduced motion the globe jumps to the new region, there is no ping, spark or border pop, the status dot does not pop, and the label and digits swap without rolling.",
+  "notes": [
+    "The globe is a lattice of 480 dots on the sphere (360 at `sm`), land and water, from the embedded world data with no map tiles. Badges of one size share one lattice. The server renders the disc outline; the dots appear after mount.",
+    "The globe turns the short way round on a slightly under-damped spring and its centre latitude is held within ±50°, so polar regions do not tip it over. The ping fires once the turn has settled: two rings travel out from the region, and where the first leaves the globe it throws a few sparks past the edge of the pill.",
+    "At rest nothing moves, and the animation loop stops. It also pauses while the badge is off screen.",
+    "The label rolls up for an eastward turn and down for a westward one while its slot eases to the new width, so the pill stays snug and never jumps. The digits roll up when the latency rises and down when it falls; a digit added or removed on the left grows or shrinks its column.",
+    "The visually hidden text is English (\"Region\", \"milliseconds\"). Pass `aria-label` with your own text for another language."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your region as `region` (an id from your `regions` or a region object) and your measured round trip as `latency`. Without them the badge shows the built-in region `eu-central` and no latency."
+  },
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--lumesec-shine",
+    "--lumesec-success",
+    "--lumesec-warning",
+    "--destructive",
+    "--foreground",
+    "--muted-foreground",
+    "--muted",
+    "--card",
+    "--border"
+  ],
+  "usage": "import { GeoBadge } from \"@/components/lumesec/geo-badge\";\n\nexport function Example() {\n  return <GeoBadge region=\"eu-central\" latency={18} status=\"operational\" />;\n}\n",
+  "playground": {
+    "props": { "region": "eu-central", "latency": 18, "status": "operational" },
+    "controls": [
+      { "name": "region", "kind": "enum", "options": ["eu-central", "us-east", "us-west", "sa-east", "eu-west", "eu-north", "me-central", "af-south", "ap-south", "ap-southeast", "ap-northeast", "au-east"], "default": "eu-central" },
+      { "name": "latency", "kind": "number", "options": null, "default": "18" },
+      { "name": "status", "kind": "enum", "options": ["operational", "degraded", "outage"], "default": "operational" },
+      { "name": "size", "kind": "enum", "options": ["sm", "md"], "default": "md" }
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+---
+title: "Slider"
+description: "Form slider with a pixel track, a springy thumb, optional tick marks and a rolling value label with a prefix or unit."
+tag: px-slider
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-slider" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-slider" />
+
+## Installation
+
+<Install tag="px-slider" />
+
+## Usage
+
+<Usage tag="px-slider" />
+
+## Behaviour
+
+A general slider with a pixel track, a springy thumb, optional tick marks and a rolling value with prefix or unit.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number` | — | Controlled value. Use with `onValueChange`. Snapped to `step` and clamped to `min`..`max` for display. |
+| `defaultValue` | `number` | `min` | Initial value when uncontrolled. A form reset restores it. |
+| `min` | `number` | `0` | Lowest value. |
+| `max` | `number` | `100` | Highest value. |
+| `step` | `number` | `1` | Increment, greater than 0 (other values fall back to 1). Its decimal places set the display precision. |
+| `ticks` | `boolean` | `false` | Draws a tick per step when there are 24 steps or fewer. |
+| `prefix` | `string` | `""` | Text before the formatted value, for example `€`. |
+| `unit` | `string` | `""` | Text after the formatted value, for example `%`. |
+| `label` | `React.ReactNode` | — | Label above the track; also labels the thumb. |
+| `aria-label` | `string` | — | Accessible name of the thumb when there is no visible `label`. |
+| `name` | `string` | — | Form field name; the value submits under it as a string. |
+| `disabled` | `boolean` | `false` | Dims the slider, ignores pointer and keyboard input and removes the thumb from the tab order. |
+| `onValueChange` | `(value: number) => void` | — | Called on every value change from dragging or keys. |
+| `onValueCommit` | `(value: number) => void` | — | Called after each handled key press and when a drag ends, even if the value did not change. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowUp | Increase by one step. |
+| ArrowLeft / ArrowDown | Decrease by one step. |
+| PageUp / PageDown | Change by a tenth of the range (at least one step), snapped to `step`. |
+| Home / End | Jump to `min` / `max`. |
+
+## Accessibility
+
+- The thumb has `role="slider"`, `tabindex="0"`, `aria-labelledby` pointing at the label (or the `aria-label` prop when there is no `label`), `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and an `aria-valuetext` with the formatted value, including prefix and unit.
+- Pressing anywhere on the track moves focus to the thumb.
+- The track canvas is `aria-hidden`.
+- With `name`, a hidden input submits the value as a string. There is no validation. Form reset restores `defaultValue` and calls `onValueChange` when that changes the value.
+- Reduced motion: the thumb moves to the value without the spring and the value label swaps without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--lumesec`, `--lumesec-foreground` and `--lumesec-shine`.
+
+## Notes
+
+- Values are formatted with en-US digit grouping, for example `1,200`.
+- While dragging, the thumb follows the pointer exactly; a press without moving springs the thumb to the new value when released.
+
+<RelatedComponents tag="px-slider" />

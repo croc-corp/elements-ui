@@ -1,0 +1,88 @@
+---
+title: "Pricing"
+description: "Pricing card with a monthly and yearly toggle; the price rolls to the new number while a bright edge wipes through the dot grid behind it."
+tag: hf-pricing
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-pricing" />
+
+<Callout title="Demo data" type="warning">
+
+The `−20%` badge on Yearly is fixed text, not computed; plan, prices, currency and features can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-pricing" />
+
+## Installation
+
+<Install tag="hf-pricing" />
+
+## Usage
+
+<Usage tag="hf-pricing" />
+
+## Behaviour
+
+Switching billing period rolls the price to the new number while a bright edge wipes through the dot grid behind it.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `plan` | `plan` | `string` | `Pro` | Plan name above the price. |
+| `monthly` | `monthly` | `number` | `20` | Price per month on monthly billing. |
+| `yearly` | `yearly` | `number` | `16` | Price per month on yearly billing. The note under the price shows twelve times this value. |
+| `period` | `period` | `monthly \| yearly` | `yearly` | Initial billing period. Any value other than `monthly` selects yearly. |
+| `currency` | `currency` | `string` | `€` | Currency symbol placed before the price. |
+| `features` | `features` | `string` | `Ultracode and multi-agent workflows\|Priority access at peak times\|Projects with shared context` | Feature list, separated by `\|`. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ period: "monthly" \| "yearly", price: number }` | Fires when the user switches billing period. `price` is the per-month price for that period. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `price` (read-only) | `number` | Per-month price for the selected period, read from `monthly` or `yearly`. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight / ArrowUp / ArrowDown | On the billing toggle: select the other period and move focus to it. |
+
+## Accessibility
+
+- The billing toggle is a `role="radiogroup"` labelled `Billing period`, with two native buttons carrying `role="radio"` and `aria-checked`. Only the selected button is in the tab order; the arrow keys switch periods.
+- The price is text in the monospace font with tabular figures. The price row (rolling price, `/ month` and the dot canvas) is `aria-hidden`; a visually hidden `aria-live="polite"` region carries the price and period instead, for example `€16 per month, billed yearly`.
+- Reduced motion: the price and the billing note swap without rolling and the grid shows no wipe.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--foreground`, `--lumesec`, `--lumesec-success`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-ok`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- The `−20%` badge on Yearly is fixed text and is not computed from `monthly` and `yearly`.
+- Whole prices show without decimals (`€16`), others with two (`€16.50`); the yearly total is rounded to cents.
+- The call to action is a nested `<hf-button>` labelled `Start free trial` with no handler; its clicks bubble out of the host. `hf-pricing` imports `hf-button` itself.
+- Attributes are read on first connect and are not observed; `monthly`, `yearly` and `currency` are re-read when the period changes.
+
+<RelatedComponents tag="hf-pricing" />

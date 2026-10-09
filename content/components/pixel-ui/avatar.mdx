@@ -1,0 +1,63 @@
+---
+title: "Avatar"
+description: "Avatar with initials on a pixel field coloured from the name, a status dot that pulses when online and a hover ripple."
+tag: px-avatar
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-avatar" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-avatar" />
+
+## Installation
+
+<Install tag="px-avatar" />
+
+## Usage
+
+<Usage tag="px-avatar" />
+
+## Behaviour
+
+Initials on a pixel field coloured from the name, so the same person always gets the same colour. Status dots pulse when online, and hovering sends a ripple through the field.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<span>` (`React.ComponentProps<"span">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `string` | `"Guest"` | Source of the initials (first letters of the first two words), the colour and the accessible name. An empty or blank name shows "Guest". |
+| `size` | `number` | `40` | Size of the avatar in pixels. The canvas is 6px larger, so the online pulse has room. |
+| `status` | `"online" \| "away" \| "busy" \| "offline"` | — | Adds a coloured dot in the lower right corner; `online` pulses. |
+| `shape` | `"circle" \| "square"` | `"circle"` | `square` gives rounded-square corners. |
+
+### Ref
+
+`ref` points at the root `HTMLSpanElement`.
+
+## Accessibility
+
+- The root has `role="img"` and an `aria-label` with the name, or the name and status, for example "Ada Lovelace, online".
+- The canvas and the initials are `aria-hidden`, so the label is read once.
+- Reduced motion: the online pulse and the hover ripple are off.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--card`, `--muted-foreground`, `--lumesec-success`, `--lumesec-warning` and `--destructive`.
+
+## Notes
+
+- The hue is a hash of `name`, so the same name always gets the same colour in a given theme.
+- Initials are text in the inherited sans font, sized to the avatar (36% of `size` for two letters, 42% for one), so accented letters render too. They are white, or black on light colours, whichever contrasts more.
+- Overlap avatars in a stack with a negative margin, for example `className="-ml-[10px]"` on every avatar after the first.
+
+<RelatedComponents tag="px-avatar" />

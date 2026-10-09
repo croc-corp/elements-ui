@@ -1,0 +1,39 @@
+{
+  "summary": "Multi-select filter chips: selecting floods a chip with dots from the click point and draws a check. Submits one value per chip.",
+  "attributes": [
+    { "name": "options", "type": "string", "default": "TypeScript:128,Python:96,Rust:41,Go:37,SQL:22,Shell:18,Swift:9", "description": "Comma-separated chips as `Label:count`, split at the last colon. The count is optional and shown after the label. Observed: a change rebuilds the chips and keeps the selected labels." },
+    { "name": "value", "type": "string", "default": "TypeScript,Rust", "description": "Comma-separated labels of the selected chips, matched exactly. Observed: a change updates the selection and becomes the selection a form reset restores. Reflects the current selection." },
+    { "name": "label", "type": "string", "default": "Languages", "description": "Heading text; also labels the chip group. Observed." },
+    { "name": "name", "type": "string", "description": "Form field name used when the element is inside a form." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Presence attribute. Disables every chip and Clear; a disabled ancestor `<fieldset>` does the same. A disabled element is not submitted." }
+  ],
+  "events": [
+    { "name": "change", "detail": "{ value: string[] }", "description": "Fires when the user toggles a chip or presses Clear. `value` lists the selected labels in option order." }
+  ],
+  "methods": [],
+  "properties": [
+    { "name": "value", "type": "string[]", "readonly": false, "description": "Selected labels. Setting accepts an array or a comma-separated string and writes the `value` attribute." },
+    { "name": "options", "type": "{ label: string; count?: string }[]", "readonly": true, "description": "The parsed `options`." },
+    { "name": "form", "type": "HTMLFormElement | null", "readonly": true, "description": "The owning form, from `ElementInternals`." },
+    { "name": "name", "type": "string | null", "readonly": true, "description": "The `name` attribute. There is no setter; set the attribute instead." }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "Each chip is a native `<button>` with `aria-pressed` reflecting its state, inside a `role=\"group\"` container labelled by the heading.",
+    "The Clear button shows the selected count and is disabled when nothing is selected; when it had focus, focus then moves to the first chip.",
+    "The fill and check are drawn on an `aria-hidden` canvas.",
+    "Form-associated through `ElementInternals`."
+  ],
+  "motion": "With reduced motion, a chip fills and draws its check at once instead of flooding from the click point; the hover tint still eases.",
+  "form": "With `name`, submits one entry per selected chip under that name; without a name the internal value is the comma-joined labels. There is no validation. Form reset restores the selection from the `value` set by markup or code; a disabled element is not submitted.",
+  "slots": [],
+  "notes": [
+    "Setting `value` through the attribute or the property does not fire `change`. A chip toggled from the keyboard floods from its centre.",
+    "Omitting `value` selects TypeScript and Rust; `value=\"\"` starts with nothing selected.",
+    "Chips wrap to the host's width."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your chips and counts as `options` (`Label:count`). Without it the chips show demo languages with invented counts."
+  }
+}

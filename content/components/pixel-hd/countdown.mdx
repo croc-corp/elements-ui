@@ -1,0 +1,87 @@
+---
+title: "Countdown"
+description: "HH:MM:SS countdown set over a dot grid; changed digits roll over as their tile reprints, the last ten seconds turn red and zero bursts."
+tag: hf-countdown
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-countdown" />
+
+<Callout title="Your data">
+
+Set the duration in `seconds` or call `restart(seconds)`. Without it a demo countdown of 2 h 14 min 9 s runs. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-countdown" />
+
+## Installation
+
+<Install tag="hf-countdown" />
+
+## Usage
+
+<Usage tag="hf-countdown" />
+
+## Behaviour
+
+Each digit sits on its own dotted tile; when it changes, the digit rolls over and a bright line prints through the tile from top to bottom. The last ten seconds turn red, and zero bursts.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `seconds` | `seconds` | `number` | `8049` | Starting duration in seconds (8049 is 2 h 14 min 9 s); a negative value counts as zero. Observed: a change restarts the countdown. `restart()` without an argument also reads it. |
+| `loop` | `loop` | `boolean` | `false` | Presence attribute. Restarts from `seconds` 1.6 s after reaching zero. |
+| `label` | `label` | `string` | `Usage resets in` | Text above the digits; it also names the timer. Observed. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `done` | `onDone` | `{}` | Fires once when the countdown reaches zero. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `restart(seconds?: number)` | Starts again from `seconds`, or from the `seconds` attribute when omitted, and updates the end time in the header. A negative duration counts as zero. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `remaining` (read-only) | `number` | Whole seconds left. |
+
+## Accessibility
+
+- The digits are text in the monospace font with tabular figures, inside an element with `role="timer"` named by the label through `aria-labelledby`. A timer is not a live region, so the seconds are not announced; the dot canvas is `aria-hidden`.
+- The header shows the end time as text, for example `at 4:30 PM`.
+- Reduced motion: digits change without rolling and their tiles do not reprint, the colons do not pulse, the urgent tiles do not pulse and no sparks are drawn.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--destructive`, `--foreground`, `--lumesec`, `--lumesec-success` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-danger`, `--ui-fg`, `--ui-mono`, `--ui-muted` and `--ui-ok`.
+
+## Notes
+
+- The countdown runs against the wall clock from the moment it connects, so it keeps time while off-screen.
+- `done` comes from a timer set for zero, so it fires on time while the element is off-screen (the burst only plays on screen). The timers stop while the element is removed from the page and resume when it is inserted again.
+- Between digit changes the loop sleeps until the next whole second instead of drawing every frame; during the last ten seconds it animates continuously.
+- `seconds` and `label` are observed; changing `seconds` restarts the countdown.
+
+<RelatedComponents tag="hf-countdown" />

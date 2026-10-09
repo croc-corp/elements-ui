@@ -1,0 +1,79 @@
+---
+title: "Notification bell"
+description: "Pixel notification bell that swings with a lagging clapper and pops its badge on new items; clicking it clears the badge in a spray of pixels."
+tag: px-bell
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-bell" />
+
+<Callout title="Your data">
+
+Pass the unread count as `count` and call `notify()` or `clearAll()`. Without it the bell starts at 2 unread. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-bell" />
+
+## Installation
+
+<Install tag="px-bell" />
+
+## Usage
+
+<Usage tag="px-bell" />
+
+## Behaviour
+
+A new notification swings the bell on its pivot with a lagging clapper, sends sound waves out both sides and pops the badge. Clicking the bell clears it in a spray of pixels.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `count` | `count` | `number` | `2` | Unread count, rounded to a whole number of at least 0. Changing it updates the count without ringing the bell. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `notify` | `onNotify` | `{ unread: number }` | Fires on each new notification with the new unread count. |
+| `read` | `onRead` | `{}` | Fires when everything is marked as read, from a click on the bell or from `clearAll()`. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `notify()` | Adds one unread notification, rings the bell and fires `notify`. |
+| `clearAll()` | Marks everything as read and fires `read`. Does nothing when the count is already zero. |
+
+## Accessibility
+
+- The bell is a native button whose `aria-label` includes the count ("Notifications, 2 unread. Mark all as read" or "Notifications, all caught up").
+- The "N unread" / "All caught up" text is an `aria-live="polite"` region.
+- "Notify" is a native button.
+- Reduced motion: the bell and clapper do not swing and the clearing sparks are skipped; the sound waves and badge pop still play.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground` and `--lumesec`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent` and `--ui-fg`.
+
+## Notes
+
+- The badge count is drawn in the monospace font and shows `9+` above nine. The bell canvas is a fixed 180 by 116px.
+
+<RelatedComponents tag="px-bell" />

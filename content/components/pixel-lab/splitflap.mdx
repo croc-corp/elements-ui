@@ -1,0 +1,77 @@
+---
+title: "Split-flap board"
+description: "Split-flap departure board whose tiles flip through the alphabet and cascade left to right on each new message."
+tag: px-splitflap
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-splitflap" />
+
+<Callout title="Your data">
+
+Pass your messages in `messages` or call `show()`. Without them the board cycles demo messages. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-splitflap" />
+
+## Installation
+
+<Install tag="px-splitflap" />
+
+## Usage
+
+<Usage tag="px-splitflap" />
+
+## Behaviour
+
+A departure board of flip tiles. Each tile flips through the alphabet until it lands on its letter, with the flaps cascading left to right, so status changes feel like an announcement.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `messages` | `messages` | `string` | `LARGE · ULTRACODE\|CONTEXT 64% · OK\|4 AGENTS RUNNING\|DEPLOY 14:02 LIVE\|SPEED 182 TOK/S` | Messages separated by `\|`; empty entries are skipped. Changing it starts the board over at the first new message. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `next()` | Advances to the next message and restarts the auto-advance timer. |
+| `show(message: string)` | Flips the board to an arbitrary message without changing the rotation position. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `messages` | `string[]` | The `messages` attribute split on `\|` without empty entries, or the default list. Setting it joins the list with `\|`. |
+
+## Accessibility
+
+- The canvas has `role="img"` and its `aria-label` is set to the current message as written.
+- "Next message" is a native button; clicking the canvas does the same but the canvas is not focusable.
+- Reduced motion: tiles switch straight to their target character without flipping.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg` and `--ui-muted`.
+
+## Notes
+
+- The board has 18 tiles. Messages are upper-cased, padded or cut to 18 characters, and any character outside A to Z, 0 to 9 and `. : - / · % + >` shows as a blank tile.
+- The board advances every 5.6 seconds while it is on screen and holds while the pointer is over it or focus is inside it, so it can be read. Characters are drawn in the monospace font, digits in the accent colour.
+- The canvas height is set from its width so the tiles keep their proportions.
+
+<RelatedComponents tag="px-splitflap" />

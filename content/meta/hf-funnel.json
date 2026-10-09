@@ -1,0 +1,38 @@
+{
+  "summary": "Funnel chart where dots fall through the stages in proportion to conversion and drop-outs turn red and drift off the side.",
+  "attributes": [
+    {
+      "name": "data",
+      "type": "string",
+      "default": "Visited:12400,Signed up:4210,Activated:2380,Paid:910",
+      "description": "Comma-separated `Label:count` stages, top to bottom, split at the last colon; a missing or negative count is 0. Each stage width is relative to the first, with a 6% minimum. Observed: a change rebuilds the rows and the stages grow in again."
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [
+    {
+      "name": "stages",
+      "type": "Array<{ label: string, v: number }>",
+      "readonly": true,
+      "description": "Stages parsed from the attribute."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"img\"` and an `aria-label` listing each stage and count.",
+    "Each row shows the stage, its count and the conversion from the previous stage as text.",
+    "Isolating a stage works by pointer hover only."
+  ],
+  "motion": "With reduced motion no particles are drawn and the stages appear at full width without growing.",
+  "slots": [],
+  "notes": [
+    "Stages should be in descending order: the drop-out rate between two stages comes from their ratio.",
+    "Each stage row is 44px tall, so the height follows the number of stages.",
+    "A stage after a stage with a count of 0 shows `–` instead of a conversion."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your `Label:count` stages as `data`. Without it the funnel shows invented visitor counts."
+  }
+}

@@ -1,0 +1,82 @@
+---
+title: "Focus timer"
+description: "Focus timer drawn as a ring of 60 pixels; one breaks loose each interval and drops into a sand pile, and reset flies them back."
+tag: px-focus
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-focus" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-focus" />
+
+## Installation
+
+<Install tag="px-focus" />
+
+## Usage
+
+<Usage tag="px-focus" />
+
+## Behaviour
+
+Sixty pixels make the ring. Each second the next one trembles, breaks loose and drops into a sand pile below. Reset and the whole pile flies back up into place.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `duration` | `duration` | `number` | `60` | Session length in seconds, split evenly across the 60 ring pixels; a missing, invalid or non-positive value uses 60. A change applies immediately, also to a running session. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `start` | `onStart` | `{}` | Fires when the timer starts or resumes. |
+| `pause` | `onPause` | `{}` | Fires when the timer is paused. |
+| `reset` | `onReset` | `{}` | Fires when the timer is reset. |
+| `done` | `onDone` | `{}` | Fires when the last pixel falls and the session is complete. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `toggle()` | Starts, pauses or resumes the timer; after completion it resets instead. |
+| `reset()` | Stops the timer and flies the fallen pixels back into the ring. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `duration` | `number` | Session length in seconds; reflects the `duration` attribute, `60` when it is missing, invalid or not positive. |
+
+## Accessibility
+
+- The remaining time and the status (Ready, Focus, Paused, Session complete) are text in a `role="timer"` element with `aria-live="off"`, so the countdown is not announced on every tick.
+- The ring canvas is decorative and hidden from assistive technology.
+- Start/Pause/Resume and Reset are native buttons.
+- Reduced motion: the next pixel no longer trembles before it drops and the completion sparks are skipped; falling and returning pixels still animate.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--lumesec-success` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-font`, `--ui-mono`, `--ui-muted` and `--ui-ok`.
+
+## Notes
+
+- The timer keeps time from the clock, so a session runs on in a hidden tab or off screen and `done` fires on time; the ring catches up when it is drawn again.
+- The canvas is a fixed 224 by 232px; the time sits in the centre of the ring in the monospace font.
+
+<RelatedComponents tag="px-focus" />

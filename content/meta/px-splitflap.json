@@ -1,0 +1,30 @@
+{
+  "summary": "Split-flap departure board whose tiles flip through the alphabet and cascade left to right on each new message.",
+  "attributes": [
+    { "name": "messages", "type": "string", "default": "LARGE · ULTRACODE|CONTEXT 64% · OK|4 AGENTS RUNNING|DEPLOY 14:02 LIVE|SPEED 182 TOK/S", "description": "Messages separated by `|`; empty entries are skipped. Changing it starts the board over at the first new message." }
+  ],
+  "events": [],
+  "methods": [
+    { "signature": "next()", "description": "Advances to the next message and restarts the auto-advance timer." },
+    { "signature": "show(message: string)", "description": "Flips the board to an arbitrary message without changing the rotation position." }
+  ],
+  "properties": [
+    { "name": "messages", "type": "string[]", "readonly": false, "description": "The `messages` attribute split on `|` without empty entries, or the default list. Setting it joins the list with `|`." }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"img\"` and its `aria-label` is set to the current message as written.",
+    "\"Next message\" is a native button; clicking the canvas does the same but the canvas is not focusable."
+  ],
+  "motion": "With reduced motion, tiles switch straight to their target character without flipping.",
+  "slots": [],
+  "notes": [
+    "The board has 18 tiles. Messages are upper-cased, padded or cut to 18 characters, and any character outside A to Z, 0 to 9 and `. : - / · % + >` shows as a blank tile.",
+    "The board advances every 5.6 seconds while it is on screen and holds while the pointer is over it or focus is inside it, so it can be read. Characters are drawn in the monospace font, digits in the accent colour.",
+    "The canvas height is set from its width so the tiles keep their proportions."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your messages in `messages` or call `show()`. Without them the board cycles demo messages."
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "summary": "XP bar with a hot leading edge; when it overflows the bar flashes and the level number bursts into pixels that reassemble as the next level.",
+  "attributes": [
+    { "name": "level", "type": "number", "default": "7", "description": "Level, rounded to a whole number of at least 0. Changing it updates the number in place without firing `levelup`." }
+  ],
+  "events": [
+    { "name": "gain", "detail": "{ xp: number }", "description": "Fires on each gain with the amount added." },
+    { "name": "levelup", "detail": "{ level: number }", "description": "Fires when the bar overflows, with the new level." }
+  ],
+  "methods": [
+    { "signature": "gain(xp: number)", "description": "Adds XP, fires `gain` and animates the bar; overflow carries into the next level. A value that is not a positive number is ignored." }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The level is text (\"Level 7\"). The bar canvas has `role=\"progressbar\"` with `aria-label=\"XP towards level 8\"`, `aria-valuenow`, `aria-valuemax` and `aria-valuetext` such as \"196 of 240 XP\", updated on every gain and level-up.",
+    "The status line is an `aria-live=\"polite\"` region that announces \"Level N reached\".",
+    "\"+40 XP\" and \"+180 XP\" are native buttons."
+  ],
+  "motion": "With reduced motion, the bar jumps to the new value and the level number changes in place without bursting into pixels; sparks are skipped.",
+  "slots": [],
+  "notes": [
+    "XP starts at 196 and is not configurable. Each level needs 100 + 20 x level XP, so level 7 needs 240.",
+    "The level number is set in the monospace font; during a level-up its pixels are sampled from the text and hand back to it once they settle. The canvas is 104px tall."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The starting XP of 196 is invented; only `level` can be set and `gain()` adds to it."
+  }
+}

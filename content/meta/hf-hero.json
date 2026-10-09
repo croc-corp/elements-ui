@@ -1,0 +1,64 @@
+{
+  "summary": "Hero section whose headline sits in a dot grid and is revealed behind a bright front; the pointer pushes dots aside and a click sends a shockwave.",
+  "attributes": [
+    {
+      "name": "headline",
+      "type": "string",
+      "default": "Think in pixels.",
+      "description": "Headline text, shown in an `<h2>` over the dot grid. Observed."
+    },
+    {
+      "name": "primary",
+      "type": "string",
+      "default": "Get started",
+      "description": "Label of the primary button. Observed."
+    },
+    {
+      "name": "secondary",
+      "type": "string",
+      "default": "View components",
+      "description": "Label of the secondary button. Observed."
+    }
+  ],
+  "events": [
+    {
+      "name": "primary",
+      "detail": "{}",
+      "description": "Fires when the primary button is clicked."
+    },
+    {
+      "name": "secondary",
+      "detail": "{}",
+      "description": "Fires when the secondary button is clicked."
+    }
+  ],
+  "methods": [],
+  "properties": [
+    {
+      "name": "headline",
+      "type": "string",
+      "readonly": true,
+      "description": "The headline text."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The headline is a visible `<h2>` set in the sans font; the dot canvas behind it is `aria-hidden`. The heading level is fixed.",
+    "The secondary action is a native button; the primary action is a native button inside a nested `<hf-button>`."
+  ],
+  "motion": "With reduced motion the headline and grid appear at once without the reveal or shimmer, clicks send no shockwave and the canvas redraws only on pointer movement.",
+  "slots": [
+    {
+      "name": "eyebrow",
+      "description": "Pill text above the headline. Falls back to `New · Pixel HD`."
+    },
+    {
+      "name": "(default)",
+      "description": "Subheading under the headline. Falls back to a sample sentence."
+    }
+  ],
+  "notes": [
+    "The primary button is a nested `<hf-button>`, which `hf-hero` imports itself.",
+    "The headline scales with the element's width (28px to 60px) and wraps onto more lines when it does not fit; the dot grid clears around it."
+  ]
+}

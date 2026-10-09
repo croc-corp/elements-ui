@@ -1,0 +1,39 @@
+{
+  "kind": "react",
+  "summary": "Form checkbox that fills from the centre and draws its check, with a mixed state for parent and child selections.",
+  "props": [
+    { "name": "checked", "type": "PxCheckedState", "default": "-", "description": "Controlled state: `true`, `false` or `\"indeterminate\"` (drawn as a dash). Use with `onCheckedChange`." },
+    { "name": "defaultChecked", "type": "PxCheckedState", "default": "false", "description": "Initial state when uncontrolled. A form reset restores it." },
+    { "name": "children", "type": "React.ReactNode", "default": "-", "description": "Label, next to the box." },
+    { "name": "value", "type": "string", "default": "\"on\"", "description": "Value submitted with the form when checked." },
+    { "name": "name", "type": "string", "default": "-", "description": "Form field name. Nothing is submitted while unchecked." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the checkbox, ignores click and Space and removes it from the tab order." },
+    { "name": "onCheckedChange", "type": "(checked: PxCheckedState) => void", "default": "-", "description": "Called when the user toggles the checkbox. Toggling the mixed state checks it." }
+  ],
+  "extends": "span",
+  "ref": { "type": "HTMLSpanElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [{ "keys": "Space", "action": "Toggle." }],
+  "accessibility": [
+    "The root is a `role=\"checkbox\"` element with `tabindex=\"0\"` (`-1` while disabled), `aria-checked` set to `true`, `false` or `mixed`, and `aria-disabled` while disabled.",
+    "Its accessible name comes from the children.",
+    "Enter does not toggle; Space and click do.",
+    "The box is drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion the fill and check appear at once and the box does not pop.",
+  "form": "With `name`, a hidden input submits `value` while checked, and nothing while unchecked or mixed. There is no validation. Form reset restores `defaultChecked` and calls `onCheckedChange` when that changes the state.",
+  "notes": [
+    "Parent and child behaviour, such as an \"All\" box driving its children, is not built in: derive the parent's `checked` (`true`, `false` or `\"indeterminate\"`) from the children and set the children in its `onCheckedChange`.",
+    "The root carries `data-state` set to `checked`, `unchecked` or `indeterminate`."
+  ],
+  "tokens": ["--foreground", "--card", "--lumesec"],
+  "usage": "import { PxCheckbox } from \"@/components/lumesec/px-checkbox\";\n\nexport function Example() {\n  return (\n    <PxCheckbox name=\"notify\" value=\"email\" defaultChecked>\n      Email\n    </PxCheckbox>\n  );\n}\n",
+  "playground": {
+    "props": { "children": "Email" },
+    "controls": [
+      { "name": "children", "kind": "string", "options": null, "default": "Email" },
+      { "name": "defaultChecked", "kind": "boolean", "options": null, "default": "false" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

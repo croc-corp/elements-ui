@@ -1,0 +1,62 @@
+{
+  "summary": "Form-associated switch whose track fills with a dithered energy field when on; the thumb springs across with a few sparks.",
+  "attributes": [
+    {
+      "name": "checked",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Observed: adding or removing it updates the switch, `aria-checked` and the form value."
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "default": "on",
+      "description": "Value submitted with the form while checked. Observed."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Form field name."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Disables the switch; a disabled ancestor `<fieldset>` does the same."
+    }
+  ],
+  "events": [
+    {
+      "name": "change",
+      "detail": "{ checked: boolean }",
+      "description": "Fires when the user toggles the switch. Not fired when `checked` is set from code."
+    }
+  ],
+  "methods": [],
+  "properties": [
+    {
+      "name": "checked",
+      "type": "boolean",
+      "readonly": false,
+      "description": "Reflects the `checked` attribute."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The control is a native `<button>` with `role=\"switch\"` and `aria-checked`, so Enter and Space toggle it.",
+    "`aria-label` is the text in the default slot (`Ultracode` when the slot is empty) and follows changes to that content. The `hint` slot is linked with `aria-describedby`.",
+    "Clicking anywhere on the row, including the label text, toggles the switch."
+  ],
+  "motion": "With reduced motion the thumb moves without the spring, the fill appears without its sweep or flowing pattern, and no sparks are drawn.",
+  "form": "Submits `name=value` (default `on`) while checked and nothing while unchecked. No validation. Form reset restores the state from the first connect; `disabled` or a disabled fieldset disables the switch.",
+  "slots": [
+    {
+      "name": "(default)",
+      "description": "Label text. Falls back to `Ultracode`."
+    },
+    {
+      "name": "hint",
+      "description": "Secondary text under the label."
+    }
+  ]
+}

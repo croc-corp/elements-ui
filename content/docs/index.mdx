@@ -1,0 +1,47 @@
+---
+title: Introduction
+description: Interactive components from the LumeSec design lab, published as a shadcn registry. Install one, read the source, ship it.
+updated: "2026-10-09"
+---
+
+LumeSec Elements is where the LumeSec design team publishes the components it builds for its own products: controls, meters, charts, maps and globes, and dot-matrix displays. Every component is strict TypeScript. You install it with the shadcn CLI and the source lands in your repository.
+
+<Cards>
+  <Card title="Installation" href="/docs/installation">Register the registry once and add your first component.</Card>
+  <Card title="Browse components" href="/components">181 components in five collections, all running live.</Card>
+  <Card title="Use from React" href="/docs/react">Controlled and uncontrolled state, typed callbacks, ref handles.</Card>
+  <Card title="Theming" href="/docs/theming">Your shadcn theme plus one `--lumesec` accent drives every component.</Card>
+</Cards>
+
+## What you get
+
+- **Source, not a package.** The CLI copies the files into your project. You can read, change and delete any line.
+- **Two kinds, one standard.** Interaction, Pixel UI and Location are native React 19 components styled with Tailwind CSS v4, written like shadcn/ui. Pixel Lab and Pixel HD are canvas-heavy custom elements that also run in plain HTML, Vue or Svelte, with a typed React wrapper. Both are strict TypeScript without type escape hatches.
+- **No extra dependencies.** React components need React and `cn`; custom elements need the pixel engine (one file), plus the React bindings when you use them from React. No animation library, no icon set, no UI kit.
+- **Your theme.** Colours and fonts come from your shadcn theme variables, plus one set of `--lumesec` accent tokens. Light and dark follow your theme.
+- **Accessible by default.** Keyboard support, ARIA roles and live regions, inputs that submit with native forms, and a reduced-motion mode that keeps every number.
+
+## How the components behave
+
+The components share a short list of rules that came out of design reviews.
+
+1. **Plain until earned.** Most states are an ordinary control. The effect switches on for the state that matters: the top effort level, live traffic, a completed upload.
+2. **Growth has a direction.** Effects grow from an origin and travel one way, like a trail growing out of a slider thumb.
+3. **Legibility beats pixels.** Text is never drawn as dots. Numerals, labels and headlines are set in your page's fonts; the dot field glows, fills and reacts around them.
+4. **Few pixels, meaningful pixels.** Density follows the data, logarithmic and capped. If a frame looks busy, it is halved.
+5. **One accent moment per component.** Electric marks the one thing that matters. Primary buttons use the foreground colour.
+6. **Numbers are mechanical.** Rates, counts, IDs and times use a monospace face with tabular figures.
+
+## Collections
+
+| Collection | Components | Kind | What it covers |
+| --- | --- | --- | --- |
+| [Interaction](/components/interaction) | 11 | React | Micro-interactions on everyday controls, including the Ultracode slider |
+| [Pixel Lab](/components/pixel-lab) | 50 | Custom element | Components that live in a pixel lattice: meters, gauges, radars, model moments |
+| [Pixel UI](/components/pixel-ui) | 30 | React | Form controls you can ship, each with one pixel detail |
+| [Pixel HD](/components/pixel-hd) | 60 | Custom element | Regular controls on a fine dot field with bloom and ordered dither |
+| [Location](/components/location) | 30 | React | Globes, maps and connection lines for visitors, sign-ins, latency and traffic between regions |
+
+## Free and open source
+
+Every component on this site is free under the MIT license, for personal and commercial work. The source of the components, the registry scripts and this site is on [GitHub](https://github.com/lumesec/elements-ui).

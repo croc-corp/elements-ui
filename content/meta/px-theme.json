@@ -1,0 +1,24 @@
+{
+  "summary": "Day/night switch whose sun pixels rebuild as a crescent moon while night sweeps the sky; it can set the page theme.",
+  "attributes": [
+    { "name": "controls-page", "type": "boolean", "default": "false", "description": "Presence attribute. When set, each toggle writes `data-theme=\"dark\"` or `\"light\"` and toggles the `.dark` class on the `<html>` element, the switch follows theme changes made elsewhere on the page, and a hint under the switch says so." }
+  ],
+  "events": [
+    { "name": "change", "detail": "{ dark: boolean }", "description": "Fires on every toggle with the new state; not when the switch follows a page theme change." }
+  ],
+  "methods": [
+    { "signature": "toggle()", "description": "Switches between day and night and fires `change`. With `controls-page`, also sets the page theme." }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The control is a native button with `role=\"switch\"`, `aria-label=\"Dark mode\"` and `aria-checked` for the night state.",
+    "The \"Light\" / \"Dark\" label below is an `aria-live=\"polite\"` region."
+  ],
+  "motion": "With reduced motion, the switch changes state at once without the pixel morph, the clouds stop drifting and the stars stop twinkling.",
+  "slots": [],
+  "notes": [
+    "The initial state comes from `data-theme` on `<html>` (`dark` or `light`), then the `.dark` class, then `prefers-color-scheme`. Without `controls-page`, later page theme changes do not move the switch.",
+    "The sky, sun and moon use fixed colours rather than theme tokens. The switch is a fixed 156 by 72px."
+  ]
+}

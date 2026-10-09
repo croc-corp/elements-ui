@@ -1,0 +1,26 @@
+{
+  "summary": "Scrolling pixel oscilloscope for latency with dithered tails, amber and red spikes over a 400 ms line, and a rolling p50/p95 readout.",
+  "attributes": [],
+  "events": [
+    { "name": "outage", "detail": "{}", "description": "Fires when the \"Simulate outage\" button is pressed." }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"img\"` and `aria-label=\"Live latency chart\"`.",
+    "The current value and the p50/p95 line are plain text without a live region.",
+    "The sample tooltip appears on pointer hover only. \"Simulate outage\" is a native button with `aria-disabled=\"true\"` for 4.2 seconds after use; it keeps focus while it waits."
+  ],
+  "motion": "With reduced motion, the trace advances one sample at a time instead of scrolling smoothly and the readout changes without the roll.",
+  "slots": [],
+  "notes": [
+    "All samples are simulated: a random walk around 160 ms with occasional spikes, one sample every 0.12 seconds. An outage pushes values to 820 to 1,300 ms for 3 seconds.",
+    "The vertical scale runs from 0 to 1,000 ms. Samples above 350 ms are amber and above 600 ms red; a Spike chip shows while the latest reading is 600 ms or more.",
+    "The canvas is 106px tall and animates continuously while on screen."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The latency samples, spikes and p50/p95 readout are simulated; nothing can be set."
+  }
+}

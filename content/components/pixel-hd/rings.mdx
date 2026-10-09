@@ -1,0 +1,69 @@
+---
+title: "Goal rings"
+description: "Up to three concentric goal rings with glowing heads; progress past the goal laps the ring in a brighter tint and throws sparks."
+tag: hf-rings
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-rings" />
+
+<Callout title="Your data">
+
+Pass up to three `Name:current/goal` rings as `rings`. Without it the rings show invented usage figures. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-rings" />
+
+## Installation
+
+<Install tag="hf-rings" />
+
+## Usage
+
+<Usage tag="hf-rings" />
+
+## Behaviour
+
+Three progress rings with glowing heads. Going past the goal laps the ring in a brighter colour and throws sparks at the top. Hover a ring or a legend row to isolate it.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `rings` | `rings` | `string` | `Messages:36/50,Tokens:410/900,Agents:13/10` | Comma-separated `Name:current/goal` entries; only the first three are used. Empty entries are skipped, a missing or negative amount counts as 0 and a missing goal as 1. Observed: changes rebuild the legend and animate the rings. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `items` (read-only) | `Array<{ name: string, cur: number, goal: number }>` | Rings parsed from the attribute. |
+
+## Accessibility
+
+- The canvas has `role="img"` and an `aria-label` giving each ring as a percentage of its goal, for example `Messages 72%, Tokens 46%, Agents 130%`.
+- The legend shows each current value and goal as text.
+- Isolating a ring works by pointer hover only; legend rows are not focusable.
+- Reduced motion: the rings show their final progress without the staggered fill and no sparks are drawn; the hover dimming still fades.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg` and `--ui-muted`.
+
+## Notes
+
+- Rings use the accent, ok and warn colours from the outside in.
+- Progress is drawn up to twice the goal; the second lap uses a brighter tint.
+- The canvas is fixed at 172 × 172 px.
+
+<RelatedComponents tag="hf-rings" />

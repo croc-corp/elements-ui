@@ -1,0 +1,178 @@
+{
+  "kind": "react",
+  "summary": "A dotted globe split by the terminator, with a dithered twilight band and city lights that switch on as night reaches them.",
+  "props": [
+    {
+      "name": "value",
+      "type": "number | Date",
+      "default": "-",
+      "description": "Instant shown, as epoch ms or a Date (controlled). Use with `onValueChange`. Set it back to `undefined` to return the globe to the clock."
+    },
+    {
+      "name": "defaultValue",
+      "type": "number | Date",
+      "default": "-",
+      "description": "Instant shown first when uncontrolled. Without it the globe shows the current time after mount."
+    },
+    {
+      "name": "live",
+      "type": "boolean",
+      "default": "true",
+      "description": "Follows the clock (every 30 s) while uncontrolled and not scrubbed away from now. When false, the globe keeps the time it first read."
+    },
+    {
+      "name": "cities",
+      "type": "readonly DaylightCity[]",
+      "default": "DEMO_CITIES",
+      "description": "`{ id, name, lat, lon, weight }`. Weight 0 to 1 sets how many lights a city has (10 to 40) and how far they spread. Entries with invalid coordinates are skipped; an empty array shows no lights."
+    },
+    {
+      "name": "twilight",
+      "type": "\"civil\" | \"nautical\" | \"astronomical\"",
+      "default": "\"nautical\"",
+      "description": "How far into the night the dithered band reaches (−6°, −12° or −18° of sun elevation)."
+    },
+    {
+      "name": "scrubRange",
+      "type": "number",
+      "default": "12",
+      "description": "Hours the slider reaches either side of now. Ticks mark every 3 hours, fewer on long ranges."
+    },
+    {
+      "name": "view",
+      "type": "\"terminator\" | \"subsolar\" | LatLon",
+      "default": "\"terminator\"",
+      "description": "Where the globe faces. `terminator` faces dusk, so day and night split the disc; `subsolar` faces the point under the sun. It turns there on a soft spring when this changes or Now is pressed, never while scrubbing."
+    },
+    {
+      "name": "showSun",
+      "type": "boolean",
+      "default": "true",
+      "description": "Marks the point where the sun is overhead with a small square and three dotted rays."
+    },
+    {
+      "name": "hour12",
+      "type": "boolean",
+      "default": "false",
+      "description": "12-hour clock in the readout."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: number) => void",
+      "default": "-",
+      "description": "Called while scrubbing and when Now is pressed, with the shown instant in epoch ms."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "HTMLDivElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [
+    {
+      "keys": "ArrowLeft / ArrowRight (slider)",
+      "action": "Move the shown time 15 minutes back or ahead. ArrowDown and ArrowUp do the same."
+    },
+    {
+      "keys": "Shift + Arrow (slider)",
+      "action": "Move 1 hour."
+    },
+    {
+      "keys": "PageDown / PageUp (slider)",
+      "action": "Move 3 hours."
+    },
+    {
+      "keys": "Home (slider)",
+      "action": "Return to now and turn the globe back to its view, like the Now button."
+    },
+    {
+      "keys": "Arrow keys (globe)",
+      "action": "Turn the globe 10° west, east, north or south."
+    },
+    {
+      "keys": "Enter / Space (Now)",
+      "action": "Return to now."
+    }
+  ],
+  "accessibility": [
+    "The time control is `role=\"slider\"` with `aria-valuenow` in hours from now and `aria-valuetext` such as \"14:30 UTC, 3 hours ahead\".",
+    "The globe is a focusable `role=\"img\"` whose `aria-label` names the cities in darkness, heaviest first: \"Night in Tokyo, Sydney and 9 more\". A hidden description explains dragging and the arrow keys.",
+    "Now is a native button.",
+    "The UTC time, the offset and the sun's position are real text; the canvases are `aria-hidden`."
+  ],
+  "motion": "With reduced motion, lights switch without the flash or the stagger, the drawn time, the slider thumb and view changes jump, and digits swap without rolling. The dither and the terminator still follow the shown time.",
+  "notes": [
+    "The globe draws land dots only, from the embedded world data; there are no map tiles and no network requests.",
+    "Day and night come from the sun's position at the shown instant (about 0.5° accuracy). Land dots between the twilight limit and 3° of sun elevation are dithered with a 4×4 ordered pattern.",
+    "Each city's lights are scattered around it, seeded by its `id`, and drawn on the nearest land dots, so a city becomes a patch of lit dots that stays in place between renders. A dot switches on when the sun is 4° to 6° below the horizon.",
+    "When the shown time changes, the drawn time follows on a critically damped spring, so the terminator sweeps across the still globe and the lights switch on in the order night reaches them.",
+    "The time readout is UTC. The component never reads the viewer's time zone, language or location.",
+    "Before mount the globe shows a plain disc and the readout shows --:--, so server and client markup match.",
+    "Drag the globe to turn it; on touch only horizontal drags turn it, so vertical swipes scroll the page."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your places as `cities`. Without it the globe shows lights for 60 demo cities."
+  },
+  "tokens": [
+    "--foreground",
+    "--muted-foreground",
+    "--card",
+    "--muted",
+    "--border",
+    "--lumesec",
+    "--lumesec-glint",
+    "--lumesec-shine",
+    "--lumesec-warning"
+  ],
+  "usage": "import { GeoDaynight, type DaylightCity } from \"@/components/lumesec/geo-daynight\";\n\nconst offices: DaylightCity[] = [\n  { id: \"lon\", name: \"London\", lat: 51.5072, lon: -0.1276, weight: 1 },\n  { id: \"nyc\", name: \"New York\", lat: 40.7128, lon: -74.006, weight: 0.8 },\n  { id: \"tyo\", name: \"Tokyo\", lat: 35.6762, lon: 139.6503, weight: 0.9 },\n];\n\nexport function Example() {\n  return <GeoDaynight cities={offices} twilight=\"civil\" />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      {
+        "name": "twilight",
+        "kind": "enum",
+        "options": [
+          "civil",
+          "nautical",
+          "astronomical"
+        ],
+        "default": "nautical"
+      },
+      {
+        "name": "view",
+        "kind": "enum",
+        "options": [
+          "terminator",
+          "subsolar"
+        ],
+        "default": "terminator"
+      },
+      {
+        "name": "scrubRange",
+        "kind": "number",
+        "options": null,
+        "default": "12"
+      },
+      {
+        "name": "showSun",
+        "kind": "boolean",
+        "options": null,
+        "default": "true"
+      },
+      {
+        "name": "hour12",
+        "kind": "boolean",
+        "options": null,
+        "default": "false"
+      },
+      {
+        "name": "live",
+        "kind": "boolean",
+        "options": null,
+        "default": "true"
+      }
+    ]
+  }
+}

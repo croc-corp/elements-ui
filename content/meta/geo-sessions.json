@@ -1,0 +1,106 @@
+{
+  "kind": "react",
+  "summary": "The places an account is signed in, as a list with a dot map. Signing out other sessions sends a wave from this device that removes them nearest first.",
+  "props": [
+    {
+      "name": "sessions",
+      "type": "readonly Session[]",
+      "default": "-",
+      "description": "Sessions (controlled): `{ id, device, label, city, lat?, lon?, lastActive, current?, approximate? }`. `device` is `laptop`, `desktop`, `phone`, `tablet` or `terminal`; `lastActive` is epoch ms, an ISO date-time or a Date. Use with `onSessionsChange`. An empty array shows \"No active sessions\"."
+    },
+    {
+      "name": "defaultSessions",
+      "type": "readonly Session[]",
+      "default": "6 demo sessions",
+      "description": "Sessions when uncontrolled. Without `sessions` and `defaultSessions` the component shows six invented sessions."
+    },
+    {
+      "name": "onSessionsChange",
+      "type": "(sessions: readonly Session[]) => void",
+      "default": "-",
+      "description": "Called with the remaining sessions after a sign-out, once the rows have collapsed."
+    },
+    {
+      "name": "onRevoke",
+      "type": "(ids: readonly string[]) => void",
+      "default": "-",
+      "description": "Called with the ids that were signed out, at the same moment as `onSessionsChange`. Not called for the demo sessions."
+    },
+    {
+      "name": "confirm",
+      "type": "boolean",
+      "default": "true",
+      "description": "Requires a second click within 4 seconds to sign out all other sessions. A single row's Sign out never asks."
+    },
+    {
+      "name": "now",
+      "type": "number",
+      "default": "-",
+      "description": "Reference time in epoch ms for the relative times. Gives the same text on the server and the client. Without it a clock starts after mount and refreshes every 30 seconds."
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "default": "\"en-US\"",
+      "description": "BCP 47 locale of the relative times and dates."
+    },
+    {
+      "name": "title",
+      "type": "React.ReactNode",
+      "default": "\"Active sessions\"",
+      "description": "Header text."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "HTMLDivElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Tab", "action": "Moves through the rows' Sign out buttons and the footer button. A focused row previews its session on the map." },
+    { "keys": "ArrowDown / ArrowUp", "action": "Moves focus to the next or previous row's Sign out button." },
+    { "keys": "Home / End", "action": "Moves focus to the first or last row's Sign out button." },
+    { "keys": "Enter / Space", "action": "On a row: signs out that session. On the footer: arms it, and a second press within 4 seconds signs out all other sessions." },
+    { "keys": "Escape", "action": "Disarms the footer button." }
+  ],
+  "accessibility": [
+    "The sessions are a list labelled \"Sessions\". Each row is text (label, city, relative time) and a native button whose accessible name names the session, such as \"Sign out Office desktop, Berlin\".",
+    "The armed footer button's accessible name follows the rolled label (\"Confirm sign-out\"), and it is described by \"Press again within 4 seconds to confirm\".",
+    "With no other sessions left, the footer button reads \"No other sessions\" and is `aria-disabled`, so it keeps focus after a sign-out.",
+    "After a sign-out, focus moves to the next row's button, or to the footer button.",
+    "A polite live region announces the result, such as \"5 sessions signed out\".",
+    "Collapsing rows are `inert` and hidden from assistive technology. The map and its canvases are `aria-hidden`; the list carries the same data."
+  ],
+  "motion": "With reduced motion there is no wave, implode or sparks and no first reveal of the land: rows are removed at once, the count and the labels change without rolling, the preview line appears without drawing on and the point does not pulse. The confirm fuse still burns down, without flicker.",
+  "notes": [
+    "The map is an Equal Earth strip cropped to 50° S to 72° N, drawn from the embedded world data with no map tiles. A session outside that band sits on the nearest edge. Sessions without `lat` and `lon` have no point; during a sweep they go after the front has crossed the map.",
+    "Sign out other sessions starts a front at this device (the session with `current`), or at the middle of the map when there is none. It travels at 420 px per second; each session's row collapses on the frame the front reaches its point, and sessions at the same place go together.",
+    "Before mount, rows with your data show absolute dates in UTC, such as \"Oct 3, 14:20 UTC\". Pass `now` for relative times in the server markup.",
+    "With controlled `sessions`, signed-out rows stay hidden until you pass a new array. Keep the old array while your request runs; a new array that still contains a session brings its row back."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your sessions as `sessions` (or `defaultSessions`) and sign them out in `onRevoke`. Without them the component shows six invented demo sessions."
+  },
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--lumesec-shine",
+    "--destructive",
+    "--card",
+    "--card-foreground",
+    "--muted",
+    "--muted-foreground",
+    "--foreground",
+    "--border"
+  ],
+  "usage": "import { GeoSessions, type Session } from \"@/components/lumesec/geo-sessions\";\n\nexport function Example({ sessions, revoke }: { sessions: Session[]; revoke: (ids: readonly string[]) => void }) {\n  return <GeoSessions defaultSessions={sessions} onRevoke={revoke} />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      { "name": "confirm", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "title", "kind": "string", "options": null, "default": "Active sessions" }
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+---
+title: "Rate-limit hourglass"
+description: "Falling-sand hourglass that counts down to a usage reset; the remaining time is derived from the sand left in the top chamber."
+tag: px-hourglass
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-hourglass" />
+
+<Callout title="Your data">
+
+Set `duration` to the seconds left until your limit resets, and again whenever you learn a new value; nothing else is shown. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-hourglass" />
+
+## Installation
+
+<Install tag="px-hourglass" />
+
+## Usage
+
+<Usage tag="px-hourglass" />
+
+## Behaviour
+
+A real falling-sand simulation counts down to the next usage reset. Grains pile up, slide off each other and squeeze through the neck one at a time; the timer is how much sand is left.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `duration` | `duration` | `number` | `30` | Countdown length in seconds for a full top chamber; a missing, invalid or non-positive value uses 30. A later change re-times the sand left in the top chamber to run out in that many seconds. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `flip` | `onFlip` | `{}` | Fires after the hourglass has turned over. |
+| `reset` | `onReset` | `{}` | Fires once when the top chamber runs empty, meaning the limit has reset. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `flip()` | Turns the hourglass over so the sand runs back. Ignored while a flip is animating. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `duration` | `number` | Countdown length in seconds; reflects the `duration` attribute, `30` when it is missing, invalid or not positive. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space (on the glass) | Flip the hourglass. |
+
+## Accessibility
+
+- The glass is focusable (`tabindex="0"`) with `role="button"` and `aria-label="Flip the hourglass"`.
+- A native "Flip" button performs the same action.
+- The countdown is plain text. The status line above it ("Usage resets in", "Limit reset · flip to start") is an `aria-live="polite"` region. The canvas sits inside the glass button.
+- Reduced motion: the flip happens instantly without the rotation, text swaps without the roll and the completion sparks are skipped; the sand simulation still runs.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--lumesec-success` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-ok`.
+
+## Notes
+
+- The host gets a `data-done` attribute while the top chamber is empty, which turns the time green; it is cleared on the next flip.
+- Flipping part-way through inverts the current sand, so the remaining time becomes the elapsed time.
+- The sand keeps time from the clock: after the element was off screen or the tab was hidden, it runs fast until it has caught up. Once the top chamber is empty and the sand has settled, the element stops drawing until the next flip.
+- The glass canvas is a fixed 120 by 168px.
+
+<RelatedComponents tag="px-hourglass" />

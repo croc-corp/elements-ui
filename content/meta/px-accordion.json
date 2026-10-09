@@ -1,0 +1,43 @@
+{
+  "kind": "react",
+  "summary": "Accordion whose pixel plus signs fold into minus signs while the panels open smoothly; one or several items can stay open.",
+  "props": [
+    { "name": "value", "type": "string[]", "default": "-", "description": "Controlled list of open items (their `value`, or `title`). Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "string[]", "default": "[]", "description": "Items open initially when uncontrolled." },
+    { "name": "items", "type": "readonly PxAccordionItem[]", "default": "-", "description": "The sections: `{ value?: string; title: string; summary?: string; content: React.ReactNode }`. `value` defaults to `title`; `summary` adds muted text at the end of the header." },
+    { "name": "multiple", "type": "boolean", "default": "false", "description": "Lets several items stay open; without it, opening one closes the others." },
+    { "name": "onValueChange", "type": "(value: string[]) => void", "default": "-", "description": "Called with the open items whenever the user opens or closes one." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Enter / Space", "action": "Open or close the focused item." },
+    { "keys": "ArrowDown / ArrowUp", "action": "Move focus to the next / previous header, wrapping." },
+    { "keys": "Home / End", "action": "Move focus to the first / last header." }
+  ],
+  "accessibility": [
+    "Each header is a native button with `aria-expanded` and `aria-controls`, inside an `<h3>`.",
+    "Each panel has `role=\"region\"` and is labelled by its header through `aria-labelledby`.",
+    "Closed panels are `inert`, so their content leaves the tab order and the accessibility tree; the closing animation still plays.",
+    "The plus and minus icon is an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion panels open and close without the height and fade transitions, and the plus and minus icon switches at once.",
+  "notes": [
+    "Panels stay mounted while closed, so their content keeps its state.",
+    "Each item's `value` (or its `title` when `value` is not set) must be unique within the accordion."
+  ],
+  "tokens": ["--lumesec", "--foreground", "--muted-foreground", "--border"],
+  "usage": "import { PxAccordion } from \"@/components/lumesec/px-accordion\";\n\nexport function Example() {\n  return (\n    <PxAccordion\n      defaultValue={[\"What is Ultracode?\"]}\n      items={[\n        { title: \"What is Ultracode?\", content: \"A mode that sends xhigh effort.\" },\n        { title: \"How is usage counted?\", content: \"Usage resets weekly.\" },\n      ]}\n    />\n  );\n}\n",
+  "playground": {
+    "props": {
+      "defaultValue": ["What is Ultracode?"],
+      "items": [
+        { "title": "What is Ultracode?", "content": "A mode that sends xhigh effort and lets the agent plan multi-agent workflows on its own." },
+        { "title": "How is usage counted?", "content": "Usage resets weekly. Longer reasoning and more agents use more of it." },
+        { "title": "Can I export my data?", "content": "Yes. Settings has an export that includes chats, projects and files." }
+      ]
+    },
+    "controls": [{ "name": "multiple", "kind": "boolean", "options": null, "default": "false" }]
+  }
+}

@@ -1,0 +1,90 @@
+---
+title: "Slide to confirm"
+description: "Slide-to-confirm track for deliberate actions: the handle must reach the end, keyboard users hold Enter, and it re-arms after a delay."
+tag: hf-swipe
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-swipe" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-swipe" />
+
+## Installation
+
+<Install tag="hf-swipe" />
+
+## Usage
+
+<Usage tag="hf-swipe" />
+
+## Behaviour
+
+For actions that shouldn’t happen by accident. A sheen runs across the label, the track fills behind the handle, and reaching the end bursts and confirms. Keyboard users hold Enter instead.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `Slide to deploy` | Text in the track before confirming, also used in the handle's `aria-label`. Observed. |
+| `done-label` | `doneLabel` | `string` | `Deployed` | Text in the track after confirming; announced to screen readers. Observed. |
+| `hint` | `hint` | `string` | `Drag the handle all the way, or hold Enter` | Line below the track. Observed. |
+| `done-hint` | `doneHint` | `string` | `Deploy started · production` | Line below the track after confirming. Observed. |
+| `reset` | `reset` | `number` | `2800` | Milliseconds before returning to the idle state after confirming. `0` or less keeps it confirmed until `reset()` is called. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `confirm` | `onConfirm` | `{}` | Fires once when the handle reaches the end, when it is released past 94% of the track, or when `confirm()` is called. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `confirm()` | Confirms at once, as if the handle had reached the end. Does nothing if already confirmed. |
+| `reset()` | Returns to the idle state and restores `hint`. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `label` (read-only) | `string` | The `label` attribute, or `Slide to deploy`. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space / ArrowRight (hold) | Slide the handle along while held; reaching the end confirms. Releasing early lets it spring back. |
+
+## Accessibility
+
+- The handle is a native `<button>` with `aria-label` `<label>. Press and hold Enter to confirm.`
+- A visually hidden `aria-live="polite"` region announces `done-label` when confirmed.
+- The track label is text marked `aria-hidden`, since the handle's `aria-label` already carries it.
+- Reduced motion: the label shimmer and confirm sparks are off, the handle jumps to the end when confirmed and back to the start when released, and the texts change without rolling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-track`.
+
+## Notes
+
+- The component does not run the action; listen for `confirm`.
+- The track is 58px tall and fills the host's width.
+- The `reset` attribute and the `reset()` method share a name; set the attribute with `setAttribute`, not as a property.
+
+<RelatedComponents tag="hf-swipe" />

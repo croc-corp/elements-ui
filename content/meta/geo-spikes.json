@@ -1,0 +1,153 @@
+{
+  "kind": "react",
+  "summary": "Counts per location as dot spikes on a globe; new data grows them in a wave from the biggest increase, led by a ring of light.",
+  "props": [
+    {
+      "name": "data",
+      "type": "readonly SpikeDatum[]",
+      "default": "24 demo cities",
+      "description": "Counts per location, `{ id, label, lat, lon, value }`. A new array is matched to the previous one by `id`: spikes grow or shrink from their previous height, new ids grow from zero and missing ids shrink away. Up to 64 locations are drawn, the largest first."
+    },
+    {
+      "name": "value",
+      "type": "string | null",
+      "default": "-",
+      "description": "Selected spike id (controlled), or null for none. Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string | null",
+      "default": "null",
+      "description": "Selected spike when uncontrolled."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string | null) => void",
+      "default": "-",
+      "description": "Called when a spike is selected or the selection is cleared."
+    },
+    {
+      "name": "scale",
+      "type": "\"log\" | \"linear\"",
+      "default": "\"log\"",
+      "description": "How values map to heights. `log` spreads the three decades below the largest value evenly over the height, so one busy place does not flatten the rest. `linear` makes height proportional to the value."
+    },
+    {
+      "name": "maxHeight",
+      "type": "number",
+      "default": "0.5",
+      "description": "Height of the tallest spike as a share of the globe radius, 0.1 to 0.6."
+    },
+    {
+      "name": "format",
+      "type": "(value: number) => string",
+      "default": "formatCompact",
+      "description": "Formats counts in the chip, the legend and the accessible names. The default gives `950`, `12.4K`, `3.1M`."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "default": "\"events\"",
+      "description": "Unit after each count."
+    },
+    {
+      "name": "defaultCenter",
+      "type": "LatLon",
+      "default": "-",
+      "description": "Where the globe faces on mount, `{ lat, lon }`. Without it the globe faces the value-weighted centre of the data, tilted 30° south so the spikes stand up instead of pointing at the viewer."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Events by location\"",
+      "description": "Accessible name of the globe and of the location list."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "HTMLDivElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "action": "Moves from the globe to the spikes, which share one tab stop."
+    },
+    {
+      "keys": "Arrow keys (globe focused)",
+      "action": "Turn the globe 10°; the view moves in the arrow's direction."
+    },
+    {
+      "keys": "Arrow keys (spike focused)",
+      "action": "Move to the nearest visible spike in that direction on screen."
+    },
+    {
+      "keys": "Home / End",
+      "action": "Move to the largest or the smallest spike."
+    },
+    {
+      "keys": "Enter / Space",
+      "action": "Select the focused spike, or clear it when it is already selected."
+    },
+    {
+      "keys": "Escape",
+      "action": "Clear the selection."
+    }
+  ],
+  "accessibility": [
+    "The globe is a focusable `role=\"group\"` with `aria-roledescription=\"globe\"`, named by `label` and described by a visually hidden hint.",
+    "Every spike is a native button with the label and the count as its name and `aria-pressed` for the selection. The buttons follow their tips and share one roving tab stop; focusing a spike on the far side turns the globe to it.",
+    "A visually hidden list mirrors every location and value. With more than 64 locations it says that the globe shows the 64 largest.",
+    "The canvas, the chip and the legend are `aria-hidden`; the buttons and the list carry the same content."
+  ],
+  "motion": "With reduced motion the spikes take their heights at once with no wave, ring, flicker or sparks, the globe neither coasts nor flies toward an update (focusing a far-side spike turns it at once), and counts and the chip swap without rolling or gliding.",
+  "notes": [
+    "On first view every spike grows from zero in a wave from the largest value. After that, each new `data` array starts a wave at the location with the biggest increase (or the largest value when nothing grew): a ring of light runs across the land, each spike starts growing as the ring reaches it, and the counts in the chip and the legend roll at the same moment.",
+    "When the epicentre is on the far side, nothing is selected and the globe has not been dragged for 4 seconds, the globe first turns toward it and the wave starts as it arrives.",
+    "Places whose count rose by half or more throw a few sparks from the tip at the top of the overshoot. The sparks are drawn on a canvas that reaches 32 px past the stage on every side (16 px to the sides on screens narrower than 480 px, so a phone page does not scroll sideways).",
+    "Zero or negative values draw only the three-dot footprint. Entries with a missing id, a repeated id, a non-finite number or a latitude outside ±90° are skipped.",
+    "The legend shows the three largest locations. Pointing at a legend entry lights its spike. The chip sits beyond the tip, on the side the spike leans to, so it never covers the column.",
+    "The globe stays still between updates: the animation loop stops once the springs, the ring and the globe have settled, and pauses off screen."
+  ],
+  "tokens": [
+    "--card",
+    "--card-foreground",
+    "--foreground",
+    "--muted-foreground",
+    "--border",
+    "--popover",
+    "--popover-foreground",
+    "--lumesec",
+    "--lumesec-soft",
+    "--lumesec-shine"
+  ],
+  "usage": "import { GeoSpikes, type SpikeDatum } from \"@/components/lumesec/geo-spikes\";\n\nconst signIns: SpikeDatum[] = [\n  { id: \"lon\", label: \"London\", lat: 51.5072, lon: -0.1276, value: 18400 },\n  { id: \"nyc\", label: \"New York\", lat: 40.7128, lon: -74.006, value: 15200 },\n  { id: \"tyo\", label: \"Tokyo\", lat: 35.6762, lon: 139.6503, value: 9800 },\n  { id: \"sao\", label: \"São Paulo\", lat: -23.5505, lon: -46.6333, value: 4100 },\n];\n\nexport function Example() {\n  return <GeoSpikes data={signIns} unit=\"sign-ins\" label=\"Sign-ins by city\" />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      {
+        "name": "scale",
+        "kind": "enum",
+        "options": ["log", "linear"],
+        "default": "log"
+      },
+      {
+        "name": "maxHeight",
+        "kind": "number",
+        "options": null,
+        "default": "0.5"
+      },
+      {
+        "name": "unit",
+        "kind": "string",
+        "options": null,
+        "default": "events"
+      }
+    ]
+  },
+  "data": {
+    "kind": "input",
+    "note": "Pass your counts per location as `data`. Without it the component shows demo counts for 24 cities."
+  }
+}

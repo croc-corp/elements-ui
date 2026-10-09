@@ -1,0 +1,30 @@
+{
+  "summary": "FM radio tuner where static thins out near a station, a waveform appears and the name resolves on lock; release nearby springs onto it.",
+  "attributes": [],
+  "events": [
+    { "name": "lock", "detail": "{ station: string, frequency: number }", "description": "Fires each time the dial locks onto a station, with its name and frequency in MHz." }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowLeft / ArrowRight", "action": "Tune down or up by 0.1 MHz, then spring onto a station within 0.6 MHz." },
+    { "keys": "Home / End", "action": "Tune to 87.5 or 108 MHz." },
+    { "keys": "PageUp / PageDown", "action": "Jump to the next or previous station, wrapping around." }
+  ],
+  "accessibility": [
+    "The canvas is focusable with `role=\"slider\"`, `aria-label=\"Radio frequency\"`, `aria-valuemin=\"87.5\"` and `aria-valuemax=\"108\"`.",
+    "`aria-valuenow` is the frequency; `aria-valuetext` adds the station name when locked, for example \"101.1 MHz, Opus FM\".",
+    "The status text (\"Searching…\" or \"Locked · <station>\") is an `aria-live=\"polite\"` region."
+  ],
+  "motion": "With reduced motion, the dial jumps onto a station instead of springing, the static stops flickering and the waveform holds still.",
+  "slots": [],
+  "notes": [
+    "The stations are built-in demo data: 89.3 LOFI BEATS, 94.7 NEWS 24, 101.1 OPUS FM and 105.5 DEEP CUTS. The band runs from 87.5 to 108 MHz and the dial starts at 97.6.",
+    "No audio plays. The host has a `data-locked` attribute while a station is locked; the station name fades in on the screen in the page font.",
+    "The canvas is 176px tall and animates continuously while on screen, except under reduced motion."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The four radio stations are invented; nothing can be set."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "summary": "Pixel like button whose heart explodes and snaps back filled; press and hold opens four more reactions that the same pixels fly into.",
+  "attributes": [
+    { "name": "count", "type": "number", "default": "128", "description": "Reaction count, rounded to a whole number of at least 0. Changing it updates the count; liking adds one to it." }
+  ],
+  "events": [
+    { "name": "react", "detail": "{ liked: boolean, reaction: string }", "description": "Fires on like, unlike and when a reaction is picked. `reaction` is `Love`, `Star`, `Zap`, `Fire` or `Spark`." }
+  ],
+  "methods": [
+    { "signature": "toggle()", "description": "Likes or unlikes with the current reaction and adjusts the count by one." },
+    { "signature": "pick(index: number)", "description": "Selects reaction 0 to 4 (`Love`, `Star`, `Zap`, `Fire`, `Spark`), marks it liked and moves focus to the button. Other values are ignored." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowUp (on the button)", "action": "Open the reaction palette and focus the current reaction." },
+    { "keys": "ArrowLeft / ArrowRight (in the palette)", "action": "Move focus between reactions, wrapping around." },
+    { "keys": "Escape (in the palette)", "action": "Close the palette and return focus to the button." }
+  ],
+  "accessibility": [
+    "The main control is a native button with `aria-pressed` for the liked state, `aria-haspopup=\"menu\"`, `aria-expanded` and `aria-label=\"Like. Press and hold for more reactions\"`; after a pick the label starts with the reaction name.",
+    "The palette has `role=\"menu\"` with `aria-label=\"Reactions\"`; each reaction is a button with `role=\"menuitem\"` and an `aria-label`. It closes when focus leaves the component.",
+    "The count is plain text without a live region."
+  ],
+  "motion": "With reduced motion, pixels move straight to their new shape without exploding, the palette opens without its pop-in and the spark bursts are skipped.",
+  "slots": [],
+  "notes": [
+    "A press held for 430 ms opens the palette instead of toggling. Pressing anywhere else in the component, or moving focus out of it, closes it.",
+    "The button is a fixed 76 by 76px; the palette opens above it."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass the starting reaction count as `count`. Without it the count starts at 128."
+  }
+}

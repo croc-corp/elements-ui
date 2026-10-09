@@ -1,0 +1,85 @@
+---
+title: "Release rocket"
+description: "Release animation with a pixel rocket: a three-second countdown, smoke on the pad, then liftoff while the stars streak past."
+tag: px-launch
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-launch" />
+
+<Callout title="Demo data" type="warning">
+
+The countdown and the live state run on a timer, not on your release; only `version` can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-launch" />
+
+## Installation
+
+<Install tag="px-launch" />
+
+## Usage
+
+<Usage tag="px-launch" />
+
+## Behaviour
+
+A pixel rocket: a big countdown, smoke on the pad, then liftoff with a flame trail while the stars streak past. Land it again afterwards.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `version` | `version` | `string` | `v2.14` | Version shown in the "Launched · \<version\> is live" status. Read when the rocket leaves the frame. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `liftoff` | `onLiftoff` | `{}` | Fires when the countdown reaches zero and the rocket lifts off. |
+| `launched` | `onLaunched` | `{}` | Fires when the rocket has left the frame. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `go()` | Starts the countdown when the rocket is on the pad, or lands it again after a launch. Ignored mid-flight. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `version` | `string` | Version shown in the Live status; reflects the `version` attribute, or `v2.14` when it is missing. |
+
+## Accessibility
+
+- The canvas has `role="img"` and a fixed `aria-label="Rocket on the launch pad"`; the countdown numbers are drawn on the canvas in the monospace font and are not announced.
+- The status line is an `aria-live="polite"` region that announces Countdown, Liftoff, Launched and Landing.
+- The Launch / Land it control is a native button with `aria-disabled="true"` during the countdown, flight and landing; it keeps keyboard focus.
+- Reduced motion: the rocket does not shake, no exhaust or smoke is drawn and the stars do not twinkle, scroll or streak; the rocket still rises and lands.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--lumesec-success` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-ok`.
+
+## Notes
+
+- The component does not publish anything; use `liftoff` and `launched` to hook in real work.
+- The host carries `data-state="gone"` while the rocket is away. The canvas is 236px tall and animates continuously while on screen, except at rest under reduced motion.
+
+<RelatedComponents tag="px-launch" />

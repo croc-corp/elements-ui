@@ -1,0 +1,93 @@
+---
+title: "Latency matrix"
+description: "Round-trip times between regions as dot blocks that fill with latency; a map beside the grid slides the measured route from pair to pair."
+tag: geo-latency-matrix
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-latency-matrix" />
+
+<Callout title="Your data">
+
+Pass your regions as `regions` and your round-trip times as `measurements`. Without either the component shows eight demo regions with demo latencies (the fibre minimum times a seeded stretch of 1.3 to 1.9); `regions` alone shows every pair as "no data". See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-latency-matrix" />
+
+## Installation
+
+<Install tag="geo-latency-matrix" />
+
+## Usage
+
+<Usage tag="geo-latency-matrix" />
+
+## Behaviour
+
+Round-trip times between regions as a grid of dot blocks: the slower the pair, the more dots are lit. Pairs above a threshold get a warning mark.
+
+Point at a cell, or move through the grid with the arrow keys, and the mini map beside it shows that pair: the measured route against a faint arc for the fibre minimum, with the milliseconds and the path stretch rolling. The route slides from pair to pair instead of redrawing.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `regions` | `readonly LatencyRegion[]` | `8 demo regions` | Rows and columns, in order: `{ id, label?, city?, lat, lon }`. `label` is the header text (default: the id), `city` the place name in the detail panel and the accessible names (default: the label). A `GeoRegion` from `@/lib/lumesec/geo-data` fits. Regions with a repeated id, a latitude outside ±90° or a non-finite coordinate are skipped. |
+| `measurements` | `readonly LatencyMeasurement[]` | `demo latencies` | Round-trip times `{ from, to, ms }` with region ids: `from` is the row, `to` the column. Entries with an unknown id or without a finite, non-negative `ms` are skipped; the last entry for a direction wins. Pairs without a measurement show "no data". |
+| `symmetric` | `boolean` | `true` | Uses a measurement for both directions when only one direction is given. A measurement given for a direction always wins over its mirror. |
+| `value` | `LatencyPair \| null` | — | Selected pair `{ from, to }` (controlled), or null for none. Use with `onValueChange`. |
+| `defaultValue` | `LatencyPair \| null` | `first off-diagonal pair` | Selected pair when uncontrolled. |
+| `onValueChange` | `(value: LatencyPair \| null) => void` | — | Called with the new pair when the user selects a different cell: click, tap, Enter or Space. |
+| `slowMs` | `number` | `250` | Pairs at or above this round-trip time in ms get a warning mark in their cell, a Slow badge in the detail panel and "slow" in their accessible name. |
+| `label` | `string` | `"Latency between regions"` | Accessible name of the grid. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves into the grid, to the selected cell (one roving tab stop), and out again. |
+| ArrowUp / ArrowDown / ArrowLeft / ArrowRight | Moves one cell. The detail panel and the map follow the focused cell. |
+| Home / End | Moves to the first or last cell of the row. |
+| Ctrl+Home / Ctrl+End | Moves to the first or last cell of the grid. |
+| Enter / Space | Selects the focused pair. |
+
+## Accessibility
+
+- The matrix is an ARIA grid (`role="grid"` with `rowgroup`, `row`, `columnheader`, `rowheader` and `gridcell`), named by `label`. The cells share one roving tab stop.
+- Each cell's `aria-label` reads like "Frankfurt to Singapore, 162 milliseconds, 61 % above fibre minimum", with "no data", "same region" or "slow" where they apply. The selected cell has `aria-selected="true"`.
+- The header above the row headers is named "From"; rows are the regions a measurement starts from, columns the regions it goes to.
+- The detail panel is DOM text. The map has `role="img"` and an `aria-label` that names the route; its canvases and endpoint labels are `aria-hidden`.
+- The focused or hovered cell is marked by an accent frame on the matrix canvas, and its row and column headers are highlighted.
+- Reduced motion: the route jumps between pairs, the frame jumps between cells, numbers swap without rolling, the blocks show at once, and the cell twinkle, the looping packet, the ping and the sparks are off.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-shine`, `--lumesec-warning`, `--foreground`, `--muted-foreground`, `--muted`, `--card` and `--border`.
+
+## Notes
+
+- Each cell is a 5 × 5 block of 2 px dots. Its level is log(ms / fastest) / log(slowest / fastest) over the pairs off the diagonal, quantised to 25 steps, so the fastest pair lights one dot and the slowest all 25. Dots light in a fixed dispersed order and lean from the land grey toward `--lumesec` as the level rises.
+- The diagonal shows a single centre dot; pointing at it shows the one region on the map and "Same region" in the panel. Pairs without a measurement show every other dot, faint, and read "no data". The legend under the grid gives the fastest and slowest time and the slow threshold, plus the no-data mark when a pair has no measurement.
+- The fibre minimum is the great-circle distance at 204 km per ms each way. Stretch is the measured time over that minimum, minus 1. The measured route on the map bends away from the great circle, by 0.12 times the ratio and at most 0.3.
+- The route's two endpoints are springs in screen space, and the curves are rebuilt from them every frame, so moving across the grid slides and reshapes the route. Pairs that cross the 170° W edge take the shorter way and continue from the other edge.
+- Selecting a pair rings the land dots around its destination and sends a few sparks past the map's edge. Hover and focus preview a pair; leaving the grid returns to the selected one.
+- When `measurements` changes, every block springs to its new dot count, filling or thinning in rank order, and the numbers roll in the direction of change.
+- The map is equirectangular, 50° S to 70° N, with its central meridian at 10° E. At 560 px and wider the map sits beside the grid; below that it moves under it, and below 420 px the cells shrink from 24 to 20 px.
+- The animation runs only while the component is on screen. Colours follow the theme and are re-read when it changes.
+
+<RelatedComponents tag="geo-latency-matrix" />

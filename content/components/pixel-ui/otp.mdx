@@ -1,0 +1,82 @@
+---
+title: "One-time code"
+description: "Six-digit one-time-code field backed by one real input, so typing, paste and code autofill work; a wrong code shakes and falls away."
+tag: px-otp
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-otp" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-otp" />
+
+## Installation
+
+<Install tag="px-otp" />
+
+## Usage
+
+<Usage tag="px-otp" />
+
+## Behaviour
+
+Six boxes backed by one real input, so typing, pasting and the phone’s one-time-code autofill all work. Digits rise into their boxes; a wrong code shakes and falls away.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Controlled digits entered so far. Use with `onValueChange`. |
+| `defaultValue` | `string` | `""` | Initial digits when uncontrolled. |
+| `code` | `string` | — | Expected code. When set, a complete entry is compared with it; when missing, any six digits are valid. |
+| `hint` | `string` | `"Enter the 6-digit code"` | Message under the boxes until a code is checked, and again after `reset()`. |
+| `name` | `string` | — | Form field name; the digits submit under it. |
+| `disabled` | `boolean` | `false` | Dims the boxes and disables the input. |
+| `onValueChange` | `(value: string) => void` | — | Called with the digits entered so far on every change. |
+| `onComplete` | `(code: string, valid: boolean) => void` | — | Called when the sixth digit is entered, with the code and whether it matched `code`. |
+
+### Ref
+
+`ref` receives a `PxOtpHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `reset(): void` | Clears the digits and the result, cancels the pending clear after a wrong code, and shows the hint again. |
+| `focus(): void` | Moves focus into the code input. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight / Home / End | Ignored, so the caret stays at the end of the code. |
+
+## Accessibility
+
+- One native `<input>` with `inputmode="numeric"`, `autocomplete="one-time-code"` and `aria-label="6-digit code"` covers the boxes. The boxes are drawn on an `aria-hidden` canvas and the digits in them are `aria-hidden` text, so assistive technology reads the input's value.
+- The message line describes the input (`aria-describedby`) and is an `aria-live="polite"` region, so "Code verified" and the mismatch message are announced.
+- After a wrong code the field clears and keeps focus (it is focused again if focus fell to the page, never taken from another control); after a correct code the input loses focus.
+- A native `<input>` submits the digits entered so far under `name`. It never reports itself invalid; after a wrong code the value is cleared 650 ms later. Form reset works like `reset()`.
+- Reduced motion: digits appear in place without rising, and the success sparks and error shake are skipped; removed digits still break into pixels.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--lumesec`, `--lumesec-shine`, `--lumesec-success` and `--destructive`.
+
+## Notes
+
+- The comparison with `code` runs in the browser, so the expected code is visible to anyone who looks; treat it as a demo aid and verify codes on the server.
+- Digits are text in the mono font with tabular figures. They rise into their boxes; a removed digit breaks into pixels sampled from its glyph, and a rejected code falls away as red pixels.
+- After a correct code, further typing is ignored until `reset()` is called.
+- Non-digits are stripped and input stops at six digits, so a pasted or autofilled "424 242" completes. Messages are in English.
+- The root carries `data-state="ok"` or `data-state="error"` while a result shows.
+
+<RelatedComponents tag="px-otp" />

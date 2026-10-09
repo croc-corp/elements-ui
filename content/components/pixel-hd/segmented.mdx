@@ -1,0 +1,83 @@
+---
+title: "Segmented control"
+description: "Segmented radio group whose selected slab stretches toward the new option on a spring. Form-associated; arrow keys move it."
+tag: hf-segmented
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-segmented" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-segmented" />
+
+## Installation
+
+<Install tag="hf-segmented" />
+
+## Usage
+
+<Usage tag="hf-segmented" />
+
+## Behaviour
+
+The selected slab is liquid: it stretches toward the new option on a spring and settles with a glint.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `options` | `options` | `string` | `Chat,Code,Ultracode` | Comma-separated option labels; empty entries are skipped. Observed: a change rebuilds the buttons and keeps the selection when its label is still there. |
+| `value` | `value` | `string` | — | Selected option; must match a label exactly. Falls back to the first option on connect. Observed and reflected; unknown values set later are ignored. |
+| `label` | `label` | `string` | `Mode` | Accessible name of the radio group. Observed. |
+| `name` | `name` | `string` | — | Form field name. |
+| `disabled` | `disabled` | `boolean` | `false` | Presence attribute. Disables the options; a disabled ancestor `<fieldset>` does the same. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ value: string }` | Fires when the user selects a different option. `value` is the option label. Not fired for changes from code. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `string` | Label of the selected option. Setting it writes the `value` attribute; no event fires. |
+| `options` (read-only) | `string[]` | Option labels parsed from the `options` attribute. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowUp, ArrowRight / ArrowDown | Select and focus the previous or next option, wrapping at the ends. |
+
+## Accessibility
+
+- The container has `role="radiogroup"` with `aria-label` from `label`.
+- Each option is a native button with `role="radio"` and `aria-checked`.
+- Roving tabindex: only the selected option is in the tab order.
+- The slab is drawn on an `aria-hidden` canvas.
+- Submits the selected option label under `name`. No validation. Form reset returns to the option selected on the first connect; `disabled` or a disabled fieldset disables the options.
+- Reduced motion: the slab jumps to the selected option without the spring or wobble, and its texture is drawn once instead of flowing.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-track`.
+
+## Notes
+
+- When the selected label contains `ultra` (case-insensitive) the slab uses a faster, brighter pattern.
+- The element sizes to its options by default; when it is given a larger width, the options share it equally.
+
+<RelatedComponents tag="hf-segmented" />

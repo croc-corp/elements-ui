@@ -1,0 +1,86 @@
+{
+  "name": "lumesec-elements",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Interactive React and custom-element components in strict TypeScript, published as a shadcn registry, and the site that documents them.",
+  "license": "MIT",
+  "author": "LumeSec Technologies GmbH",
+  "homepage": "https://elements.lumesec.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lumesec/elements-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lumesec/elements-ui/issues"
+  },
+  "keywords": [
+    "shadcn",
+    "shadcn-registry",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "web-components",
+    "custom-elements",
+    "ui-components",
+    "canvas",
+    "accessibility"
+  ],
+  "type": "module",
+  "packageManager": "pnpm@10.27.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "pnpm catalog && pnpm registry:build && next build",
+    "start": "next start",
+    "postinstall": "fumadocs-mdx",
+    "catalog": "node scripts/catalog.mjs",
+    "registry:build": "node scripts/build-registry.mjs",
+    "check-types": "fumadocs-mdx && next typegen && tsc --noEmit",
+    "lint": "eslint --max-warnings 0",
+    "docs:generate": "node scripts/gen-docs.mjs",
+    "verify": "node scripts/verify.mjs",
+    "stats": "node scripts/stats.mjs"
+  },
+  "dependencies": {
+    "clsx": "2.1.1",
+    "cmdk": "1.1.1",
+    "fumadocs-core": "16.15.17",
+    "fumadocs-mdx": "15.4.5",
+    "geist": "1.7.2",
+    "next": "16.3.8",
+    "node-html-parser": "9.0.4",
+    "postgres": "3.4.9",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "shiki": "4.5.0",
+    "tailwind-merge": "3.7.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/mdx": "2.0.14",
+    "@types/node": "24.19.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "esbuild": "0.28.2",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.8",
+    "postcss": "8.5.28",
+    "shadcn": "4.21.1",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "@tailwindcss/oxide"
+    ],
+    "ignoredBuiltDependencies": [
+      "unrs-resolver"
+    ]
+  }
+}

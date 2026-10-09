@@ -1,0 +1,123 @@
+{
+  "summary": "Form-associated rotary knob drawn as a dithered sphere with an arc of lit cells; set it by drag, scroll wheel or arrow keys.",
+  "attributes": [
+    {
+      "name": "value",
+      "type": "number",
+      "default": "50",
+      "description": "Value, clamped to `min`–`max` and snapped to `step`. Observed: a change moves the knob without events. Also the value a form reset restores."
+    },
+    {
+      "name": "min",
+      "type": "number",
+      "default": "0",
+      "description": "Lower bound. Observed."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "default": "100",
+      "description": "Upper bound. Observed."
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "default": "1",
+      "description": "Step size for drag, wheel and keys; a zero or negative step counts as 1. Its decimal places also set the displayed precision. Observed."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "Text after the displayed value, for example ` dB`. Observed."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Gain",
+      "description": "Text under the value; also the slider `aria-label`. Observed."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Form field name."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. The knob ignores pointer, wheel and keys and leaves the tab order; a disabled ancestor `<fieldset>` does the same. A disabled knob is not submitted."
+    }
+  ],
+  "events": [
+    {
+      "name": "input",
+      "detail": "{ value: number }",
+      "description": "Fires on every value change from drag, wheel or keys."
+    },
+    {
+      "name": "change",
+      "detail": "{ value: number }",
+      "description": "Fires on pointer release and on each wheel step or key press."
+    }
+  ],
+  "methods": [],
+  "properties": [
+    {
+      "name": "value",
+      "type": "number",
+      "readonly": false,
+      "description": "Current value. Setting it clamps and snaps without firing events; it is not reflected to the attribute. A value set before the first connect is kept."
+    },
+    {
+      "name": "min",
+      "type": "number",
+      "readonly": true,
+      "description": "Parsed `min`."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "readonly": true,
+      "description": "Parsed `max`."
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "readonly": true,
+      "description": "Parsed `step`; a zero or negative step is 1."
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": "ArrowUp / ArrowRight",
+      "action": "Increase by one step."
+    },
+    {
+      "keys": "ArrowDown / ArrowLeft",
+      "action": "Decrease by one step."
+    },
+    {
+      "keys": "PageUp / PageDown",
+      "action": "Change by five steps."
+    },
+    {
+      "keys": "Home / End",
+      "action": "Jump to `min` or `max`."
+    }
+  ],
+  "accessibility": [
+    "The canvas has `role=\"slider\"`, `tabindex=\"0\"` and `aria-label` from `label`.",
+    "Sets `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and `aria-valuetext` (value with `unit`) on every change.",
+    "The visible value text is `aria-hidden`.",
+    "Pressing on the dial focuses it.",
+    "While disabled, the dial has `aria-disabled=\"true\"` and `tabindex=\"-1\"`."
+  ],
+  "motion": "With reduced motion the indicator and arc jump to the value without the spring and the value text swaps without rolling.",
+  "form": "Submits the current value as a string under `name`. No validation. Form reset restores the `value` attribute; a disabled knob is not submitted.",
+  "slots": [],
+  "notes": [
+    "Dragging sets the value from the pointer angle around the centre over a 270° sweep; it is not a vertical drag.",
+    "The wheel handler calls `preventDefault()`, so scrolling over the knob does not scroll the page.",
+    "The dial is fixed at 200 × 200 px. All attributes are observed."
+  ]
+}

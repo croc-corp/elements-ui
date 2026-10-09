@@ -1,0 +1,65 @@
+---
+title: "Code minimap"
+description: "Syntax-coloured pixel minimap beside a code view with the visible window outlined; search hits pulse in the margin and dragging scrolls."
+tag: px-minimap
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-minimap" />
+
+<Callout title="Demo data" type="warning">
+
+The code is generated sample JavaScript; only the search query can be set with `find()`. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-minimap" />
+
+## Usage
+
+<Usage tag="px-minimap" />
+
+## Behaviour
+
+A syntax-coloured pixel minimap beside a code file, with the visible window outlined. Search results pulse in the margin; drag the minimap to scroll.
+
+## API reference
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `find(query: string)` | Highlights every line containing `query` (case-insensitive), marks it in the minimap and shows it in the search box. |
+| `next()` | Scrolls to the next match, wrapping around. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter (in the search box) | Jump to the next match. |
+
+## Accessibility
+
+- The search field is a `type="search"` input with `aria-label="Find in file"`; the match count is an `aria-live="polite"` region.
+- The code view is a focusable (`tabindex="0"`) `role="region"` with `aria-label="Sample code"`, so it can be scrolled with the keyboard.
+- The minimap canvas is a pointer shortcut and is hidden from assistive technology (`aria-hidden`); the code view itself is focusable and scrolls with the keyboard.
+- Reduced motion: jumps scroll instantly instead of smoothly and the match markers stop pulsing.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--lumesec-success`, `--lumesec-warning`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-ok`, `--ui-surface`, `--ui-track` and `--ui-warn`.
+
+## Notes
+
+- The code is 140 lines of generated sample JavaScript; there is no attribute for your own source. The search box starts with `flush`.
+- The code view and minimap are 220px tall; the minimap is 66px wide.
+
+<RelatedComponents tag="px-minimap" />

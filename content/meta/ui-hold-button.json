@@ -1,0 +1,39 @@
+{
+  "kind": "react",
+  "summary": "Hold-to-confirm button for destructive actions: holding fills it as the bin lid lifts; letting go early drains it with a shake.",
+  "props": [
+    { "name": "duration", "type": "number", "default": "1200", "description": "Hold time in milliseconds needed to confirm." },
+    { "name": "label", "type": "string", "default": "\"Hold to delete\"", "description": "Idle label." },
+    { "name": "doneLabel", "type": "string", "default": "\"Deleted\"", "description": "Label shown after confirming." },
+    { "name": "onConfirm", "type": "() => void", "default": "-", "description": "Called once the button has been held for `duration`." }
+  ],
+  "extends": "button",
+  "ref": { "type": "HTMLButtonElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Space / Enter (held)", "action": "Fill while held; releasing before `duration`, or moving focus away, drains it. Key repeat is ignored." }
+  ],
+  "accessibility": [
+    "A native `<button>`; its accessible name is the visible label. Its click action is prevented, so a single click or key press does nothing.",
+    "The label is an `aria-live=\"polite\"` region, so \"Keep holding\" and the done label are announced.",
+    "Pressing with the pointer moves focus to the button.",
+    "The bin icon and the fill canvas are `aria-hidden`; the hold progress is not exposed."
+  ],
+  "motion": "With reduced motion the early-release shake and the confirm sparks are skipped and labels swap without rolling; the fill and lid still follow the hold.",
+  "notes": [
+    "After confirming, the button keeps the done state for 2.2 s and ignores presses, then resets. It carries `data-state=\"done\"` during that time.",
+    "Releasing after more than 4% of the hold shows \"Keep holding\" (built in English) for 1.3 s. A full fill drains in about 0.3 s.",
+    "The button keeps the width of its longest label, so it does not change size as the label rolls.",
+    "With `disabled` the button is dimmed and ignores presses; disabling it during a hold drains the fill without confirming."
+  ],
+  "tokens": ["--destructive", "--border", "--card", "--lumesec", "--lumesec-glint"],
+  "usage": "import { UiHoldButton } from \"@/components/lumesec/ui-hold-button\";\n\nexport function Example() {\n  return <UiHoldButton label=\"Hold to delete\" onConfirm={() => console.log(\"deleted\")} />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      { "name": "duration", "kind": "number", "options": null, "default": "1200" },
+      { "name": "label", "kind": "string", "options": null, "default": "Hold to delete" },
+      { "name": "doneLabel", "kind": "string", "options": null, "default": "Deleted" }
+    ]
+  }
+}

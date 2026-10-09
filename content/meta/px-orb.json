@@ -1,0 +1,32 @@
+{
+  "summary": "Pixel disc showing an agent's state (idle, listening, thinking, working, error, done), dissolving cell by cell between states.",
+  "attributes": [
+    { "name": "state", "type": "\"idle\" | \"listening\" | \"thinking\" | \"working\" | \"error\" | \"done\"", "default": "thinking", "description": "Agent state; an unknown value shows `thinking`. Changing it dissolves to the new state without firing `change`." }
+  ],
+  "events": [
+    { "name": "change", "detail": "{ state: OrbState }", "description": "Fires when the state changes through a click, a key or `set()`; not for the initial state or a change of the `state` attribute." }
+  ],
+  "methods": [
+    { "signature": "set(state: OrbState)", "description": "Switches to one of the six states and fires `change`. Unknown values and the current state are ignored." }
+  ],
+  "properties": [
+    { "name": "state", "type": "OrbState", "readonly": false, "description": "The current state: `idle`, `listening`, `thinking`, `working`, `error` or `done`. Setting it works like `set()`." }
+  ],
+  "keyboard": [
+    { "keys": "Enter / Space (on the orb)", "action": "Cycle to the next state." }
+  ],
+  "accessibility": [
+    "The orb canvas is focusable (`tabindex=\"0\"`) with `role=\"button\"` and `aria-label=\"Agent status: <State>. Click to cycle.\"`, updated on every change.",
+    "The state name under the orb is an `aria-live=\"polite\"` region.",
+    "Each state button carries `aria-pressed` for the current state."
+  ],
+  "motion": "With reduced motion, a new state replaces the old one at once instead of dissolving pixel by pixel, and each state is shown as a still frame.",
+  "slots": [],
+  "notes": [
+    "The orb canvas is a fixed 164 by 164px and is followed by one button per state."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Set the agent's state with `state`. Without it the orb starts at `thinking`."
+  }
+}

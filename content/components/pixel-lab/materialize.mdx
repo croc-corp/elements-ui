@@ -1,0 +1,84 @@
+---
+title: "Materializing stream"
+description: "Streams a sentence word by word, each word condensing from particles sampled from its own glyphs before resolving into crisp text."
+tag: px-materialize
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-materialize" />
+
+<Callout title="Your data">
+
+Pass your sentence as `text`. Without it a sample sentence streams. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-materialize" />
+
+## Installation
+
+<Install tag="px-materialize" />
+
+## Usage
+
+<Usage tag="px-materialize" />
+
+## Behaviour
+
+Streamed text that condenses out of pixel dust. Every word arrives as a cloud of particles sampled from its own glyphs, springs into shape, then resolves into crisp type.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `text` | `text` | `string` | `Ultracode runs at xhigh effort and lets the agent plan multi-agent workflows on its own, so big tasks fan out across parallel agents.` | The text to stream; runs of whitespace count as one space. Changing it replays the stream with the new text, as do Replay, `restart()`, a width change and the fonts finishing loading. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `done` | `onDone` | `{}` | Fires once every word has settled into text. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `restart()` | Lays out the current `text` again and replays the stream from the first word. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `text` | `string` | The text to stream; reflects the `text` attribute, or the default sentence when it is missing. |
+
+## Accessibility
+
+- The canvas has `role="img"` and its `aria-label` is set to the full text.
+- The status line ("Streaming…", "Done · N words") is an `aria-live="polite"` region.
+- "Replay" is a native button.
+- Reduced motion: particles start at their final positions, so each word appears in place and fades to text without flying in.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg` and `--ui-muted`.
+
+## Notes
+
+- The canvas is a fixed 128px tall with a 23px line height, which fits about five lines; longer text is clipped.
+- Text is set in the host's font family at 15px, weight 500.
+
+<RelatedComponents tag="px-materialize" />

@@ -1,0 +1,34 @@
+{
+  "kind": "react",
+  "summary": "Pagination with previous and next buttons, page numbers and ellipses, where a pixel block slides to the page you pick.",
+  "props": [
+    { "name": "total", "type": "number", "default": "-", "description": "Number of pages. Rounded down; a value below 1, or not a number, shows one page." },
+    { "name": "page", "type": "number", "default": "-", "description": "Controlled current page, from 1. Rounded and clamped to 1 to `total`. Use with `onPageChange`." },
+    { "name": "defaultPage", "type": "number", "default": "1", "description": "Initial page when uncontrolled." },
+    { "name": "onPageChange", "type": "(page: number) => void", "default": "-", "description": "Called when the user picks a page. Changing `page` from code does not call it." }
+  ],
+  "extends": "nav",
+  "ref": { "type": "HTMLElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "The root is a `<nav>` with `aria-label=\"Pagination\"` (pass `aria-label` to change it).",
+    "Page buttons are native buttons labelled \"Page N\"; the current one has `aria-current=\"page\"`.",
+    "The previous and next buttons are labelled \"Previous page\" and \"Next page\" and are disabled at the ends.",
+    "Ellipses are `aria-hidden`. After a pick, focus stays on the pressed button, so Next can be pressed repeatedly; when that button becomes disabled (Next on the last page), focus moves to the new current page."
+  ],
+  "motion": "With reduced motion the current-page block jumps instead of sliding.",
+  "notes": [
+    "Up to seven pages are all shown. Beyond that it shows the first and last page, a window around the current page and ellipses.",
+    "It does not navigate or load data; handle `onPageChange`."
+  ],
+  "tokens": ["--lumesec", "--lumesec-foreground", "--foreground", "--muted-foreground"],
+  "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { PxPagination } from \"@/components/lumesec/px-pagination\";\n\nexport function Example() {\n  const [page, setPage] = React.useState(5);\n  return <PxPagination total={24} page={page} onPageChange={setPage} />;\n}\n",
+  "playground": {
+    "props": { "total": 24, "defaultPage": 5 },
+    "controls": [
+      { "name": "total", "kind": "number", "options": null, "default": "24" },
+      { "name": "defaultPage", "kind": "number", "options": null, "default": "5" }
+    ]
+  }
+}

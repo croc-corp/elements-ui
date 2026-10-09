@@ -1,0 +1,35 @@
+{
+  "summary": "Modal invite dialog on the native dialog element: focus is trapped, Escape closes it, and pixels fly from the trigger to build the panel.",
+  "attributes": [
+    { "name": "label", "type": "string", "default": "Invite teammates", "description": "Text of the trigger button. Observed." },
+    { "name": "heading", "type": "string", "default": "Invite teammates", "description": "Dialog title, which also labels the dialog. Observed." },
+    { "name": "description", "type": "string", "default": "They’ll get an email with a link to join the workspace.", "description": "Text under the title, which also describes the dialog. Observed." }
+  ],
+  "events": [
+    { "name": "open", "detail": "{}", "description": "Fires when the dialog opens." },
+    { "name": "close", "detail": "{ returnValue: string | undefined, emails?: string, role?: string }", "description": "Fires after the dialog closes. `returnValue` is `send` with the form's `emails` and `role`, `cancel` for Cancel, Escape or a backdrop click, an empty string for the close button, or the argument passed to `hide()`; it is `undefined` when `hide()` is called without one." }
+  ],
+  "methods": [
+    { "signature": "show()", "description": "Opens the dialog. Ignored unless it is closed." },
+    { "signature": "hide(returnValue?: string)", "description": "Closes the dialog, returns focus to the trigger and passes `returnValue` to `close`. Ignored unless the dialog is open or opening." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "Escape", "action": "Close the dialog with `returnValue` `cancel`." },
+    { "keys": "Enter", "action": "In the email field: submit the form and close with `returnValue` `send`." }
+  ],
+  "accessibility": [
+    "The trigger button has `aria-haspopup=\"dialog\"`.",
+    "The panel is a native `<dialog>` opened with `showModal()`, labelled by its heading and described by the text under it, so the browser traps focus and makes the rest of the page inert.",
+    "Focus moves to the email field when the panel appears and returns to the trigger after closing.",
+    "The close button has `aria-label=\"Close\"`, and the form fields are wrapped in `<label>` elements.",
+    "The backdrop and flying pixels are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion, no pixels fly between the button and the panel, the dithered backdrop appears at full strength at once, and the panel appears and disappears at once, without the delay or its fade and scale transition.",
+  "slots": [],
+  "notes": [
+    "The content is a fixed invite form with an email field and a Member, Admin or Viewer role; only `label`, `heading` and `description` can be changed.",
+    "The element is not form-associated and its inner form is not sent anywhere; read the values from the `close` event.",
+    "The panel is up to 420px wide and centred in the viewport. Removing the element from the page closes the dialog without a `close` event."
+  ]
+}

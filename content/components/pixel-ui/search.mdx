@@ -1,0 +1,87 @@
+---
+title: "Search with results"
+description: "Search field with fuzzy matching, highlighted letters and a pixel highlight that springs between results; `hotkey` makes \"/\" focus it."
+tag: px-search
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-search" />
+
+<Callout title="Your data">
+
+Pass your entries as `items`, and `label` and `placeholder` to describe them. Without `items` it searches 14 invented settings pages. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-search" />
+
+## Installation
+
+<Install tag="px-search" />
+
+## Usage
+
+<Usage tag="px-search" />
+
+## Behaviour
+
+Fuzzy matching with highlighted letters, a scanning line while it searches and a pixel highlight that springs between results. With `hotkey`, “/” focuses it from anywhere.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `readonly string[]` | `demo list` | Entries to search. Defaults to a demo list of 14 settings pages. |
+| `value` | `string` | — | Controlled query. Use with `onValueChange`. |
+| `defaultValue` | `string` | `""` | Initial query when uncontrolled. |
+| `hotkey` | `boolean` | `false` | Pressing "/" anywhere on the page focuses the field, unless focus is already in an input, textarea, select or editable element, or a modifier key is held. |
+| `label` | `string` | `"Search settings"` | Accessible name of the field. |
+| `placeholder` | `string` | `"Search settings"` | Placeholder of the field. |
+| `disabled` | `boolean` | `false` | Dims the component, disables the field and turns off the hotkey. |
+| `onValueChange` | `(query: string) => void` | — | Called with the query on every edit. |
+| `onSearch` | `(query: string, count: number) => void` | — | Called after each search with the query and the total number of matches. Typing searches 280 ms after the last keystroke. |
+| `onSelect` | `(item: string) => void` | — | Called when a result is chosen with Enter or a click. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| / | Focus the field from anywhere on the page (with `hotkey`). |
+| ArrowDown / ArrowUp | Move the highlight, wrapping at the ends. |
+| Enter | Choose the highlighted result. Pressed before the pending search ran, it searches first and chooses the best match. |
+| Escape | Clear the query and show the suggestions again (when there is a query). |
+
+## Accessibility
+
+- The input has `role="combobox"`, `aria-expanded="true"`, `aria-controls` pointing at the results, `aria-autocomplete="list"` and `aria-activedescendant` on the highlighted result.
+- Results are a `role="listbox"` labelled "Results" with `role="option"` items and `aria-selected`; the no-match row has `aria-disabled="true"`. The "Enter" hint on the highlighted row is `aria-hidden`, so it is not part of the option's name.
+- A status line in an `aria-live="polite"` region announces the result count and the chosen entry.
+- The highlight canvas is `aria-hidden`.
+- Reduced motion: the search runs without the 280 ms delay and the scanning line, results appear without sliding in, and the highlight jumps instead of springing.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--card`, `--border`, `--lumesec` and `--lumesec-shine`.
+
+## Notes
+
+- An empty query shows the first five entries as suggestions and the status "Suggested · 14 entries" (the number of all entries); a query shows up to six matches, best first, with matched letters wrapped in `<mark>`.
+- The result list stays visible; there is no popup to open or close.
+- Not a form control: it has no `name` and submits nothing.
+- The "/" key hint in the field shows only with `hotkey`. Changing `items` searches them again with the current query.
+
+<RelatedComponents tag="px-search" />

@@ -1,0 +1,90 @@
+---
+title: "Secret field"
+description: "Secret field that hides its value under live static; revealing dissolves the noise outward from the click and re-hides after 15 s."
+tag: hf-reveal
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-reveal" />
+
+<Callout title="Your data">
+
+Pass the value to hide as `secret`. Without it a demo API key is shown. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-reveal" />
+
+## Installation
+
+<Install tag="hf-reveal" />
+
+## Usage
+
+<Usage tag="hf-reveal" />
+
+## Behaviour
+
+The value sits under live static. Revealing dissolves the noise outward from where you clicked; it hides itself again after fifteen seconds, and Copy flashes green.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `secret` | `secret` | `string` | `sk-demo-Px9Qz7R4mW2vL8kT5nB1cJ6hD3fY0sA` | Value to hide, reveal and copy. The default is a demo key. Observed: a change replaces the displayed value. |
+| `hint` | `hint` | `string` | `Hidden` | Text beside the `API key` label while the secret is hidden. Observed. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `toggle` | `onToggle` | `{ revealed: boolean }` | Fires on every reveal or hide, including the automatic hide after 15 s. |
+| `copy` | `onCopy` | `{ ok: boolean }` | Fires after the Copy button or `copy()` is used. `ok` is `false` when the clipboard write was rejected. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `toggle(x?: number)` | Reveals or hides the secret. `x` is the horizontal origin of the dissolve in pixels from the left of the value. |
+| `copy(): Promise<void>` | Writes the secret to the clipboard and shows `Copied`, or `Failed` when the write is rejected. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `secret` (read-only) | `string` | The secret value. |
+
+## Accessibility
+
+- The secret is monospace text under a noise canvas. It is `aria-hidden` while hidden and readable by screen readers while shown.
+- The Reveal button's `aria-label` follows its text: `Reveal secret` or `Hide secret`.
+- A visually hidden `aria-live="polite"` region announces `Secret shown`, `Secret hidden`, `Copied to clipboard` and `Copy failed`; it never reads the secret.
+- Clicking the value area also toggles it; that area is not focusable.
+- Reduced motion: the static is frozen, revealing and hiding happen at once without the dissolve, and copying shows no green flash; the Copy label swaps without rolling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-font`, `--ui-mono`, `--ui-muted` and `--ui-raised`.
+
+## Notes
+
+- The secret is plain text in the shadow DOM and is only masked visually; scripts on the page can read it.
+- The `API key` label text is fixed.
+- When the clipboard write fails, for example outside a secure context, the button shows `Failed` instead of `Copied` and there is no green flash; `copy` still fires, with `ok: false`.
+- Copying selected text inside the field keeps its native `copy` event inside the shadow root, so `copy` listeners on the host only receive the element's own event with `ok` in `detail`.
+
+<RelatedComponents tag="hf-reveal" />

@@ -1,0 +1,72 @@
+---
+title: "Storage ring"
+description: "Pixel donut chart of storage use that sweeps in clockwise; pointing at a segment pushes its pixels outward and click pins it."
+tag: px-storage
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-storage" />
+
+<Callout title="Demo data" type="warning">
+
+The storage categories and their sizes are invented; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-storage" />
+
+## Usage
+
+<Usage tag="px-storage" />
+
+## Behaviour
+
+A donut of pixels that sweeps in clockwise. Point at a segment, on the ring or in the legend, and its pixels push outward while the rest dim and the centre rolls to that category. Click to pin it.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `select` | `onSelect` | `{ segment: string \| null }` | Fires when a segment is pinned or unpinned. `segment` is the category name, or `null` when the pin is cleared. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `lock(index: number \| null)` | Pins the segment at `index` (0 to 4), or unpins it if it is already pinned or `index` is `null`, and fires `select`. Other values are ignored. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `active` (read-only) | `number \| null` | Index of the pinned segment, else the hovered one, else `null`. |
+
+## Accessibility
+
+- The ring canvas has `role="img"` with an `aria-label` listing every category and its size.
+- The legend entries are native buttons with `aria-pressed` for the pinned segment; focusing one highlights its segment like hover.
+- The centre readout is plain text without a live region.
+- Reduced motion: the ring appears without the clockwise sweep, segments move out without easing and the idle shimmer stops.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--lumesec-shine`, `--lumesec-success`, `--lumesec-warning` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-ok`, `--ui-shine` and `--ui-warn`.
+
+## Notes
+
+- The categories are built-in demo data: Projects 3.2 GB, Files 2.1 GB, Chats 1.5 GB, Memory 0.9 GB and Free 2.3 GB, out of 10 GB.
+- The ring is a fixed 200 by 200px, with the legend beside it or below it when space is narrow.
+
+<RelatedComponents tag="px-storage" />

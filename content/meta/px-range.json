@@ -1,0 +1,32 @@
+{
+  "summary": "Two-thumb response-time filter over a pixel histogram; columns fill as they enter the range and the run count rolls as you drag.",
+  "attributes": [],
+  "events": [
+    { "name": "change", "detail": "{ min: number, max: number }", "description": "Fires when a drag ends and on each handled key press. Values are in milliseconds, in steps of 100; `max` of 4000 means open-ended (4,000+ ms)." }
+  ],
+  "methods": [
+    { "signature": "set(which: \"lo\" | \"hi\", index: number)", "description": "Moves a thumb to bucket `index` (0 to 40, 100 ms each), rounded and clamped so the thumbs never cross. Does not fire `change`. An unknown thumb or an index that is not a finite number is ignored." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowUp", "action": "Move the focused thumb up by 100 ms." },
+    { "keys": "ArrowLeft / ArrowDown", "action": "Move the focused thumb down by 100 ms." },
+    { "keys": "Home / End", "action": "Move the focused thumb as far down or up as it goes." }
+  ],
+  "accessibility": [
+    "Each thumb is a native button with `role=\"slider\"`, labelled \"Minimum response time\" and \"Maximum response time\".",
+    "`aria-valuenow` (milliseconds) and `aria-valuetext` (for example \"500 ms\") are kept up to date; `aria-valuemin` and `aria-valuemax` give each thumb's range, which ends one bucket before the other thumb.",
+    "The run count is an `aria-live=\"polite\"` region.",
+    "The histogram canvas has `role=\"img\"` and `aria-label=\"Histogram of response times\"`."
+  ],
+  "motion": "With reduced motion, columns switch on and off at once instead of filling and draining, and the labels change without the roll.",
+  "slots": [],
+  "notes": [
+    "The histogram is built-in demo data: 40 buckets of 100 ms with a fixed distribution. The initial range is 500 to 1,700 ms and the thumbs stay at least one bucket apart.",
+    "Pressing the track moves the nearer thumb to that point."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The response-time histogram and its run counts are invented; only the selected range is a real control."
+  }
+}

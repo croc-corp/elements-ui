@@ -1,0 +1,49 @@
+---
+title: FAQ
+description: Licensing, frameworks, server rendering, bundle size, browser support and where to report problems.
+updated: "2026-10-09"
+---
+
+## Is it free?
+
+Yes. Every component on this site is free under the MIT license, including for commercial work. Attribution is welcome and not required.
+
+## Do I need React?
+
+For Interaction, Pixel UI and Location, yes: they are native React 19 components. Pixel Lab and Pixel HD are custom elements that run in plain HTML through the CDN modules, or in Vue, Svelte or Angular, and ship with a typed React wrapper for React projects. See [Plain HTML](/docs/html).
+
+## Do I need Tailwind CSS?
+
+For the React components, yes, Tailwind CSS v4 as set up by `shadcn init`. They are styled with utility classes on your theme tokens, like shadcn/ui. The custom elements style themselves inside their shadow roots and need no CSS framework.
+
+## Is everything TypeScript?
+
+Yes. Every file the CLI installs is strict TypeScript, without `@ts-ignore` or `as any`. The only `any` is the mixin constructor type in the engine, which TypeScript requires. The custom elements register their tags in `HTMLElementTagNameMap`, so `document.querySelector` and refs are typed with their properties and methods.
+
+## Does it work with server rendering?
+
+Yes. The React components render their full markup on the server; canvas layers draw after hydration. The custom-element modules do not touch the DOM when imported on the server and upgrade in the browser. Both can be imported from Next.js server components.
+
+## How large is a component?
+
+An Interaction or Pixel UI component is one file of a few hundred lines, plus small shared modules (colour reading, motion, sparks) that every component reuses. A Location component is a larger file, typically one to two thousand lines, plus the shared geometry and the embedded world data that every Location component reuses. A custom element and its engine are typically 10 to 20 KB minified, before compression; Pixel Lab and Pixel HD share the engine, so the second element costs only its own file.
+
+## Which browsers are supported?
+
+Current versions of Chrome, Edge, Firefox and Safari. The components use canvas 2D, `ResizeObserver`, `IntersectionObserver` and the Web Animations API; the custom elements also use shadow DOM and `ElementInternals` for form controls.
+
+## Some components show data I didn't provide.
+
+Every component runs on its own, so components that display records ship with demo data. Components marked **Your data** take your records through a `data` property or attribute and show the demo data only until you pass it. Components marked **demo data** cannot show your own data yet: treat them as templates and replace the generated data in their source before they show anything real. See [Your data](/docs/data) for the full list.
+
+## How do I change the colours?
+
+Change your shadcn theme, or the `--lumesec` accent tokens. To restyle only the custom elements, set their `--ui-*` overrides. See [Theming](/docs/theming).
+
+## Who makes this?
+
+LumeSec Technologies GmbH. LumeSec builds SecureGrid and the AI Operating Platform. Elements is where the design team publishes the components it builds along the way.
+
+## Where do I report a problem?
+
+Use **Report an issue** on any page, or open an issue on [GitHub](https://github.com/lumesec/elements-ui/issues).

@@ -1,0 +1,73 @@
+---
+title: "Text area with budget"
+description: "Auto-growing text area with a pixel character budget that turns amber near the limit and blinks red when over, marking the form invalid."
+tag: px-textarea
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-textarea" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-textarea" />
+
+## Installation
+
+<Install tag="px-textarea" />
+
+## Usage
+
+<Usage tag="px-textarea" />
+
+## Behaviour
+
+Grows with its content and shows the character budget as pixels that turn amber near the limit. Going over is allowed but blinks red and marks the form invalid.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Controlled text. Use with `onValueChange`. |
+| `defaultValue` | `string` | `""` | Initial text when uncontrolled. A form reset restores it. |
+| `limit` | `number` | `280` | Character budget. Typing past it is allowed but marks the field invalid. |
+| `label` | `React.ReactNode` | — | Label above the field, linked to the textarea. |
+| `placeholder` | `string` | — | Placeholder of the textarea. |
+| `name` | `string` | — | Form field name; the text submits under it. |
+| `disabled` | `boolean` | `false` | Disables the textarea and dims the field. |
+| `required` | `boolean` | `false` | Marks the textarea as required for form validation. |
+| `readOnly` | `boolean` | `false` | Makes the textarea read-only. |
+| `onValueChange` | `(value: string) => void` | — | Called on every edit with the new text. |
+| `onValueCommit` | `(value: string) => void` | — | Called when the textarea commits a change: on blur after editing (the native `change` event). |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Accessibility
+
+- A native `<textarea>` labelled by a `<label htmlFor>`.
+- The counter ("40 left", or "−5" when over) describes the textarea (`aria-describedby`) in words, for example "40 of 120 characters left". It is not a live region: a visually hidden `role="status"` announces the budget only when the text reaches 80% of the limit or goes over it.
+- Over the limit the textarea has `aria-invalid` and a custom validity message.
+- The pixel budget bar is `aria-hidden`.
+- A native `<textarea>` submits the text under `name`. Over `limit` it sets the custom validity message "Keep it to N characters or fewer", which blocks submission and anchors the browser's validation bubble to the field. Form reset restores `defaultValue` and calls `onValueChange` when that changes the text.
+- Reduced motion: the budget bar jumps to the new length and the over-limit pixels do not blink.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--card`, `--border`, `--lumesec`, `--lumesec-warning` and `--destructive`.
+
+## Notes
+
+- The textarea grows with its content from a minimum height of 84 px, refits when its width changes, and has no resize handle.
+- The root carries `data-zone` set to `ok`, `warn` (from 80% of the limit) or `over`.
+- `className` and other `div` props go to the wrapper; textarea attributes are the props listed above.
+
+<RelatedComponents tag="px-textarea" />

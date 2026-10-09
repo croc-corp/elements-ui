@@ -1,0 +1,74 @@
+---
+title: "Stat tile"
+description: "Stat tile whose number counts up over a shimmer of dots; hovering the sparkline shows the value under the pointer."
+tag: hf-stat
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-stat" />
+
+<Callout title="Your data">
+
+Set `value`, `delta` and the sparkline `data`. Without them the tile shows a demo number, a demo delta and a generated sparkline. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-stat" />
+
+## Installation
+
+<Install tag="hf-stat" />
+
+## Usage
+
+<Usage tag="hf-stat" />
+
+## Behaviour
+
+The number counts up over a shimmer of dots; hovering the sparkline swaps it for the value under the pointer.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `value` | `value` | `number` | `48210` | Displayed value. Observed: a change counts up from the number currently shown. |
+| `decimals` | `decimals` | `number` | `0` | Decimal places. With 0 the number uses en-US thousands separators. Observed. |
+| `prefix` | `prefix` | `string` | — | Text before the number. Observed. |
+| `suffix` | `suffix` | `string` | — | Text after the number. Observed. |
+| `label` | `label` | `string` | `Messages this month` | Caption above the number, also read by the live region. Observed. |
+| `delta` | `delta` | `string` | `+12.4%` | Badge text. Green, or red when it starts with `-` or `−`. An empty value hides it. Observed. |
+| `data` | `data` | `string` | — | Comma-separated sparkline values. Needs at least three numbers; otherwise a generated 24-point series is shown. Observed. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `number` | Setting it writes the attribute and counts to the new value. |
+| `series` (read-only) | `number[]` | Sparkline values, from `data` or the generated series. |
+
+## Accessibility
+
+- The number is text in the monospace font with tabular figures. It changes on every frame while counting, so it is `aria-hidden`, as is the sparkline canvas; the live region below carries the value.
+- A visually hidden `aria-live="polite"` region holds the label and final formatted value, for example `Messages this month: 48,210`, updated on each change.
+- Sparkline hover values are pointer-only.
+- Reduced motion: the number and sparkline appear at once without counting or the shimmer behind the number.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono` and `--ui-muted`.
+
+## Notes
+
+- Hovering the sparkline shows the raw series value rounded to one decimal, without `prefix` or `suffix`.
+
+<RelatedComponents tag="hf-stat" />

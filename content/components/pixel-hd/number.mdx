@@ -1,0 +1,98 @@
+---
+title: "Number stepper"
+description: "Integer stepper whose number rolls over a dotted wash; holding a button repeats faster, and stepping past a limit shakes and flashes red."
+tag: hf-number
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-number" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-number" />
+
+## Installation
+
+<Install tag="hf-number" />
+
+## Usage
+
+<Usage tag="hf-number" />
+
+## Behaviour
+
+The number rolls up or down over a dotted wash, and a scan line crosses the dots on every step. Hold a button to repeat faster, with heat and sparks building up; bumping the limit flashes red. Click the number to type.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `value` | `value` | `number` | `5` | Current value, rounded and clamped to `min`–`max`. Observed: a change rolls to the new number without firing events. Reflects the current value. |
+| `min` | `min` | `number` | `1` | Lowest allowed value. Observed: a change re-clamps the value. |
+| `max` | `max` | `number` | `50` | Highest allowed value. Observed: a change re-clamps the value. |
+| `label` | `label` | `string` | `Seats` | Visible label, associated with the number field. Observed. |
+| `price` | `price` | `number` | — | Unit price. When set, the line below reads `<value> × <currency><price> = <currency><total> / month`. Observed. |
+| `currency` | `currency` | `string` | `€` | Currency symbol used with `price`. Observed. |
+| `unit` | `unit` | `string` | — | Text shown below the stepper when `price` is not set. Observed. |
+| `name` | `name` | `string` | — | Form field name used when the element is inside a form. |
+| `disabled` | `disabled` | `boolean` | `false` | Presence attribute. Disables the field and buttons; a disabled ancestor `<fieldset>` does the same. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `input` | `onInput` | `{ value: number }` | Fires on each change from the buttons, keys or typed entry. Not fired when `value` is set from code. |
+| `change` | `onChange` | `{ value: number }` | Fires 300 ms after the last `input`, so holding a button produces one `change`. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `number` | Current value. Setting it writes the `value` attribute; no events fire. |
+| `min` (read-only) | `number` | The `min` attribute, or 1. |
+| `max` (read-only) | `number` | The `max` attribute, or 50. |
+| `form` (read-only) | `HTMLFormElement \| null` | The owning form, from `ElementInternals`. |
+| `name` (read-only) | `string \| null` | The `name` attribute. There is no setter; set the attribute instead. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowUp / ArrowDown | In the number field: add or subtract 1. |
+| PageUp / PageDown | In the number field: add or subtract 10. If that would pass `min` or `max`, the value stays and the field flashes red. |
+| Enter | In the number field: commit the typed number and leave the field. |
+| Enter / Space | On the − or + button: step by 1. At `min` or `max` the field shakes and flashes red instead. |
+
+## Accessibility
+
+- The number is an `<input>` with `role="spinbutton"`, `inputmode="numeric"`, `aria-valuenow`, `aria-valuemin` and `aria-valuemax`, named by the visible label.
+- The − and + buttons have `aria-label` `Decrease` and `Increase`. At a limit they get `aria-disabled="true"` but stay focusable, so focus is not lost.
+- A visually hidden `aria-live="polite"` region announces the label, the value and the price or unit line 300 ms after the value settles, so holding a button gives one announcement.
+- The visible number is text marked `aria-hidden`, because the spinbutton already exposes the value; while the input has focus, its own text replaces it. The wash and sparks are on an `aria-hidden` canvas.
+- Form-associated through `ElementInternals`.
+- Submits the integer as a string under `name`. There is no validation. Form reset restores the value from the first connect; `disabled` or a disabled fieldset disables the field and buttons.
+- Reduced motion: the number and the line below change without rolling, and the scan line, shake and sparks are skipped; the red flash and heat tint remain.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-raised` and `--ui-surface`.
+
+## Notes
+
+- Holding − or + repeats after 420 ms, speeding up from 160 ms to 35 ms per step, and stops at `min` or `max`. While a button is held, the number and the line below swap without rolling.
+- Clicking the number focuses the field for typing. The typed text is parsed as an integer and clamped when the field loses focus.
+- Changes to `value` from code, through the attribute or the property, roll the number but fire no events.
+- While typing, the inner field's native `input` events stay inside the shadow root; only the element's own `input` and `change` events, with `value` in `detail`, reach the host.
+- The host is `inline-block`; the buttons and number area are 40px tall. The number is set in the mono font with tabular figures.
+
+<RelatedComponents tag="hf-number" />

@@ -1,0 +1,35 @@
+---
+title: Motion
+description: How the components move, why they stay still most of the time, and what they cost to run.
+updated: "2026-10-09"
+---
+
+Motion in Elements marks a change of state. It is not ambient decoration. The rules below apply to every collection.
+
+## Rules
+
+1. **Plain until earned.** A slider is a slider until it reaches its special state. The Ultracode trail only grows at the top level.
+2. **Directional growth.** Effects start at an origin and travel one way, with a slightly irregular front, and stop where they should: the effort trail covers three quarters of the track.
+3. **Bursts reach past the edge.** When a state is reached, sparks may fly past the component's bounds on an overflow layer, with a brief flash. A small sparkle does not register.
+4. **Labels roll.** A changing label rolls in like a picker wheel, from above or below to match the direction of the change.
+5. **Springs, slightly under-damped.** Thumbs and indicators settle with a short overshoot, then stop.
+6. **Numbers are mechanical.** Counters roll digit by digit in tabular figures, so their width never changes.
+
+## Performance
+
+- Canvases are sized to the device pixel ratio and redrawn only while something changes. When a component settles, its animation loop stops.
+- Components off screen pause: an intersection observer stops their loop and their demo data timers.
+- The React components have no runtime dependencies beyond React and shadcn's `cn` helper. Animation, colour reading and sparks come from small shared modules in `lib/lumesec`; a custom element and its engine are one module, typically 10 to 20 KB minified.
+- Live previews on this site load each component's module only when it scrolls near the viewport.
+- React components keep animation state in refs and draw from one requestAnimationFrame loop per canvas, so an animation never re-renders the component tree.
+
+## Reduced motion
+
+With `prefers-reduced-motion: reduce`:
+
+- Loops, shimmer and pulses stop.
+- Traffic, spark and burst pixels are not drawn.
+- Springs and rolls are replaced by an immediate change.
+- Values, labels and colours still update, so no information is lost.
+
+You can test this in Chrome DevTools under Rendering, Emulate CSS media feature `prefers-reduced-motion`.

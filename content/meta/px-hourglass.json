@@ -1,0 +1,36 @@
+{
+  "summary": "Falling-sand hourglass that counts down to a usage reset; the remaining time is derived from the sand left in the top chamber.",
+  "attributes": [
+    { "name": "duration", "type": "number", "default": "30", "description": "Countdown length in seconds for a full top chamber; a missing, invalid or non-positive value uses 30. A later change re-times the sand left in the top chamber to run out in that many seconds." }
+  ],
+  "events": [
+    { "name": "flip", "detail": "{}", "description": "Fires after the hourglass has turned over." },
+    { "name": "reset", "detail": "{}", "description": "Fires once when the top chamber runs empty, meaning the limit has reset." }
+  ],
+  "methods": [
+    { "signature": "flip()", "description": "Turns the hourglass over so the sand runs back. Ignored while a flip is animating." }
+  ],
+  "properties": [
+    { "name": "duration", "type": "number", "readonly": false, "description": "Countdown length in seconds; reflects the `duration` attribute, `30` when it is missing, invalid or not positive." }
+  ],
+  "keyboard": [
+    { "keys": "Enter / Space (on the glass)", "action": "Flip the hourglass." }
+  ],
+  "accessibility": [
+    "The glass is focusable (`tabindex=\"0\"`) with `role=\"button\"` and `aria-label=\"Flip the hourglass\"`.",
+    "A native \"Flip\" button performs the same action.",
+    "The countdown is plain text. The status line above it (\"Usage resets in\", \"Limit reset · flip to start\") is an `aria-live=\"polite\"` region. The canvas sits inside the glass button."
+  ],
+  "motion": "With reduced motion, the flip happens instantly without the rotation, text swaps without the roll and the completion sparks are skipped; the sand simulation still runs.",
+  "slots": [],
+  "notes": [
+    "The host gets a `data-done` attribute while the top chamber is empty, which turns the time green; it is cleared on the next flip.",
+    "Flipping part-way through inverts the current sand, so the remaining time becomes the elapsed time.",
+    "The sand keeps time from the clock: after the element was off screen or the tab was hidden, it runs fast until it has caught up. Once the top chamber is empty and the sand has settled, the element stops drawing until the next flip.",
+    "The glass canvas is a fixed 120 by 168px."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Set `duration` to the seconds left until your limit resets, and again whenever you learn a new value; nothing else is shown."
+  }
+}

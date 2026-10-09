@@ -1,0 +1,28 @@
+{
+  "summary": "Colour picker made of pixel cells with a fisheye under the pointer; a new hue ripples across the grid from where you clicked.",
+  "attributes": [],
+  "events": [
+    { "name": "change", "detail": "{ hex: string }", "description": "Fires when the selected cell or the hue changes, with the colour as lowercase `#rrggbb`." }
+  ],
+  "methods": [
+    { "signature": "setHue(hue: number)", "description": "Sets the hue in degrees (rounded and wrapped to 0 to 359), ripples it across the grid and fires `change`. A value that is not a finite number is ignored." }
+  ],
+  "properties": [
+    { "name": "hex", "type": "string", "readonly": true, "description": "Current colour as lowercase `#rrggbb`." }
+  ],
+  "keyboard": [
+    { "keys": "Arrow keys", "action": "Move the selection one cell in the grid; nothing fires at the edge." },
+    { "keys": "PageUp / PageDown", "action": "Shift the hue by +15 or -15 degrees." }
+  ],
+  "accessibility": [
+    "The canvas is focusable with `role=\"group\"` and `aria-label=\"Colour picker. Arrow keys move in the grid, Page Up and Page Down change the hue.\"`.",
+    "The hex readout is an `aria-live=\"polite\"` region; the HSL value is shown as plain text beside it.",
+    "Copy is a native button whose text changes to \"Copied\" or \"Select it\" for 1.4 seconds."
+  ],
+  "motion": "With reduced motion, a new hue applies to the whole grid at once, cells do not swell under the pointer and the ring around the selected cell holds still.",
+  "slots": [],
+  "notes": [
+    "The grid is 16 columns of saturation (15% to 100%) by 9 rows of lightness (88% down to 12%), with a 36-step hue strip below. It starts at hue 262.",
+    "Copy uses `navigator.clipboard.writeText`. The canvas is 196px tall and animates continuously while on screen, except under reduced motion."
+  ]
+}

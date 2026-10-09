@@ -1,0 +1,32 @@
+---
+title: Use with AI
+description: Every page has a Markdown twin, the whole documentation is available as one file, and every page can be opened in ChatGPT, Claude or Perplexity, every component in v0.
+updated: "2026-10-09"
+---
+
+The documentation is written for people first and is published in forms that language models read well.
+
+## Markdown for every page
+
+Add `.md` to any documentation or component URL to get the page as Markdown, with the preview replaced by its markup and the install and usage blocks written out as code.
+
+```bash
+curl https://elements.lumesec.ai/components/pixel-hd/gauge.md
+```
+
+Every page also has **Copy page** and **View as Markdown** under its title.
+
+## llms.txt
+
+| File | Contents |
+| --- | --- |
+| [/llms.txt](/llms.txt) | An index of every guide and component with a link to its Markdown |
+| [/llms-full.txt](/llms-full.txt) | Every guide and every component page in one file |
+
+## Open in
+
+**Open in** on each page starts a conversation in ChatGPT, Claude or Perplexity that reads the page first. Component pages add **Open in v0**, which loads the registry item into a new v0 project.
+
+## In your editor
+
+Register `@lumesec` in `components.json` and run the shadcn MCP server. See [Registry and MCP](/docs/registry).

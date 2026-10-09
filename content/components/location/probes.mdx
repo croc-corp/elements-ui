@@ -1,0 +1,87 @@
+---
+title: "Global checks"
+description: "Uptime checks from many locations against one target: the arcs race to the target, so the order they land in is the latency ranking."
+tag: geo-probes
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-probes" />
+
+<Callout title="Your data">
+
+Pass your probe locations as `probes` and each round's results as a new `results` array, with `onRun` to start a check from the button. Without `results` the component runs demo rounds with invented latencies. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-probes" />
+
+## Installation
+
+<Install tag="geo-probes" />
+
+## Usage
+
+<Usage tag="geo-probes" />
+
+## Behaviour
+
+Uptime checks from many locations against one target. Each round, every probe fires at the same moment and the arcs race to the target; each arrives after its own measured time, so the order they land in is the latency ranking.
+
+As each result lands, its row slides into place in the ranked list and the median and 95th percentile roll. A failed check breaks off halfway with red sparks, and its row drops to the bottom as a timeout.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `results` | `readonly ProbeResult[]` | — | The latest round: `{ probe, ms }` per probe, with `ms: null` for a failed check. A new array with different results starts a round; an array with the same results does not. The first array is shown at once, without a round. Results for unknown probe ids are ignored. Without `results` the component runs demo rounds. |
+| `target` | `ProbeTarget` | `eu-central (Frankfurt)` | `{ label, lat, lon }` that every probe checks. The label shows in the header and beside the target on the map. A target with a latitude outside ±90° or a coordinate that is not finite falls back to the default. |
+| `probes` | `readonly ProbeSite[]` | `12 demo probes` | `{ id, label, lat, lon }` for each location that runs the check. The label is the name in the ranked list. Entries without an id or with invalid coordinates are skipped; an empty array shows the target and "No probes". |
+| `interval` | `number` | `10` | Seconds between demo rounds, from the start of one round to the start of the next, at least 3. Demo rounds only run while the component is on screen. |
+| `timeScale` | `number` | `6` | Animation milliseconds per measured millisecond: with 6, a 150 ms result takes 0.9 s to arrive. No arc takes longer than 12 s. |
+| `slowMs` | `number` | `300` | Results at or above this many milliseconds show their time, bar and timeline block in the warning colour. |
+| `onRun` | `() => void` | — | Called by the Run check button. With `results`, the button then shows Checking until a new array arrives (at most 15 s). With `results` and without `onRun` there is no button. Without `results` the button runs a demo round. |
+| `onRound` | `(results: readonly ProbeResult[]) => void` | — | Called with the round's valid results once every result has landed, or once the round completed early. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space | On Run check: starts a check. Ignored while a round plays. |
+
+## Accessibility
+
+- The ranked list is an ordered list labelled "Results, fastest first" in rank order; each row reads its place, the probe and its time, "pending" or "timeout". Arrivals are not announced one by one.
+- When a round completes, a polite live region announces one summary, for example "Round 4: 11 of 12 passed, median 94 ms."
+- Run check is a native button. While a round plays it is `aria-disabled` and reads "Checking", so focus stays on it.
+- The p50 and p95 chips and the round number read as plain text; the rolling figures are hidden from assistive technology.
+- The map is an image labelled with the number of probes and the target; its canvases, markers and labels are `aria-hidden`. The arrival timeline is `aria-hidden`; the list and the chips carry the same data.
+- Reduced motion: a round completes at once: results appear in rank order without the volley, row movement, arrival rings, cracks or sparks, the timeline does not sweep, and p50, p95 and the times change without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--lumesec-shine`, `--lumesec-warning`, `--destructive`, `--card`, `--card-foreground`, `--background`, `--muted`, `--muted-foreground`, `--foreground` and `--border`.
+
+## Notes
+
+- Each round every probe fires at the same moment. An arc takes `ms × timeScale` to reach the target with linear timing, so the order of arrival is the latency ranking. A failed check runs to half of a 1.4 s path, then breaks into red sparks and its drawn part fades as a dashed red line.
+- Rows sit at their rank on springs: each result moves to its place among the landed ones as it lands, pushing the rows still pending down. Timeouts go to the bottom. Probes without a result show "pending" until the round ends, then "–".
+- Bars, the timeline and its ticks share one scale per round, about 8 % above the slowest result. The p50 and p95 markers on the timeline and the chips in the header follow the landed results.
+- A new round completes a playing one first. A round that starts or plays while the component is off screen completes at once.
+- Pointing at a row shows its probe's whole path on the map and its name beside the probe.
+- The map is an Equal Earth projection cropped to 56° S to 76° N, drawn from the embedded world data without map tiles.
+
+<RelatedComponents tag="geo-probes" />

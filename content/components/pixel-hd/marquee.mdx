@@ -1,0 +1,62 @@
+---
+title: "Logo marquee"
+description: "Two rows of placeholder wordmarks drifting in opposite directions between dotted rules; the row under the pointer slows down."
+tag: hf-marquee
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-marquee" />
+
+<Callout title="Demo data" type="warning">
+
+The ten wordmarks are fictional placeholder logos; only `label` can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-marquee" />
+
+## Installation
+
+<Install tag="hf-marquee" />
+
+## Usage
+
+<Usage tag="hf-marquee" />
+
+## Behaviour
+
+Two rows of placeholder wordmarks drifting in opposite directions between dotted rules, faded at the edges. The row under your pointer slows and the wordmark under it lights up on a dotted plate.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `Placeholder logos · teams building with it` | Caption above the rows. Read once on connect. |
+
+## Accessibility
+
+- The moving rows repeat each wordmark and are `aria-hidden`, as is the canvas; a visually hidden text lists the logo names once.
+- The caption above the rows is plain text.
+- Reduced motion: the rows do not move; the wordmark under the pointer is still highlighted.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-font`, `--ui-mono` and `--ui-muted`.
+
+## Notes
+
+- The ten wordmarks are fictional placeholders built into the source; there is no attribute to supply logos.
+- Wordmarks are text in the page's sans, mono or a serif fallback stack, faded at both edges by a mask; the dotted rules and separators are on the canvas.
+- The row under the pointer slows to 15% speed, and the wordmark under it turns the accent colour on a dotted plate. The marquee is 104px tall and fills the width.
+
+<RelatedComponents tag="hf-marquee" />

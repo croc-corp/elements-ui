@@ -1,0 +1,64 @@
+---
+title: "Pagination"
+description: "Pagination with previous and next buttons, page numbers and ellipses, where a pixel block slides to the page you pick."
+tag: px-pagination
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-pagination" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-pagination" />
+
+## Installation
+
+<Install tag="px-pagination" />
+
+## Usage
+
+<Usage tag="px-pagination" />
+
+## Behaviour
+
+Page buttons with ellipses, where the current-page block slides to the page you pick.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<nav>` (`React.ComponentProps<"nav">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `total` | `number` | — | Number of pages. Rounded down; a value below 1, or not a number, shows one page. |
+| `page` | `number` | — | Controlled current page, from 1. Rounded and clamped to 1 to `total`. Use with `onPageChange`. |
+| `defaultPage` | `number` | `1` | Initial page when uncontrolled. |
+| `onPageChange` | `(page: number) => void` | — | Called when the user picks a page. Changing `page` from code does not call it. |
+
+### Ref
+
+`ref` points at the root `HTMLElement`.
+
+## Accessibility
+
+- The root is a `<nav>` with `aria-label="Pagination"` (pass `aria-label` to change it).
+- Page buttons are native buttons labelled "Page N"; the current one has `aria-current="page"`.
+- The previous and next buttons are labelled "Previous page" and "Next page" and are disabled at the ends.
+- Ellipses are `aria-hidden`. After a pick, focus stays on the pressed button, so Next can be pressed repeatedly; when that button becomes disabled (Next on the last page), focus moves to the new current page.
+- Reduced motion: the current-page block jumps instead of sliding.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-foreground`, `--foreground` and `--muted-foreground`.
+
+## Notes
+
+- Up to seven pages are all shown. Beyond that it shows the first and last page, a window around the current page and ellipses.
+- It does not navigate or load data; handle `onPageChange`.
+
+<RelatedComponents tag="px-pagination" />

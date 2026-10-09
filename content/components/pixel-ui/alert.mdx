@@ -1,0 +1,68 @@
+---
+title: "Inline alert"
+description: "Inline alert in four tones with a pixel icon and a glowing stripe; dismissing scatters the stripe and collapses the alert."
+tag: px-alert
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-alert" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-alert" />
+
+## Installation
+
+<Install tag="px-alert" />
+
+## Usage
+
+<Usage tag="px-alert" />
+
+## Behaviour
+
+Info, success, warning and error, each with a pixel icon and a glowing stripe. Dismissing scatters the stripe and collapses the alert.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | — | Controlled visibility. Use with `onOpenChange`; turning it off plays the dismiss animation before the alert hides. |
+| `defaultOpen` | `boolean` | `true` | Initial visibility when uncontrolled. |
+| `type` | `"info" \| "success" \| "warning" \| "error"` | `"info"` | Colour, icon and ARIA role. |
+| `heading` | `React.ReactNode` | — | Bold title above the message; left out when empty. |
+| `children` | `React.ReactNode` | — | The message. |
+| `dismissible` | `boolean` | `false` | Shows a dismiss button. |
+| `onOpenChange` | `(open: boolean) => void` | — | Called with `false` when the dismiss button is pressed. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Accessibility
+
+- `error` and `warning` alerts have `role="alert"`; `info` and `success` alerts have `role="status"`.
+- The dismiss button is a native button labelled "Dismiss".
+- The icon and stripe are drawn on an `aria-hidden` canvas; the tone is not conveyed as text.
+- While it collapses the alert is `inert`, and once dismissed the root is `hidden` and leaves the accessibility tree.
+- If focus is inside the alert when it closes, for example on its dismiss button, focus moves to the next focusable element on the page (where Tab would go), or to the previous one when nothing follows.
+- Reduced motion: the stripe glow stops, and dismissing hides the alert at once without scattering pixels.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-shine`, `--lumesec-success`, `--lumesec-warning`, `--destructive`, `--border`, `--card`, `--foreground` and `--muted-foreground`.
+
+## Notes
+
+- Uncontrolled alerts stay hidden after dismissal; control `open` to show one again.
+- The root carries `data-state="open"` or `data-state="closed"` and `data-type`.
+
+<RelatedComponents tag="px-alert" />

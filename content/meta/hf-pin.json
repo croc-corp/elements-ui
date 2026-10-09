@@ -1,0 +1,38 @@
+{
+  "summary": "Numeric PIN pad with rippling keys and dot feedback: a wrong code shakes into red static, the right one sends a green wave.",
+  "attributes": [
+    { "name": "code", "type": "string", "default": "2468", "description": "The expected PIN. Its length sets the number of dots. Compared in the browser." },
+    { "name": "label", "type": "string", "default": "Enter your PIN", "description": "Title above the dots. Read once on connect." },
+    { "name": "hint", "type": "string", "description": "Status text under the title. Defaults to `<n> digits`, where `<n>` is the length of `code`." },
+    { "name": "success", "type": "string", "default": "Unlocked", "description": "Status text after a correct PIN." }
+  ],
+  "events": [
+    { "name": "unlock", "detail": "{}", "description": "Fires when the entered digits match `code`." },
+    { "name": "error", "detail": "{ tries: number }", "description": "Fires on a wrong PIN. `tries` is the number of attempts left: 2, 1, then 0. Does not bubble and is not composed: listen on the element itself, as the React `onError` prop does." }
+  ],
+  "methods": [],
+  "properties": [
+    { "name": "code", "type": "string", "readonly": true, "description": "The `code` attribute, or `2468`." }
+  ],
+  "keyboard": [
+    { "keys": "0–9", "action": "Enter a digit while the pad or one of its keys has focus." },
+    { "keys": "Backspace", "action": "Delete the last digit." },
+    { "keys": "Escape", "action": "Clear all digits." }
+  ],
+  "accessibility": [
+    "The pad is a focusable `role=\"group\"` labelled `PIN entry`, so digit keys work without focusing a key.",
+    "Keys are native buttons; the delete key has `aria-label=\"Delete\"`.",
+    "The dots have `role=\"img\"` and an `aria-label` such as `2 of 4 digits entered`, updated on every key.",
+    "The status line under the title is an `aria-live=\"polite\"` region: hint, wrong PIN with tries left, and success.",
+    "Ripples and dots are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion, dots do not pop, a wrong PIN does not shake or jitter, and the status changes without rolling; key ripples, red static and the green wave remain.",
+  "slots": [],
+  "notes": [
+    "Demo control: `code` sits in the markup and is compared in the browser, so it provides no security. Check real PINs on a server and use the events for the UI.",
+    "The PIN is checked 160 ms after the last digit; a delete or clear within that time cancels the check. Entry clears 0.9 s after a wrong PIN and 2.4 s after a correct one.",
+    "After three wrong PINs the status reads `Too many attempts · try again later`, then the counter resets to three; there is no lockout.",
+    "`error` stays on the element, so it does not reach `window` or global `error` handlers such as error-tracking scripts. `unlock` bubbles and is composed.",
+    "The pad is a fixed 236px wide and the host is `inline-block`."
+  ]
+}

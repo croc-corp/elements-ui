@@ -1,0 +1,85 @@
+---
+title: "Effort slider"
+description: "Six-level effort slider; reaching Ultracode bursts and grows a trail of light behind the thumb. Form-associated."
+tag: hf-effort
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-effort" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-effort" />
+
+## Installation
+
+<Install tag="hf-effort" />
+
+## Usage
+
+<Usage tag="hf-effort" />
+
+## Behaviour
+
+Same rules as the first one: below Ultracode it is a plain slider. At Ultracode it bursts, and a trail of light grows from the thumb toward the left, stopping three quarters along, with pulses running right to left. The level name rolls like a picker wheel.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `value` | `value` | `low \| medium \| high \| xhigh \| max \| ultracode` | `ultracode` | Selected level. Observed and reflected; a value set by markup or code is also the level a form reset restores. An unknown value on connect selects `ultracode`; unknown values set later are ignored. |
+| `recommended` | `recommended` | `low \| medium \| high \| xhigh \| max \| ultracode` | `medium` | Level marked `Recommended` under the track. Any other value hides the marker. Observed. |
+| `name` | `name` | `string` | — | Form field name. |
+| `disabled` | `disabled` | `boolean` | `false` | Presence attribute. The slider ignores pointer and keys and leaves the tab order; a disabled ancestor `<fieldset>` does the same. A disabled slider is not submitted. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `input` | `onInput` | `{ value: string, index: number, label: string }` | Fires each time the level changes during a drag or key press. `label` is the display name. |
+| `change` | `onChange` | `{ value: string, index: number, label: string }` | Fires when a level is committed on pointer release or key press, if it differs from the last committed level. |
+| `ultracode` | `onUltracode` | `{}` | Fires when the thumb settles on Ultracode after arriving from another level, including programmatic changes. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `value` | `string` | Selected level id. Setting it writes the attribute. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowUp | Next level. |
+| ArrowLeft / ArrowDown | Previous level. |
+| PageUp / PageDown | Two levels up or down. |
+| Home / End | First or last level. |
+
+## Accessibility
+
+- The track has `role="slider"`, `tabindex="0"`, `aria-label="Effort"`, `aria-valuemin="0"`, `aria-valuemax="5"`, `aria-valuenow` as the level index and `aria-valuetext` as the level name.
+- The level name in the header is `aria-hidden`.
+- While disabled, the track has `aria-disabled="true"` and `tabindex="-1"`.
+- Submits the level id, for example `high`, under `name`. No validation. Form reset restores the level from the `value` set by markup or code; a disabled slider is not submitted.
+- Reduced motion: the thumb jumps, there is no burst or sparks, the Ultracode trail is drawn once without moving pulses, and the level name swaps without rolling or shimmer.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--lumesec-shine` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-shine`.
+
+## Notes
+
+- Levels are fixed: Low, Medium, High, Extra (`xhigh`), Max and Ultracode.
+- The canvas extends 30px above and below the track and 8px to each side.
+
+<RelatedComponents tag="hf-effort" />

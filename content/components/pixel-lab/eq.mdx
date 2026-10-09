@@ -1,0 +1,73 @@
+---
+title: "Equalizer"
+description: "Seven-band pixel equalizer with spring-loaded bands, a smooth curve and a live spectrum behind; presets cascade band by band."
+tag: px-eq
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-eq" />
+
+<Callout title="Demo data" type="warning">
+
+The spectrum behind the bands is simulated; only the bands are a real control. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-eq" />
+
+## Usage
+
+<Usage tag="px-eq" />
+
+## Behaviour
+
+Seven bands on springs with a smooth curve drawn through them, over a live spectrum that reacts to the gains. Presets cascade band by band.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ gains: number[], preset?: string }` | Fires when a drag ends, on each ArrowUp or ArrowDown press, on a double-click reset and when a preset is chosen. `gains` holds seven target values in dB; `preset` is present only for presets. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `preset(name: "Flat" \| "Bass" \| "Vocal" \| "Air")` | Applies a preset with a left-to-right cascade and fires `change`. An unknown name is ignored. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight | Select the previous or next band. |
+| ArrowUp / ArrowDown | Raise or lower the selected band by 1 dB. |
+
+## Accessibility
+
+- The canvas is focusable with `role="group"` and `aria-label="Equalizer. Left and right pick a band, up and down change its gain."`.
+- Individual bands have no ARIA values. A visually hidden `aria-live="polite"` line reports the selected band and its gain after each arrow key, for example "1k Hz, +4.0 dB".
+- Preset buttons are native toggle buttons; `aria-pressed` marks the preset in effect and clears when a band is changed by hand.
+- Reduced motion: bands jump to their new gain instead of springing and the spectrum stops flickering, so the canvas only redraws on input; presets still apply band by band.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground` and `--lumesec`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent` and `--ui-fg`.
+
+## Notes
+
+- Bands are 60, 150, 400, 1k, 2.4k, 6k and 15k, each from -12 to +12 dB. Dragging snaps to 0.5 dB; double-clicking a band sets it to 0.
+- The spectrum is simulated and no audio is processed. The canvas is 196px tall.
+
+<RelatedComponents tag="px-eq" />

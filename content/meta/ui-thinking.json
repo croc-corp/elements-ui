@@ -1,0 +1,38 @@
+{
+  "kind": "react",
+  "summary": "Thinking indicator with a pixel wave and a rolling seconds counter; when finished it reads \"Thought for Ns\" and expands to show the reasoning.",
+  "props": [
+    { "name": "done", "type": "boolean", "default": "-", "description": "Whether thinking has finished (controlled). Use with `onDoneChange`. When it turns true, the glyph draws a check, the label rolls to \"Thought for Ns\" and the reasoning becomes expandable. Turning it false returns to thinking; the counter keeps running from the last start." },
+    { "name": "defaultDone", "type": "boolean", "default": "false", "description": "Whether it starts finished, when uncontrolled. A component that starts done reads \"Thought for 1s\"." },
+    { "name": "onDoneChange", "type": "(done: boolean) => void", "default": "-", "description": "Called when `finish()` or `restart()` changes the state." },
+    { "name": "onDone", "type": "(seconds: number) => void", "default": "-", "description": "Called when the state changes to done, with the whole seconds elapsed (at least 1). Not called when the component mounts already done." },
+    { "name": "children", "type": "React.ReactNode", "default": "-", "description": "The reasoning, shown in a collapsible panel once done." }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "UiThinkingHandle",
+    "methods": [
+      { "signature": "finish(): void", "description": "Finishes thinking. Same as setting `done`." },
+      { "signature": "restart(): void", "description": "Resets the counter to 0 and returns to the thinking state, collapsing the reasoning." }
+    ]
+  },
+  "subcomponents": [],
+  "keyboard": [{ "keys": "Enter / Space", "action": "On the label, once done: show or hide the reasoning." }],
+  "accessibility": [
+    "The label is a native `<button>` with `aria-expanded` and `aria-controls` pointing at the reasoning panel. It is disabled while thinking and enabled once done; activating it shows or hides the reasoning.",
+    "The collapsed reasoning is `inert`, so it is neither read nor reachable with Tab until it opens.",
+    "The check icon and the pixel-wave canvas are `aria-hidden`.",
+    "There is no live region, so the counter and the finished label are not announced."
+  ],
+  "motion": "With reduced motion the pixel wave holds at a fixed brightness, the label shimmer stops, and the label and counter swap text without rolling.",
+  "notes": [
+    "Seconds count from mount, or from `restart()`. The counter runs on a timer, so it stays correct while the component is off screen; the wave pauses there.",
+    "The labels \"Thinking\" and \"Thought for Ns\" are built in English."
+  ],
+  "tokens": ["--lumesec", "--lumesec-glint", "--foreground", "--muted", "--muted-foreground"],
+  "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { UiThinking } from \"@/components/lumesec/ui-thinking\";\n\nexport function Example() {\n  const [done, setDone] = React.useState(false);\n  React.useEffect(() => {\n    const timer = window.setTimeout(() => setDone(true), 4000);\n    return () => window.clearTimeout(timer);\n  }, []);\n  return (\n    <UiThinking done={done} onDone={(seconds) => console.log(`thought for ${seconds}s`)}>\n      The reasoning, shown once thinking is done.\n    </UiThinking>\n  );\n}\n",
+  "playground": {
+    "props": { "children": "Effort levels change how long the model reasons. Ultracode also lets the model plan multi-agent workflows on its own." },
+    "controls": [{ "name": "defaultDone", "kind": "boolean", "options": null, "default": "false" }]
+  }
+}

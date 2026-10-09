@@ -1,0 +1,30 @@
+{
+  "summary": "Seven-band pixel equalizer with spring-loaded bands, a smooth curve and a live spectrum behind; presets cascade band by band.",
+  "attributes": [],
+  "events": [
+    { "name": "change", "detail": "{ gains: number[], preset?: string }", "description": "Fires when a drag ends, on each ArrowUp or ArrowDown press, on a double-click reset and when a preset is chosen. `gains` holds seven target values in dB; `preset` is present only for presets." }
+  ],
+  "methods": [
+    { "signature": "preset(name: \"Flat\" | \"Bass\" | \"Vocal\" | \"Air\")", "description": "Applies a preset with a left-to-right cascade and fires `change`. An unknown name is ignored." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowLeft / ArrowRight", "action": "Select the previous or next band." },
+    { "keys": "ArrowUp / ArrowDown", "action": "Raise or lower the selected band by 1 dB." }
+  ],
+  "accessibility": [
+    "The canvas is focusable with `role=\"group\"` and `aria-label=\"Equalizer. Left and right pick a band, up and down change its gain.\"`.",
+    "Individual bands have no ARIA values. A visually hidden `aria-live=\"polite\"` line reports the selected band and its gain after each arrow key, for example \"1k Hz, +4.0 dB\".",
+    "Preset buttons are native toggle buttons; `aria-pressed` marks the preset in effect and clears when a band is changed by hand."
+  ],
+  "motion": "With reduced motion, bands jump to their new gain instead of springing and the spectrum stops flickering, so the canvas only redraws on input; presets still apply band by band.",
+  "slots": [],
+  "notes": [
+    "Bands are 60, 150, 400, 1k, 2.4k, 6k and 15k, each from -12 to +12 dB. Dragging snaps to 0.5 dB; double-clicking a band sets it to 0.",
+    "The spectrum is simulated and no audio is processed. The canvas is 196px tall."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The spectrum behind the bands is simulated; only the bands are a real control."
+  }
+}

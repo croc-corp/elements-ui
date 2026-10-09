@@ -1,0 +1,97 @@
+---
+title: "Anycast catchment"
+description: "Which point of presence serves which part of the world, as a dot map. Turn a site off and its neighbours flood the hole from their own side."
+tag: geo-catchment
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-catchment" />
+
+<Callout title="Your data">
+
+Pass your points of presence as `sites`, the ids in service as `active` and your request sources as `clients`. Without `sites` the component shows ten demo sites with demo traffic from 60 cities; your sites without `clients` show no request numbers. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-catchment" />
+
+## Installation
+
+<Install tag="geo-catchment" />
+
+## Usage
+
+<Usage tag="geo-catchment" />
+
+## Behaviour
+
+Which point of presence serves which part of the world. Every land dot belongs to its nearest active site, the borders between catchments are drawn brighter, and the selected site's area is lit in the accent colour. Point at the map to see which site serves that spot and the estimated round trip.
+
+Turn a site off to simulate an outage: its area drops out in a wave from the site, then the neighbouring sites flood the hole, each front starting at its own side. Turn it back on and it reclaims its area from its centre. Request shares roll to the new numbers, and a dotted strip shows every site's share of the traffic.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `sites` | `readonly CatchmentSite[]` | `CATCHMENT_DEMO_SITES` | The points of presence: `{ id, label, lat, lon, stretch? }`. `stretch` is how much longer the network path is than the great circle (default 1.5); it scales the round-trip estimates and decides the owner with `metric="latency"`. Sites without a finite position and repeated ids are skipped. Default: ten demo sites. An empty array shows the plain map and 'No sites'. |
+| `active` | `readonly string[]` | — | Ids of the sites in service (controlled). Use with `onActiveChange`. |
+| `defaultActive` | `readonly string[]` | `all sites` | Sites in service when uncontrolled. |
+| `onActiveChange` | `(active: readonly string[]) => void` | — | Called with the new list of ids, in `sites` order, when a switch turns a site on or off. |
+| `value` | `string \| null` | — | The selected site id (controlled), or null for none. Use with `onValueChange`. |
+| `defaultValue` | `string \| null` | `first site` | The selected site when uncontrolled. |
+| `onValueChange` | `(value: string \| null) => void` | — | Called when a marker or a list row selects a site, and with null when the selected site is pressed again. |
+| `clients` | `readonly CatchmentClient[]` | `demo traffic` | Request sources `{ lat, lon, weight }`, assigned to sites like the map. `weight` is the request rate in `unit`; entries with a weight of 0 or less are skipped. Default: the 60 demo cities, each sending its demo weight × 1,000, but only while `sites` is also undefined. With your sites and no clients, the share, request and round-trip values show '–'. |
+| `metric` | `"distance" \| "latency"` | `"distance"` | `distance`: the nearest site in service serves a place. `latency`: the site with the lowest estimated round trip (great-circle distance × the site's `stretch`) serves it. |
+| `unit` | `string` | `"req/s"` | Unit of the request numbers, shown in the list header and the readout. |
+| `projection` | `"equalEarth" \| "equirectangular"` | `"equalEarth"` | Map projection. Both crop the map to 56° S to 76° N; the map keeps the projection's aspect ratio. |
+| `pitch` | `number` | `4` | Spacing of the land dots in CSS px, clamped to 2 to 12. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves to the map's site markers (one tab stop, on the selected site), then through the list's switches. |
+| ArrowLeft / ArrowRight / ArrowUp / ArrowDown | On a marker: moves focus to the nearest marker in that direction on the map. |
+| Home / End | On a marker: moves focus to the first or last site. |
+| Enter / Space | On a marker: selects the site, or clears the selection when it is already selected. On a switch: turns the site on or off. |
+
+## Accessibility
+
+- Site markers are native buttons in a group labelled "Sites on the map", with one roving tab stop. `aria-pressed` marks the selected site; each label gives the site and its share, for example "Frankfurt, serves 17%", or "Frankfurt, off".
+- Each list row has a native `button` with `role="switch"` and `aria-checked`, labelled "\<site\> in service".
+- The list is the accessible data: each row reads the site, its share of requests and its request rate with the unit. Rolling numbers hide their outgoing text from assistive technology.
+- Service changes are announced in a polite live region, naming the site that took over the most traffic: "Frankfurt off. London now serves 31%." With no site left: "Frankfurt off. No site in service."
+- The canvases and the share strip are `aria-hidden`. The probe (pointing at the map) is pointer only; a click on a list row also selects its site.
+- Reduced motion: there is no intro, catchments reassign at once with no outage wave, flood front or flash, a new selection appears without its ring of light, the probe line appears without drawing on, markers do not pop and no sparks fly, and the shares, the share strip and the switches change without rolling or sliding.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--lumesec-shine`, `--destructive`, `--foreground`, `--muted-foreground`, `--muted`, `--card` and `--border`.
+
+## Notes
+
+- Each land dot belongs to the site in service with the smallest great-circle distance (or, with `metric="latency"`, the smallest distance × stretch). The assignment is recomputed only when the sites, the service list or the metric change. The land comes from an embedded world dataset; there are no map tiles.
+- The selected site's catchment is drawn in the accent colour and outlined with brighter dots. Other catchments are grey, and neighbours differ in density only, so borders read without a colour per site. A site that is off has a destructive marker with a static checker halo.
+- Turning a site off drops its dots out in a wave from the site, with a short destructive flash, and leaves a hole. The neighbouring sites then flood it from their own side at one speed, each dot flashing as its new site takes it. Turning a site on lets it reclaim its catchment from its centre. A toggle during a transition carries on from what the map shows at that moment.
+- On first view every site grows its catchment from its own position at once, and the fronts meet at the borders. Selecting a site spreads the accent through its catchment behind a ring of light; the old selection dissolves dot by dot.
+- Pointing at the map (or tapping it) draws a dotted line to the site that serves that spot, with a chip such as "Frankfurt · ~24 ms". The round trip is an estimate: twice the great-circle distance over 204 km per ms (light in fibre), times the site's stretch. It is not a measurement.
+- Shares and request rates count the `clients` each site serves; the readout under the map adds the request-weighted mean of the estimated round trips. The dotted strip below it shows every site's share in list order and grows or collapses with the shares.
+- Hit areas of close markers overlap, so a pointer click selects the marker nearest to the pointer. Labels sit on the side of their marker that clears the other markers.
+- From a container width of 560 px the list is a 224 px column beside the map; below that it moves under the map with taller rows for touch. The root is at most 660 px wide.
+- The animation runs only during transitions, the probe and sparks, and pauses while the map is off screen. The built-in text is English ("Sites", "Share", "Requests", "Round trip", "In service" and the announcements).
+
+<RelatedComponents tag="geo-catchment" />

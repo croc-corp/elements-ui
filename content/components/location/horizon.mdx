@@ -1,0 +1,81 @@
+---
+title: "Horizon globe"
+description: "The top of a large dotted globe rising from the bottom edge, for page heroes, with arcs that climb into the sky between places."
+tag: geo-horizon
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-horizon" />
+
+<Callout title="Your data">
+
+Pass your pairs of places as `connections`. Without it the component shows arcs between demo cities, and between demo land points where no two cities are on the visible cap. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-horizon" />
+
+## Installation
+
+<Install tag="geo-horizon" />
+
+## Usage
+
+<Usage tag="geo-horizon" />
+
+## Behaviour
+
+The top of a large dotted globe rising from the bottom edge, for page heroes. On first view the horizon line draws out from its middle and the land appears behind an uneven, bright front that spreads from the same point.
+
+Then connections leave the surface, climb into the sky above the horizon and come down in another region, where a ring of dots lights up, while a glint runs along the limb now and then. Your headline and actions are regular children over the sky. The globe drifts slowly while it is in view.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<section>` (`React.ComponentProps<"section">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `React.ReactNode` | — | Headline, copy and actions. They sit over the sky in a column above the globe and stay fully interactive. |
+| `connections` | `readonly HorizonConnection[]` | — | Pairs of places to arc between: `{ from: LatLon; to: LatLon }`. Pairs play in order, one every `arcInterval` seconds, when both ends are on the visible cap; the others wait until the drift brings them round. An empty array draws no arcs. Without it, demo pairs play. |
+| `center` | `LatLon` | `{ lat: 38, lon: -40 }` | The point shown in the lower third of the visible cap. The default shows the North Atlantic with both coasts. A new value springs into place. |
+| `capHeight` | `number` | `0.46` | Share of the root's height the cap takes, 0.25 to 0.7. |
+| `align` | `"center" \| "start"` | `"center"` | Alignment of the children: a centred column, or left-aligned with a wider inset. |
+| `atmosphere` | `boolean` | `true` | Draws the accent glow above the limb. The 1px limb line stays either way. |
+| `drift` | `boolean` | `true` | Turns the globe slowly from west to east, like the Earth, while it is on screen. |
+| `driftSpeed` | `number` | `1.2` | Drift in degrees of longitude per second. |
+| `reveal` | `"view" \| "mount" \| "none"` | `"view"` | When the land reveal plays: once about a third of the component is on screen, right after mount, or never (the land is there from the start). |
+| `arcInterval` | `number` | `1.4` | Seconds between new arcs. At most four arcs are in flight; each grows for 1.6 s, holds for 0.6 s and erases toward its destination over 0.9 s. |
+
+### Ref
+
+`ref` points at the root `HTMLElement`.
+
+## Accessibility
+
+- The root is a `section` and takes every `section` prop. Name it with `aria-labelledby` pointing at the headline in `children`.
+- The canvas is `aria-hidden` and ignores the pointer. The globe, the arcs and the glint are decoration; nothing a reader needs lives only in the canvas.
+- Children render above the canvas in document order and keep their own focus, keyboard and pointer handling.
+- The canvas fades in from its top edge and is opaque only from 38% of the height down (from just above the limb when a tall cap reaches higher), so text over the sky sits on the plain background.
+- Reduced motion: the land shows without the reveal, the globe does not drift, the glint along the limb is off, and up to three connections are drawn as still dotted arcs that change every 4 seconds, without comets or landing rings.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--background`, `--foreground`, `--card`, `--lumesec`, `--lumesec-glint` and `--lumesec-shine`.
+
+## Notes
+
+- Give the root its size, for example `h-[420px]` or a parent with a fixed height. It fills `h-full` with a minimum of 340px. The globe's radius is the larger of 0.95 × width and 1.25 × height, so narrow screens show a flatter, narrower cap.
+- On first view the horizon line draws out from its middle, then the land appears behind an uneven, bright front that spreads from the same point. The reveal plays once per mount.
+- Each arc leaves its source with a small ring of light, travels as a dotted line with a comet at its head and lands with a wider ring that flattens into an ellipse near the horizon. Arcs between distant places rise higher into the sky.
+- The animation runs only while the component is on screen and continues where it left off when it returns. With `drift` off, the loop also sleeps between arcs.
+- The globe is drawn from the embedded world data as land dots. There are no map tiles and no network requests.
+
+<RelatedComponents tag="geo-horizon" />

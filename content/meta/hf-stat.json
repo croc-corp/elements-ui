@@ -1,0 +1,75 @@
+{
+  "summary": "Stat tile whose number counts up over a shimmer of dots; hovering the sparkline shows the value under the pointer.",
+  "attributes": [
+    {
+      "name": "value",
+      "type": "number",
+      "default": "48210",
+      "description": "Displayed value. Observed: a change counts up from the number currently shown."
+    },
+    {
+      "name": "decimals",
+      "type": "number",
+      "default": "0",
+      "description": "Decimal places. With 0 the number uses en-US thousands separators. Observed."
+    },
+    {
+      "name": "prefix",
+      "type": "string",
+      "description": "Text before the number. Observed."
+    },
+    {
+      "name": "suffix",
+      "type": "string",
+      "description": "Text after the number. Observed."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Messages this month",
+      "description": "Caption above the number, also read by the live region. Observed."
+    },
+    {
+      "name": "delta",
+      "type": "string",
+      "default": "+12.4%",
+      "description": "Badge text. Green, or red when it starts with `-` or `−`. An empty value hides it. Observed."
+    },
+    {
+      "name": "data",
+      "type": "string",
+      "description": "Comma-separated sparkline values. Needs at least three numbers; otherwise a generated 24-point series is shown. Observed."
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [
+    {
+      "name": "value",
+      "type": "number",
+      "readonly": false,
+      "description": "Setting it writes the attribute and counts to the new value."
+    },
+    {
+      "name": "series",
+      "type": "number[]",
+      "readonly": true,
+      "description": "Sparkline values, from `data` or the generated series."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The number is text in the monospace font with tabular figures. It changes on every frame while counting, so it is `aria-hidden`, as is the sparkline canvas; the live region below carries the value.",
+    "A visually hidden `aria-live=\"polite\"` region holds the label and final formatted value, for example `Messages this month: 48,210`, updated on each change.",
+    "Sparkline hover values are pointer-only."
+  ],
+  "motion": "With reduced motion the number and sparkline appear at once without counting or the shimmer behind the number.",
+  "slots": [],
+  "notes": [
+    "Hovering the sparkline shows the raw series value rounded to one decimal, without `prefix` or `suffix`."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Set `value`, `delta` and the sparkline `data`. Without them the tile shows a demo number, a demo delta and a generated sparkline."
+  }
+}

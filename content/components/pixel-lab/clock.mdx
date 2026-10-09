@@ -1,0 +1,48 @@
+---
+title: "Morphing clock"
+description: "Live clock where each changing digit rolls to the next and sheds a few pixels; switching time zone rolls every digit at once."
+tag: px-clock
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-clock" />
+
+## Installation
+
+<Install tag="px-clock" />
+
+## Usage
+
+<Usage tag="px-clock" />
+
+## Behaviour
+
+A live clock where every changing digit rolls to the next one and sheds a few pixels. Switching time zone rolls every digit at once.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight / ArrowUp / ArrowDown | In the time-zone switch: select and focus the previous or next zone, wrapping at the ends. |
+
+## Accessibility
+
+- The time-zone switch is a `role="radiogroup"` with `aria-label="Time zone"`; each option has `role="radio"` and `aria-checked`. Only the checked option is in the tab order; arrow keys move the selection.
+- The time is text in a `role="timer"` element with `aria-live="off"`. Assistive technology reads one visually hidden line with the time and zone, for example "14:05:09, UTC"; the rolling digits are `aria-hidden`.
+- The 12-hour toggle is a native button with `aria-pressed`. The date line is plain text.
+- Reduced motion: digits change in place without rolling or shedding pixels; the colon still pulses each second.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- The zones are fixed: Local, UTC, Tokyo and New York, formatted with `Intl.DateTimeFormat`. In 12-hour mode, AM or PM is appended to the date line.
+- The digits are set in the monospace font, from 26 to 52px depending on the width. The pixel layer behind them draws only while pixels fly; between seconds the element sleeps.
+
+<RelatedComponents tag="px-clock" />

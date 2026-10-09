@@ -1,0 +1,67 @@
+---
+title: "Charge to generate"
+description: "Press-and-hold generate button: pixels spiral in as a ring fills, and release fires a shockwave sized to the charge, one to four variations."
+tag: px-charge
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-charge" />
+
+## Installation
+
+<Install tag="px-charge" />
+
+## Usage
+
+<Usage tag="px-charge" />
+
+## Behaviour
+
+Press and hold: pixels spiral in from the edges, the ring fills and the button starts to tremble. Let go and it fires a shockwave sized to how long you held, from one variation up to four.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `generate` | `onGenerate` | `{ count: number, charge: number }` | Fires on release after a long enough hold. `count` is 1 to 4 variations; `charge` is the fill level from 0 to 1, rounded to two decimals. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `start()` | Begins charging, as if the button were pressed. Ignored while charging or during the 2.4 seconds after a release fires. |
+| `release()` | Ends charging. Below 18% it shows "Hold longer" and fires nothing; otherwise it fires `generate`. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Space / Enter (held) | Charge while held; releasing the key fires. Moving focus away mid-hold cancels without firing. |
+
+## Accessibility
+
+- The control is a native button whose text follows the charge ("Hold to generate", "Charging…", "Keep holding…") and then reports the result ("N variations ready").
+- The line below the button is an `aria-live="polite"` region that reports the charge level after firing.
+- The canvas is decorative and has `aria-hidden="true"`.
+- Reduced motion: the button does not tremble or pop and no particles spiral in; spark bursts are skipped, while the ring fill and shockwave still draw.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--lumesec-foreground` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-on-accent`.
+
+## Notes
+
+- A full charge takes 1.6 seconds. The variation count is the charge times four, rounded, with a minimum of one.
+- The component is 196px tall.
+
+<RelatedComponents tag="px-charge" />

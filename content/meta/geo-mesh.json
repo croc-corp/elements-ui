@@ -1,0 +1,58 @@
+{
+  "kind": "react",
+  "summary": "The devices of a private network and how this device reaches each one, directly or through a relay server; an upgrade lets go of the relay with a wobble.",
+  "props": [
+    { "name": "device", "type": "MeshDevice", "default": "demo laptop", "description": "This device: `{ id, label, location?, lat, lon }`. Every path starts here, and the header names it. Without a device no paths are drawn and every peer shows as offline." },
+    { "name": "peers", "type": "readonly MeshDevice[]", "default": "6 demo peers", "description": "The other devices: `{ id, label, location?, lat, lon }`. `location` is shown under the name and read in the row's accessible name. Peers with a repeated id, the device's id or an invalid coordinate are skipped." },
+    { "name": "relays", "type": "readonly MeshRelay[]", "default": "3 demo relays", "description": "Relay servers: `{ id, label, lat, lon }`. The `id` is shown on the map and in the row chip (`via lhr`), the `label` in the detail line (`Relayed through London`)." },
+    { "name": "paths", "type": "readonly MeshPath[]", "default": "-", "description": "The current path to each peer: `{ peer, relay: string | null, ms, traffic? }`. `relay: null` is a direct connection, `ms` the round-trip latency, and `traffic` from 0 to 1 sets the packet rate. A peer without a path is offline. When a path changes, the map animates the change." },
+    { "name": "value", "type": "string | null", "default": "-", "description": "Selected peer id (controlled), or null for none. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "string | null", "default": "null", "description": "Selected peer when uncontrolled." },
+    { "name": "onValueChange", "type": "(value: string | null) => void", "default": "-", "description": "Called with the peer id when a peer is selected, and with null when the selection is cleared." },
+    { "name": "live", "type": "boolean", "default": "true", "description": "Runs the demo upgrades and fallbacks while the map is on screen. `false` shows the demo settled, with every peer direct except the phone. Has no effect once any data prop is given." },
+    { "name": "label", "type": "string", "default": "\"Mesh connections\"", "description": "Accessible name of the map. Its `aria-label` adds the device name and the number of direct, relayed and offline peers." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Tab", "action": "Moves to the device list. The rows share one tab stop." },
+    { "keys": "ArrowUp / ArrowDown", "action": "Moves focus to the device above or below." },
+    { "keys": "ArrowLeft / ArrowRight", "action": "Moves focus to the previous or next device." },
+    { "keys": "Home / End", "action": "Moves focus to the first or last device." },
+    { "keys": "Enter / Space", "action": "Selects the focused device, or clears the selection when it is already selected." },
+    { "keys": "Escape", "action": "Clears the selection." }
+  ],
+  "accessibility": [
+    "The peers are a `ul` labelled \"Devices\" of `button` rows with `aria-pressed` and one roving tab stop. Each row's accessible name reads like \"Build server, Milan, direct, 13 milliseconds\", \"NAS, Dublin, relayed through London, 20 milliseconds\" or \"Phone, Madrid, offline\".",
+    "The map has `role=\"img\"` and an `aria-label` such as \"Mesh connections from Work laptop: 5 direct, 1 relayed.\" Its markers are `aria-hidden` and mirror the selection for pointer users: a click or tap within 14 px of a peer marker selects that peer, and a click on the empty map clears the selection.",
+    "A polite live region announces path changes such as \"Build server is now direct, 13 ms.\" at most every 5 s. Changes in between are collected, and the latest three are read together.",
+    "Every name, count, latency and relay id is DOM text. The canvases are `aria-hidden`."
+  ],
+  "motion": "With reduced motion there is no first-view reveal, and no probes, flash, wobble, sparks, selection pulse or packets: a changed path crossfades from its old to its new shape over 150 ms, and the counts, chips and latencies swap without rolling.",
+  "notes": [
+    "The header names this device and counts the direct and relayed peers (and offline ones, when there are any), each next to a sample of its line style. Below it the map and the peer list sit side by side from 560 px of width, with the list scrolling when it is taller than the map; narrower, the list sits under the map in two columns (one below 320 px).",
+    "A relayed connection runs as two legs through its relay, drawn as grey dashes (two dots on, one off) with a gap around the relay square. A direct connection is a single line of accent dots. Every path starts at this device and bulges upward like a flight arc.",
+    "Packets run both ways on every path: outbound in `--lumesec`, inbound in `--lumesec-info`, at 0.5 + 2.5 × `traffic` per second in each direction, with at most 160 in flight.",
+    "When a relayed path becomes direct, two probes run toward each other along the direct line (at most 0.45 s). Where they meet the dot grid flashes in an uneven ring, the path lets go of the relay on an under-damped spring that overshoots by about 18 % and settles in about 0.7 s, and 12 sparks leave the relay in the direction the path pulled away; near the edge they fly past the map. The row's chip and latency roll to the new values at that moment; until then the list keeps the relayed values.",
+    "When a direct path falls back, it bends back through its relay without overshoot and is tinted `--lumesec-warning` for 1.2 s; the row's chip flashes in the same colour. A change of relay blends between the two relayed shapes.",
+    "Selecting a peer keeps its path and packets at full strength, dims the other paths to 0.3 and stops their packets, sends a short pulse from this device to the peer and names it on the map. The line under the map then reads like \"Direct, 13 ms\" or \"Relayed through London, 32 ms\"; with nothing selected it lists the relays.",
+    "Peers missing from `paths` are offline: a hollow dot, no path, an `offline` chip and no latency. A `relay` id that is not in `relays` shows as `via <id>`, and its path is drawn in the relayed style along the direct line. With no peers the list reads \"No other devices\".",
+    "The map uses the Equal Earth projection centred on this device's meridian, cropped to 50° S to 72° N and zoomed to fit every device, relay and possible path (up to 6 times), so the view stays put while paths change. Its height follows its width. Below 420 px the markers get smaller and the relay names leave the line under the map.",
+    "On first view the land dots light up from this device outward behind an uneven front, and the paths grow out of it. A peer that comes online later grows its path the same way; one that goes offline draws its path back in.",
+    "The animation runs only while the map is on screen. Colours follow the theme and are re-read when it changes."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass this device as `device`, the other devices as `peers`, your relay servers as `relays` and the current path to each peer as `paths`. Only while all four are undefined does the component show its demo: a laptop in Amsterdam with 6 invented peers in Europe and North America, 3 relays and invented latencies, each relayed peer going through the relay nearest to it, playing a seeded sequence of upgrades and fallbacks. Once any of them is given, the others default to empty."
+  },
+  "tokens": ["--lumesec", "--lumesec-glint", "--lumesec-shine", "--lumesec-info", "--lumesec-warning", "--foreground", "--muted-foreground", "--muted", "--card", "--card-foreground", "--background", "--border"],
+  "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { GeoMesh, type MeshDevice, type MeshPath, type MeshRelay } from \"@/components/lumesec/geo-mesh\";\n\nconst device: MeshDevice = { id: \"laptop\", label: \"Work laptop\", location: \"Amsterdam\", lat: 52.37, lon: 4.9 };\n\nconst peers: MeshDevice[] = [\n  { id: \"build\", label: \"Build server\", location: \"Milan\", lat: 45.46, lon: 9.19 },\n  { id: \"desktop\", label: \"Desktop\", location: \"Toronto\", lat: 43.65, lon: -79.38 },\n];\n\nconst relays: MeshRelay[] = [\n  { id: \"lhr\", label: \"London\", lat: 51.51, lon: -0.13 },\n  { id: \"iad\", label: \"Ashburn\", lat: 39.04, lon: -77.49 },\n];\n\nexport function Example({ paths }: { paths: MeshPath[] }) {\n  const [peer, setPeer] = React.useState<string | null>(null);\n  return <GeoMesh device={device} peers={peers} relays={relays} paths={paths} value={peer} onValueChange={setPeer} />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      { "name": "live", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "label", "kind": "string", "options": null, "default": "Mesh connections" }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "kind": "react",
+  "summary": "Form slider with a pixel track, a springy thumb, optional tick marks and a rolling value label with a prefix or unit.",
+  "props": [
+    { "name": "value", "type": "number", "default": "-", "description": "Controlled value. Use with `onValueChange`. Snapped to `step` and clamped to `min`..`max` for display." },
+    { "name": "defaultValue", "type": "number", "default": "min", "description": "Initial value when uncontrolled. A form reset restores it." },
+    { "name": "min", "type": "number", "default": "0", "description": "Lowest value." },
+    { "name": "max", "type": "number", "default": "100", "description": "Highest value." },
+    { "name": "step", "type": "number", "default": "1", "description": "Increment, greater than 0 (other values fall back to 1). Its decimal places set the display precision." },
+    { "name": "ticks", "type": "boolean", "default": "false", "description": "Draws a tick per step when there are 24 steps or fewer." },
+    { "name": "prefix", "type": "string", "default": "\"\"", "description": "Text before the formatted value, for example `€`." },
+    { "name": "unit", "type": "string", "default": "\"\"", "description": "Text after the formatted value, for example `%`." },
+    { "name": "label", "type": "React.ReactNode", "default": "-", "description": "Label above the track; also labels the thumb." },
+    { "name": "aria-label", "type": "string", "default": "-", "description": "Accessible name of the thumb when there is no visible `label`." },
+    { "name": "name", "type": "string", "default": "-", "description": "Form field name; the value submits under it as a string." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the slider, ignores pointer and keyboard input and removes the thumb from the tab order." },
+    { "name": "onValueChange", "type": "(value: number) => void", "default": "-", "description": "Called on every value change from dragging or keys." },
+    { "name": "onValueCommit", "type": "(value: number) => void", "default": "-", "description": "Called after each handled key press and when a drag ends, even if the value did not change." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowUp", "action": "Increase by one step." },
+    { "keys": "ArrowLeft / ArrowDown", "action": "Decrease by one step." },
+    { "keys": "PageUp / PageDown", "action": "Change by a tenth of the range (at least one step), snapped to `step`." },
+    { "keys": "Home / End", "action": "Jump to `min` / `max`." }
+  ],
+  "accessibility": [
+    "The thumb has `role=\"slider\"`, `tabindex=\"0\"`, `aria-labelledby` pointing at the label (or the `aria-label` prop when there is no `label`), `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and an `aria-valuetext` with the formatted value, including prefix and unit.",
+    "Pressing anywhere on the track moves focus to the thumb.",
+    "The track canvas is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the thumb moves to the value without the spring and the value label swaps without rolling.",
+  "form": "With `name`, a hidden input submits the value as a string. There is no validation. Form reset restores `defaultValue` and calls `onValueChange` when that changes the value.",
+  "notes": [
+    "Values are formatted with en-US digit grouping, for example `1,200`.",
+    "While dragging, the thumb follows the pointer exactly; a press without moving springs the thumb to the new value when released."
+  ],
+  "tokens": ["--foreground", "--muted-foreground", "--lumesec", "--lumesec-foreground", "--lumesec-shine"],
+  "usage": "import { PxSlider } from \"@/components/lumesec/px-slider\";\n\nexport function Example() {\n  return <PxSlider name=\"budget\" label=\"Monthly budget\" min={0} max={500} step={10} defaultValue={120} prefix=\"€\" />;\n}\n",
+  "playground": {
+    "props": { "label": "Monthly budget", "min": 0, "max": 500, "step": 10, "defaultValue": 120, "prefix": "€" },
+    "controls": [
+      { "name": "step", "kind": "number", "options": null, "default": "10" },
+      { "name": "ticks", "kind": "boolean", "options": null, "default": "false" },
+      { "name": "prefix", "kind": "string", "options": null, "default": "€" },
+      { "name": "unit", "kind": "string", "options": null, "default": "" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

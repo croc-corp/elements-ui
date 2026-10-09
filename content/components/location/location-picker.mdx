@@ -1,0 +1,104 @@
+---
+title: "Location picker"
+description: "Choose a point on a dot map by click, search or typed coordinates. The pin drops on a spring and lands with a splash that ripples the dots."
+tag: geo-location-picker
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-location-picker" />
+
+<Callout title="Your data">
+
+Pass your own places as `places`. Without it the search and snapping use 60 demo cities; nothing about the viewer's location is read or inferred, and the picker starts without a pin unless you pass one. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-location-picker" />
+
+## Installation
+
+<Install tag="geo-location-picker" />
+
+## Usage
+
+<Usage tag="geo-location-picker" />
+
+## Behaviour
+
+Choose a point on a map. Click or tap to drop the pin, search for a place, or type exact coordinates into the latitude and longitude fields.
+
+The pin drops on a bouncy spring and lands with a splash: the dots around it are pushed outward in a ring like water, and the coordinates roll to the new values. Picking a search result flies the map there and zooms in so you can place the pin precisely.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `LatLon \| null` | — | Pin position (controlled). Use with `onValueChange`. `null` shows no pin. |
+| `defaultValue` | `LatLon \| null` | `null` | Pin position when uncontrolled. A form reset restores it. |
+| `onValueChange` | `(value: LatLon \| null) => void` | — | Called when the pin moves or is cleared. |
+| `places` | `readonly PickerPlace[]` | `60 demo cities` | `{ id, label, lat, lon }` for the search and for snapping. Without it the 60 demo cities of `DEMO_CITIES` are used. An empty array leaves the search with coordinates only. |
+| `snap` | `number \| false` | `false` | Snaps a pin dropped on the map (click, tap or Enter) to the nearest place within this many km. Arrow keys and the coordinate fields set exact values. |
+| `maxZoom` | `number` | `4` | Largest map zoom, from 1 to 6. |
+| `precision` | `number` | `4` | Decimals of the latitude and longitude, from 0 to 6. Dropped, stepped and typed values are rounded to it; snapped values keep the place's coordinates. |
+| `name` | `string` | — | Form field name. With a name and a pin, hidden inputs submit the coordinates. |
+| `submitAs` | `"fields" \| "pair"` | `"fields"` | `fields` submits `name-lat` and `name-lon`; `pair` submits one `name` field with 'lat,lon'. |
+| `required` | `boolean` | `false` | Blocks form submission while there is no pin. |
+| `disabled` | `boolean` | `false` | Dims the picker, ignores the pointer and the keyboard, and submits nothing. |
+| `label` | `string` | `"Location"` | Accessible name of the group. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowDown / ArrowUp (search) | Moves through the results; opens them again when closed. |
+| Enter (search) | Picks the highlighted result: the map flies there and the pin drops on it. |
+| Escape (search) | Closes the results, or clears the text when they are closed. |
+| Arrow keys (map) | Move the pin 1°, or 5° with Shift, with a small drop. Without a pin they pan the zoomed map. |
+| + / − (map) | Zoom in or out one step about the view centre. |
+| Enter / Space (map) | Drops a pin at the view centre when there is none. |
+| Delete / Backspace (map) | Removes the pin. |
+| ArrowUp / ArrowDown (fields) | Change the coordinate by 0.1°, or 1° with Shift. |
+| PageUp / PageDown (fields) | Change the coordinate by 10°. |
+| Home / End (fields) | Set the coordinate to its limit: −90 and 90 for the latitude, −180 and 180 for the longitude. |
+| Enter (fields) | Commits typed text. On unchanged text it submits the form, like a native field. |
+| Escape (fields) | Reverts typed text. |
+
+## Accessibility
+
+- The root is a `role="group"` named by `label`.
+- The search is a `role="combobox"` with `aria-expanded`, `aria-controls` and `aria-activedescendant`; the results are a `role="listbox"` of options.
+- The map is focusable, with `role="application"`, `aria-roledescription="map"` and the label 'Map: arrow keys move the pin, plus and minus zoom'. The line under the map describes it. Its canvases and the pin are `aria-hidden`.
+- Latitude and Longitude are text inputs with `role="spinbutton"`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and an `aria-valuetext` such as '6.5244° N'.
+- Pin moves are announced politely, such as 'Pin at 6.52° N, 3.38° E'.
+- The zoom buttons have accessible names: Zoom out, Zoom in, Reset view.
+- With `name` and a pin, hidden inputs submit `name-lat` and `name-lon` (or `name` with 'lat,lon' for `submitAs="pair"`) at `precision` decimals. Nothing is submitted without a pin or while disabled. `required` blocks submission without a pin through a hidden input whose custom validity message is 'Drop a pin on the map.'; the map card turns red and shakes until a pin is dropped. A form reset restores `defaultValue` and the whole-world view.
+- Reduced motion: the pin is placed without the drop, squash or splash (the lit pool under it stays), search picks jump the view without the flight, zoom and pan jump, the new land fades in at once, and the coordinates swap without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--card`, `--popover`, `--popover-foreground`, `--muted`, `--muted-foreground`, `--foreground`, `--border` and `--destructive`.
+
+## Notes
+
+- The map is an equirectangular strip from 60° S to 78° N, drawn as land dots from the embedded world data with no map tiles. A latitude outside the strip is valid; its pin sits on the nearest edge. A `value` with a latitude beyond ±90° or a coordinate that is not finite shows no pin; a longitude beyond ±180° is wrapped.
+- Zoom and centre are springs. A search pick flies the map to the place on one spring and zooms in to at least 3× (or `maxZoom`); long flights dip out halfway. The pin waits until the flight is almost there, then drops.
+- The land is re-baked at a 4 px pitch for each resting zoom and fades in over 160 ms; while the view moves, the last bake is drawn scaled, so dots spread apart on the way in. A press that moves less than 4 px drops the pin; a drag pans the map when it is zoomed. At 1× a vertical touch swipe scrolls the page.
+- The drop is an under-damped spring drawn as one rebound off the ground. At first contact the pin squashes, the dots within 40 px are pushed outward on an uneven ring and brighten toward the glint, a weaker ring pulls them back, and a small lit pool stays under the pin.
+- The coordinate fields show rolling figures while they do not have focus. Typed text accepts a sign or a hemisphere letter ('33.87 S'); invalid text shakes the field and reverts. Without a pin, field input starts from the view centre.
+- The line under the map shows the place the pin is on ('Lagos', or 'Lagos, 3.4 km away' after a snap), else the pin in degrees, minutes and seconds. The figure on the right is the zoom.
+
+<RelatedComponents tag="geo-location-picker" />

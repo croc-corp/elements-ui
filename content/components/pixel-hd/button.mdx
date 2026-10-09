@@ -1,0 +1,82 @@
+---
+title: "Button"
+description: "Dot-matrix button with a pointer light and press ripples; `run(fn)` shows loading, success and error states around a promise."
+tag: hf-button
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-button" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-button" />
+
+## Installation
+
+<Install tag="hf-button" />
+
+## Usage
+
+<Usage tag="hf-button" />
+
+## Behaviour
+
+Noise-lit surface, pointer light, ripples on press, a flowing loading field and a sweep on success. `run(fn)` takes a promise and handles all three states.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `variant` | `variant` | `danger` | — | Set to `danger` for the red colour scheme. Without it the accent colour is used. Read directly by CSS and the canvas, so changes apply on the next frame. |
+| `loading-text` | `loadingText` | `string` | `Working…` | Label shown while the promise passed to `run()` is pending. |
+| `success-text` | `successText` | `string` | `Done` | Label shown for 1.7 s after the promise resolves. |
+| `error-text` | `errorText` | `string` | `Try again` | Label shown for 1.7 s after the promise rejects. |
+| `type` | `type` | `string` | — | Set to `submit` to call `requestSubmit()` on the owning form when clicked. Ignored when `demo` is set. |
+| `demo` | `demo` | `string` | — | Makes a click run a simulated 1.5 s task. `error` makes it fail; any other non-empty value makes it succeed. |
+| `disabled` | `disabled` | `boolean` | `false` | Presence attribute. Disables the inner button; a disabled ancestor `<fieldset>` does the same. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `start` | `onStart` | `{}` | Fires when `run()` enters the loading state. |
+| `success` | `onSuccess` | `{}` | Fires when the promise passed to `run()` resolves. |
+| `error` | `onError` | `{}` | Fires when the promise passed to `run()` rejects. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `run(fn: () => Promise<unknown>): Promise<unknown>` | Shows the loading state while the promise runs, then success or error for 1.7 s before returning to the label. Resolves with the promise value and rethrows its error. |
+
+## Accessibility
+
+- Renders a native `<button type="button">` in the shadow root, so Enter and Space activate it.
+- The label sits in an `aria-live="polite"` region, so the loading, success and error text is announced.
+- Sets `aria-busy` on the inner button: `true` while loading, `false` otherwise.
+- Clicks during loading are stopped at the inner button and do not reach the host.
+- The canvas is `aria-hidden`.
+- Form-associated but submits no value of its own. With `type="submit"` a click calls `requestSubmit()` on the owning form.
+- Reduced motion: the noise and loading fields are static, the label swaps without rolling, the error shake is skipped and the canvas redraws only on pointer movement or press.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--destructive`, `--foreground` and `--lumesec`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-danger` and `--ui-fg`.
+
+## Notes
+
+- The label is the element's text content (default `Generate`). Text changes are picked up; while a loading, success or error label shows, the new label appears when the state ends.
+
+<RelatedComponents tag="hf-button" />

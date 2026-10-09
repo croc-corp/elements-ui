@@ -1,0 +1,69 @@
+---
+title: "Mirror sketchpad"
+description: "16x16 pixel drawing pad with mirror mode for symmetric strokes; cells pop as you paint and Clear drops every pixel with gravity."
+tag: px-sketch
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-sketch" />
+
+## Installation
+
+<Install tag="px-sketch" />
+
+## Usage
+
+<Usage tag="px-sketch" />
+
+## Behaviour
+
+A 16×16 drawing pad with mirror mode, so every stroke is symmetric. Cells pop as you paint, and Clear drops every pixel off the bottom with gravity.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{}` | Fires at the end of each pointer stroke and after each cell painted or erased with Space or Enter. |
+| `clear` | `onClear` | `{}` | Fires when the pad is cleared. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `clearAll()` | Drops every painted cell off the bottom of the pad (with reduced motion, removes them at once) and fires `clear`. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Arrow keys | Move the cell cursor. |
+| Space / Enter | Paint the cell under the cursor, or erase it if it already has the current colour. |
+
+## Accessibility
+
+- The canvas is focusable with `role="img"` and `aria-label="16 by 16 pixel drawing pad"`; the drawing itself is not described. A visually hidden `aria-live="polite"` region reports the cursor cell and its colour after each arrow key, Space or Enter, for example "Row 9, column 9, empty".
+- The colour swatches sit in a `role="group"` labelled "Colour"; each is a button with an `aria-label` (Ink, Accent, Success, Warning, Danger) and `aria-pressed`.
+- Mirror is a toggle button with `aria-pressed`; Clear is a native button.
+- Reduced motion: painted cells appear without popping and Clear empties the pad at once instead of dropping the cells.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-track`.
+
+## Notes
+
+- The pad starts with a sample robot drawing. Mirror mode is on by default and reflects strokes across the vertical centre.
+- Starting a stroke on a cell of the current colour erases instead of painting.
+- Colours follow the theme tokens. There is no API to read or export the drawing. The pad is a fixed 224 by 224px.
+
+<RelatedComponents tag="px-sketch" />

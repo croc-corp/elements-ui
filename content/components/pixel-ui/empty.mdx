@@ -1,0 +1,62 @@
+---
+title: "Empty state"
+description: "Empty state with one of four pixel illustrations that drop into place and float, plus a title, a line of help and room for actions."
+tag: px-empty
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-empty" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-empty" />
+
+## Installation
+
+<Install tag="px-empty" />
+
+## Usage
+
+<Usage tag="px-empty" />
+
+## Behaviour
+
+Four pixel illustrations that drop into place and float gently, with a title, a line of help and room for actions.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `kind` | `"inbox" \| "search" \| "error" \| "done"` | `"inbox"` | Illustration and default copy. Changing it drops the new illustration in. |
+| `heading` | `React.ReactNode` | `per kind` | Title. Defaults to "No messages yet", "No results", "Something went wrong" or "All caught up". |
+| `description` | `React.ReactNode` | `per kind` | Help line under the title. Defaults to a sentence for the kind. |
+| `children` | `React.ReactNode` | — | Actions, such as buttons, centred under the text. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Accessibility
+
+- The illustration canvas is `aria-hidden`.
+- The title is an `<h3>`; the heading level cannot be changed.
+- Reduced motion: the pixels appear in place without dropping, and the floating and sparkles are off.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--lumesec`, `--lumesec-shine`, `--lumesec-warning` and `--lumesec-success`.
+
+## Notes
+
+- `error` draws in the warning colour and `done` in the success colour; the other kinds use the accent.
+- Without reduced motion the illustration animates continuously while it is on screen.
+
+<RelatedComponents tag="px-empty" />

@@ -1,0 +1,72 @@
+---
+title: "Area chart"
+description: "Area chart with a bright line over a dithered fill; ranges morph into each other and hover adds a crosshair and the value."
+tag: hf-area
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-area" />
+
+<Callout title="Your data">
+
+Pass your daily values as `data`. Without it the chart shows demo data seeded from `label`. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-area" />
+
+## Installation
+
+<Install tag="hf-area" />
+
+## Usage
+
+<Usage tag="hf-area" />
+
+## Behaviour
+
+A bright line over a dithered fill that thins toward the bottom. Ranges morph into each other; hovering adds a crosshair, a bloom on the point and the value in the header.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `Tokens per day` | Header label and start of the chart `aria-label`. Without `data` it also seeds the demo data. Observed. |
+| `days` | `days` | `number` | `30` | Range in days, at least 1. The range buttons offer 7, 30 and 90. Observed: changing it switches the range. |
+| `data` | `data` | `readonly HfAreaDatum[] (JSON)` | — | Daily values, oldest first: numbers or `{ value, date }` records (`date` as an ISO string or epoch ms). Observed: changing it morphs to the new series. Without it the chart shows demo data. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `data` | `readonly HfAreaDatum[] \| null` | The same series as the `data` attribute, without JSON. Setting it redraws the chart; `null` returns to the demo data. Reading it returns your series or `null`. |
+
+## Accessibility
+
+- The canvas has `role="img"` and an `aria-label` of the form `<label>, last <n> days, <first> to <last>`.
+- The range buttons are native buttons in a `role="group"` labelled `Range`, with `aria-pressed`.
+- Hovered values and dates are pointer-only.
+- Reduced motion: the line is drawn in full at once, range changes swap without morphing, the header value changes without rolling and the canvas redraws only on input.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-font`, `--ui-muted`, `--ui-raised`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- With `data`, the range buttons show the last 7, 30 or 90 entries; shorter data shows every entry. Dates label the axis and the tooltip; without dates the days count back from today.
+- Values are drawn from zero up; negative values sit on the baseline.
+- The header shows the latest value, or the hovered day, and the change from the first to the last day of the range.
+- `data`, `label` and `days` are observed. A `data` value set before the element is defined is picked up when it upgrades.
+
+<RelatedComponents tag="hf-area" />

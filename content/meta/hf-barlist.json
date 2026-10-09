@@ -1,0 +1,49 @@
+{
+  "summary": "Ranked bar list with dithered bars behind the labels that grow in one after another; hover or focus runs a sheen along a bar.",
+  "attributes": [
+    {
+      "name": "data",
+      "type": "string",
+      "default": "src/auth/session.ts:184,src/api/client.ts:121,src/ui/composer.tsx:96,tests/auth.spec.ts:58,README.md:21",
+      "description": "Comma-separated `label:value` rows, split at the last colon; an entry without a colon has the value 0. Rows are sorted by value, highest first. Observed: a new value rebuilds the rows."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "Most edited files",
+      "description": "Header text on the left; also labels the list. Observed."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "default": "Edits",
+      "description": "Header text on the right, above the values. Observed."
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [
+    {
+      "name": "items",
+      "type": "Array<{ label: string, v: number }>",
+      "readonly": true,
+      "description": "Rows parsed from `data`, sorted by value, highest first."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The rows form a `role=\"list\"` labelled by the header; each row is a `listitem` with `tabindex=\"0\"` and an `aria-label` of the form `label: value`.",
+    "The canvas is `aria-hidden`.",
+    "Focusing a row runs the same sheen as hover."
+  ],
+  "motion": "With reduced motion the bars appear at full width without growing and no sheen runs; the hover highlight still fades.",
+  "slots": [],
+  "notes": [
+    "Bar lengths are relative to the largest value; negative values get no bar.",
+    "Changing `data` rebuilds the rows and the bars grow in again; focus stays on the same row position."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your `label:value` rows as `data`; the read-only `items` property returns them parsed. Without it the list shows demo file names with invented edit counts."
+  }
+}

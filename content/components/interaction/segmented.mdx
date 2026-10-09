@@ -1,0 +1,72 @@
+---
+title: "Segmented control"
+description: "Segmented control whose selection pill is driven by two springs, so it stretches between options and recolours labels exactly where it covers them."
+tag: ui-segmented
+updated: "2026-09-25"
+---
+
+<ComponentPreview tag="ui-segmented" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="ui-segmented" />
+
+## Installation
+
+<Install tag="ui-segmented" />
+
+## Usage
+
+<Usage tag="ui-segmented" />
+
+## Behaviour
+
+Two springs drive the selection pill: the leading edge snaps ahead, the trailing edge catches up, so it stretches and squashes on the way. Labels change colour exactly where the pill covers them.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Controlled selected label. Use with `onValueChange`. A label that is not in `options` selects the first option. |
+| `defaultValue` | `string` | `first option` | Initially selected label when uncontrolled. |
+| `options` | `readonly string[]` | `["Chat", "Code", "Design"]` | Option labels. Each label is also the option's value. |
+| `label` | `string` | `"Options"` | Accessible name of the radio group. |
+| `onValueChange` | `(value: string) => void` | — | Called when the user picks a different option by click or arrow key. Changing `value` from outside does not call it. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowDown | Select and focus the next option, wrapping at the end. |
+| ArrowLeft / ArrowUp | Select and focus the previous option, wrapping at the start. |
+
+## Accessibility
+
+- The root has `role="radiogroup"` and an `aria-label` from `label`; options are native buttons with `role="radio"` and `aria-checked`.
+- Roving tabindex: only the selected option is in the tab order.
+- The pill and a second, recoloured label layer used for the pill effect are `aria-hidden`.
+- Reduced motion: the pill jumps to the selected option without the spring stretch.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--muted`, `--card`, `--foreground`, `--muted-foreground` and `--lumesec`.
+
+## Notes
+
+- The control is as wide as its options. Give it a width (`className="w-full"`) to stretch the track; the options stay at the start.
+- Options carry `data-state="checked"` or `data-state="unchecked"`.
+- Changing `options` snaps the pill to the selected option without animating.
+
+<RelatedComponents tag="ui-segmented" />

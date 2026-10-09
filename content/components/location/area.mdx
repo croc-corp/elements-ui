@@ -1,0 +1,99 @@
+---
+title: "Area select"
+description: "Select an area by drawing a latitude and longitude box on a dot map. The land inside fills behind the pointer and the edges snap to whole degrees."
+tag: geo-area
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-area" />
+
+<Callout title="Your data">
+
+Pass your records as `points` (`{ lat, lon }`). Without it the map shows 2,400 seeded demo points around 60 large cities and starts with a box over Europe; with your points nothing invented is added and the area starts empty unless you pass `defaultValue`. An empty array shows no points and hides the count. Nothing about the viewer's location is read or inferred. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-area" />
+
+## Installation
+
+<Install tag="geo-area" />
+
+## Usage
+
+<Usage tag="geo-area" />
+
+## Behaviour
+
+Draw a rectangle of latitude and longitude on a map to select an area, for example to filter events by place. Move it, resize it from its edges and corners, type exact bounds, or double-click a country to fit the box to it.
+
+While you draw, the land inside fills behind the pointer with a bright, uneven front, the dotted border runs, and the count of points inside rolls. On release the edges snap to whole degrees on springs. The box can cross the date line and continue on the other side of the map.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `GeoBounds \| null` | — | Selected area `{ west, south, east, north }` in degrees (controlled). Use with `onValueChange`. `east` may exceed 180 when the area crosses the date line; an `east` smaller than `west` reads the same way. `null` selects nothing. |
+| `defaultValue` | `GeoBounds \| null` | `null` | Selected area when uncontrolled. A form reset restores it. While `points` is not set (the demo), it defaults to a box over Europe. |
+| `onValueChange` | `(value: GeoBounds \| null) => void` | — | Called with the snapped bounds when a gesture, key press, typed edge or country fit commits, and with null when cleared. Not called when the bounds stay the same. |
+| `onValueInput` | `(value: GeoBounds) => void` | — | Called with unsnapped bounds, rounded to 0.01°, while drawing, moving or resizing. |
+| `points` | `readonly AreaPoint[]` | `2,400 demo points` | `{ lat, lon }` points drawn on the map and counted inside the area. Without it 2,400 seeded demo points around large cities are shown. An empty array hides the count. |
+| `step` | `number` | `1` | Snap and keyboard step in degrees, from 0.01 to 30. Released, typed and stepped edges are multiples of it; a country fit rounds outward to it. |
+| `projection` | `"equirectangular" \| "mercator"` | `"equirectangular"` | Map projection. Both keep the box rectangular; the map's height follows the projection. |
+| `name` | `string` | — | Form field name. With a name and an area, a hidden input submits 'west,south,east,north'. |
+| `required` | `boolean` | `false` | Blocks form submission while no area is selected. |
+| `disabled` | `boolean` | `false` | Dims the selector and disables drawing, the edge fields and Clear. Nothing is submitted. |
+| `label` | `string` | `"Area"` | Accessible name of the map; the selected bounds follow it ('Area 12° W to 30° E, 35° N to 60° N'). |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Arrow keys (map) | Move the area by `step`, or by 10 steps with Shift. Latitudes stop at the map's top and bottom; longitudes continue across the date line. |
+| Delete / Backspace (map) | Clears the area. |
+| Enter / Space (map) | Adds an area of 40° by 30° near the middle of the map when there is none. |
+| Escape (map) | Cancels a draw, move or resize in progress; the box springs back. |
+| ArrowUp / ArrowDown (fields) | Move that edge by `step`, or by 10 steps with Shift. It stops one step short of the opposite edge. |
+| Enter (fields) | Commits typed text. On unchanged text it submits the form, like a native field. |
+| Escape (fields) | Reverts typed text. |
+
+## Accessibility
+
+- The map is focusable, with `role="group"`, `aria-roledescription="area selector"` and an `aria-label` that states the area, such as 'Area 12° W to 30° E, 35° N to 60° N'. A visually hidden description lists the keys.
+- West, South, East and North are labelled native number inputs, the keyboard way to resize the box. Corner handles and edge dragging are pointer-only; the canvases and handles are `aria-hidden`.
+- After each commit the count is announced politely, such as '418 points in the area'; with an empty `points` list the bounds are announced instead, and 'No area selected' after Clear.
+- Clear is a native button; it moves focus back to the map.
+- With `name` and an area, a hidden input submits 'west,south,east,north' in degrees (up to two decimals; `east` may exceed 180). Nothing is submitted without an area or while disabled. `required` blocks submission without an area through a hidden input whose custom validity message is 'Select an area on the map.'; the map card turns red and shakes until an area is drawn. A form reset restores `defaultValue`.
+- Reduced motion: the border does not march, entering dots appear without the flash and leaving dots without the fading wake, the first-view sweep is skipped, edges snap without springs, a country fit jumps, Clear removes the box at once, the handles do not pop, the country name shows without fading and the figures swap without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--card`, `--muted`, `--muted-foreground`, `--foreground`, `--border` and `--destructive`.
+
+## Notes
+
+- The map is a strip from 60° S to 80° N drawn as land dots from the embedded world data, with no map tiles. Latitudes of the area are clamped to it.
+- Pressing outside the box and moving more than 3 px draws a new box from that point. With touch, a press must rest for 250 ms first (a ring of dots lights up), so a quick swipe still scrolls the page. Pressing inside moves the box; within 6 px of an edge resizes that edge, and the corner handles resize two edges. A press without movement does nothing.
+- While a gesture runs, each land dot keeps the moment it entered the box: it ramps up over 180 ms after a random delay of up to 70 ms and flashes toward the glint for its first 90 ms, so the fill follows the pointer with an uneven bright front. Dots that leave fade over 140 ms, so a moved box leaves a short wake. Points inside are drawn larger in the accent. On first view the fill sweeps across the box from west to east.
+- On release each edge springs (stiffness 520, damping 0.72) to the nearest multiple of `step`, at least one step wide and tall, and the handles pop. The dotted border marches clockwise at 28 px/s while the box changes and stands still otherwise.
+- Moving or resizing past ±180° keeps going: the box is drawn twice, one map width apart, so both parts show. The fields show wrapped longitudes; the value keeps `east` past 180. Points are counted with the same rule.
+- Double-click land to fit the box to that country's bounds, rounded outward to `step`, on a softer spring (stiffness 260, damping 0.8); the country's name shows for 1.6 s. Water does nothing.
+- Clear collapses the box into its centre in about 250 ms and the fill fades. Enter on an empty map adds a box; typing into a field without an area starts from that box.
+- The count reads '418 of 2,400 points' and the edge fields show rolling figures while a gesture runs, updated up to ten times a second. Typed values snap to `step`; invalid text shakes the field and reverts. A typed longitude keeps the other edge, and the box then spans eastward from West to East.
+- `formatArea(bounds)` is exported for echoing a value as text: '12° W to 30° E, 35° N to 60° N'.
+
+<RelatedComponents tag="geo-area" />

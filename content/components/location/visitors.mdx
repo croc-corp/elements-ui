@@ -1,0 +1,95 @@
+---
+title: "Live visitors"
+description: "A live map of visits with a feed and an online-now count: each visit drops onto the map with a ring of light, and leaves an afterglow."
+tag: geo-visitors
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-visitors" />
+
+<Callout title="Your data">
+
+Pass your visits as `events`, or add them with `push()` through `ref`. Without `events` the component shows a seeded demo stream of invented visits. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-visitors" />
+
+## Installation
+
+<Install tag="geo-visitors" />
+
+## Usage
+
+<Usage tag="geo-visitors" />
+
+## Behaviour
+
+A live map of visits with a feed beside it and an online-now count. Each visit drops onto the map and lands with a splash of light and a few sparks that can fly past the map's edge, while its row slides into the feed.
+
+Visits leave an afterglow on the land dots that fades over five minutes, so busy regions build up a soft density. Pointing at a row highlights its point, and pointing at a point highlights its row.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `events` | `readonly VisitorEvent[]` | — | Your visits: `{ id, lat, lon, city?, label?, time }` with `time` in epoch ms. Ids that appear after the first render drop onto the map and enter the feed; ids that leave the list leave the map and the feed. Without it a seeded demo stream runs. An empty array shows "No visits yet". |
+| `online` | `number` | — | Count shown as online now. Without it the header counts the visits of the last five minutes. |
+| `decay` | `number` | `300` | Seconds until a visit's afterglow has faded, at least 5. The afterglow halves every quarter of this time. Visits older than `decay` add no afterglow. |
+| `maxFeed` | `number` | `6` | Rows in the feed, 1 to 24. The feed reserves their height. |
+| `projection` | `"equalEarth" \| "equirectangular"` | `"equalEarth"` | Map projection. Both crop the latitudes to 58° S to 84° N. |
+| `title` | `React.ReactNode` | `"Visitors"` | Header text. |
+| `live` | `boolean` | `true` | Runs the demo stream while `events` is not given. The stream pauses while the panel is off screen. With `false` the live dot turns grey and stops pulsing. |
+| `onEventClick` | `(event: VisitorEvent) => void` | — | Called with the visit when a feed row is activated with a click, Enter or Space. |
+| `ref` | `React.Ref<GeoVisitorsHandle>` | — | Exposes `push(event)`. |
+
+### Ref
+
+`ref` receives a `GeoVisitorsHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `push(event: VisitorEvent): void` | Adds a visit: it drops onto the map, adds to the afterglow and enters the feed. Ids already shown are ignored. Works with and without `events`. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves through the feed rows. A focused row marks its point on the map. |
+| ArrowDown / ArrowUp | Moves focus to the next or previous row. |
+| Home / End | Moves focus to the first or last row. |
+| Enter / Space | Activates the row: pings its point and calls `onEventClick`. |
+
+## Accessibility
+
+- The feed is an ordered list labelled "Recent visits"; each row is a native button with the place, the relative time and the page as text.
+- A polite live region summarises at most every 15 seconds while the panel is on screen, for example "12 visits in the last 15 seconds, most from São Paulo.", instead of announcing each visit.
+- The online count is read as plain text ("214 online now"); the rolling digits are hidden from assistive technology.
+- The map canvases, the legend and the hover tooltip are `aria-hidden`; the feed carries the same data.
+- Rows do not move while the feed is pointed at or focused. Rows that are leaving are `inert`.
+- Reduced motion: visits appear on the map without the falling streak, ring, splash or sparks, rows appear and leave without sliding, the land shows without the first reveal, the live dot does not pulse, the pings are off and the numbers change without rolling. The afterglow still builds and fades.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-shine`, `--lumesec-glint`, `--lumesec-soft`, `--lumesec-success`, `--card`, `--card-foreground`, `--popover`, `--popover-foreground`, `--muted`, `--muted-foreground`, `--foreground` and `--border`.
+
+## Notes
+
+- A visit adds afterglow to the land dots within 10 px of its point. Every 250 ms the afterglow fades, so a single visit is nearly gone after `decay` seconds and busy regions stay lit.
+- At most 30 drops are in flight; further visits only add to the afterglow. Visits that arrive together fall in turn, and the feed changes at most one row every 160 ms.
+- Pointing at a row marks its point with a ring of lit dots and dims the rest of the afterglow. Pointing at the map marks the nearest of the last 50 visits within 12 px, shows its place, page and time, and highlights its row when it is in the feed.
+- Relative times are refreshed every 15 seconds. They are computed after mount, so the server markup shows the times relative to the newest visit.
+- Without `city` a row shows the country at the point, or the coordinates; without `label` it shows the coordinates.
+- Switching between demo mode and `events` starts the panel over.
+
+<RelatedComponents tag="geo-visitors" />

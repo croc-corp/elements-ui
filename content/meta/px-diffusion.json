@@ -1,0 +1,28 @@
+{
+  "summary": "Image preview that resolves the way diffusion models do: noise and large blocks sharpen over 30 steps into a scene, different each variation.",
+  "attributes": [],
+  "events": [
+    { "name": "start", "detail": "{ prompt: string }", "description": "Fires when a generation starts, including the automatic first one. `prompt` is `Mountain dusk`, `Moonlit sea` or `Neon city`." },
+    { "name": "done", "detail": "{}", "description": "Fires when the last denoising step completes." }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "action": "In the prompt chips: pick and focus the previous or next prompt, wrapping at the ends; each pick starts a new generation." }
+  ],
+  "accessibility": [
+    "The prompt chips sit in a `role=\"radiogroup\"` with `aria-label=\"Prompt\"`; each is a native button with `role=\"radio\"` and `aria-checked`, and the checked one is drawn in the accent. Only the checked prompt is in the tab order; arrow keys move the selection.",
+    "The canvas has `role=\"img\"` with `aria-label=\"Generated image: <prompt>\"`.",
+    "The status (\"Denoising · …\", \"Done in 2.0s\") is an `aria-live=\"polite\"` region; the step counter beside it is plain text."
+  ],
+  "motion": "With reduced motion, each image appears finished at once without the denoising steps.",
+  "slots": [],
+  "notes": [
+    "No model is involved. The three scenes are painted procedurally from a seed, and \"New variation\" or picking a prompt changes the seed.",
+    "The image is a 60 by 40 grid of cells on a 160px tall canvas; a run takes about two seconds and starts automatically on first render."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The prompts and images are painted procedurally and no model is involved; nothing can be set."
+  }
+}

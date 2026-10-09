@@ -1,0 +1,48 @@
+{
+  "kind": "react",
+  "summary": "Radio group rendered as option cards; the selection outline is made of pixels that fly to the newly selected card, then keep circling.",
+  "props": [
+    { "name": "options", "type": "readonly PxChoiceOption[]", "default": "-", "description": "The cards: `{ value?: string; label: string; description?: string; price?: string }`. `value` defaults to `label`; `price` is shown in monospace." },
+    { "name": "value", "type": "string", "default": "-", "description": "Controlled selected value. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "string", "default": "first option", "description": "Initially selected value when uncontrolled. A form reset restores it." },
+    { "name": "label", "type": "React.ReactNode", "default": "-", "description": "Label above the cards; names the radio group." },
+    { "name": "name", "type": "string", "default": "-", "description": "Form field name; the selected value submits under it." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the group and disables the cards." },
+    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called when a different card is selected." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowDown", "action": "Select and focus the next card, wrapping at the end." },
+    { "keys": "ArrowLeft / ArrowUp", "action": "Select and focus the previous card, wrapping at the start." }
+  ],
+  "accessibility": [
+    "Cards are native buttons with `role=\"radio\"` and `aria-checked` inside a `role=\"radiogroup\"` labelled by `label`.",
+    "Roving tabindex: only the selected card is in the tab order.",
+    "The pixel outline and check are drawn on an `aria-hidden` canvas; the selection is exposed through `aria-checked`."
+  ],
+  "motion": "With reduced motion the outline jumps to the selected card and stops circling.",
+  "form": "With `name`, a hidden input submits the selected card's value. There is no validation. Form reset restores `defaultValue` (or the first option) and calls `onValueChange` when that changes the value.",
+  "notes": [
+    "Without reduced motion the outline animates continuously while the component is on screen.",
+    "Cards are laid out in an auto-fit grid with a 120 px minimum width."
+  ],
+  "tokens": ["--foreground", "--muted-foreground", "--card", "--border", "--lumesec", "--lumesec-shine"],
+  "usage": "import { PxChoice } from \"@/components/lumesec/px-choice\";\n\nexport function Example() {\n  return (\n    <PxChoice\n      name=\"plan\"\n      label=\"Plan\"\n      defaultValue=\"pro\"\n      options={[\n        { value: \"free\", label: \"Free\", description: \"For trying things out\", price: \"€0\" },\n        { value: \"pro\", label: \"Pro\", description: \"For daily work\", price: \"€20/mo\" },\n        { value: \"team\", label: \"Team\", description: \"Shared projects\", price: \"€30/user\" },\n      ]}\n    />\n  );\n}\n",
+  "playground": {
+    "props": {
+      "label": "Plan",
+      "options": [
+        { "value": "free", "label": "Free", "description": "For trying things out", "price": "€0" },
+        { "value": "pro", "label": "Pro", "description": "For daily work", "price": "€20/mo" },
+        { "value": "team", "label": "Team", "description": "Shared projects", "price": "€30/user" }
+      ]
+    },
+    "controls": [
+      { "name": "defaultValue", "kind": "enum", "options": ["free", "pro", "team"], "default": "pro" },
+      { "name": "label", "kind": "string", "options": null, "default": "Plan" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

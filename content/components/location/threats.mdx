@@ -1,0 +1,85 @@
+---
+title: "Attack origins"
+description: "Inbound requests converge on a protected site at the centre of a dotted globe. Blocked ones dent its shield ring and burst off it."
+tag: geo-threats
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-threats" />
+
+<Callout title="Your data">
+
+Pass your requests as `events`, or call `push()` on the ref for a live feed; an empty array shows "No requests in the last minute". Without `events` the component shows a seeded demo stream of about four requests a second, 80 % blocked, from invented sources around real cities, on a prefilled window of invented counts. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-threats" />
+
+## Installation
+
+<Install tag="geo-threats" />
+
+## Usage
+
+<Usage tag="geo-threats" />
+
+## Behaviour
+
+Inbound requests from around the world converge on one protected site at the centre of a globe; requests from the far side come up over the horizon. A ring of dots around the site is its shield: blocked requests hit the ring and burst off it, allowed requests pass through and land.
+
+Where a request hits, the shield dents and lights up for a moment. Counts per verdict and the top origin regions roll beside the globe; arcs in flight are capped and the rest are folded into the counts.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `target` | `ThreatTarget` | `{ label: "eu-central", lat: 50.1109, lon: 8.6821 }` | `{ label, lat, lon }` of the protected site. The globe faces it, so it sits at the centre of the disc; the label shows in the header and the accessible summary. |
+| `events` | `readonly ThreatEvent[]` | — | Requests: `{ id, lat, lon, verdict, region?, time? }` with `verdict` `blocked` or `allowed`. Each new `id` animates once, so the array can grow or be replaced. Without it a seeded demo stream runs; an empty array shows an empty window that `push()` can fill. |
+| `maxInFlight` | `number` | `24` | Arcs drawn at once. Further requests go straight into the counts. |
+| `windowSeconds` | `number` | `60` | Window for the counts, the origin list and the rate chart, in seconds, 1 to 3,600. Requests older than the window are ignored. |
+| `shieldRadius` | `number` | `26` | Radius of the shield ring in px, 10 to 120 and at most 60 % of the globe's radius. |
+| `live` | `boolean` | `true` | Runs the demo stream while `events` is not given. Off keeps the prefilled demo window as it is, until a request is pushed. |
+| `onEvent` | `(event: ThreatEvent) => void` | — | Called when a request reaches the shield (blocked) or the site (allowed). Requests without an arc call it as soon as they are counted. |
+| `ref` | `React.Ref<GeoThreatsHandle>` | — | Exposes `push(event)`. |
+
+### Ref
+
+`ref` receives a `GeoThreatsHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `push(event: ThreatEvent): void` | Adds one request, with or without `events`. An id that was already seen is ignored. |
+
+## Accessibility
+
+- The globe stage has `role="img"` and an `aria-label` that summarises the window, for example "Requests to eu-central. In the last minute: 1,284 blocked, 312 allowed, most from ap-south." It is refreshed at most every 15 seconds.
+- The counters, the site label, the origin list and the peak rate are real text. Each origin row has a visually hidden sentence with its region, total, blocked and allowed counts; the rolling digits and the dotted bars are `aria-hidden`.
+- Both globe canvases, the rate chart canvas, the server placeholder and the target square are `aria-hidden`. The globe takes no pointer or keyboard input.
+- Reduced motion: no arcs, dents or sparks play: each request lights the shield dots facing its origin for 400 ms and is counted at once, the counts swap without rolling and the origin rows change places without sliding.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--lumesec-shine`, `--lumesec-success`, `--destructive`, `--foreground`, `--muted-foreground`, `--card` and `--border`.
+
+## Notes
+
+- The globe always faces the target and never turns, so each arc is projected once. Arcs rise higher the farther they travel; origins on the far side climb over the horizon, where a two-dot glint marks the arc.
+- Packets speed up toward the site and take 1 s plus up to 0.8 s for the far side of the world. A blocked packet stops at the ring: the dots around the impact dent inward on springs, heat up and throw ten sparks off the ring like a reflection. An allowed packet parts the ring, passes and lands with a small ring of lit dots around the site.
+- Requests are grouped by `region`. Without it, a request counts toward the nearest of 16 generic regions (`us-east`, `us-west`, `sa-east`, `eu-west`, `eu-central`, `eu-north`, `me-central`, `af-south`, `ap-south`, `ap-southeast`, `ap-northeast`, `au-east`, `us-central`, `ca-central`, `eu-south`, `ap-east`) by great-circle distance.
+- Counts cover the last `windowSeconds`, by each request's `time` (or when it arrived). The origin list shows the five regions with the most requests and re-sorts at most once a second; each row has a dotted bar with the region's share of all requests, blocked dots first. From 560 px of width a dotted chart of requests per second with the peak sits under the list, so a flood shows as a spike.
+- Requests older than 10 seconds, requests that arrive while the globe is off screen or the tab is hidden, and requests beyond `maxInFlight` are counted without an arc. Ids are remembered (the last 4,000), so a re-render with the same array never counts them twice. A new `target` counts the arcs in flight at once and redraws the globe.
+- The stage is square, at most 420 px wide; from 560 px of container width the origin list stands beside it, else below. Arcs draw on a canvas that reaches 40 px above and below the stage and 16 px to the sides (40 px from 500 px of width).
+- The server markup shows the disc with a 30° graticule, the shield ring and the target; it fades to the dotted globe after the first frame. The animation loop pauses while the globe is off screen and stops when nothing moves.
+- Switching between demo data and `events` starts the panel over, so demo counts never mix with your requests.
+
+<RelatedComponents tag="geo-threats" />

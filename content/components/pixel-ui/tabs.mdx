@@ -1,0 +1,70 @@
+---
+title: "Tabs"
+description: "Tabs whose underline is forty pixels that stream from the old tab to the new one, with panels that slide in from the side."
+tag: px-tabs
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-tabs" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-tabs" />
+
+## Installation
+
+<Install tag="px-tabs" />
+
+## Usage
+
+<Usage tag="px-tabs" />
+
+## Behaviour
+
+The underline is forty pixels that stream from the old tab to the new one. Each item brings its own panel content.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Controlled selected tab (an item's `value`, or its `label`). Use with `onValueChange`. |
+| `defaultValue` | `string` | `first tab` | Initially selected tab when uncontrolled. |
+| `items` | `readonly PxTabsItem[]` | — | The tabs: `{ value?: string; label: string; count?: string \| number; content: React.ReactNode }`. `value` defaults to `label`; `count` adds a small badge after the label. |
+| `onValueChange` | `(value: string) => void` | — | Called when the user selects another tab by click or key. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowLeft | Select and focus the next / previous tab, wrapping. |
+| Home / End | Select and focus the first / last tab. |
+
+## Accessibility
+
+- Tabs are native buttons with `role="tab"` and `aria-selected` in a `role="tablist"`, with roving tabindex: only the selected tab is in the tab order.
+- Each tab points to its panel with `aria-controls`. Panels have `role="tabpanel"`, are labelled by their tab through `aria-labelledby` and have `tabindex="0"`; inactive panels are `hidden`.
+- The underline canvas is `aria-hidden`.
+- Reduced motion: the underline jumps to the new tab and the panel appears without sliding in.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-shine`, `--foreground`, `--muted-foreground` and `--border`.
+
+## Notes
+
+- Every panel stays mounted; inactive ones are hidden, so their state survives switching tabs.
+- Selecting the tab that is already selected does nothing.
+
+<RelatedComponents tag="px-tabs" />

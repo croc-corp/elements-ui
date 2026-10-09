@@ -1,0 +1,70 @@
+---
+title: "Radial bars"
+description: "Radial bar chart of twelve months, denser toward each tip; hovering or the arrow keys roll a month's value into the centre."
+tag: hf-radial
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-radial" />
+
+<Callout title="Demo data" type="warning">
+
+The monthly values for 2025 and 2026 and the highlighted current month are invented; only `label` can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-radial" />
+
+## Installation
+
+<Install tag="hf-radial" />
+
+## Usage
+
+<Usage tag="hf-radial" />
+
+## Behaviour
+
+Twelve months around a dial, filled denser toward the tip. The current month pulses; hovering rolls its value into the middle and years morph.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `Agent hours per month` | Heading text. Read once on connect. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowDown | Inspect the next month; the first press starts at January. |
+| ArrowLeft / ArrowUp | Inspect the previous month; the first press starts at December. |
+
+## Accessibility
+
+- The dial canvas is focusable with `role="img"` and an `aria-label` that starts with `label` and lists the hours for every month of the selected year.
+- The centre value and month are text but not a live region.
+- The year switch is a `role="group"` labelled `Year`, with `aria-pressed` buttons for 2025 and 2026.
+- Moving the pointer off the dial or moving focus away returns the centre to the yearly total.
+- Reduced motion: bars appear without the sweep, year changes apply at once, the current month does not pulse and the centre text changes without rolling.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- Data is built in for 2025 and 2026. In 2026, November and December are empty and October is highlighted as the current month regardless of the real date.
+- The dial is a fixed 236px square.
+
+<RelatedComponents tag="hf-radial" />

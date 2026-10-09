@@ -1,0 +1,65 @@
+---
+title: "Diffusion preview"
+description: "Image preview that resolves the way diffusion models do: noise and large blocks sharpen over 30 steps into a scene, different each variation."
+tag: px-diffusion
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-diffusion" />
+
+<Callout title="Demo data" type="warning">
+
+The prompts and images are painted procedurally and no model is involved; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-diffusion" />
+
+## Usage
+
+<Usage tag="px-diffusion" />
+
+## Behaviour
+
+An image generating the way diffusion models work: noise and big blocks that sharpen step by step into a scene. Three prompts, and every variation is different.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `start` | `onStart` | `{ prompt: string }` | Fires when a generation starts, including the automatic first one. `prompt` is `Mountain dusk`, `Moonlit sea` or `Neon city`. |
+| `done` | `onDone` | `{}` | Fires when the last denoising step completes. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight / ArrowUp / ArrowDown | In the prompt chips: pick and focus the previous or next prompt, wrapping at the ends; each pick starts a new generation. |
+
+## Accessibility
+
+- The prompt chips sit in a `role="radiogroup"` with `aria-label="Prompt"`; each is a native button with `role="radio"` and `aria-checked`, and the checked one is drawn in the accent. Only the checked prompt is in the tab order; arrow keys move the selection.
+- The canvas has `role="img"` with `aria-label="Generated image: <prompt>"`.
+- The status ("Denoising · …", "Done in 2.0s") is an `aria-live="polite"` region; the step counter beside it is plain text.
+- Reduced motion: each image appears finished at once without the denoising steps.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border` and `--ui-muted`.
+
+## Notes
+
+- No model is involved. The three scenes are painted procedurally from a seed, and "New variation" or picking a prompt changes the seed.
+- The image is a 60 by 40 grid of cells on a 160px tall canvas; a run takes about two seconds and starts automatically on first render.
+
+<RelatedComponents tag="px-diffusion" />

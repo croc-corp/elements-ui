@@ -1,0 +1,28 @@
+{
+  "summary": "Chat list where deleting a row turns it into pixels sampled from its own text, which drift away left to right before the gap closes.",
+  "attributes": [],
+  "events": [
+    { "name": "delete", "detail": "{ title: string }", "description": "Fires when a row's delete button is pressed, with the chat title." }
+  ],
+  "methods": [
+    { "signature": "restore()", "description": "Puts every deleted chat back in its original position, including rows still dissolving." }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The list has `aria-label=\"Recent chats\"`.",
+    "Each delete control is a native button labelled `Delete “<title>”`; it is shown on hover or keyboard focus, and always on devices without hover. After a delete, focus moves to the next row's delete button, the previous one, or Restore all.",
+    "The chat count below the list is an `aria-live=\"polite\"` region.",
+    "The particle canvas is decorative (`aria-hidden=\"true\"`) and ignores pointer input."
+  ],
+  "motion": "With reduced motion, a deleted row disappears and collapses at once without particles, and restored rows appear without expanding.",
+  "slots": [],
+  "notes": [
+    "The five chats are built-in demo data; there is no attribute for your own rows. Deleting only removes the row inside the component.",
+    "The particle canvas overhangs the list by 24px on every side, so pixels can drift past its edges."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The five chats are invented; nothing can be set."
+  }
+}

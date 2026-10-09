@@ -1,0 +1,79 @@
+---
+title: "Roadmap"
+description: "Roadmap Gantt chart with dithered progress bars, a pulsing milestone and a today line; bars drag or resize, snapping by day."
+tag: hf-gantt
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-gantt" />
+
+<Callout title="Demo data" type="warning">
+
+The six tasks, their dates and progress and the today line are invented; only `label` can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-gantt" />
+
+## Installation
+
+<Install tag="hf-gantt" />
+
+## Usage
+
+<Usage tag="hf-gantt" />
+
+## Behaviour
+
+Bars fill with progress dither, the launch milestone pulses and the today line has a glint travelling down it. Drag to reschedule or resize, snapping by day.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `Q4 roadmap` | Heading text. Observed. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ task: string, start: number, end: number }` | Fires when a drag that moved or resized a bar ends, and on each arrow-key move or resize. `task` is the task name; `start` and `end` are day offsets from 5 October 2026, from 0 to 41. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowRight | Move the focused bar one day earlier or later. |
+| Shift + ArrowLeft / ArrowRight | Shorten or lengthen the focused bar by one day at its end. |
+
+## Accessibility
+
+- Each bar is a native button with an `aria-label` such as `Design: Oct 9 to Oct 18, 100% done`; the milestone reads `Launch: Nov 11`.
+- The status next to the heading is an `aria-live="polite"` region that announces the dates of the focused or moved task.
+- Task names are text in a column beside the chart. Bars, grid and today line are drawn on an `aria-hidden` canvas.
+- Reduced motion: bars appear without growing in, moves snap instead of easing, the milestone does not pulse and the today-line glint is hidden.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg` and `--ui-muted`.
+
+## Notes
+
+- Tasks are built-in demo data: six rows over 42 days (weeks 41 to 46 of 2026), ending in a Launch milestone that cannot be moved.
+- Drag a bar to move it, or drag within 10px of its right end to resize it. Bars snap to whole days.
+- The today line is fixed at 25 October 2026, not the current date.
+- Rows are 34px tall and the chart fills the width.
+
+<RelatedComponents tag="hf-gantt" />

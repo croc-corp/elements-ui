@@ -1,0 +1,73 @@
+---
+title: "Model morph"
+description: "Model picker where one pixel swarm morphs between a diamond, a ring and a rotating star, with speed, depth and cost bars."
+tag: px-model
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-model" />
+
+<Callout title="Demo data" type="warning">
+
+The three models and their speed, depth and cost scores are invented; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-model" />
+
+## Usage
+
+<Usage tag="px-model" />
+
+## Behaviour
+
+One swarm of pixels takes a different shape per model: a sparse, jittery diamond for speed, a calm ring for balance, a dense rotating star for depth. Switching sends every pixel flying to its new place.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ model: string }` | Fires when the user picks a model. `model` is `Swift`, `Balanced` or `Deep`. Not fired for the initial selection. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `select(index: number)` | Selects model 0 (`Swift`), 1 (`Balanced`) or 2 (`Deep`) and fires `change`. Other values are ignored. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowLeft / ArrowUp | Select the previous model, wrapping around, and move focus to it. |
+| ArrowRight / ArrowDown | Select the next model, wrapping around, and move focus to it. |
+
+## Accessibility
+
+- The model buttons sit in a `role="radiogroup"` with `aria-label="Model"`; each has `role="radio"` and `aria-checked`.
+- Roving tabindex: only the selected option is in the tab order.
+- The canvas has `role="img"` with an `aria-label` naming the model and its speed, depth and cost scores out of 10.
+- Reduced motion: pixels jump straight into the new shape instead of flying, and the shape does not rotate, breathe or jitter.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- The three models and their scores are built-in demo data: Swift (speed 10, depth 3, cost 2), Balanced (7, 7, 5) and Deep (4, 10, 9). Balanced is selected initially.
+- The canvas is 212px tall.
+
+<RelatedComponents tag="px-model" />

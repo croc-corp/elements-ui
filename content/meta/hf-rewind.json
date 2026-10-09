@@ -1,0 +1,33 @@
+{
+  "summary": "Checkpoint scrubber for a coding session: each jump runs a rewind glitch over the code, and changed lines get a green bar.",
+  "attributes": [
+    { "name": "label", "type": "string", "default": "Checkpoints", "description": "Heading text. Read once on connect." }
+  ],
+  "events": [
+    { "name": "preview", "detail": "{ index: number, name: string }", "description": "Fires when the head moves to another checkpoint by drag, click or key." },
+    { "name": "restore", "detail": "{ index: number, name: string }", "description": "Fires when Restore is pressed, including on the latest checkpoint." }
+  ],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowLeft / ArrowDown", "action": "Previous checkpoint." },
+    { "keys": "ArrowRight / ArrowUp", "action": "Next checkpoint." },
+    { "keys": "Home / End", "action": "First or latest checkpoint." }
+  ],
+  "accessibility": [
+    "The timeline is focusable with `role=\"slider\"`, `aria-label=\"Checkpoint\"`, `aria-valuemin=\"0\"`, `aria-valuemax=\"4\"`, `aria-valuenow` and the checkpoint name as `aria-valuetext`.",
+    "The code pane is not a live region; the slider's `aria-valuetext` names the checkpoint as it moves.",
+    "Restore is a native button; its result message below is an `aria-live=\"polite\"` region.",
+    "The head, glitch and change bars are drawn on an `aria-hidden` canvas."
+  ],
+  "motion": "With reduced motion, the code swaps at once without the glitch and the head jumps instead of springing; the green change bars remain.",
+  "slots": [],
+  "notes": [
+    "Built-in demo data: five checkpoints of one function (Start, Expiry, Rotate, Skew, Audit). It starts on the latest.",
+    "The component does not restore anything; `restore` reports the chosen checkpoint."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The five checkpoints and their code are invented; only `label` can be set."
+  }
+}

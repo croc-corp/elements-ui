@@ -1,0 +1,52 @@
+{
+  "kind": "react",
+  "summary": "Async button: a promise from onClick shows a pixel spinner, then a drawn check or a shake with \"Try again\", and returns to its label after 1.8 s.",
+  "props": [
+    { "name": "children", "type": "string", "default": "\"Save\"", "description": "The label." },
+    { "name": "variant", "type": "\"default\" | \"secondary\" | \"danger\"", "default": "\"default\"", "description": "`default` is the accent button, `secondary` a bordered surface button, `danger` uses the destructive colour." },
+    { "name": "loading", "type": "boolean", "default": "false", "description": "Shows the loading state while true, for loading driven from outside. Turning it on calls `onStart`; turning it off returns to the label." },
+    { "name": "loadingText", "type": "string", "default": "\"Working…\"", "description": "Label while loading." },
+    { "name": "successText", "type": "string", "default": "\"Done\"", "description": "Label after the task resolves." },
+    { "name": "errorText", "type": "string", "default": "\"Try again\"", "description": "Label after the task rejects." },
+    { "name": "type", "type": "\"button\" | \"submit\" | \"reset\"", "default": "\"button\"", "description": "Native button type. `submit` submits its form, except while loading." },
+    { "name": "onClick", "type": "(event: React.MouseEvent<HTMLButtonElement>) => void | Promise<unknown>", "default": "-", "description": "Click handler. When it returns a promise, the button runs it like `run()`. Not called while loading." },
+    { "name": "onStart", "type": "() => void", "default": "-", "description": "Called when the loading state begins." },
+    { "name": "onSuccess", "type": "() => void", "default": "-", "description": "Called when the task resolves." },
+    { "name": "onError", "type": "(error: unknown) => void", "default": "-", "description": "Called with the rejection reason when the task fails." }
+  ],
+  "extends": "button",
+  "ref": {
+    "type": "PxButtonHandle",
+    "methods": [
+      { "signature": "run<T>(task: () => Promise<T>): Promise<T>", "description": "Shows the loading state while `task` runs, then the success or error state for 1.8 s before returning to the label. Resolves with the task's result or rethrows its error. It does not check `disabled`." },
+      { "signature": "focus(options?: FocusOptions): void", "description": "Moves focus to the button." }
+    ]
+  },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "A native `<button>`; its accessible name is the visible label.",
+    "The label is an `aria-live=\"polite\"` region, so the loading, success and error texts are announced.",
+    "`aria-busy=\"true\"` is set while loading.",
+    "The pixel icon canvas is `aria-hidden`."
+  ],
+  "motion": "With reduced motion the label swaps without rolling and the error shake is skipped; the pixel spinner and check still draw.",
+  "form": "A native button. With `type=\"submit\"` a click submits its form, which runs validation; clicks while loading neither submit nor call `onClick`.",
+  "notes": [
+    "The label rolls between states, so `children` is a string, not markup.",
+    "The root carries `data-state` set to `loading`, `success` or `error` outside the idle state, and `data-variant`.",
+    "`ref` is the handle, not the DOM button.",
+    "In the success state the label and the check are a near-black shade of `--lumesec-success`, which keeps at least 4.5:1 contrast on the green fill in light and dark themes."
+  ],
+  "tokens": ["--lumesec", "--lumesec-foreground", "--lumesec-success", "--destructive", "--card", "--border", "--foreground"],
+  "usage": "import { PxButton } from \"@/components/lumesec/px-button\";\n\nconst saveSettings = () => new Promise<void>((resolve) => setTimeout(resolve, 1300));\n\nexport function Example() {\n  return <PxButton onClick={() => saveSettings()}>Save changes</PxButton>;\n}\n",
+  "playground": {
+    "props": { "children": "Save changes" },
+    "controls": [
+      { "name": "children", "kind": "string", "options": null, "default": "Save changes" },
+      { "name": "variant", "kind": "enum", "options": ["default", "secondary", "danger"], "default": "default" },
+      { "name": "loading", "kind": "boolean", "options": null, "default": "false" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

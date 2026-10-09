@@ -1,0 +1,41 @@
+{
+  "kind": "react",
+  "summary": "Tooltip whose bubble grows out of its arrow pixel by pixel on hover or keyboard focus before the text fades in; Escape hides it.",
+  "props": [
+    { "name": "content", "type": "React.ReactNode", "default": "-", "description": "Tooltip text. It does not wrap." },
+    { "name": "children", "type": "React.ReactNode", "default": "-", "description": "The trigger, usually a button. A single element gets `aria-describedby` pointing at the tooltip." },
+    { "name": "placement", "type": "\"top\" | \"bottom\"", "default": "\"top\"", "description": "Preferred side: `bottom` places the bubble below the trigger. It flips to the other side when this one has no room in the viewport." },
+    { "name": "delay", "type": "number", "default": "250", "description": "Milliseconds of hover or focus before the bubble opens." },
+    { "name": "open", "type": "boolean", "default": "-", "description": "Controlled open state. Use with `onOpenChange`." },
+    { "name": "defaultOpen", "type": "boolean", "default": "false", "description": "Initial open state when uncontrolled." },
+    { "name": "onOpenChange", "type": "(open: boolean) => void", "default": "-", "description": "Called when hover, focus or Escape opens or closes the tooltip." }
+  ],
+  "extends": "span",
+  "ref": { "type": "HTMLSpanElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Escape", "action": "Hide the tooltip, wherever focus is." }
+  ],
+  "accessibility": [
+    "The bubble has `role=\"tooltip\"` and stays in the DOM (hidden when closed); the trigger references it with `aria-describedby`, merged with any value the trigger already has.",
+    "It opens on keyboard focus as well as hover, and closes 60 ms after focus or the pointer leaves.",
+    "The bubble does not take pointer events."
+  ],
+  "motion": "With reduced motion the bubble appears at full size at once instead of growing from the arrow.",
+  "notes": [
+    "The bubble is centred on the trigger and does not wrap its text. When it opens it flips to the other side if its own side has no room in the viewport and the other side has, and moves sideways to stay 8 px inside the viewport; the arrow keeps pointing at the trigger. It is placed once per opening and does not follow scrolling.",
+    "The root is an inline-block `span` around the trigger. Pointer and focus handlers passed to it run first; calling `event.preventDefault()` in one skips the tooltip's own handling of that event.",
+    "The bubble carries `data-side` with the side it opened on."
+  ],
+  "tokens": ["--foreground", "--muted", "--card"],
+  "usage": "import { PxTooltip } from \"@/components/lumesec/px-tooltip\";\n\nexport function Example() {\n  return (\n    <PxTooltip content=\"Copy link\">\n      <button type=\"button\">Copy</button>\n    </PxTooltip>\n  );\n}\n",
+  "playground": {
+    "props": { "content": "Copy link", "children": "Hover me" },
+    "controls": [
+      { "name": "content", "kind": "string", "options": null, "default": "Copy link" },
+      { "name": "placement", "kind": "enum", "options": ["top", "bottom"], "default": "top" },
+      { "name": "delay", "kind": "number", "options": null, "default": "250" },
+      { "name": "defaultOpen", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

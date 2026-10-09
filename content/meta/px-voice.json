@@ -1,0 +1,32 @@
+{
+  "summary": "Simulated dictation control with a mirrored pixel spectrum and words that fade into focus; stopping collapses the bars to a point.",
+  "attributes": [
+    { "name": "text", "type": "string", "default": "Make the trail grow out of the thumb toward the left and stop at three quarters of the track.", "description": "The sentence the simulated recognition types out, split on whitespace. Read each time listening starts." }
+  ],
+  "events": [
+    { "name": "transcript", "detail": "{ text: string }", "description": "Fires when listening stops, with the words recognised so far joined by spaces." }
+  ],
+  "methods": [
+    { "signature": "start()", "description": "Clears the transcript and starts the simulated listening. Ignored while the closing animation runs." },
+    { "signature": "stop()", "description": "Stops listening and fires `transcript`. Only acts while listening. Removing the element ends a session without firing." }
+  ],
+  "properties": [
+    { "name": "sentence", "type": "string", "readonly": false, "description": "The sentence the simulated recognition types out; reflects the `text` attribute, or the default sentence when it is missing." }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The mic is a native button whose `aria-label` switches between \"Start dictation\" and \"Stop dictation\".",
+    "The transcript paragraph is an `aria-live=\"polite\"` region, so recognised words are announced as they arrive.",
+    "The spectrum canvas is decorative and has `aria-hidden=\"true\"`."
+  ],
+  "motion": "With reduced motion, the mic's pulsing ring, the word fade-in and the idle wave are disabled and the status text swaps without the roll; the spectrum still follows the simulated voice while listening.",
+  "slots": [],
+  "notes": [
+    "No microphone is used. Audio levels are generated and the transcript is the `text` attribute revealed word by word; listening stops on its own 0.7 seconds after the last word.",
+    "The host carries `data-state=\"listening\"` or `data-state=\"closing\"` during those phases."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "No microphone is used and the audio levels are generated; only the transcript can be set with `text`."
+  }
+}

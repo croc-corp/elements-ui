@@ -1,0 +1,80 @@
+---
+title: "Agent graph"
+description: "Agent workflow graph that plays a run from lead agent to planner, three parallel agents and a reviewer, with light along live edges."
+tag: hf-graph
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-graph" />
+
+<Callout title="Demo data" type="warning">
+
+The agent graph, its labels and the run timings (partly random) are invented; only `label` and `autoplay` can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-graph" />
+
+## Installation
+
+<Install tag="hf-graph" />
+
+## Usage
+
+<Usage tag="hf-graph" />
+
+## Behaviour
+
+Ultracode’s lead agent hands off to a planner, three agents in parallel and a reviewer. Live edges stream light with packets, running nodes get a comet halo, and narrow screens switch to a vertical layout.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `label` | `string` | `Ultracode workflow` | Heading text. Observed. |
+| `autoplay` | `autoplay` | `boolean` | `false` | Presence attribute. Starts a run 800 ms after the element connects. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `done` | `onDone` | `{}` | Fires when the reviewer finishes a run. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `run(): Promise<void>` | Plays one simulated run of about five seconds and resolves when it ends. Calls during a run return at once and do nothing. |
+
+## Accessibility
+
+- The status next to the heading is an `aria-live="polite"` region with messages such as `Orchestrating`, `3 agents in parallel` and `Done in 5.1s`.
+- Node labels are text. Their running and done states are shown by colour and a `data-s` attribute, and read out through visually hidden text after the label (`, running`, `, done`).
+- The Run button has `aria-disabled="true"` during a run and ignores presses; it stays focusable, so keyboard focus is kept.
+- Edges, packets and halos are drawn on an `aria-hidden` canvas.
+- Reduced motion: each step waits 60 ms so a run finishes almost at once, and no packets travel along live edges.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--lumesec-success` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-ok` and `--ui-surface`.
+
+## Notes
+
+- The graph, labels and timings are built-in demo data; step durations include some randomness.
+- Below 520px of host width the layout switches to vertical and the stage grows from 196px to 262px tall.
+
+<RelatedComponents tag="hf-graph" />

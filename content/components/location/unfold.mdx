@@ -1,0 +1,88 @@
+---
+title: "Globe to map"
+description: "One set of land dots that is either a globe or a flat map: switching peels the globe open at the back and lays it flat, routes and packets included."
+tag: geo-unfold
+updated: "2026-10-03"
+---
+
+<ComponentPreview tag="geo-unfold" />
+
+<Callout title="Your data">
+
+Pass your routes as `routes`. Without it the component shows 8 demo routes between cloud regions; an empty array shows the land with no routes. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="geo-unfold" />
+
+## Installation
+
+<Install tag="geo-unfold" />
+
+## Usage
+
+<Usage tag="geo-unfold" />
+
+## Behaviour
+
+One set of land dots that is either a globe or a flat map. Switching peels the globe open at the back: dots near the seam swing out first and the hidden side comes around the edges as it turns toward you. When the cut edges land, light runs along them; closing folds the middle first.
+
+Routes between regions bend from lifted arcs on the globe to flat curves on the map, with packets running along them in both views.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `view` | `"globe" \| "map"` | — | The shown view (controlled). Use with `onViewChange`. A change during the morph turns it around from where it is. |
+| `defaultView` | `"globe" \| "map"` | `"globe"` | The view when uncontrolled. |
+| `routes` | `readonly UnfoldRoute[]` | `8 demo routes` | `{ from: LatLon, to: LatLon, weight? }` records shown in both views. `weight` (0 to 1, default 0.5) sets the packet rate, 0.4 + 1.2 × weight per second. Entries with missing or non-finite coordinates are skipped. |
+| `center` | `LatLon` | `{ lat: 20, lon: 10 }` | Initial globe centre, and where Home turns the globe back to. Later changes do not move the globe. |
+| `title` | `React.ReactNode` | — | Heading shown left of the toggle. |
+| `projection` | `"equalEarth" \| "equirectangular"` | `"equalEarth"` | Projection of the map view. Both show the whole world. |
+| `duration` | `number` | `1100` | Length of the morph in milliseconds. Values below 300 count as 300. |
+| `packets` | `boolean` | `true` | Runs packets along the routes. |
+| `showToggle` | `boolean` | `true` | Shows the Globe / Map toggle. Hide it to drive `view` from outside. |
+| `onViewChange` | `(view: "globe" \| "map") => void` | — | Called when the toggle changes the view. A controlled `view` changed from outside does not call it. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Arrow keys (toggle) | Select and focus the other view. |
+| ArrowLeft / ArrowRight (globe) | Turn the globe 10°, in Globe view. |
+| Home (globe) | Turn the globe back to `center`, in Globe view. |
+
+## Accessibility
+
+- The toggle is a `radiogroup` labelled View, with two buttons that have `role="radio"`, `aria-checked` and a roving tab stop.
+- The stage has `role="img"` and an `aria-label` that names the view and the number of routes. In Globe view it is in the tab order, its label mentions the arrow keys and `aria-keyshortcuts` lists them.
+- Both canvases are `aria-hidden`; the title and the toggle are text in the DOM.
+- Reduced motion: the views swap with a 150 ms crossfade instead of the morph, the toggle pill jumps, the globe does not coast after a drag, and routes show without packets, sparks or the light along the seam.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--muted-foreground`, `--muted`, `--card`, `--border`, `--lumesec`, `--lumesec-soft`, `--lumesec-glint` and `--lumesec-shine`.
+
+## Notes
+
+- The map is cut at the back of the globe: its central meridian is the longitude the globe faces when you switch. Drag the globe first to choose where the map is split.
+- Routes that cross the cut leave one edge of the map and continue from the other edge once the map has settled.
+- The globe holds still while the map is shown and while the morph runs; dragging and the arrow keys work in Globe view only. Dragging is horizontal, so a vertical swipe on a touch screen scrolls the page.
+- The stage keeps a 2:1 aspect ratio and the globe's radius is 46 % of its height. The canvas for packets and sparks reaches 16 px past the stage at the sides and 24 px above and below, so leave that room unclipped.
+- Packets run only while the component is on screen. The animation loop stops when nothing moves and packets are off.
+
+<RelatedComponents tag="geo-unfold" />

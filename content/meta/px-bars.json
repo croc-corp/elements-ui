@@ -1,0 +1,41 @@
+{
+  "kind": "react",
+  "summary": "Pixel bar chart whose bars grow cell by cell and spring to new data; hover or the arrow keys show exact values in a tooltip.",
+  "props": [
+    { "name": "data", "type": "readonly PxBarsDatum[]", "default": "Mon to Sun sample", "description": "The bars, left to right: `{ label: string; value: number }`. Bars spring to new values when it changes. Negative and non-finite values draw an empty bar." },
+    { "name": "max", "type": "number", "default": "0", "description": "Top of the value axis. With 0 the axis tops out at 110% of the largest value." },
+    { "name": "label", "type": "string", "default": "\"Bar chart\"", "description": "Start of the canvas `aria-label`, followed by every label and value." },
+    { "name": "unit", "type": "string", "default": "-", "description": "Unit shown after each value in the tooltip and the `aria-label`, separated by a space." },
+    { "name": "height", "type": "number", "default": "170", "description": "Canvas height in pixels." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowLeft", "action": "Highlight the next / previous bar and show its tooltip, wrapping." }
+  ],
+  "accessibility": [
+    "The canvas has `role=\"img\"`, `tabindex=\"0\"` and an `aria-label` listing every label and value, for example \"Runs per day: Mon 12 runs, Tue 18 runs, …\".",
+    "The tooltip is visual only and is not announced; losing focus or the pointer hides it."
+  ],
+  "motion": "With reduced motion bars appear at their final height without the staggered spring.",
+  "notes": [
+    "The sample data Mon 12, Tue 18, Wed 9, Thu 22, Fri 17, Sat 6, Sun 4 is drawn when `data` is not set.",
+    "On first view the bars grow in one after another, 50 ms apart; bars added later spring up at once.",
+    "The value axis has five gridlines labelled from 0 to the axis maximum, in the monospace font."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your bars as `data`. Without it the chart shows a sample week of seven invented values."
+  },
+  "tokens": ["--lumesec", "--lumesec-shine", "--foreground", "--muted-foreground", "--card"],
+  "usage": "import { PxBars } from \"@/components/lumesec/px-bars\";\n\nexport function Example() {\n  return (\n    <PxBars\n      label=\"Runs per day\"\n      unit=\"runs\"\n      data={[\n        { label: \"Mon\", value: 12 },\n        { label: \"Tue\", value: 18 },\n        { label: \"Wed\", value: 9 },\n      ]}\n    />\n  );\n}\n",
+  "playground": {
+    "props": { "label": "Runs per day", "unit": "runs" },
+    "controls": [
+      { "name": "max", "kind": "number", "options": null, "default": "0" },
+      { "name": "height", "kind": "number", "options": null, "default": "170" },
+      { "name": "unit", "kind": "string", "options": null, "default": "runs" }
+    ]
+  }
+}

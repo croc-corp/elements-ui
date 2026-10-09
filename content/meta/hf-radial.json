@@ -1,0 +1,29 @@
+{
+  "summary": "Radial bar chart of twelve months, denser toward each tip; hovering or the arrow keys roll a month's value into the centre.",
+  "attributes": [
+    { "name": "label", "type": "string", "default": "Agent hours per month", "description": "Heading text. Read once on connect." }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowRight / ArrowDown", "action": "Inspect the next month; the first press starts at January." },
+    { "keys": "ArrowLeft / ArrowUp", "action": "Inspect the previous month; the first press starts at December." }
+  ],
+  "accessibility": [
+    "The dial canvas is focusable with `role=\"img\"` and an `aria-label` that starts with `label` and lists the hours for every month of the selected year.",
+    "The centre value and month are text but not a live region.",
+    "The year switch is a `role=\"group\"` labelled `Year`, with `aria-pressed` buttons for 2025 and 2026.",
+    "Moving the pointer off the dial or moving focus away returns the centre to the yearly total."
+  ],
+  "motion": "With reduced motion, bars appear without the sweep, year changes apply at once, the current month does not pulse and the centre text changes without rolling.",
+  "slots": [],
+  "notes": [
+    "Data is built in for 2025 and 2026. In 2026, November and December are empty and October is highlighted as the current month regardless of the real date.",
+    "The dial is a fixed 236px square."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The monthly values for 2025 and 2026 and the highlighted current month are invented; only `label` can be set."
+  }
+}

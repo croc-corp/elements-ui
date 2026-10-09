@@ -1,0 +1,79 @@
+---
+title: "Command menu"
+description: "⌘K / Ctrl+K command palette with grouped commands, fuzzy search and a springing pixel highlight; focus stays in it while open."
+tag: px-command
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-command" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-command" />
+
+## Installation
+
+<Install tag="px-command" />
+
+## Usage
+
+<Usage tag="px-command" />
+
+## Behaviour
+
+A ⌘K / Ctrl+K palette with grouped commands, fuzzy search and a springing pixel highlight. It traps focus while open and returns it to where it was on close.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | — | Controlled open state. Use with `onOpenChange`. |
+| `defaultOpen` | `boolean` | `false` | Initial open state when uncontrolled. |
+| `items` | `readonly PxCommandItem[]` | — | The commands, in display order: `{ label: string; group: string; shortcut?: string }`. Consecutive commands with the same `group` share a heading. |
+| `hotkey` | `boolean` | `false` | Ctrl+K or ⌘K anywhere on the page opens and closes the palette. |
+| `onOpenChange` | `(open: boolean) => void` | — | Called when the palette opens or closes: the trigger, the hotkey, Escape, a click on the backdrop or running a command. |
+| `onCommand` | `(item: PxCommandItem) => void` | — | Called with the command the user runs. The palette closes first. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Ctrl+K / ⌘K | Open or close the palette (with `hotkey`). Holding the keys toggles once. |
+| ArrowDown / ArrowUp | Move the highlight, wrapping at the ends. |
+| Enter | Run the highlighted command. |
+| Escape | Close the palette. |
+| Tab | Blocked, so focus stays in the search input. |
+
+## Accessibility
+
+- The trigger is a native button with `aria-haspopup="dialog"` and `aria-expanded`; with `hotkey` it also has `aria-keyshortcuts="Control+K Meta+K"`.
+- The palette has `role="dialog"`, `aria-modal="true"` and `aria-label="Command menu"`. Opening focuses the input, and a press anywhere else in the palette hands focus back to it. Closing returns focus to the element that had it before opening (the trigger when no element had it), unless the command that ran moved focus elsewhere.
+- The input has `role="combobox"`, `aria-expanded="true"`, `aria-controls`, `aria-autocomplete="list"` and `aria-activedescendant`. Commands are `role="option"` items with `aria-selected` in a `role="listbox"` labelled "Commands"; while the query is empty, each group is a `role="group"` labelled by its heading.
+- A status line under the trigger is an `aria-live="polite"` region that reports the command that ran.
+- Reduced motion: the backdrop and dialog appear without fading or popping, the highlight jumps instead of springing and the status line swaps without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--card`, `--border`, `--foreground` and `--muted-foreground`.
+
+## Notes
+
+- While the query is empty, commands appear in `items` order under their group headings; with a query, the best fuzzy matches come first and headings are hidden.
+- With `hotkey`, the trigger shows ⌘ K on Apple platforms and Ctrl K elsewhere (Ctrl K during server rendering), and the status line starts with "Press the shortcut anywhere on the page". Without `hotkey` both are left out.
+- The overlay is `position: fixed` inside the component, so an ancestor that creates a containing block for fixed-position descendants (for example through `transform`, `filter` or `contain`) changes what it covers. Clicking the backdrop closes the palette; a press that starts inside the dialog and ends on the backdrop does not.
+- Every opening starts with an empty query and the first command highlighted.
+- The root carries `data-state="open"` or `data-state="closed"`.
+
+<RelatedComponents tag="px-command" />

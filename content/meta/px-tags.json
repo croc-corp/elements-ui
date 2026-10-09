@@ -1,0 +1,49 @@
+{
+  "kind": "react",
+  "summary": "Tag input where Enter or comma adds a chip and Backspace twice removes the last; duplicates shake and removed tags break into pixels.",
+  "props": [
+    { "name": "value", "type": "readonly string[]", "default": "-", "description": "Controlled tags. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "readonly string[]", "default": "[]", "description": "Initial tags when uncontrolled. A form reset restores them." },
+    { "name": "label", "type": "React.ReactNode", "default": "\"Tags\"", "description": "Label above the field, linked to the input." },
+    { "name": "placeholder", "type": "string", "default": "\"Add a tag and press Enter\"", "description": "Placeholder of the input." },
+    { "name": "suggestions", "type": "readonly string[]", "default": "[]", "description": "Shown as \"+ name\" buttons under the field; clicking one adds it." },
+    { "name": "max", "type": "number", "default": "8", "description": "Maximum number of tags. Adding beyond it shakes the field and shows a message." },
+    { "name": "name", "type": "string", "default": "-", "description": "Form field name; the tags submit joined with commas." },
+    { "name": "disabled", "type": "boolean", "default": "false", "description": "Dims the field and disables the input, the remove buttons and the suggestion buttons." },
+    { "name": "onValueChange", "type": "(value: string[]) => void", "default": "-", "description": "Called when tags are added (Enter, comma, a suggestion or a paste) or removed. A paste that adds several tags reports once." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Enter / ,", "action": "Add the typed text as a tag." },
+    { "keys": "Backspace (empty field)", "action": "First press marks the last tag; a second press removes it." },
+    { "keys": "Any other key", "action": "Clears the mark." }
+  ],
+  "accessibility": [
+    "A native `<input>` labelled by a `<label htmlFor>`.",
+    "Each chip's remove button has an `aria-label` of \"Remove\" followed by the tag.",
+    "The counter (\"2 of 6 tags\") and the limit message describe the input (`aria-describedby`) and are in an `aria-live=\"polite\"` region.",
+    "A tag marked by the first Backspace is announced through a visually hidden `role=\"status\"`, for example \"design selected. Press Backspace again to remove it.\"",
+    "Chips are plain elements without a list role. Removing one returns focus to the input. The pixel canvas is `aria-hidden`."
+  ],
+  "motion": "With reduced motion chips appear without scaling in or a pixel spray, removed chips vanish without breaking into pixels and the duplicate and limit shakes are skipped.",
+  "form": "With `name`, a hidden input submits the tags joined with commas. There is no validity check; `max` is enforced by refusing new tags. Form reset restores `defaultValue`, clears the typed text and calls `onValueChange` when that changes the tags.",
+  "notes": [
+    "Tags are trimmed and inner whitespace is collapsed; case-insensitive duplicates are refused.",
+    "Pasting text that contains commas adds each part as a tag.",
+    "A long tag is truncated with an ellipsis inside its chip.",
+    "The pixel canvas reaches 20 px past the field on the left, top and bottom but not on the right, so it never widens the page."
+  ],
+  "tokens": ["--foreground", "--muted-foreground", "--card", "--border", "--muted", "--lumesec", "--lumesec-shine", "--destructive"],
+  "usage": "import { PxTags } from \"@/components/lumesec/px-tags\";\n\nexport function Example() {\n  return (\n    <PxTags\n      name=\"topics\"\n      label=\"Topics\"\n      defaultValue={[\"design\", \"pixels\"]}\n      suggestions={[\"motion\", \"accessibility\", \"forms\"]}\n      max={6}\n    />\n  );\n}\n",
+  "playground": {
+    "props": { "label": "Topics", "defaultValue": ["design", "pixels"], "suggestions": ["motion", "accessibility", "forms"], "max": 6 },
+    "controls": [
+      { "name": "label", "kind": "string", "options": null, "default": "Topics" },
+      { "name": "max", "kind": "number", "options": null, "default": "6" },
+      { "name": "placeholder", "kind": "string", "options": null, "default": "Add a tag and press Enter" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

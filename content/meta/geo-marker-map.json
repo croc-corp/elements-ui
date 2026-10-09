@@ -1,0 +1,158 @@
+{
+  "kind": "react",
+  "summary": "A flat map of land dots with markers. Values light halos of dots sized by area, which spring to new values; labels place themselves.",
+  "props": [
+    {
+      "name": "markers",
+      "type": "readonly MapMarker[]",
+      "default": "14 demo cities",
+      "description": "The places: `{ id, label?, lat, lon, value?, tone?, size?, pulse? }`. `tone` is `accent`, `info`, `success`, `warning`, `destructive` or `muted`; `size` is `sm`, `md` or `lg` (a 6, 8 or 10 px dot); `pulse` sends a ring of light through the land dots every 2.4 s. Halos spring to new values when it changes. An empty array shows the plain land with `emptyText`."
+    },
+    {
+      "name": "value",
+      "type": "string | null",
+      "default": "-",
+      "description": "The selected marker id (controlled), or `null` for none. Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string | null",
+      "default": "null",
+      "description": "The marker selected at first when uncontrolled."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string | null) => void",
+      "default": "-",
+      "description": "Called when the user selects a marker or clears the selection (Escape, a second press on the selected marker, a click on the map)."
+    },
+    {
+      "name": "projection",
+      "type": "\"equalEarth\" | \"equirectangular\" | \"mercator\"",
+      "default": "\"equalEarth\"",
+      "description": "Map projection. Equal Earth keeps areas true, so halos compare fairly at every latitude."
+    },
+    {
+      "name": "grid",
+      "type": "\"honeycomb\" | \"square\"",
+      "default": "\"honeycomb\"",
+      "description": "Dot arrangement of the land."
+    },
+    {
+      "name": "pitch",
+      "type": "number",
+      "default": "4",
+      "description": "Dot spacing in px, clamped to 3 to 8."
+    },
+    {
+      "name": "latRange",
+      "type": "readonly [number, number]",
+      "default": "[-58, 84]",
+      "description": "Latitude crop as `[south, north]` in degrees. Markers outside it are skipped."
+    },
+    {
+      "name": "maxHalo",
+      "type": "number",
+      "default": "28",
+      "description": "Halo radius in px for the largest value on a map 660 px wide. The radius scales with the map width, from 60% to 150%."
+    },
+    {
+      "name": "labels",
+      "type": "\"all\" | \"selected\" | \"none\"",
+      "default": "\"all\"",
+      "description": "Which label chips show: the largest values that have room, only the selected one, or none. Hovered and focused markers always show theirs. Without the prop, maps narrower than 480 px use `selected`."
+    },
+    {
+      "name": "reveal",
+      "type": "\"view\" | \"mount\" | \"none\"",
+      "default": "\"view\"",
+      "description": "When the land prints itself: the first time a third of the map is on screen, right after mount, or never (drawn at once)."
+    },
+    {
+      "name": "revealFrom",
+      "type": "string | LatLon",
+      "default": "first marker",
+      "description": "Marker id or `{ lat, lon }` point the reveal grows from."
+    },
+    {
+      "name": "format",
+      "type": "(value: number) => string",
+      "default": "formatCompact",
+      "description": "Formats values for the label chips and the markers' accessible names. The default gives `48.2K`."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Map\"",
+      "description": "Accessible name of the map."
+    },
+    {
+      "name": "emptyText",
+      "type": "string",
+      "default": "\"No locations\"",
+      "description": "Text shown when `markers` is an empty array."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "HTMLDivElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Tab", "action": "Moves focus into the map. One marker holds the tab stop: the last one focused, else the selected one, else the first." },
+    { "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown", "action": "Move focus to the nearest marker in that direction on the map." },
+    { "keys": "Home / End", "action": "Move focus to the first / last marker in `markers` order." },
+    { "keys": "Enter / Space", "action": "Select the focused marker, or clear the selection when it is already selected." },
+    { "keys": "Escape", "action": "Clear the selection." }
+  ],
+  "accessibility": [
+    "The root has `role=\"group\"`, `aria-roledescription=\"map\"` and the `label` as its `aria-label`.",
+    "Each marker is a native `<button>` with `aria-pressed` and an `aria-label` of its label (or id) and formatted value, for example \"London, 48.2K\".",
+    "The markers share one roving tab stop, so the map is a single Tab stop however many markers it has.",
+    "A marker focused from the keyboard shows its label chip and a 2 px accent focus ring.",
+    "The canvases and the label chips are `aria-hidden`; the chips repeat what the buttons already say."
+  ],
+  "motion": "With reduced motion the land is drawn at once, halos appear at their size without the growth front, pulsing markers show a still ring of brighter dots, a selection changes without the ring, pop and sparks, and chip values change without rolling.",
+  "notes": [
+    "Halo area is proportional to the value: the radius is `maxHalo · √(value / largest value)`, scaled with the map width. Zero, negative and missing values have no halo.",
+    "Halos light land dots only, so a coastal marker lights the land around it. Some coastal cities fall on water cells of the 0.5° land mask and show a partial halo.",
+    "Where halos overlap, each dot takes the brighter halo; nothing stacks.",
+    "With `labels=\"all\"`, the largest values get chips, at most one per 120 px of map width. A chip that would cover another marker stays hidden.",
+    "Changing `projection`, `grid`, `pitch` or `latRange` after the first reveal prints the new lattice again from the selected marker, or from `revealFrom`.",
+    "A click on the map outside the markers clears the selection.",
+    "The root fills its container's width and keeps the projection's aspect ratio, so the server markup reserves the height and already places the markers.",
+    "Marker ids must be unique; a repeated id keeps its first marker.",
+    "Pulsing markers keep the animation running while the map is on screen. Without them it stops once everything has settled."
+  ],
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--lumesec-shine",
+    "--lumesec-info",
+    "--lumesec-success",
+    "--lumesec-warning",
+    "--destructive",
+    "--foreground",
+    "--muted-foreground",
+    "--muted",
+    "--card",
+    "--border"
+  ],
+  "usage": "import { GeoMarkerMap, type MapMarker } from \"@/components/lumesec/geo-marker-map\";\n\nconst markers: MapMarker[] = [\n  { id: \"lhr\", label: \"London\", lat: 51.507, lon: -0.128, value: 4200, pulse: true },\n  { id: \"jfk\", label: \"New York\", lat: 40.713, lon: -74.006, value: 5100 },\n  { id: \"nrt\", label: \"Tokyo\", lat: 35.676, lon: 139.65, value: 3100 },\n  { id: \"gru\", label: \"São Paulo\", lat: -23.551, lon: -46.633, value: 1800, tone: \"warning\" },\n];\n\nexport function Example() {\n  return <GeoMarkerMap markers={markers} label=\"Requests by city\" className=\"max-w-[660px]\" />;\n}\n",
+  "playground": {
+    "props": { "label": "Requests by city" },
+    "controls": [
+      { "name": "projection", "kind": "enum", "options": ["equalEarth", "equirectangular", "mercator"], "default": "equalEarth" },
+      { "name": "grid", "kind": "enum", "options": ["honeycomb", "square"], "default": "honeycomb" },
+      { "name": "pitch", "kind": "number", "options": null, "default": "4" },
+      { "name": "maxHalo", "kind": "number", "options": null, "default": "28" },
+      { "name": "labels", "kind": "enum", "options": ["all", "selected", "none"], "default": "all" },
+      { "name": "reveal", "kind": "enum", "options": ["view", "mount", "none"], "default": "view" }
+    ]
+  },
+  "data": {
+    "kind": "input",
+    "note": "Pass your places as `markers`. Without it the map shows 14 demo cities with invented request counts."
+  }
+}

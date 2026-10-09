@@ -1,0 +1,77 @@
+---
+title: "Fader & meter"
+description: "Mixing-desk fader beside a stereo pixel meter with falling peak-hold segments and a clip light above 0 dB."
+tag: px-fader
+updated: "2026-09-26"
+---
+
+<ComponentPreview tag="px-fader" />
+
+<Callout title="Demo data" type="warning">
+
+The meter signal is simulated; only the fader position is a real control. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-fader" />
+
+## Usage
+
+<Usage tag="px-fader" />
+
+## Behaviour
+
+A mixing-desk fader beside a stereo pixel meter, with peak-hold segments that hang and then fall. Push past 0 dB and the top turns red and the clip light fires.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `change` | `onChange` | `{ db: number }` | Fires when a drag on the fader ends, on each handled key press and on the double-click snap to 0 dB. `db` is the target level in decibels, `-Infinity` at the bottom, about +6 dB at the top. A quick click on the track reports the level the cap glides to, and the double-click snap reports exactly `0`. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `db(v?: number): number` | Returns the fader level in dB: of position `v` (0 to 1) when given, otherwise the current level. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowUp / ArrowRight | Raise the fader by 2% of its travel. |
+| ArrowDown / ArrowLeft | Lower the fader by 2% of its travel. |
+| PageUp / PageDown | Raise or lower the fader by 10% of its travel. |
+| Home / End | Move the fader to the bottom (−∞ dB) or the top (about +6 dB). |
+
+## Accessibility
+
+- The fader is focusable with `role="slider"`, `aria-label="Volume"`, `aria-valuemin="0"` and `aria-valuemax="100"`. A pointer press focuses it without showing a focus ring.
+- `aria-valuenow` is the cap position from 0 to 100 and `aria-valuetext` gives the level in dB.
+- The meter canvas has `role="img"` and `aria-label="Stereo level meter"`.
+- The Mute button is a native button with `aria-pressed`.
+- Reduced motion: the cap jumps to keyboard, double-click and track-click targets instead of springing; the meters still animate.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--destructive`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-danger`, `--ui-fg`, `--ui-mono`, `--ui-muted`, `--ui-raised`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- The meter signal is simulated. Mute fades the meter out but does not move the fader or fire an event.
+- The host has a `data-clip` attribute for 0.9 seconds after the meter clips. The fader starts at about +0.3 dB.
+- The mixer is a fixed 190px tall.
+
+<RelatedComponents tag="px-fader" />

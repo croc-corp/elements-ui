@@ -1,0 +1,84 @@
+{
+  "summary": "Six-level effort slider; reaching Ultracode bursts and grows a trail of light behind the thumb. Form-associated.",
+  "attributes": [
+    {
+      "name": "value",
+      "type": "low | medium | high | xhigh | max | ultracode",
+      "default": "ultracode",
+      "description": "Selected level. Observed and reflected; a value set by markup or code is also the level a form reset restores. An unknown value on connect selects `ultracode`; unknown values set later are ignored."
+    },
+    {
+      "name": "recommended",
+      "type": "low | medium | high | xhigh | max | ultracode",
+      "default": "medium",
+      "description": "Level marked `Recommended` under the track. Any other value hides the marker. Observed."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Form field name."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. The slider ignores pointer and keys and leaves the tab order; a disabled ancestor `<fieldset>` does the same. A disabled slider is not submitted."
+    }
+  ],
+  "events": [
+    {
+      "name": "input",
+      "detail": "{ value: string, index: number, label: string }",
+      "description": "Fires each time the level changes during a drag or key press. `label` is the display name."
+    },
+    {
+      "name": "change",
+      "detail": "{ value: string, index: number, label: string }",
+      "description": "Fires when a level is committed on pointer release or key press, if it differs from the last committed level."
+    },
+    {
+      "name": "ultracode",
+      "detail": "{}",
+      "description": "Fires when the thumb settles on Ultracode after arriving from another level, including programmatic changes."
+    }
+  ],
+  "methods": [],
+  "properties": [
+    {
+      "name": "value",
+      "type": "string",
+      "readonly": false,
+      "description": "Selected level id. Setting it writes the attribute."
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": "ArrowRight / ArrowUp",
+      "action": "Next level."
+    },
+    {
+      "keys": "ArrowLeft / ArrowDown",
+      "action": "Previous level."
+    },
+    {
+      "keys": "PageUp / PageDown",
+      "action": "Two levels up or down."
+    },
+    {
+      "keys": "Home / End",
+      "action": "First or last level."
+    }
+  ],
+  "accessibility": [
+    "The track has `role=\"slider\"`, `tabindex=\"0\"`, `aria-label=\"Effort\"`, `aria-valuemin=\"0\"`, `aria-valuemax=\"5\"`, `aria-valuenow` as the level index and `aria-valuetext` as the level name.",
+    "The level name in the header is `aria-hidden`.",
+    "While disabled, the track has `aria-disabled=\"true\"` and `tabindex=\"-1\"`."
+  ],
+  "motion": "With reduced motion the thumb jumps, there is no burst or sparks, the Ultracode trail is drawn once without moving pulses, and the level name swaps without rolling or shimmer.",
+  "form": "Submits the level id, for example `high`, under `name`. No validation. Form reset restores the level from the `value` set by markup or code; a disabled slider is not submitted.",
+  "slots": [],
+  "notes": [
+    "Levels are fixed: Low, Medium, High, Extra (`xhigh`), Max and Ultracode.",
+    "The canvas extends 30px above and below the track and 8px to each side."
+  ]
+}

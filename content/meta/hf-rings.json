@@ -1,0 +1,38 @@
+{
+  "summary": "Up to three concentric goal rings with glowing heads; progress past the goal laps the ring in a brighter tint and throws sparks.",
+  "attributes": [
+    {
+      "name": "rings",
+      "type": "string",
+      "default": "Messages:36/50,Tokens:410/900,Agents:13/10",
+      "description": "Comma-separated `Name:current/goal` entries; only the first three are used. Empty entries are skipped, a missing or negative amount counts as 0 and a missing goal as 1. Observed: changes rebuild the legend and animate the rings."
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [
+    {
+      "name": "items",
+      "type": "Array<{ name: string, cur: number, goal: number }>",
+      "readonly": true,
+      "description": "Rings parsed from the attribute."
+    }
+  ],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"img\"` and an `aria-label` giving each ring as a percentage of its goal, for example `Messages 72%, Tokens 46%, Agents 130%`.",
+    "The legend shows each current value and goal as text.",
+    "Isolating a ring works by pointer hover only; legend rows are not focusable."
+  ],
+  "motion": "With reduced motion the rings show their final progress without the staggered fill and no sparks are drawn; the hover dimming still fades.",
+  "slots": [],
+  "notes": [
+    "Rings use the accent, ok and warn colours from the outside in.",
+    "Progress is drawn up to twice the goal; the second lap uses a brighter tint.",
+    "The canvas is fixed at 172 × 172 px."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass up to three `Name:current/goal` rings as `rings`. Without it the rings show invented usage figures."
+  }
+}

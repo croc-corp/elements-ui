@@ -1,0 +1,170 @@
+{
+  "kind": "react",
+  "summary": "A round map with one place at the centre and every other place at its true distance and direction. Re-centring grows the map outward.",
+  "props": [
+    {
+      "name": "center",
+      "type": "string | LatLon",
+      "default": "-",
+      "description": "The centre (controlled): a place id, or any `{ lat, lon }` point. A point at a place's exact coordinates centres on that place; any other point shows as an unlabelled crosshair. Use with `onCenterChange`."
+    },
+    {
+      "name": "defaultCenter",
+      "type": "string | LatLon",
+      "default": "\"lhr\"",
+      "description": "The centre when uncontrolled. An id that is not in `places` falls back to the first place, and to 0° N, 0° E when there are none."
+    },
+    {
+      "name": "onCenterChange",
+      "type": "(center: string | LatLon) => void",
+      "default": "-",
+      "description": "Called when the user picks a new centre: the place id for a place, a `{ lat, lon }` point for a click on the map away from the places."
+    },
+    {
+      "name": "places",
+      "type": "readonly AzimuthalPlace[]",
+      "default": "15 demo cities",
+      "description": "The places to measure: `{ id, label, lat, lon }`. Ids must be unique; a repeated id keeps its first place. An empty array shows the land and the rings, with `emptyText` in the list."
+    },
+    {
+      "name": "rings",
+      "type": "\"distance\" | \"latency\"",
+      "default": "-",
+      "description": "What the rings and the list measure (controlled): great-circle distance, or the round trip in fibre. Use with `onRingsChange`."
+    },
+    {
+      "name": "defaultRings",
+      "type": "\"distance\" | \"latency\"",
+      "default": "\"distance\"",
+      "description": "What the rings and the list measure when uncontrolled."
+    },
+    {
+      "name": "onRingsChange",
+      "type": "(rings: \"distance\" | \"latency\") => void",
+      "default": "-",
+      "description": "Called when the user switches between Distance and Latency."
+    },
+    {
+      "name": "ringStep",
+      "type": "number",
+      "default": "2000 km, 1000 mi or 50 ms",
+      "description": "Spacing of the rings in the unit shown: km or mi for distance, ms of round trip for latency."
+    },
+    {
+      "name": "unit",
+      "type": "\"km\" | \"mi\"",
+      "default": "\"km\"",
+      "description": "Distance unit of the rings and the list."
+    },
+    {
+      "name": "stretch",
+      "type": "number",
+      "default": "1.5",
+      "description": "How much longer the fibre path is than the great circle. The round trip is `2 × distance ÷ 204 km/ms × stretch`."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"Distance from the centre\"",
+      "description": "Accessible name of the map. The map's `aria-label` adds the centre and the ring step."
+    },
+    {
+      "name": "emptyText",
+      "type": "string",
+      "default": "\"No places\"",
+      "description": "Text shown in the list when `places` is an empty array."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "HTMLDivElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "action": "Moves focus to the places on the map, then to the Distance / Latency switch. The places share one tab stop: the last one focused, else the centre."
+    },
+    {
+      "keys": "ArrowLeft / ArrowRight / ArrowUp / ArrowDown",
+      "action": "On a place: move focus to the nearest place in that direction on the map. On the switch: select the other option."
+    },
+    {
+      "keys": "Home / End",
+      "action": "Move focus to the centre / the farthest place."
+    },
+    {
+      "keys": "Enter / Space",
+      "action": "Re-centre the map on the focused place."
+    }
+  ],
+  "accessibility": [
+    "The map has `role=\"group\"`, `aria-roledescription=\"map\"` and an `aria-label` made of `label`, the centre and the ring step, for example \"Distance from the centre: London. Rings every 2,000 km.\"",
+    "Each place is a native `<button>` with an `aria-label` of its name and distance; the centre has `aria-pressed=\"true\"`.",
+    "The Distance / Latency switch is a `radiogroup` of two `radio` buttons with a roving tab stop.",
+    "The heading above the list is a polite live region, so a new centre is announced.",
+    "The list is an ordered list of real text, sorted by distance. Its values stay text while they roll; outgoing values are hidden from assistive technology. A click on a row re-centres the map too; from the keyboard, places are picked on the map.",
+    "The canvases, the ring labels and the place labels on the map are `aria-hidden`; the buttons and the list carry the same information."
+  ],
+  "motion": "With reduced motion the land appears at once, re-centring jumps without the staggered move, the ping, the sparks or the ring draw-on, the route of a pointed place appears without growing, list rows move to their new order at once, and values change without rolling.",
+  "notes": [
+    "The projection is azimuthal equidistant: the distance from the centre is the true great-circle distance, the direction is the initial bearing with north up, and the rim is the antipode. Land on the far side spreads along the rim, as it does on every map of this kind.",
+    "Latency is an estimate, not a measurement: the round trip in fibre at 204 km per ms, over a path `stretch` times the great-circle distance. Pass real measurements to your own list if you have them.",
+    "Pointing at a place draws its great-circle route, which is a straight line on this map, and the circle of everything just as far from the centre.",
+    "A click on the map away from the places re-centres it on that point, shown as an unlabelled crosshair, and calls `onCenterChange` with `{ lat, lon }` rounded to 4 decimals. Keyboard users re-centre on places; `center` takes any point.",
+    "The root is at most 660 px wide; pass a `max-w-*` class to change that. From 560 px wide the list sits beside the map; below that it sits underneath, in two columns from 400 px.",
+    "Place labels place themselves around their points and stay clear of the ring labels and of each other. A label that has no room stays hidden until its place is pointed at.",
+    "The animation runs only while something moves and pauses off screen."
+  ],
+  "tokens": [
+    "--lumesec",
+    "--lumesec-soft",
+    "--lumesec-glint",
+    "--foreground",
+    "--muted-foreground",
+    "--muted",
+    "--card",
+    "--border"
+  ],
+  "usage": "import { GeoAzimuthal, type AzimuthalPlace } from \"@/components/lumesec/geo-azimuthal\";\n\nconst regions: AzimuthalPlace[] = [\n  { id: \"fra\", label: \"Frankfurt\", lat: 50.11, lon: 8.68 },\n  { id: \"iad\", label: \"Ashburn\", lat: 39.04, lon: -77.49 },\n  { id: \"gru\", label: \"São Paulo\", lat: -23.55, lon: -46.63 },\n  { id: \"bom\", label: \"Mumbai\", lat: 19.08, lon: 72.88 },\n  { id: \"nrt\", label: \"Tokyo\", lat: 35.68, lon: 139.65 },\n  { id: \"syd\", label: \"Sydney\", lat: -33.87, lon: 151.21 },\n];\n\nexport function Example() {\n  return <GeoAzimuthal places={regions} defaultCenter=\"fra\" defaultRings=\"latency\" />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      {
+        "name": "defaultRings",
+        "kind": "enum",
+        "options": [
+          "distance",
+          "latency"
+        ],
+        "default": "distance"
+      },
+      {
+        "name": "unit",
+        "kind": "enum",
+        "options": [
+          "km",
+          "mi"
+        ],
+        "default": "km"
+      },
+      {
+        "name": "ringStep",
+        "kind": "number",
+        "options": null,
+        "default": "-"
+      },
+      {
+        "name": "stretch",
+        "kind": "number",
+        "options": null,
+        "default": "1.5"
+      }
+    ]
+  },
+  "data": {
+    "kind": "input",
+    "note": "Pass your places as `places`. Without it the component shows 15 demo cities, centred on London."
+  }
+}

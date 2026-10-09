@@ -1,0 +1,226 @@
+{
+  "kind": "react",
+  "summary": "Replays a recorded track on a dotted map: the marker turns along its heading and leaves a wake of dots that cools behind it; stops leave a ring.",
+  "props": [
+    {
+      "name": "track",
+      "type": "readonly TrackPoint[]",
+      "default": "demo voyage",
+      "description": "The recorded positions: `{ time, lat, lon, speed?, label? }`. `time` is epoch ms, an ISO 8601 string (read as UTC without an offset) or a Date; `speed` is the speed over ground in km/h; `label` names the place, such as a port. Points are sorted by time, a repeated time keeps its first point, and points with an invalid time or position are skipped. An empty array shows an empty map."
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "default": "-",
+      "description": "Playhead time in epoch ms (controlled). The playhead moves there whenever it changes. Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "number",
+      "default": "track start",
+      "description": "Playhead time when uncontrolled."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: number) => void",
+      "default": "-",
+      "description": "Called with the playhead time while playing (about 12 times a second), on every scrub step and key press, and when the track starts over."
+    },
+    {
+      "name": "playing",
+      "type": "boolean",
+      "default": "-",
+      "description": "Whether the track plays (controlled). Setting it to true at the end starts over. Use with `onPlayingChange`."
+    },
+    {
+      "name": "defaultPlaying",
+      "type": "boolean",
+      "default": "true",
+      "description": "Whether the track plays when uncontrolled. Playback begins once the map is first on screen; with reduced motion it waits for Play."
+    },
+    {
+      "name": "onPlayingChange",
+      "type": "(playing: boolean) => void",
+      "default": "-",
+      "description": "Called by the play button, with false when the end is reached and `loop` is off, and with false when reduced motion skips the autoplay."
+    },
+    {
+      "name": "speed",
+      "type": "number",
+      "default": "-",
+      "description": "Playback speed in seconds of track time per second (controlled). Use with `onSpeedChange`."
+    },
+    {
+      "name": "defaultSpeed",
+      "type": "number",
+      "default": "21600",
+      "description": "Playback speed when uncontrolled: six hours of track time per second."
+    },
+    {
+      "name": "onSpeedChange",
+      "type": "(speed: number) => void",
+      "default": "-",
+      "description": "Called when a speed is picked in the speed control."
+    },
+    {
+      "name": "speeds",
+      "type": "readonly number[]",
+      "default": "[3600, 21600, 86400]",
+      "description": "Options of the speed control in seconds of track time per second, labelled `1 h/s`, `6 h/s` and `1 d/s` (multiples of a day, an hour or a minute get those units). Non-positive and repeated values are dropped."
+    },
+    {
+      "name": "unit",
+      "type": "\"km/h\" | \"kn\" | \"mph\"",
+      "default": "\"kn\"",
+      "description": "Unit of the speed readout. The distance travelled follows it: nautical miles with `kn`, km with `km/h`, miles with `mph`."
+    },
+    {
+      "name": "stopSpeed",
+      "type": "number",
+      "default": "1",
+      "description": "Below this speed, in km/h, the track counts as stopped."
+    },
+    {
+      "name": "minStop",
+      "type": "number",
+      "default": "30",
+      "description": "Minutes a stop must last to be marked on the map."
+    },
+    {
+      "name": "loop",
+      "type": "boolean",
+      "default": "true",
+      "description": "Starts over after a short hold at the end. When false, playback stops at the end."
+    },
+    {
+      "name": "timeZone",
+      "type": "string",
+      "default": "\"UTC\"",
+      "description": "IANA time zone of the track time readout, the chart's start and end times and the stop times read to screen readers."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "HTMLDivElement",
+    "methods": []
+  },
+  "subcomponents": [],
+  "keyboard": [
+    {
+      "keys": "Tab",
+      "action": "Moves through the stop rings on the map, Play, the track time slider and the speed control."
+    },
+    {
+      "keys": "Space",
+      "action": "On the slider: plays or pauses."
+    },
+    {
+      "keys": "ArrowRight / ArrowUp, ArrowLeft / ArrowDown",
+      "action": "On the slider: moves the playhead by 1 % of the track, or by 10 % with Shift."
+    },
+    {
+      "keys": "PageUp / PageDown",
+      "action": "On the slider: moves the playhead by 10 % of the track."
+    },
+    {
+      "keys": "Home / End",
+      "action": "On the slider: moves the playhead to the start or the end. In the speed control: picks the first or the last speed."
+    },
+    {
+      "keys": "Arrow keys",
+      "action": "In the speed control: picks the next or the previous speed, wrapping around."
+    },
+    {
+      "keys": "Enter / Space",
+      "action": "On a stop ring: moves the playhead to the arrival at that stop."
+    }
+  ],
+  "accessibility": [
+    "The root is a `group` named `Route playback`. A visually hidden sentence sums up the map: where the track runs, its distance, its duration and the number of stops.",
+    "Play is a native button with `aria-pressed`; its name stays `Play` while the icon switches to pause.",
+    "The playhead is a `role=\"slider\"` with `aria-valuemin`, `aria-valuemax` and `aria-valuenow` in epoch ms and an `aria-valuetext` such as `Day 6, 14:20 UTC, 16 knots`.",
+    "The speed control is a `radiogroup` of radio buttons with one roving tab stop; each option's `title` spells it out, for example `6 hours of track time per second`.",
+    "Each stop ring is a native button named, for example, `Stop at Port Said, 12 hours, from Day 8, 09:10 UTC. Moves the playhead to the arrival.` Hover or focus shows the place and duration as a chip.",
+    "The readout is a description list. Its figures roll as hidden characters; a visually hidden copy of each value is read instead.",
+    "A polite live region announces the end of the playback when `loop` is off.",
+    "The canvases, the marker, the ghost marker and the place names are hidden from assistive technology. The speed chart is pointer-only; the slider does the same with the keyboard."
+  ],
+  "motion": "With reduced motion the track does not start by itself (it plays from Play), the land and the chart appear without their reveal, the marker turns without the spring, the wake is drawn in the accent at one alpha without glow or cooling, stop rings fill without the pop, there are no sparks and no marker pop, and the readout and the play icon change without rolling or scaling.",
+  "notes": [
+    "The track is resampled into 2,000 rows evenly spaced in time, so every lookup while playing takes constant time. Positions run in straight lines between points on the map. Speeds interpolate between given `speed` values; where a point has none, the speed of a segment is its great-circle distance over the time between its points.",
+    "The map is equirectangular, fitted to the track with a 12 % margin and at least 60° on each axis, then widened to its 2:1 box. Land is a 4 px honeycomb of dots that prints outward from the start of the track on first view. A track across the 180th meridian stays in one piece.",
+    "The marker is a 14 px arrowhead in the accent that turns to the track's heading on a spring (stiffness 300, damping 0.8) through the shortest angle, so turns sweep instead of snapping.",
+    "Behind the marker the travelled path is a dot every 4 px. Each dot remembers when the playhead passed it and cools from glint through the accent to the land ink over about 3 seconds, so the bright wake is longer at higher speeds. The last 36 px stay lit while paused, and the older path stays as a faint line. Ahead of the marker the rest of the track is a quiet dotted hint.",
+    "A stop is a stretch below `stopSpeed` that lasts at least `minStop` minutes. Its ring of 18 dots shows faintly before the marker gets there, fills clockwise while the track waits, and pops with a few sparks when the marker leaves. A labelled point inside the stop names it in the chip. Stops also show as ticks on the slider's rail.",
+    "The speed chart under the map is a dot column every 3 px, as tall as the peak speed in its span; stops leave a single baseline dot. Columns behind the playhead are lit in the accent, brightest next to it. Hovering previews that moment with a half-transparent ghost marker on the map and a chip with the time and speed. Clicking or dragging scrubs with mouse, pen or touch; a vertical swipe still scrolls the page.",
+    "Scrubbing clears the wake beyond the playhead and relights the last 140 px behind it, so the wake stays bright where you land.",
+    "The track time reads `Day N, hh:mm` plus the zone's UTC offset, where day 1 is the track's first calendar day in `timeZone`. While playing, the readout moves in steps that suit the speed (2 hours at 6 h/s), so the figures roll a few times a second in the direction of change.",
+    "At the end of the track sparks fly past the map's edge and the marker pops. With `loop` the marker holds for 0.7 s, the old wake fades in 0.3 s and the track starts over; without it playback stops and `onPlayingChange(false)` fires. Play at the end starts over.",
+    "With fewer than two valid points the map shows the single point and Play and the slider are disabled; an empty track shows `No track points`.",
+    "Below 480 px the speed control moves to its own row.",
+    "The animation runs only while the map is on screen, so playback pauses off screen, and it stops once the wake has cooled. Colours follow the theme and are re-read when it changes."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your recorded positions as `track`. Without it the component plays an invented 23-day container-ship voyage from Rotterdam to Singapore via Suez, with port stops at Algeciras, Port Said, Jeddah and Colombo. An empty array shows an empty map."
+  },
+  "tokens": [
+    "--lumesec",
+    "--lumesec-soft",
+    "--lumesec-glint",
+    "--foreground",
+    "--muted-foreground",
+    "--muted",
+    "--card",
+    "--card-foreground",
+    "--border",
+    "--popover",
+    "--popover-foreground"
+  ],
+  "usage": "\"use client\";\n\nimport { GeoRoute, type TrackPoint } from \"@/components/lumesec/geo-route\";\n\nconst track: TrackPoint[] = [\n  { time: \"2026-05-04T07:00:00Z\", lat: 53.545, lon: 9.966, speed: 0, label: \"Hamburg\" },\n  { time: \"2026-05-04T08:00:00Z\", lat: 53.58, lon: 9.6, speed: 32 },\n  { time: \"2026-05-04T09:30:00Z\", lat: 53.83, lon: 9.05, speed: 34 },\n  { time: \"2026-05-04T10:30:00Z\", lat: 53.95, lon: 8.45, speed: 33 },\n  { time: \"2026-05-04T11:30:00Z\", lat: 54.18, lon: 7.89, speed: 0, label: \"Helgoland\" },\n];\n\nexport function Example() {\n  return <GeoRoute track={track} unit=\"km/h\" defaultSpeed={600} speeds={[300, 600, 1800]} loop={false} timeZone=\"Europe/Berlin\" />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      {
+        "name": "unit",
+        "kind": "enum",
+        "options": [
+          "kn",
+          "km/h",
+          "mph"
+        ],
+        "default": "kn"
+      },
+      {
+        "name": "defaultPlaying",
+        "kind": "boolean",
+        "options": null,
+        "default": "true"
+      },
+      {
+        "name": "loop",
+        "kind": "boolean",
+        "options": null,
+        "default": "true"
+      },
+      {
+        "name": "defaultSpeed",
+        "kind": "number",
+        "options": null,
+        "default": "21600"
+      },
+      {
+        "name": "minStop",
+        "kind": "number",
+        "options": null,
+        "default": "30"
+      },
+      {
+        "name": "timeZone",
+        "kind": "string",
+        "options": null,
+        "default": "UTC"
+      }
+    ]
+  }
+}

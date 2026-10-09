@@ -1,0 +1,83 @@
+---
+title: "Streaming reply"
+description: "Streaming reply where each word resolves out of noise behind a glowing block caret, with a dotted tokens-per-second sparkline."
+tag: hf-stream
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-stream" />
+
+<Callout title="Demo data" type="warning">
+
+The streaming, its timing and the tokens-per-second figures are simulated; only the `text` can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-stream" />
+
+## Installation
+
+<Install tag="hf-stream" />
+
+## Usage
+
+<Usage tag="hf-stream" />
+
+## Behaviour
+
+Each token resolves out of a patch of noise as it arrives, a glowing block caret rides the end of the text, and a dotted sparkline tracks tokens per second.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `text` | `text` | `string` | — | Text to stream. Defaults to a built-in sample paragraph. Split at whitespace; each word counts as one token. Re-read on each start. |
+| `delay` | `delay` | `number` | `500` | Milliseconds before the first stream starts after connect. |
+| `loop` | `loop` | `boolean` | `false` | Presence attribute. Starts again 3.5 s after a stream completes; not after Stop. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `start` | `onStart` | `{}` | Fires when a stream starts. |
+| `done` | `onDone` | `{ tokens: number, stopped: boolean }` | Fires when a stream completes or is stopped. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `start(): Promise<void>` | Clears the text and streams it again, cancelling a stream in progress. |
+| `stop()` | Stops the current stream and fires `done` with `stopped: true`. Also cancels a pending automatic start; does nothing else while no stream runs. |
+
+## Accessibility
+
+- The reply text is an `aria-live="polite"` region with `aria-busy="true"` while it streams, so screen readers can read the reply once instead of word by word.
+- The canvas and the sparkline are `aria-hidden`.
+- The Stop / Regenerate control is a native button.
+- Reduced motion: words arrive every 10 ms without the decode shimmer or fade-in, the avatar and caret do not pulse, and the caret disappears at once when the stream ends.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--foreground`, `--lumesec`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-font`, `--ui-mono`, `--ui-muted` and `--ui-raised`.
+
+## Notes
+
+- Streaming is simulated from `text` with random delays. It starts automatically after `delay`; there is no attribute to turn that off.
+- The speaker name `Assistant` is fixed text.
+- Removing the element from the page stops the stream and any `loop` restart; inserting it again starts a new stream after `delay`.
+
+<RelatedComponents tag="hf-stream" />

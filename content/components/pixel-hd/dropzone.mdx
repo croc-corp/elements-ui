@@ -1,0 +1,67 @@
+---
+title: "Drop zone"
+description: "File drop zone drawn as a ripple simulation; dropped or picked files are listed with a simulated dotted progress bar."
+tag: hf-dropzone
+updated: "2026-09-29"
+---
+
+<ComponentPreview tag="hf-dropzone" />
+
+<Callout title="Demo data" type="warning">
+
+Upload progress is simulated on a timer; only the file names and sizes come from the files the user drops. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="hf-dropzone" />
+
+## Usage
+
+<Usage tag="hf-dropzone" />
+
+## Behaviour
+
+The surface is a small wave simulation: dragging a file over it raises ripples under the pointer, dropping makes a splash, and each file gets a dotted progress bar.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `files` | `onFiles` | `{ files: File[] }` | Fires once per drop or file-picker selection that contains files, with every selected file. |
+| `uploaded` | `onUploaded` | `{ name: string, size: number }` | Fires per file when its simulated progress reaches 100%. `size` is in bytes. Not fired for files over 25 MB. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space | Open the file picker. |
+
+## Accessibility
+
+- The drop area has `role="button"`, `tabindex="0"` and `aria-label="Upload files: drop them here or press to browse"`.
+- The file list is an `aria-live="polite"` region.
+- A hidden native `<input type="file" multiple>` handles browsing. The ripple canvas is `aria-hidden`.
+- Reduced motion: the wave simulation, pointer ripples, random drips and marching border are off and the surface is static; list rows appear without fading in.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--destructive`, `--foreground`, `--lumesec`, `--lumesec-success` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-danger`, `--ui-fg`, `--ui-mono`, `--ui-muted` and `--ui-ok`.
+
+## Notes
+
+- Uploads are simulated and nothing is sent. Progress advances on a timer and `uploaded` fires when it completes; handle real uploads from the `files` event.
+- Files over 25 MB are marked too large. The limit and the `up to 25 MB each` text are fixed.
+- Up to six files per batch are listed and the list keeps the five most recent rows; `files` still carries every file.
+- Not form-associated: a `name` attribute has no effect and files are not submitted with a form.
+
+<RelatedComponents tag="hf-dropzone" />

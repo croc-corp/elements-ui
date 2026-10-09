@@ -1,0 +1,120 @@
+---
+title: Installation
+description: Register the @lumesec registry with the shadcn CLI and add a component, a whole collection, or the accent tokens.
+updated: "2026-10-09"
+---
+
+Elements uses the shadcn CLI to copy components into your project. If you already use shadcn/ui, there is nothing new to set up apart from the registry.
+
+## Requirements
+
+- React 19 and TypeScript. Every file the CLI installs is strict TypeScript.
+- Tailwind CSS v4 for the React components (Interaction, Pixel UI and Location), as set up by `shadcn init`. The custom elements (Pixel Lab, Pixel HD) style themselves inside a shadow root and need no CSS framework.
+
+<Steps>
+<Step title="Set up shadcn">
+
+Skip this if your project already has a `components.json`.
+
+```bash
+npx shadcn@latest init
+```
+
+</Step>
+<Step title="Register the @lumesec registry">
+
+This adds the namespace to `components.json`, so you can install by name.
+
+```bash
+npx shadcn@latest registry add @lumesec=https://elements.lumesec.ai/r/{name}.json
+```
+
+The result in `components.json`:
+
+```json title="components.json"
+{
+  "registries": {
+    "@lumesec": "https://elements.lumesec.ai/r/{name}.json"
+  }
+}
+```
+
+</Step>
+<Step title="Add a component">
+
+```bash
+npx shadcn@latest add @lumesec/effort-slider
+```
+
+Or a whole collection, by its name:
+
+```bash
+npx shadcn@latest add @lumesec/pixel-ui
+```
+
+You can also skip the registry setup and install by URL:
+
+```bash
+npx shadcn@latest add https://elements.lumesec.ai/r/effort-slider.json
+```
+
+</Step>
+</Steps>
+
+Every component depends on the `lumesec-theme` item, so the first install also adds the `--lumesec` accent tokens to your global CSS. See [Theming](/docs/theming).
+
+## What lands in your project
+
+A React component brings its file and the shared modules it imports. Adding `ui-dial`:
+
+```bash title="Files"
+lib/lumesec/math.ts             # shared helpers, installed once
+lib/lumesec/color.ts            # theme colours for canvas drawing
+lib/lumesec/motion.ts           # reduced motion, animation loop, springs
+lib/lumesec/roll-text.tsx       # rolling labels
+lib/lumesec/use-controllable-state.ts
+components/lumesec/ui-dial.tsx  # the component
+```
+
+A custom element brings its module, a typed React wrapper and its family's engine. Adding `hf-gauge`:
+
+```bash title="Files"
+lib/lumesec/pixel.ts                    # Pixel engine for Pixel Lab and Pixel HD, installed once
+lib/lumesec/react.ts                    # React bindings for custom elements, installed once
+components/lumesec/hf-gauge.element.ts  # the custom element (registers <hf-gauge>)
+components/lumesec/hf-gauge.tsx         # the typed React wrapper
+```
+
+The next component of the same kind only adds its own files. The CLI rewrites the `@/lib` and `@/components` imports to the aliases in your `components.json`.
+
+## Use it
+
+```tsx title="app/page.tsx"
+import { HfGauge } from "@/components/lumesec/hf-gauge";
+import { UiDial } from "@/components/lumesec/ui-dial";
+
+export default function Page() {
+  return (
+    <>
+      <UiDial defaultValue={0.7} min={0} max={1} step={0.1} label="Temperature" />
+      <HfGauge value={72} label="Rate limit" zones="60,85" />
+    </>
+  );
+}
+```
+
+Both are client components, so you can render them from a server component without extra setup. Continue with [React](/docs/react) or [plain HTML](/docs/html).
+
+## Update a component
+
+Run `add` again. The CLI skips files that have not changed and asks before it overwrites a file that differs from the registry version, so your own edits are not lost without a prompt.
+
+To see what would change first, add `--diff`. It prints the changes and writes nothing:
+
+```bash
+npx shadcn@latest add @lumesec/hf-gauge --diff
+```
+
+## Without the CLI
+
+Every component page has a **Manual** tab under Installation. It lists the files in install order with their source, ready to copy.

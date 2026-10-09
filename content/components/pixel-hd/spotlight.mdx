@@ -1,0 +1,75 @@
+---
+title: "Product tour"
+description: "Product tour over a mock app: dithered dimming, a rounded cut-out with a comet on its edge, and a step card that moves between targets."
+tag: hf-spotlight
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-spotlight" />
+
+<Callout title="Demo data" type="warning">
+
+The mock app and its four tour steps are built in; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="hf-spotlight" />
+
+## Usage
+
+<Usage tag="hf-spotlight" />
+
+## Behaviour
+
+Dims the interface with dither, cuts a rounded hole around each step’s target with a comet on its edge, and springs between steps.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `step` | `onStep` | `{ index: number, title: string }` | Fires each time a step is shown. |
+| `finish` | `onFinish` | `{}` | Fires when the tour ends through Done, Skip or Escape. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `go(index: number)` | Shows step `index` (0 to 3); 4 or more ends a running tour. Negative values are ignored. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowRight / ArrowLeft | While the tour runs: next or previous step. |
+| Escape | While the tour runs: end the tour. |
+
+## Accessibility
+
+- The mock interface is a `role="region"` labelled `Product tour demo`; its buttons are outside the tab order.
+- The step card has `role="dialog"`, named by its title and described by its text, and `aria-live="polite"`; it is not modal.
+- Focus moves to Next on every step and to the start button when the tour ends. Back is disabled on the first step.
+- The dimming and cut-out are drawn on an `aria-hidden` canvas.
+- Reduced motion: the dimming appears at once, the cut-out jumps to each target without easing and the comet is not drawn; the step card still slides.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--border`, `--card`, `--foreground`, `--lumesec`, `--lumesec-foreground`, `--muted` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-border`, `--ui-fg`, `--ui-muted`, `--ui-on-accent`, `--ui-raised`, `--ui-surface` and `--ui-track`.
+
+## Notes
+
+- The mock app and its four steps are built in. The tour targets elements inside the component and cannot point at your page.
+- The frame is 236px tall. Next reads Done on the last step. The cut-out and the card follow their target when the element is resized during a tour.
+
+<RelatedComponents tag="hf-spotlight" />

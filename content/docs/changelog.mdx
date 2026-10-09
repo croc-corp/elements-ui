@@ -1,0 +1,62 @@
+---
+title: Changelog
+description: New collections, components and changes to the registry, newest first.
+updated: "2026-10-09"
+---
+
+## Unreleased
+
+The source is public, and the site no longer has accounts.
+
+- **Public repository.** The components, the registry scripts and this site are on [GitHub](https://github.com/lumesec/elements-ui) under the MIT license, with contributor guides, issue templates and CI.
+- **No accounts.** Sign-in, accounts and the waitlist are removed. The site sets no cookies.
+- **Optional statistics.** Anonymous page views, registry installs and "Was this page helpful?" answers are recorded only when the site runs with a Postgres database (`DATABASE_URL`). Without one, nothing is stored.
+- **Elements Pro is removed**, with its separate registry tier. Every component is in the one free registry under the MIT license.
+- **Neutral demo copy.** Demos and demo data use invented names and values.
+- **Your data.** Each component page says whether the component takes your records or only shows demo data. `hf-area`, `hf-candles`, `hf-leaderboard` and `px-uptime` take records through `data`, read by the new `lumesec-data` module.
+- **Lint.** The registry passes the ESLint config of a stock `create-next-app` project, and `pnpm verify` checks it.
+
+## 0.3.0 · 2026-10-03
+
+A new collection of 30 native React components.
+
+- **Location (30).** Dot globes, a horizon globe for page heroes, flat maps in four projections and great-circle connection lines for visitors, sign-ins, traffic between regions, latency and routes, plus region, location and area pickers, a coordinate field and a meeting planner across time zones. Land, coastlines and 175 country outlines come from an embedded Natural Earth dataset: no map tiles, no network requests.
+- **New shared modules** in `lib/lumesec`: `geo`, `geo-data`, `geo-world` and `geo-countries`, each its own registry item.
+
+## 0.2.0 · 2026-10-02
+
+Every component is now real, strict TypeScript.
+
+- **Interaction and Pixel UI are native React components.** 41 components rewritten as React 19 function components styled with Tailwind CSS v4 and `cn()`, in the way of shadcn/ui: controlled and uncontrolled state (`value` / `defaultValue` / `onValueChange`, `checked` / `onCheckedChange`), typed callbacks instead of `CustomEvent`s, `ref` handles for imperative actions, `data-slot` and `data-state` attributes, full server rendering. Pixel UI inputs submit with native forms.
+- **Pixel Lab and Pixel HD are typed custom elements.** 110 elements and their engine converted from JavaScript to strict TypeScript, with typed attributes, methods and event maps, and their tags registered in `HTMLElementTagNameMap`. The React wrappers are typed from the element classes.
+- **Your shadcn theme drives everything.** Components read `--background`, `--card`, `--foreground`, `--muted`, `--border` and the other shadcn tokens directly, in any colour format including `oklch()`. The new `lumesec-theme` item adds the `--lumesec` accent tokens and their Tailwind colours. The `--ui-*` properties remain as optional overrides for the custom elements.
+- **Shared React modules** in `lib/lumesec`: theme colour reading for canvas, motion hooks that pause off screen, sparks, rolling labels, the pixel font and controllable state. Each is its own registry item and installs once.
+- **No type escape hatches.** The registry contains no `any`, `@ts-ignore` or `@ts-nocheck`, and every usage snippet in the docs type-checks.
+- **Docs**: React API reference (props, ref handles, subcomponents) for the React components, a React playground, updated guides for React, plain HTML and theming.
+- **Breaking.** React users of Interaction and Pixel UI move from event objects to callbacks (`onChange={(e) => e.detail.value}` becomes `onValueChange={(value) => …}`) and from attributes to props. The plain-HTML builds of Interaction and Pixel UI are retired; the other collections keep theirs.
+
+## 0.1.0 · 2026-10-01
+
+The first public release of LumeSec Elements.
+
+- **151 components in four collections**: Interaction (11), Pixel Lab (50), Pixel UI (30) and Pixel HD (60).
+- **shadcn registry** under `@lumesec`, with shared engines and React bindings as their own items so they install once.
+- **Typed React wrappers** for every component: props from attributes, `on` handlers from events, refs with methods.
+- **Plain HTML modules** on the CDN, one per component and one per collection.
+- **One theming contract.** Every collection now reads the same `--ui-*` tokens with built-in light and dark fallbacks. The `lumesec-theme` item maps them onto shadcn themes.
+- **Server-safe modules.** Importing a component on the server no longer touches the DOM.
+- **Documentation** for every component: live preview, install, usage, API reference, keyboard and accessibility.
+- **Machine-readable docs**: Markdown twins, `llms.txt` and `llms-full.txt`.
+
+### Collections by date
+
+| Date | Added |
+| --- | --- |
+| 2026-10-03 | Location |
+| 2026-09-30 | Pixel HD, second set |
+| 2026-09-29 | Pixel HD |
+| 2026-09-28 | Pixel UI |
+| 2026-09-27 | Pixel Lab, second set |
+| 2026-09-26 | Pixel Lab |
+| 2026-09-25 | Interaction |
+| 2026-09-24 | Ultracode slider |

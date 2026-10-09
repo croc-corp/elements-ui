@@ -1,0 +1,49 @@
+{
+  "summary": "Uptime chart of daily bars coloured by incidents, with today pulsing; hover or use the arrow keys to read a day's figures.",
+  "attributes": [
+    {
+      "name": "name",
+      "type": "string",
+      "default": "API",
+      "description": "Service name in the header. Also seeds the generated history."
+    },
+    {
+      "name": "incidents",
+      "type": "string",
+      "description": "Comma-separated `daysAgo:kind` entries that force a day's status. `kind` is `down` for a partial outage; any other value means degraded. `0` is today."
+    },
+    {
+      "name": "state",
+      "type": "operational | degraded | outage",
+      "description": "Overrides the status pill. Defaults to today's status."
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "properties": [],
+  "keyboard": [
+    {
+      "keys": "ArrowLeft / ArrowRight",
+      "action": "Select the previous or next day, starting from today."
+    },
+    {
+      "keys": "Home / End",
+      "action": "Select the first or last day."
+    }
+  ],
+  "accessibility": [
+    "The canvas has `role=\"img\"`, `tabindex=\"0\"` and an `aria-label` with the average uptime, the number of days with incidents and a hint to use the arrow keys.",
+    "The day tooltip has `role=\"status\"`, so the selected date and figures are announced.",
+    "Leaving the canvas or moving focus away clears the selection."
+  ],
+  "motion": "With reduced motion the bars appear without rising in, today's bar does not pulse and the status dot ping is off.",
+  "slots": [],
+  "notes": [
+    "History is generated demo data: each day's status and uptime come from a hash of `name`. Only `incidents` and `state` override it; there is no attribute for real data.",
+    "The day count adapts to the width: one bar per 6px, between 20 and 90 days. All three attributes are observed; a change rebuilds the history and refreshes an open tooltip."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "Daily status and uptime are generated from a hash of `name`; only `incidents` and `state` override them."
+  }
+}

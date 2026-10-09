@@ -1,0 +1,64 @@
+---
+title: "Loading skeleton"
+description: "Loading wrapper that shows shimmering pixel bars over its content and dissolves them as the content fades in when loading ends."
+tag: px-skeleton
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-skeleton" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-skeleton" />
+
+## Installation
+
+<Install tag="px-skeleton" />
+
+## Usage
+
+<Usage tag="px-skeleton" />
+
+## Behaviour
+
+Wraps real content and shows shimmering pixel bars in its shape while loading. Turning `loading` off dissolves the skeleton as the content fades in.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `loading` | `boolean` | `false` | While true the content is transparent and the skeleton shimmers over it; turning it off dissolves the skeleton. |
+| `lines` | `number` | `3` | Number of text bars. |
+| `avatar` | `boolean` | `false` | Adds a 40 px circle on the left and shifts the bars to its right. |
+| `children` | `React.ReactNode` | — | The real content. It keeps its size while loading, and the skeleton is drawn over that box. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Accessibility
+
+- The root is an `aria-live="polite"` region with `aria-busy` reflecting `loading`.
+- While loading, the content is transparent and `inert`: it keeps its place in the layout but cannot be clicked, focused or read until loading ends.
+- The skeleton canvas is `aria-hidden`.
+- Reduced motion: the shimmer wave stops; the dissolve and the content fade still run.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground` and `--lumesec`.
+
+## Notes
+
+- The bars follow a fixed pattern of widths (100%, 90%, 62%, 80%, 50%) and are not traced from the content. Their spacing is computed from at most the first 120 px of height.
+- The skeleton fills the content's box, so the content needs its real height while loading.
+- The root carries `data-loading` while loading.
+
+<RelatedComponents tag="px-skeleton" />

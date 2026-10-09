@@ -1,0 +1,29 @@
+{
+  "summary": "Weekly usage shown as a pixel battery; spending knocks cells loose and resetting runs current along the cable until it is full.",
+  "attributes": [],
+  "events": [
+    { "name": "use", "detail": "{ left: number }", "description": "Fires after usage is spent. `left` is the remaining fraction from 0 to 1." },
+    { "name": "full", "detail": "{}", "description": "Fires when a reset finishes and the battery is full." }
+  ],
+  "methods": [
+    { "signature": "use()", "description": "Spends 15% and fires `use`. Ignored while resetting or when empty." },
+    { "signature": "charge()", "description": "Refills the battery over about 2.4 seconds, then fires `full`. Ignored when already full or resetting." }
+  ],
+  "properties": [],
+  "keyboard": [],
+  "accessibility": [
+    "The canvas has `role=\"meter\"`, `aria-label=\"Weekly usage left\"`, `aria-valuemin=\"0\"`, `aria-valuemax=\"100\"` and `aria-valuenow` as a percentage.",
+    "The percentage readout is an `aria-live=\"polite\"` region. It is `aria-busy` while a reset runs, so the 5% steps are not announced one by one.",
+    "Both action buttons are native buttons with `aria-disabled=\"true\"` while a reset runs; they keep keyboard focus."
+  ],
+  "motion": "With reduced motion, a reset fills almost at once with no current along the cable and no charging wave, and sparks are skipped; spent cells still float away.",
+  "slots": [],
+  "notes": [
+    "The level is demo state starting at 64%, and the \"Resets Monday 09:00\" text is fixed.",
+    "The host carries `data-zone=\"low\"` at 20% or less, `\"mid\"` at 45% or less, otherwise `\"ok\"`. The canvas is 92px tall."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The usage level starting at 64% and the Monday 09:00 reset time are invented; nothing can be set."
+  }
+}

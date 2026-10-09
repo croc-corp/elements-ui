@@ -1,0 +1,137 @@
+{
+  "kind": "react",
+  "summary": "A field that looks up where an IP address is located and shows the result on a small map.",
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "default": "-",
+      "description": "Address in the field (controlled). Use with `onValueChange`."
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "default": "\"203.0.113.42\"",
+      "description": "Initial address when uncontrolled."
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "default": "-",
+      "description": "Called as the field changes, and when `lookup(address)` on the handle puts a new address into it."
+    },
+    {
+      "name": "resolve",
+      "type": "(address: string) => Promise<GeoIpResult | null>",
+      "default": "demo resolver",
+      "description": "Looks up a normalised address (`203.0.113.42`, `2001:db8::1`) and resolves with `{ lat, lon, city?, region?, country?, network?, accuracyKm? }`, or null when the address is unknown. A rejected promise counts as unknown. Answers often come straight from JSON, so each field is checked: `lat` and `lon` must be numbers or numeric strings, text fields must be strings, and anything else is left out. The default invents a location and is for demos only."
+    },
+    {
+      "name": "onResult",
+      "type": "(address: string, result: GeoIpResult | null) => void",
+      "default": "-",
+      "description": "Called once per lookup with the normalised address and the answer: the location, or null for an unknown, private or reserved address. Answers to a lookup that a newer one replaced are dropped."
+    },
+    {
+      "name": "autoResolve",
+      "type": "boolean",
+      "default": "true",
+      "description": "Looks up the initial address the first time the map scrolls into view."
+    },
+    {
+      "name": "format",
+      "type": "\"decimal\" | \"dms\"",
+      "default": "\"decimal\"",
+      "description": "Coordinate notation of the result: decimal degrees (`50.11° N`) or degrees, minutes and seconds (`50°06′40″ N`)."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "default": "\"IP address\"",
+      "description": "Visible label of the field."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "default": "-",
+      "description": "Name of the input, so the typed address submits with a surrounding form."
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "default": "\"Enter an IP address\"",
+      "description": "Placeholder of the empty field."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Disables the field and the button. Lookups through the handle are ignored too."
+    }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "GeoIpHandle",
+    "methods": [
+      {
+        "signature": "lookup(address?: string): void",
+        "description": "Runs a lookup, like pressing Enter in the field. With `address`, the field first changes to it and `onValueChange` fires; without it, the address in the field is looked up."
+      },
+      {
+        "signature": "focus(): void",
+        "description": "Moves focus to the field."
+      }
+    ]
+  },
+  "subcomponents": [],
+  "keyboard": [
+    { "keys": "Enter", "action": "In the field: looks up the address. It does not submit a surrounding form." },
+    { "keys": "Tab", "action": "Moves from the field to the Look up button." },
+    { "keys": "Enter / Space", "action": "On the Look up button: looks up the address in the field." }
+  ],
+  "accessibility": [
+    "The field is a native text input with a visible label. The hint next to the label (\"IPv4 or IPv6\") describes it through `aria-describedby`.",
+    "An invalid address sets `aria-invalid` on the field, and the hint changes to \"Not a valid IP address\" in the destructive colour.",
+    "The Look up button has `aria-busy` while a lookup runs.",
+    "A polite live region announces each answer once, such as \"Approximately Singapore, 1.29° N, 103.85° E\", \"No location found for this address\" or \"Private or reserved address, no location\".",
+    "The map and its canvases are `aria-hidden`; the place, coordinates, network and accuracy below it are text."
+  ],
+  "motion": "With reduced motion there is no hunt, ping or sparks: the crosshair appears on the result when the answer arrives, the accuracy ring is drawn at once, and the land does not fade in. The text below the map changes without rolling, and an invalid address is marked without the shake.",
+  "form": "A native text input. With `name` the typed address submits with a surrounding form. Enter in the field runs a lookup instead of submitting the form, and the Look up button is `type=\"button\"`.",
+  "notes": [
+    "Addresses are IPv4 dotted quads or IPv6 addresses, compressed, with an IPv4 tail or in brackets. The address passed to `resolve` and `onResult` is normalised: `2001:0db8:0:0::1` becomes `2001:db8::1`.",
+    "Private, shared, loopback, link-local, multicast, unspecified and reserved addresses are answered at once without calling `resolve`: the map dims and the network row names the range. The documentation ranges (192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24, 2001:db8::/32 and 3fff::/20) count as public addresses, so examples can use them.",
+    "While `resolve` runs, the crosshair hops between random land dots; hop n waits min(260, 40 × 1.22^n) ms. When the answer arrives, three to five hops close in on it, each within half the remaining distance, and the last one springs onto the exact point. An answer that arrives within 300 ms still plays these hops. The hops are seeded by the address, so the same address always hunts the same way.",
+    "`onResult` fires when the answer arrives; the place and coordinates appear once the crosshair locks, a moment later. When the map is off screen, the result locks at once.",
+    "The map is equirectangular, cropped to 58° S to 84° N, with land dots every 3.5 px. A point outside that band sits on the nearest edge. The dotted ring shows `accuracyKm` at its true size on the map, with a radius of at least 4 px.",
+    "The default `resolve` maps a hash of the address to one of 60 demo cities, moves the point 5 to 40 km away, reports 20 to 80 km accuracy and a documentation AS number (64496 to 64511), and answers after 0.7 to 1.4 seconds. It never contacts a service."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your lookup as `resolve`. Without it the component invents a location for every public address from a hash of the address, which is only useful for demos."
+  },
+  "tokens": [
+    "--lumesec",
+    "--lumesec-soft",
+    "--lumesec-glint",
+    "--lumesec-shine",
+    "--destructive",
+    "--background",
+    "--card",
+    "--muted",
+    "--muted-foreground",
+    "--foreground",
+    "--border",
+    "--input"
+  ],
+  "usage": "\"use client\";\n\nimport { GeoIp, type GeoIpResult } from \"@/components/lumesec/geo-ip\";\n\nasync function resolve(address: string): Promise<GeoIpResult | null> {\n  const response = await fetch(`/api/ip/${encodeURIComponent(address)}`);\n  if (!response.ok) return null;\n  const result: GeoIpResult = await response.json();\n  return result;\n}\n\nexport function Example() {\n  return <GeoIp defaultValue=\"203.0.113.42\" resolve={resolve} />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      { "name": "defaultValue", "kind": "string", "options": null, "default": "203.0.113.42" },
+      { "name": "format", "kind": "enum", "options": ["decimal", "dms"], "default": "decimal" },
+      { "name": "autoResolve", "kind": "boolean", "options": null, "default": "true" },
+      { "name": "disabled", "kind": "boolean", "options": null, "default": "false" }
+    ]
+  }
+}

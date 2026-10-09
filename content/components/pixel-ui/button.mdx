@@ -1,0 +1,79 @@
+---
+title: "Async button"
+description: "Async button: a promise from onClick shows a pixel spinner, then a drawn check or a shake with \"Try again\", and returns to its label after 1.8 s."
+tag: px-button
+updated: "2026-09-28"
+---
+
+<ComponentPreview tag="px-button" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="px-button" />
+
+## Installation
+
+<Install tag="px-button" />
+
+## Usage
+
+<Usage tag="px-button" />
+
+## Behaviour
+
+Return a promise from `onClick` (or pass an async function to `run()` on its ref) and it shows a pixel spinner, then a drawn check or a shake with “Try again”. Inside a form, `type="submit"` submits it.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<button>` (`React.ComponentProps<"button">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `string` | `"Save"` | The label. |
+| `variant` | `"default" \| "secondary" \| "danger"` | `"default"` | `default` is the accent button, `secondary` a bordered surface button, `danger` uses the destructive colour. |
+| `loading` | `boolean` | `false` | Shows the loading state while true, for loading driven from outside. Turning it on calls `onStart`; turning it off returns to the label. |
+| `loadingText` | `string` | `"Working…"` | Label while loading. |
+| `successText` | `string` | `"Done"` | Label after the task resolves. |
+| `errorText` | `string` | `"Try again"` | Label after the task rejects. |
+| `type` | `"button" \| "submit" \| "reset"` | `"button"` | Native button type. `submit` submits its form, except while loading. |
+| `onClick` | `(event: React.MouseEvent<HTMLButtonElement>) => void \| Promise<unknown>` | — | Click handler. When it returns a promise, the button runs it like `run()`. Not called while loading. |
+| `onStart` | `() => void` | — | Called when the loading state begins. |
+| `onSuccess` | `() => void` | — | Called when the task resolves. |
+| `onError` | `(error: unknown) => void` | — | Called with the rejection reason when the task fails. |
+
+### Ref
+
+`ref` receives a `PxButtonHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `run<T>(task: () => Promise<T>): Promise<T>` | Shows the loading state while `task` runs, then the success or error state for 1.8 s before returning to the label. Resolves with the task's result or rethrows its error. It does not check `disabled`. |
+| `focus(options?: FocusOptions): void` | Moves focus to the button. |
+
+## Accessibility
+
+- A native `<button>`; its accessible name is the visible label.
+- The label is an `aria-live="polite"` region, so the loading, success and error texts are announced.
+- `aria-busy="true"` is set while loading.
+- The pixel icon canvas is `aria-hidden`.
+- A native button. With `type="submit"` a click submits its form, which runs validation; clicks while loading neither submit nor call `onClick`.
+- Reduced motion: the label swaps without rolling and the error shake is skipped; the pixel spinner and check still draw.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-foreground`, `--lumesec-success`, `--destructive`, `--card`, `--border` and `--foreground`.
+
+## Notes
+
+- The label rolls between states, so `children` is a string, not markup.
+- The root carries `data-state` set to `loading`, `success` or `error` outside the idle state, and `data-variant`.
+- `ref` is the handle, not the DOM button.
+- In the success state the label and the check are a near-black shade of `--lumesec-success`, which keeps at least 4.5:1 contrast on the green fill in light and dark themes.
+
+<RelatedComponents tag="px-button" />

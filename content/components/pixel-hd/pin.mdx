@@ -1,0 +1,87 @@
+---
+title: "PIN pad"
+description: "Numeric PIN pad with rippling keys and dot feedback: a wrong code shakes into red static, the right one sends a green wave."
+tag: hf-pin
+updated: "2026-09-30"
+---
+
+<ComponentPreview tag="hf-pin" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="hf-pin" />
+
+## Installation
+
+<Install tag="hf-pin" />
+
+## Usage
+
+<Usage tag="hf-pin" />
+
+## Behaviour
+
+Keys ripple when pressed, dots pop in with bloom, a wrong code turns them to red static and shakes, and the right one sends a green wave. Your keyboard works too.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `code` | `code` | `string` | `2468` | The expected PIN. Its length sets the number of dots. Compared in the browser. |
+| `label` | `label` | `string` | `Enter your PIN` | Title above the dots. Read once on connect. |
+| `hint` | `hint` | `string` | — | Status text under the title. Defaults to `<n> digits`, where `<n>` is the length of `code`. |
+| `success` | `success` | `string` | `Unlocked` | Status text after a correct PIN. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `unlock` | `onUnlock` | `{}` | Fires when the entered digits match `code`. |
+| `error` | `onError` | `{ tries: number }` | Fires on a wrong PIN. `tries` is the number of attempts left: 2, 1, then 0. Does not bubble and is not composed: listen on the element itself, as the React `onError` prop does. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `code` (read-only) | `string` | The `code` attribute, or `2468`. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| 0–9 | Enter a digit while the pad or one of its keys has focus. |
+| Backspace | Delete the last digit. |
+| Escape | Clear all digits. |
+
+## Accessibility
+
+- The pad is a focusable `role="group"` labelled `PIN entry`, so digit keys work without focusing a key.
+- Keys are native buttons; the delete key has `aria-label="Delete"`.
+- The dots have `role="img"` and an `aria-label` such as `2 of 4 digits entered`, updated on every key.
+- The status line under the title is an `aria-live="polite"` region: hint, wrong PIN with tries left, and success.
+- Ripples and dots are drawn on an `aria-hidden` canvas.
+- Reduced motion: dots do not pop, a wrong PIN does not shake or jitter, and the status changes without rolling; key ripples, red static and the green wave remain.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg` and `--ui-muted`.
+
+## Notes
+
+- Demo control: `code` sits in the markup and is compared in the browser, so it provides no security. Check real PINs on a server and use the events for the UI.
+- The PIN is checked 160 ms after the last digit; a delete or clear within that time cancels the check. Entry clears 0.9 s after a wrong PIN and 2.4 s after a correct one.
+- After three wrong PINs the status reads `Too many attempts · try again later`, then the counter resets to three; there is no lockout.
+- `error` stays on the element, so it does not reach `window` or global `error` handlers such as error-tracking scripts. `unlock` bubbles and is composed.
+- The pad is a fixed 236px wide and the host is `inline-block`.
+
+<RelatedComponents tag="hf-pin" />

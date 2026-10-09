@@ -1,0 +1,68 @@
+---
+title: "Usage battery"
+description: "Weekly usage shown as a pixel battery; spending knocks cells loose and resetting runs current along the cable until it is full."
+tag: px-battery
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-battery" />
+
+<Callout title="Demo data" type="warning">
+
+The usage level starting at 64% and the Monday 09:00 reset time are invented; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-battery" />
+
+## Usage
+
+<Usage tag="px-battery" />
+
+## Behaviour
+
+Weekly usage as a pixel battery. Spending knocks cells loose so they float off; resetting runs current in along the cable with a pulsing bolt until it’s full.
+
+## API reference
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `use` | `onUse` | `{ left: number }` | Fires after usage is spent. `left` is the remaining fraction from 0 to 1. |
+| `full` | `onFull` | `{}` | Fires when a reset finishes and the battery is full. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `use()` | Spends 15% and fires `use`. Ignored while resetting or when empty. |
+| `charge()` | Refills the battery over about 2.4 seconds, then fires `full`. Ignored when already full or resetting. |
+
+## Accessibility
+
+- The canvas has `role="meter"`, `aria-label="Weekly usage left"`, `aria-valuemin="0"`, `aria-valuemax="100"` and `aria-valuenow` as a percentage.
+- The percentage readout is an `aria-live="polite"` region. It is `aria-busy` while a reset runs, so the 5% steps are not announced one by one.
+- Both action buttons are native buttons with `aria-disabled="true"` while a reset runs; they keep keyboard focus.
+- Reduced motion: a reset fills almost at once with no current along the cable and no charging wave, and sparks are skipped; spent cells still float away.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--destructive`, `--foreground`, `--lumesec`, `--lumesec-warning` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-danger`, `--ui-fg`, `--ui-muted` and `--ui-warn`.
+
+## Notes
+
+- The level is demo state starting at 64%, and the "Resets Monday 09:00" text is fixed.
+- The host carries `data-zone="low"` at 20% or less, `"mid"` at 45% or less, otherwise `"ok"`. The canvas is 92px tall.
+
+<RelatedComponents tag="px-battery" />

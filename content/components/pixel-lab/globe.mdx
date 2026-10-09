@@ -1,0 +1,48 @@
+---
+title: "Request globe"
+description: "Dotted pixel globe with nine regions; requests arc between them as glowing packets, each arrival flashes its node. Drag to spin it."
+tag: px-globe
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-globe" />
+
+<Callout title="Demo data" type="warning">
+
+The regions, the traffic between them, the latencies and the request counter are simulated; nothing can be set. It cannot show your own data yet, so use it as a template: replace the invented data in its source before it shows anything real. See [Your data](/docs/data).
+
+</Callout>
+
+## Installation
+
+<Install tag="px-globe" />
+
+## Usage
+
+<Usage tag="px-globe" />
+
+## Behaviour
+
+A dotted sphere with nine regions. Requests arc between them as glowing packets, each arrival flashes the node and rolls the counter. Drag to spin it.
+
+## Accessibility
+
+- The canvas has `role="img"` and `aria-label="Spinning globe with requests routed between 9 regions. Drag to spin."`.
+- The request counter has `aria-live="off"`, so its updates are not announced.
+- Region names appear in a tooltip on pointer hover only; the globe has no keyboard interaction.
+- Reduced motion: the globe stops rotating on its own and no new request arcs are sent; it can still be turned by dragging.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--foreground`, `--lumesec` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-fg`, `--ui-muted` and `--ui-surface`.
+
+## Notes
+
+- The regions (San Francisco, New York, São Paulo, London, Frankfurt, Mumbai, Singapore, Tokyo, Sydney), the traffic, the latencies and the counter (starting at 128,403) are simulated demo data.
+- The globe is a fixed 236 by 236px and animates continuously while on screen, except under reduced motion.
+
+<RelatedComponents tag="px-globe" />

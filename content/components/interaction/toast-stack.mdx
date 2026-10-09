@@ -1,0 +1,74 @@
+---
+title: "Toast stack"
+description: "Toast stack where new toasts spring up from below, hover or focus fans the stack out and pauses timers, and a sideways swipe dismisses."
+tag: ui-toast-stack
+updated: "2026-09-25"
+---
+
+<ComponentPreview tag="ui-toast-stack" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="ui-toast-stack" />
+
+## Installation
+
+<Install tag="ui-toast-stack" />
+
+## Usage
+
+<Usage tag="ui-toast-stack" />
+
+## Behaviour
+
+New toasts spring up from below and older ones tuck in behind. Hovering fans the stack out and pauses the timers; swipe a toast sideways to throw it away.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `trigger` | `boolean` | `true` | Render the "Show toast" button under the stack, which shows the next built-in sample. |
+| `ref` | `React.Ref<UiToastStackHandle>` | — | Exposes `show()`. |
+
+### Ref
+
+`ref` receives a `UiToastStackHandle` handle with these methods.
+
+| Method | Description |
+| --- | --- |
+| `show(toast?: ToastInput): void` | Adds a toast `{ title: string; description?: string; tone?: "accent" \| "success" \| "warning" \| "destructive" }`. Without an argument it shows the next built-in sample. |
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Space / Enter | On a toast's dismiss button, dismiss it. |
+
+## Accessibility
+
+- The stack is one `role="region"` element labelled "Notifications" with `aria-live="polite"`, so a new toast is announced once; toasts carry no live role of their own, and removals are not announced.
+- Each toast has a native dismiss button labelled "Dismiss" and described by the toast's title. Buttons on toasts hidden at the back of the stack are taken out of the tab order.
+- Moving focus into the stack expands it and pauses the timers, as hovering does.
+- Dismissing the focused toast moves focus to the toast behind it, else to the newer one, else to the "Show toast" button, else to the stack. A leaving toast is `inert`.
+- Swiping is pointer-only; the dismiss button is the keyboard path.
+- Reduced motion: toasts appear, fan out, settle and leave without transitions; a swipe still follows the pointer.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--card`, `--muted`, `--border`, `--foreground`, `--muted-foreground`, `--lumesec`, `--lumesec-success`, `--lumesec-warning` and `--destructive`.
+
+## Notes
+
+- Ships with six sample toasts (published, copied, connector added, upload failed, memory updated, files uploaded) that `show()` cycles through when called without an argument.
+- Each toast lives 5 s, and timers pause while the stack is expanded or a toast is held. At most five toasts are kept and three are visible; a sixth removes the oldest.
+- A swipe of more than 80 px, or a fast flick, throws the toast away. The stack area is 196 px tall and up to 340 px wide.
+
+<RelatedComponents tag="ui-toast-stack" />

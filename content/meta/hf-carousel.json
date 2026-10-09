@@ -1,0 +1,33 @@
+{
+  "summary": "Carousel of four procedural pixel scenes with an ordered-dither dissolve between slides; autoplay pauses on hover or focus.",
+  "attributes": [
+    { "name": "autoplay", "type": "boolean", "default": "false", "description": "Presence attribute. Advances every 5 s, draws a progress line along the bottom and shows a button that stops and starts the rotation. Pauses while hovered, focused or off-screen. Observed, so it can be added or removed at any time." }
+  ],
+  "events": [
+    { "name": "change", "detail": "{ index: number }", "description": "Fires when the slide changes, by user action or autoplay. `index` is zero-based." }
+  ],
+  "methods": [
+    { "signature": "go(index: number)", "description": "Shows the slide at `index`; values outside 0–3 wrap around." }
+  ],
+  "properties": [],
+  "keyboard": [
+    { "keys": "ArrowLeft / ArrowRight", "action": "Previous or next slide, wrapping." }
+  ],
+  "accessibility": [
+    "The slide area is a focusable `role=\"region\"` with `aria-roledescription=\"carousel\"` and `aria-label=\"Pixel scenes\"`.",
+    "The canvas has `role=\"img\"` and an `aria-label` such as `Slide 1 of 4: Aurora over the ridge`.",
+    "The caption is an `aria-live` region: `polite` after a change by the user, `off` while autoplay rotates the slides.",
+    "Previous and Next buttons have `aria-label`s; dot buttons are labelled `Slide <n>: <title>`, and the current one has `aria-current=\"true\"`.",
+    "With `autoplay`, a button labelled Stop autoplay or Start autoplay stops and restarts the rotation; autoplay also pauses while the slide area is hovered or holds focus."
+  ],
+  "motion": "With reduced motion, autoplay does not advance, slides switch without the dissolve and the scenes are static.",
+  "slots": [],
+  "notes": [
+    "The four scenes are generated in code and cannot be replaced.",
+    "A horizontal swipe of more than 40px changes the slide. The image is 210px tall and fills the width."
+  ],
+  "data": {
+    "kind": "demo",
+    "note": "The four slides, generated scenes with built-in captions, cannot be replaced; nothing can be set."
+  }
+}

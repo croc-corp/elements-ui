@@ -1,0 +1,39 @@
+{
+  "kind": "react",
+  "summary": "Inline alert in four tones with a pixel icon and a glowing stripe; dismissing scatters the stripe and collapses the alert.",
+  "props": [
+    { "name": "open", "type": "boolean", "default": "-", "description": "Controlled visibility. Use with `onOpenChange`; turning it off plays the dismiss animation before the alert hides." },
+    { "name": "defaultOpen", "type": "boolean", "default": "true", "description": "Initial visibility when uncontrolled." },
+    { "name": "type", "type": "\"info\" | \"success\" | \"warning\" | \"error\"", "default": "\"info\"", "description": "Colour, icon and ARIA role." },
+    { "name": "heading", "type": "React.ReactNode", "default": "-", "description": "Bold title above the message; left out when empty." },
+    { "name": "children", "type": "React.ReactNode", "default": "-", "description": "The message." },
+    { "name": "dismissible", "type": "boolean", "default": "false", "description": "Shows a dismiss button." },
+    { "name": "onOpenChange", "type": "(open: boolean) => void", "default": "-", "description": "Called with `false` when the dismiss button is pressed." }
+  ],
+  "extends": "div",
+  "ref": { "type": "HTMLDivElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "`error` and `warning` alerts have `role=\"alert\"`; `info` and `success` alerts have `role=\"status\"`.",
+    "The dismiss button is a native button labelled \"Dismiss\".",
+    "The icon and stripe are drawn on an `aria-hidden` canvas; the tone is not conveyed as text.",
+    "While it collapses the alert is `inert`, and once dismissed the root is `hidden` and leaves the accessibility tree.",
+    "If focus is inside the alert when it closes, for example on its dismiss button, focus moves to the next focusable element on the page (where Tab would go), or to the previous one when nothing follows."
+  ],
+  "motion": "With reduced motion the stripe glow stops, and dismissing hides the alert at once without scattering pixels.",
+  "notes": [
+    "Uncontrolled alerts stay hidden after dismissal; control `open` to show one again.",
+    "The root carries `data-state=\"open\"` or `data-state=\"closed\"` and `data-type`."
+  ],
+  "tokens": ["--lumesec", "--lumesec-shine", "--lumesec-success", "--lumesec-warning", "--destructive", "--border", "--card", "--foreground", "--muted-foreground"],
+  "usage": "import { PxAlert } from \"@/components/lumesec/px-alert\";\n\nexport function Example() {\n  return (\n    <PxAlert type=\"warning\" heading=\"Usage at 85%\" dismissible>\n      You’ve used most of this week’s limit.\n    </PxAlert>\n  );\n}\n",
+  "playground": {
+    "props": { "type": "warning", "heading": "Usage at 85%", "dismissible": true, "children": "You’ve used most of this week’s limit." },
+    "controls": [
+      { "name": "type", "kind": "enum", "options": ["info", "success", "warning", "error"], "default": "warning" },
+      { "name": "heading", "kind": "string", "options": null, "default": "Usage at 85%" },
+      { "name": "dismissible", "kind": "boolean", "options": null, "default": "true" }
+    ]
+  }
+}

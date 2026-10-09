@@ -1,0 +1,81 @@
+---
+title: "Pattern lock"
+description: "3x3 pattern lock with a pixel trail; skipped middle nodes join automatically, a wrong pattern shatters and falls, a right one turns green."
+tag: px-pattern
+updated: "2026-09-27"
+---
+
+<ComponentPreview tag="px-pattern" />
+
+## Playground
+
+Change a prop and the component updates. Props marked live animate to the new value; the others rebuild the element.
+
+<Playground tag="px-pattern" />
+
+## Installation
+
+<Install tag="px-pattern" />
+
+## Usage
+
+<Usage tag="px-pattern" />
+
+## Behaviour
+
+Draw through the nodes to unlock. The trail is pixels, skipped middle nodes join automatically, a wrong pattern shatters and falls, and the right one goes green node by node.
+
+## API reference
+
+### Attributes
+
+| Attribute | React prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `pattern` | `pattern` | `string` | `0,3,6,7,8` | The correct pattern as comma-separated node indexes 0 to 8, row by row from the top left, each at most once; a missing or invalid value uses the L `0,3,6,7,8`. List every node the line passes through, because skipped middle nodes join a drawn pattern. Read when a pattern is checked and when Show me runs; the "draw an L" hint shows only for the default. |
+
+### Events
+
+Events bubble and cross the shadow boundary unless the description says otherwise.
+
+| Event | React prop | Detail | Description |
+| --- | --- | --- | --- |
+| `unlock` | `onUnlock` | `{}` | Fires when the drawn pattern matches `pattern`. |
+| `fail` | `onFail` | `{}` | Fires when a pattern of two or more nodes does not match. |
+
+### Methods
+
+Call them on the element, for example through a React ref.
+
+| Method | Description |
+| --- | --- |
+| `demo()` | Draws the correct pattern node by node, then checks it. Ignored while already running or after a correct pattern. |
+| `reset()` | Clears the current pattern, stops Show me and returns to the idle prompt. |
+
+### Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `secret` (read-only) | `number[]` | The `pattern` attribute parsed into node indexes; the default L when it is missing or invalid. |
+
+## Accessibility
+
+- The canvas has `role="img"` and `aria-label="Pattern lock. Use Show me to watch the right pattern."`.
+- The status text under the grid is an `aria-live="polite"` region that reports success or "Wrong pattern".
+- Drawing requires a pointer; "Show me" is a native button.
+- Reduced motion: the wrong-pattern shake and the success sparks are skipped and the rings around selected nodes do not turn; the falling debris still animates.
+
+## Theming
+
+The element reads your shadcn theme tokens through its shadow root, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--destructive`, `--foreground`, `--lumesec`, `--lumesec-success` and `--muted-foreground`.
+
+To restyle only LumeSec elements, set the matching `--ui-*` overrides: `--ui-accent`, `--ui-danger`, `--ui-fg`, `--ui-muted` and `--ui-ok`.
+
+## Notes
+
+- The match is exact and ordered, and the pattern is checked in the browser from a visible attribute, so this is a UI pattern, not a security control.
+- The default pattern is an L. The host carries `data-state="ok"` or `data-state="wrong"`; it resets 2.4 seconds after a match and 1.2 seconds after a failure.
+- The canvas is a fixed 216 by 216px.
+
+<RelatedComponents tag="px-pattern" />

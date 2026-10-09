@@ -1,0 +1,128 @@
+{
+  "summary": "Form-associated range slider with a dithered fill and a lens for a thumb that magnifies the dots beneath it.",
+  "attributes": [
+    {
+      "name": "value",
+      "type": "number",
+      "description": "Current value, clamped to `min`–`max` and snapped to `step`. Defaults to `min`. Observed and reflected back with the snapped value; changes from code fire no events."
+    },
+    {
+      "name": "min",
+      "type": "number",
+      "default": "0",
+      "description": "Lower bound. Observed."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "default": "100",
+      "description": "Upper bound. Observed."
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "default": "1",
+      "description": "Step size. Its decimal places also set the displayed precision. Values at or below 0 fall back to 1. Observed."
+    },
+    {
+      "name": "prefix",
+      "type": "string",
+      "description": "Text before the displayed value, for example `$`. Observed."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "Text after the displayed value, for example ` ms`. Observed."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Visible label; also names the slider through `aria-labelledby`. Observed."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Form field name."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Disables the slider; a disabled ancestor `<fieldset>` does the same."
+    }
+  ],
+  "events": [
+    {
+      "name": "input",
+      "detail": "{ value: number }",
+      "description": "Fires on every value change from a drag or key press. Not fired when `value` is set from code."
+    },
+    {
+      "name": "change",
+      "detail": "{ value: number }",
+      "description": "Fires on pointer release and after each key press that changed the value."
+    }
+  ],
+  "methods": [],
+  "properties": [
+    {
+      "name": "value",
+      "type": "number",
+      "readonly": false,
+      "description": "Current value. Setting it clamps, snaps and reflects to the attribute without firing events."
+    },
+    {
+      "name": "min",
+      "type": "number",
+      "readonly": true,
+      "description": "Parsed `min`."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "readonly": true,
+      "description": "Parsed `max`."
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "readonly": true,
+      "description": "Parsed `step`."
+    },
+    {
+      "name": "frac",
+      "type": "number",
+      "readonly": true,
+      "description": "Position of the value in the range, 0 to 1."
+    }
+  ],
+  "keyboard": [
+    {
+      "keys": "ArrowRight / ArrowUp",
+      "action": "Increase by one step."
+    },
+    {
+      "keys": "ArrowLeft / ArrowDown",
+      "action": "Decrease by one step."
+    },
+    {
+      "keys": "PageUp / PageDown",
+      "action": "Change by a tenth of the range."
+    },
+    {
+      "keys": "Home / End",
+      "action": "Jump to `min` or `max`."
+    }
+  ],
+  "accessibility": [
+    "The track has `role=\"slider\"` and `tabindex=\"0\"` and is named by the label through `aria-labelledby`.",
+    "Sets `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and `aria-valuetext` (formatted with `prefix` and `unit`) on every change.",
+    "Pressing on the track focuses it."
+  ],
+  "motion": "With reduced motion the thumb jumps to the value without the spring and the value text swaps without rolling.",
+  "form": "Submits the current value as a string under `name`. No validation. Form reset restores the value from the first connect; `disabled` or a disabled fieldset takes the slider out of the tab order.",
+  "slots": [],
+  "notes": [
+    "All attributes are observed. New bounds or a new `step` re-clamp and re-snap the value without events and update the end labels under the track."
+  ]
+}

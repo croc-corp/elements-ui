@@ -1,0 +1,42 @@
+{
+  "kind": "react",
+  "summary": "Sidebar nav with pixel icons and count badges, a hover block and an active bar that slides to the current item.",
+  "props": [
+    { "name": "value", "type": "string", "default": "-", "description": "Controlled `href` of the current item. Use with `onValueChange`." },
+    { "name": "defaultValue", "type": "string", "default": "first item", "description": "`href` of the initially current item when uncontrolled." },
+    { "name": "items", "type": "readonly PxNavItem[]", "default": "-", "description": "The links: `{ href: string; label: string; icon?: PxNavIcon; badge?: string }`. `href` also identifies the item in `value`." },
+    { "name": "onValueChange", "type": "(value: string) => void", "default": "-", "description": "Called with the `href` of a link the user clicks without a modifier key, when it is not already current." }
+  ],
+  "extends": "nav",
+  "ref": { "type": "HTMLElement", "methods": [] },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "Links are native `<a>` elements inside a `<nav>`; pass `aria-label` to name the nav.",
+    "The current link has `aria-current=\"page\"`.",
+    "Icons are drawn on an `aria-hidden` canvas. A badge is text inside its link, so assistive technology reads it as part of the link's name.",
+    "Focusing a link shows the same hover block as the pointer."
+  ],
+  "motion": "With reduced motion the active bar and the hover block jump instead of springing.",
+  "notes": [
+    "`icon` picks a built-in icon: `home`, `chat`, `folder`, `chart`, `gear`, `users` or `bell`. `badge` shows a small badge with that text at the end of the row, in the mono font: red, or accent on the current item.",
+    "Clicking a link whose `href` starts with `#` does not navigate; other links navigate as usual after being marked current. A click with Ctrl, ⌘, Shift or Alt is left to the browser (new tab, new window, download) and does not change the current item. To route on the client, handle `onValueChange` or replace the `<a>` with your router's link."
+  ],
+  "tokens": ["--lumesec", "--foreground", "--muted-foreground", "--destructive", "--lumesec-foreground"],
+  "usage": "import { PxNav } from \"@/components/lumesec/px-nav\";\n\nexport function Example() {\n  return (\n    <PxNav\n      aria-label=\"Main\"\n      items={[\n        { href: \"#home\", label: \"Home\", icon: \"home\" },\n        { href: \"#chats\", label: \"Chats\", icon: \"chat\", badge: \"3\" },\n        { href: \"#settings\", label: \"Settings\", icon: \"gear\" },\n      ]}\n    />\n  );\n}\n",
+  "playground": {
+    "props": {
+      "items": [
+        { "href": "#home", "label": "Home", "icon": "home" },
+        { "href": "#chats", "label": "Chats", "icon": "chat", "badge": "3" },
+        { "href": "#projects", "label": "Projects", "icon": "folder" },
+        { "href": "#usage", "label": "Usage", "icon": "chart" },
+        { "href": "#team", "label": "Team", "icon": "users" },
+        { "href": "#settings", "label": "Settings", "icon": "gear" }
+      ]
+    },
+    "controls": [
+      { "name": "defaultValue", "kind": "enum", "options": ["#home", "#chats", "#projects", "#usage", "#team", "#settings"], "default": "#home" }
+    ]
+  }
+}

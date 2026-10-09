@@ -1,0 +1,111 @@
+---
+title: Theming
+description: Components follow your shadcn theme. One extra set of --lumesec tokens adds the accent; --ui-* overrides restyle the custom elements on their own.
+updated: "2026-10-09"
+---
+
+The components read the variables your shadcn/ui components already use, such as `--background`, `--foreground`, `--card`, `--popover`, `--muted`, `--muted-foreground`, `--border`, `--input`, `--destructive`, `--font-sans` and `--font-mono`. Change your theme and the components change with it, in light and dark.
+
+On top of that, LumeSec components have one accent, Electric, and a few signal colours. They come from the `--lumesec` tokens.
+
+## Add the accent tokens
+
+```bash
+npx shadcn@latest add @lumesec/lumesec-theme
+```
+
+Every component installs this item as a dependency, so you usually already have it. It writes the tokens into your global CSS, under `:root` and `.dark`, and registers them as Tailwind colours (`bg-lumesec`, `text-lumesec-foreground` and so on):
+
+```css title="app/globals.css"
+:root {
+  --lumesec: #6219f3;
+  --lumesec-foreground: #fafafa;
+  --lumesec-soft: #a685ff;
+  --lumesec-shine: #3f12b0;
+  --lumesec-glint: #c9bdff;
+  --lumesec-success: #00a14b;
+  --lumesec-warning: #d97706;
+  --lumesec-info: #1e40af;
+}
+
+.dark {
+  --lumesec: #8654fb;
+  --lumesec-foreground: #fafafa;
+  --lumesec-soft: #a685ff;
+  --lumesec-shine: #ffffff;
+  --lumesec-glint: #ffffff;
+  --lumesec-success: #00c758;
+  --lumesec-warning: #eeb154;
+  --lumesec-info: #4ab8e8;
+}
+
+@theme inline {
+  --color-lumesec: var(--lumesec);
+  --color-lumesec-foreground: var(--lumesec-foreground);
+  /* … one entry per token */
+}
+```
+
+| Token | Tailwind colour | Used for | Light | Dark |
+| --- | --- | --- | --- | --- |
+| `--lumesec` | `lumesec` | The one accent moment | `#6219f3` | `#8654fb` |
+| `--lumesec-foreground` | `lumesec-foreground` | Text on the accent | `#fafafa` | `#fafafa` |
+| `--lumesec-soft` | `lumesec-soft` | Secondary accent shades, traffic | `#a685ff` | `#a685ff` |
+| `--lumesec-shine` | `lumesec-shine` | Highlights on dot fields | `#3f12b0` | `#ffffff` |
+| `--lumesec-glint` | `lumesec-glint` | Sparks on Interaction controls | `#c9bdff` | `#ffffff` |
+| `--lumesec-success` | `lumesec-success` | Success | `#00a14b` | `#00c758` |
+| `--lumesec-warning` | `lumesec-warning` | Warning | `#d97706` | `#eeb154` |
+| `--lumesec-info` | `lumesec-info` | Information, upstream traffic | `#1e40af` | `#4ab8e8` |
+
+To use your own brand colour, change `--lumesec` in both blocks. Errors use your `--destructive`.
+
+## How each kind of component reads the theme
+
+**React components** (Interaction, Pixel UI and Location) are styled with Tailwind classes on these tokens, like any shadcn component: `bg-card`, `text-muted-foreground`, `border-border`, `bg-lumesec`. Edit the classes in the file to restyle one. Canvas layers resolve the same variables at runtime.
+
+**Custom elements** (Pixel Lab, Pixel HD) draw inside a shadow root, so your stylesheet cannot reach into them. Custom properties inherit through the shadow boundary, so they read the same tokens from the page.
+
+Both resolve any CSS colour format, including the `oklch()` values shadcn generates, `color-mix()` and `var()` chains. Canvas layers re-read their palette when the `class`, `data-theme` or `style` attribute of `<html>` changes, so a theme switch applies on the next frame.
+
+Themes that store bare HSL channels (`--border: 214 32% 91%`, the format of older shadcn/ui versions) are not colours on their own. With such a theme, set the `--ui-*` overrides below to `hsl(var(--border))` and so on.
+
+## Overrides for custom elements
+
+Every custom element reads a private chain: an optional `--ui-*` override first, then your theme token, then a built-in fallback. Set an override to restyle LumeSec elements without touching the rest of your app.
+
+| Override | Falls back to | Used for |
+| --- | --- | --- |
+| `--ui-surface` | `--card` | Cards and panels |
+| `--ui-raised` | `--muted` | Hover fills, segmented tracks |
+| `--ui-track` | `--muted` | Slider and meter tracks |
+| `--ui-border` | `--border` | Hairlines and field borders |
+| `--ui-fg` | `--foreground` | Text and primary buttons |
+| `--ui-muted` | `--muted-foreground` | Labels and captions |
+| `--ui-accent` | `--lumesec` | The accent |
+| `--ui-on-accent` | `--lumesec-foreground` | Text on the accent |
+| `--ui-shine` | `--lumesec-shine` | Highlights on dot fields |
+| `--ui-ok` / `--ui-warn` | `--lumesec-success` / `--lumesec-warning` | Signal colours |
+| `--ui-danger` | `--destructive` | Errors |
+| `--ui-font` / `--ui-mono` | `--font-sans` / `--font-mono` | Text, and numbers, IDs, code |
+
+Overrides cascade like any custom property. To give one panel its own accent:
+
+```css
+.billing {
+  --ui-accent: #0f766e;
+}
+```
+
+For a React component, pass a class instead: `className="[--lumesec:#0f766e]"` on the component (or a wrapper) recolours its accent.
+
+## Without a theme
+
+The custom elements carry built-in light and dark values for every variable they read. On a page with none of these variables they use them and follow the operating system's colour scheme, so they also work on a plain HTML page.
+
+The React components expect the theme that `shadcn init` writes, because their Tailwind classes (`bg-card`, `text-muted-foreground`) come from it. Their canvas layers fall back to the light values when a variable is missing.
+
+## Dark mode
+
+Components follow whichever mechanism your theme uses, a `.dark` class, a `data-theme` attribute or `prefers-color-scheme`, because the tokens change, not the components.
+
+Every component page lists the tokens it reads under **Theming**.

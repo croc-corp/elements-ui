@@ -1,0 +1,77 @@
+---
+title: "Rotary dial"
+description: "Rotary dial that follows the pointer around a 270° arc, flashing a tick and rolling the value at each detent, then springs onto the step."
+tag: ui-dial
+updated: "2026-09-25"
+---
+
+<ComponentPreview tag="ui-dial" />
+
+## Playground
+
+Change a prop and the component re-renders. Props marked remounts set an initial value, so the component starts over.
+
+<Playground tag="ui-dial" />
+
+## Installation
+
+<Install tag="ui-dial" />
+
+## Usage
+
+<Usage tag="ui-dial" />
+
+## Behaviour
+
+Drag around the knob and it follows your pointer, with a click at each detent: the tick flashes, the knob nudges and the value rolls. Let go and it springs onto the nearest step.
+
+## API reference
+
+### Props
+
+Also accepts every prop of `<div>` (`React.ComponentProps<"div">`), spread onto the root element.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number` | — | Controlled value, snapped to `step` and clamped to `min` and `max`. Use with `onValueChange`. |
+| `defaultValue` | `number` | `0.7` | Initial value when uncontrolled. |
+| `min` | `number` | `0` | Lowest value. |
+| `max` | `number` | `1` | Highest value. A `max` below `min` is treated as `min`. |
+| `step` | `number` | `0.1` | Detent size, greater than 0 (anything else falls back to 1). Its decimal places set the display precision. |
+| `label` | `string` | `"Temperature"` | Caption under the dial and the slider's `aria-label`. |
+| `onValueChange` | `(value: number) => void` | — | Called on every detent change from drag, wheel or keys. |
+| `onValueCommit` | `(value: number) => void` | — | Called with each wheel or key step, and when a drag ends, even if the value did not change. |
+
+### Ref
+
+`ref` points at the root `HTMLDivElement`.
+
+## Keyboard
+
+| Keys | Action |
+| --- | --- |
+| ArrowUp / ArrowRight | Increase by one step. |
+| ArrowDown / ArrowLeft | Decrease by one step. |
+| PageUp / PageDown | Change by ten steps, stopping at `max` or `min`. |
+| Home / End | Jump to `min` / `max`. |
+
+## Accessibility
+
+- The dial has `role="slider"`, `tabindex="0"`, `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and an `aria-label` from `label`.
+- Pressing on the dial moves focus to it.
+- The tick marks are `aria-hidden`, as are the min and max labels.
+- Reduced motion: the knob settles on the step angle without overshoot, ticks do not flash, the knob does not nudge and the value swaps without rolling.
+
+## Theming
+
+Styled with Tailwind classes on your shadcn theme tokens, so light and dark follow your theme. The accent comes from `--lumesec`. See [Theming](/docs/theming).
+
+This component reads `--lumesec`, `--lumesec-glint`, `--foreground`, `--muted-foreground`, `--card`, `--muted` and `--border`.
+
+## Notes
+
+- Dragging into the 90° gap at the bottom of the arc sticks to the nearer end. The scroll wheel over the dial changes one step per tick and does not scroll the page; sideways scrolling is ignored.
+- With 16 or fewer detents each step gets a major tick plus two minor ticks; with more, one tick per detent, up to 91 evenly spaced ticks.
+- Changing `value` from outside springs the knob to it and flashes its tick without calling either callback.
+
+<RelatedComponents tag="ui-dial" />

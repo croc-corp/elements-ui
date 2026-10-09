@@ -1,0 +1,64 @@
+{
+  "kind": "react",
+  "summary": "Inbound requests converge on a protected site at the centre of a dotted globe. Blocked ones dent its shield ring and burst off it.",
+  "props": [
+    { "name": "target", "type": "ThreatTarget", "default": "{ label: \"eu-central\", lat: 50.1109, lon: 8.6821 }", "description": "`{ label, lat, lon }` of the protected site. The globe faces it, so it sits at the centre of the disc; the label shows in the header and the accessible summary." },
+    { "name": "events", "type": "readonly ThreatEvent[]", "default": "-", "description": "Requests: `{ id, lat, lon, verdict, region?, time? }` with `verdict` `blocked` or `allowed`. Each new `id` animates once, so the array can grow or be replaced. Without it a seeded demo stream runs; an empty array shows an empty window that `push()` can fill." },
+    { "name": "maxInFlight", "type": "number", "default": "24", "description": "Arcs drawn at once. Further requests go straight into the counts." },
+    { "name": "windowSeconds", "type": "number", "default": "60", "description": "Window for the counts, the origin list and the rate chart, in seconds, 1 to 3,600. Requests older than the window are ignored." },
+    { "name": "shieldRadius", "type": "number", "default": "26", "description": "Radius of the shield ring in px, 10 to 120 and at most 60 % of the globe's radius." },
+    { "name": "live", "type": "boolean", "default": "true", "description": "Runs the demo stream while `events` is not given. Off keeps the prefilled demo window as it is, until a request is pushed." },
+    { "name": "onEvent", "type": "(event: ThreatEvent) => void", "default": "-", "description": "Called when a request reaches the shield (blocked) or the site (allowed). Requests without an arc call it as soon as they are counted." },
+    { "name": "ref", "type": "React.Ref<GeoThreatsHandle>", "default": "-", "description": "Exposes `push(event)`." }
+  ],
+  "extends": "div",
+  "ref": {
+    "type": "GeoThreatsHandle",
+    "methods": [
+      { "signature": "push(event: ThreatEvent): void", "description": "Adds one request, with or without `events`. An id that was already seen is ignored." }
+    ]
+  },
+  "subcomponents": [],
+  "keyboard": [],
+  "accessibility": [
+    "The globe stage has `role=\"img\"` and an `aria-label` that summarises the window, for example \"Requests to eu-central. In the last minute: 1,284 blocked, 312 allowed, most from ap-south.\" It is refreshed at most every 15 seconds.",
+    "The counters, the site label, the origin list and the peak rate are real text. Each origin row has a visually hidden sentence with its region, total, blocked and allowed counts; the rolling digits and the dotted bars are `aria-hidden`.",
+    "Both globe canvases, the rate chart canvas, the server placeholder and the target square are `aria-hidden`. The globe takes no pointer or keyboard input."
+  ],
+  "motion": "With reduced motion no arcs, dents or sparks play: each request lights the shield dots facing its origin for 400 ms and is counted at once, the counts swap without rolling and the origin rows change places without sliding.",
+  "notes": [
+    "The globe always faces the target and never turns, so each arc is projected once. Arcs rise higher the farther they travel; origins on the far side climb over the horizon, where a two-dot glint marks the arc.",
+    "Packets speed up toward the site and take 1 s plus up to 0.8 s for the far side of the world. A blocked packet stops at the ring: the dots around the impact dent inward on springs, heat up and throw ten sparks off the ring like a reflection. An allowed packet parts the ring, passes and lands with a small ring of lit dots around the site.",
+    "Requests are grouped by `region`. Without it, a request counts toward the nearest of 16 generic regions (`us-east`, `us-west`, `sa-east`, `eu-west`, `eu-central`, `eu-north`, `me-central`, `af-south`, `ap-south`, `ap-southeast`, `ap-northeast`, `au-east`, `us-central`, `ca-central`, `eu-south`, `ap-east`) by great-circle distance.",
+    "Counts cover the last `windowSeconds`, by each request's `time` (or when it arrived). The origin list shows the five regions with the most requests and re-sorts at most once a second; each row has a dotted bar with the region's share of all requests, blocked dots first. From 560 px of width a dotted chart of requests per second with the peak sits under the list, so a flood shows as a spike.",
+    "Requests older than 10 seconds, requests that arrive while the globe is off screen or the tab is hidden, and requests beyond `maxInFlight` are counted without an arc. Ids are remembered (the last 4,000), so a re-render with the same array never counts them twice. A new `target` counts the arcs in flight at once and redraws the globe.",
+    "The stage is square, at most 420 px wide; from 560 px of container width the origin list stands beside it, else below. Arcs draw on a canvas that reaches 40 px above and below the stage and 16 px to the sides (40 px from 500 px of width).",
+    "The server markup shows the disc with a 30° graticule, the shield ring and the target; it fades to the dotted globe after the first frame. The animation loop pauses while the globe is off screen and stops when nothing moves.",
+    "Switching between demo data and `events` starts the panel over, so demo counts never mix with your requests."
+  ],
+  "data": {
+    "kind": "input",
+    "note": "Pass your requests as `events`, or call `push()` on the ref for a live feed; an empty array shows \"No requests in the last minute\". Without `events` the component shows a seeded demo stream of about four requests a second, 80 % blocked, from invented sources around real cities, on a prefilled window of invented counts."
+  },
+  "tokens": [
+    "--lumesec",
+    "--lumesec-glint",
+    "--lumesec-shine",
+    "--lumesec-success",
+    "--destructive",
+    "--foreground",
+    "--muted-foreground",
+    "--card",
+    "--border"
+  ],
+  "usage": "import { GeoThreats, type ThreatEvent } from \"@/components/lumesec/geo-threats\";\n\nexport function Example({ requests }: { requests: ThreatEvent[] }) {\n  return <GeoThreats target={{ label: \"eu-central\", lat: 50.11, lon: 8.68 }} events={requests} />;\n}\n",
+  "playground": {
+    "props": {},
+    "controls": [
+      { "name": "maxInFlight", "kind": "number", "options": null, "default": "24" },
+      { "name": "windowSeconds", "kind": "number", "options": null, "default": "60" },
+      { "name": "shieldRadius", "kind": "number", "options": null, "default": "26" },
+      { "name": "live", "kind": "boolean", "options": null, "default": "true" }
+    ]
+  }
+}

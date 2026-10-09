@@ -1,0 +1,75 @@
+name: Bug report
+description: A component, the registry or the site does not behave as documented.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check [KNOWN_ISSUES.md](https://github.com/lumesec/elements-ui/blob/main/KNOWN_ISSUES.md) and the open issues first.
+        For a security vulnerability, do not open an issue: follow [SECURITY.md](https://github.com/lumesec/elements-ui/blob/main/SECURITY.md).
+  - type: input
+    id: component
+    attributes:
+      label: Component
+      description: The tag of the affected component, for example `ui-dial` or `hf-gauge`. Leave empty if the bug is not in a component.
+      placeholder: hf-gauge
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where it happens
+      options:
+        - React component (Interaction, Pixel UI, Location)
+        - Custom element or its React wrapper (Pixel Lab, Pixel HD)
+        - Plain HTML module from the CDN
+        - Installing with the shadcn CLI
+        - Documentation site
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happens
+      description: Include error messages and console output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The smallest code or the steps that show the problem. A link to a repository or sandbox helps.
+      placeholder: |
+        1. npx shadcn@latest add @lumesec/hf-gauge
+        2. Render <HfGauge value={72} />
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser and version, operating system, React, framework and Tailwind CSS versions, and when you installed the component.
+      placeholder: |
+        Browser: Chrome 140, macOS 15
+        React 19.2, Next.js 16.0, Tailwind CSS 4.1
+        Installed: 2026-10-01
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or recording
+      description: For visual bugs, in light and dark theme if both are affected.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched the open issues and KNOWN_ISSUES.md.
+          required: true
+        - label: The bug still happens after installing the latest version of the component (`npx shadcn@latest add @lumesec/<name>`).
