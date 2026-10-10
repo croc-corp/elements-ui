@@ -11,6 +11,13 @@ updates:
     groups:
       npm-minor-and-patch:
         update-types: [minor, patch]
+    # upgraded on purpose rather than by a bot: a new TypeScript major changes type-checking for every
+    # component, and the Node.js types follow the oldest supported Node.js (.nvmrc), not the newest
+    ignore:
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      - dependency-name: "@types/node"
+        update-types: [version-update:semver-major]
 
   - package-ecosystem: github-actions
     directory: /
@@ -19,3 +26,7 @@ updates:
     groups:
       actions-minor-and-patch:
         update-types: [minor, patch]
+    # pnpm/action-setup 6 bootstraps pnpm 11; CI moves with a deliberate pnpm upgrade
+    ignore:
+      - dependency-name: pnpm/action-setup
+        update-types: [version-update:semver-major]
