@@ -32,11 +32,22 @@ jobs:
     env:
       VERSION: ${{ inputs.version }}
     steps:
+      # the push needs a token with the Workflows permission, like the Release workflow (see RELEASING.md)
+      - name: Check the release token
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          if [ -z "$RELEASE_TOKEN" ]; then
+            echo "::error::The RELEASE_TOKEN secret is missing. Add it to the production environment as described in RELEASING.md."
+            exit 1
+          fi
+
       # credentials are kept: this job pushes the production branch
       - name: Check out
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Resolve the release
         id: release

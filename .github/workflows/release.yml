@@ -64,12 +64,24 @@ jobs:
       VERSION: ${{ needs.check.outputs.version }}
       SHA: ${{ github.event.workflow_run.head_sha }}
     steps:
+      # GITHUB_TOKEN may not push commits that add or change workflow files, which every first release and many
+      # later ones do, so the push uses a token with the Workflows permission (see RELEASING.md)
+      - name: Check the release token
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          if [ -z "$RELEASE_TOKEN" ]; then
+            echo "::error::The RELEASE_TOKEN secret is missing. Add it to the production environment as described in RELEASING.md."
+            exit 1
+          fi
+
       # credentials are kept in this job only: it pushes the production branch
       - name: Check out the tested commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -82,7 +94,7 @@ jobs:
 
       - name: Tag and publish the release
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: gh release create "v$VERSION" --target "$SHA" --title "v$VERSION" --notes-file "$RUNNER_TEMP/notes.md"
 
       # fast-forward only: production never moves to a commit that is not a descendant of the last release

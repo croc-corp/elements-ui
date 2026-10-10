@@ -59,13 +59,18 @@ To fix something in production, fix it on `main` and release a patch version. No
 
 Repository settings:
 
-- **Rulesets for `main`:** require a pull request, the status checks of the CI workflow and an up-to-date branch;
-  block force pushes and deletion.
-- **Ruleset for `production`:** block deletion and restrict updates, so that only GitHub Actions can update it.
-  If your plan does not let you exempt GitHub Actions, store a fine-grained token with contents write access as
-  a secret and use it in the push steps of both workflows.
-- **Environment `production`:** optionally add required reviewers, so that every release and rollback needs an
-  approval, and limit it to the `main` branch.
+- **Environment `production`** (Settings → Environments): limit it to the `main` branch, optionally add required
+  reviewers so that every release and rollback needs an approval, and add the secret `RELEASE_TOKEN`.
+- **`RELEASE_TOKEN`:** a fine-grained personal access token (or a GitHub App token) for this repository only,
+  with the permissions Contents (read and write) and Workflows (read and write). The workflows use it to tag,
+  publish and move `production`, because the built-in `GITHUB_TOKEN` may not push commits that add or change
+  files in `.github/workflows`. Renew it before it expires; a release fails with a clear message when it is
+  missing.
+- **Ruleset for `main`:** require a pull request and the status checks "Verify and build" and "Docker image",
+  require the branch to be up to date, block force pushes and deletion. Require approvals from code owners once
+  there are at least two maintainers; GitHub does not let you approve your own pull request.
+- **Ruleset for `production`:** block deletion and restrict updates, with the token's owner (or the app) on the
+  bypass list, so that only the Release and Deploy workflows can move it.
 
 Deployment, for example a Docker Compose application in your hosting platform:
 
