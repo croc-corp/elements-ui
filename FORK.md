@@ -33,6 +33,11 @@ The upstream Dependency review check needs the dependency graph. If it fails wit
 
 ### Shared engine and modules
 
+- **`RollText` (`registry/lib/lumesec/roll-text.tsx`).** Each label keeps two spans and one long animation per
+  span. The first 380ms of each animation is the roll, and the end pose holds for the rest. The next roll seeks the
+  running animation back to its start. The keyframes split the easing curve, so the roll looks the same as before.
+  Reason: Chrome runs about twenty main-thread frames for each new short animation, and a seek costs about six. A
+  counter that rolls once a second cost about 1% of the main thread.
 - **New `lumesec-ticker` module** (`registry/lib/lumesec/ticker.ts`). All animation loops share one
   `requestAnimationFrame` callback. A loop that waits for a later time sleeps on one shared timer. Reason: each
   instance had its own frame loop, and a page with many instances paid for many frame callbacks.
