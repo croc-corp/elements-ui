@@ -216,7 +216,9 @@
       "type": "registry:lib",
       "title": "Motion hooks",
       "description": "Reduced motion, in-view detection, an off-screen-aware animation loop, lazy refs, springs and shake.",
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://elements.lumesec.ai/r/lumesec-ticker.json"
+      ],
       "files": [
         {
           "path": "registry/lib/lumesec/motion.ts",
@@ -233,7 +235,9 @@
       "type": "registry:lib",
       "title": "Pixel engine",
       "description": "Runtime for the Pixel Lab and Pixel HD custom elements: theme tokens, base element, animation loop, drawing helpers.",
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://elements.lumesec.ai/r/lumesec-ticker.json"
+      ],
       "files": [
         {
           "path": "registry/lib/lumesec/pixel.ts",
@@ -332,13 +336,31 @@
       "registryDependencies": [
         "https://elements.lumesec.ai/r/lumesec-color.json",
         "https://elements.lumesec.ai/r/lumesec-motion.json",
-        "https://elements.lumesec.ai/r/lumesec-math.json"
+        "https://elements.lumesec.ai/r/lumesec-math.json",
+        "https://elements.lumesec.ai/r/lumesec-ticker.json"
       ],
       "files": [
         {
           "path": "registry/lib/lumesec/sparks.tsx",
           "type": "registry:lib",
           "target": "@lib/lumesec/sparks.tsx"
+        }
+      ],
+      "categories": [
+        "core"
+      ]
+    },
+    {
+      "name": "lumesec-ticker",
+      "type": "registry:lib",
+      "title": "Shared ticker",
+      "description": "One shared animation frame for every animated component, with timed waits for loops that draw at a lower rate.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/lib/lumesec/ticker.ts",
+          "type": "registry:lib",
+          "target": "@lib/lumesec/ticker.ts"
         }
       ],
       "categories": [

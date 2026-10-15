@@ -9,10 +9,10 @@
  */
 import * as React from "react";
 
-import { requestTick } from "@/lib/lumesec/ticker";
 import { resolveColor } from "@/lib/lumesec/color";
 import { prefersReducedMotion } from "@/lib/lumesec/motion";
 import { rand, rgba, TAU, type RGB } from "@/lib/lumesec/math";
+import { requestTick } from "@/lib/lumesec/ticker";
 
 /** How sparks are emitted. Ranges are `[min, max]`. */
 export interface SparkOptions {
