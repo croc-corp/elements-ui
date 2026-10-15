@@ -21,6 +21,18 @@
       "description": "Seconds after which a send completes on its own, for demos. `0` means the button waits for `complete()` or a stop. Read on each send."
     },
     {
+      "name": "sendLabel",
+      "type": "string",
+      "default": "\"Send\"",
+      "description": "Accessible name of the idle button."
+    },
+    {
+      "name": "stopLabel",
+      "type": "string",
+      "default": "\"Stop\"",
+      "description": "Accessible name of the running button."
+    },
+    {
       "name": "onRunningChange",
       "type": "(running: boolean) => void",
       "default": "-",
@@ -70,7 +82,12 @@
     ]
   },
   "subcomponents": [],
-  "keyboard": [{ "keys": "Space / Enter", "action": "Send when idle, stop while running." }],
+  "keyboard": [
+    {
+      "keys": "Space / Enter",
+      "action": "Send when idle, stop while running."
+    }
+  ],
   "accessibility": [
     "A native `<button>` whose `aria-label` switches between \"Send\" and \"Stop\".",
     "The arrow, stop icon and ring are `aria-hidden`.",
@@ -85,10 +102,22 @@
   "tokens": ["--lumesec", "--lumesec-foreground", "--lumesec-glint", "--muted", "--foreground", "--border"],
   "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { UiSendButton, type UiSendButtonHandle } from \"@/components/lumesec/ui-send-button\";\n\nexport function Example() {\n  const button = React.useRef<UiSendButtonHandle>(null);\n  const timer = React.useRef(0);\n  return (\n    <UiSendButton\n      ref={button}\n      onSend={() => {\n        // stand-in for a streamed reply\n        timer.current = window.setTimeout(() => button.current?.complete(), 2000);\n      }}\n      onStop={() => window.clearTimeout(timer.current)}\n    />\n  );\n}\n",
   "playground": {
-    "props": { "demoDuration": 3 },
+    "props": {
+      "demoDuration": 3
+    },
     "controls": [
-      { "name": "demoDuration", "kind": "number", "options": null, "default": "3" },
-      { "name": "defaultRunning", "kind": "boolean", "options": null, "default": "false" }
+      {
+        "name": "demoDuration",
+        "kind": "number",
+        "options": null,
+        "default": "3"
+      },
+      {
+        "name": "defaultRunning",
+        "kind": "boolean",
+        "options": null,
+        "default": "false"
+      }
     ]
   }
 }

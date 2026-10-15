@@ -51,6 +51,9 @@ const DIGITS = [0, 1, 3, 4, 6, 7] as const;
  * seconds turn red and zero bursts.
  */
 class HCountdown extends HF {
+  /** It also draws on the canvas outside the field, so every flush redraws the whole canvas. */
+  protected override partialFlush = false;
+
   static observedAttributes = ["seconds", "label"];
 
   /** Digit tiles; measured again on the next frame after a resize. */

@@ -130,6 +130,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -205,6 +211,11 @@
         "name": "children",
         "type": "React.ReactNode",
         "default": "-"
+      },
+      {
+        "name": "labels",
+        "type": "Partial<UiThinkingLabels>",
+        "default": "-"
       }
     ],
     "attributes": [],
@@ -246,6 +257,12 @@
         "target": "lib/lumesec/color.ts",
         "source": "registry/lib/lumesec/color.ts",
         "title": "Theme colours",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -316,6 +333,16 @@
         "default": "0"
       },
       {
+        "name": "sendLabel",
+        "type": "string",
+        "default": "\"Send\""
+      },
+      {
+        "name": "stopLabel",
+        "type": "string",
+        "default": "\"Stop\""
+      },
+      {
         "name": "onRunningChange",
         "type": "(running: boolean) => void",
         "default": "-"
@@ -371,6 +398,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
@@ -494,6 +527,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
@@ -628,6 +667,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -720,6 +765,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
@@ -851,6 +902,12 @@
         "target": "lib/lumesec/color.ts",
         "source": "registry/lib/lumesec/color.ts",
         "title": "Theme colours",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -993,6 +1050,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -1069,6 +1132,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
@@ -1192,6 +1261,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -1264,6 +1339,21 @@
         "default": "\"Context\""
       },
       {
+        "name": "compactingLabel",
+        "type": "string",
+        "default": "\"Compacting…\""
+      },
+      {
+        "name": "formatReadout",
+        "type": "(used: number, capacity: number) => string",
+        "default": "-"
+      },
+      {
+        "name": "formatValueText",
+        "type": "(percent: number, used: number, capacity: number) => string",
+        "default": "-"
+      },
+      {
         "name": "onValueChange",
         "type": "(value: number) => void",
         "default": "-"
@@ -1331,6 +1421,12 @@
         "target": "lib/lumesec/color.ts",
         "source": "registry/lib/lumesec/color.ts",
         "title": "Theme colours",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -1412,6 +1508,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -1489,6 +1591,12 @@
     "dataNote": "The tokens-per-second reading is simulated; only `max` can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -1581,6 +1689,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -1661,6 +1775,12 @@
     "dataNote": "Pass your messages in `messages` or call `show()`. Without them the board cycles demo messages.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -1743,6 +1863,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -1831,6 +1957,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -1917,6 +2049,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -1989,6 +2127,12 @@
     "dataNote": "The three models and their speed, depth and cost scores are invented; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -2067,6 +2211,12 @@
     "dataNote": "Pass your key as `value`. Without it the field shows a fake demo key.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -2163,6 +2313,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -2235,6 +2391,12 @@
     "dataNote": "The meter signal is simulated; only the fader position is a real control.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -2309,6 +2471,12 @@
     "dataNote": "The response-time histogram and its run counts are invented; only the selected range is a real control.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -2412,6 +2580,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -2501,6 +2675,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -2565,6 +2745,12 @@
     "dataNote": "The daily activity counts are generated from each date; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -2639,6 +2825,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -2711,6 +2903,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -2779,6 +2977,12 @@
     "dataNote": "The latency samples, spikes and p50/p95 readout are simulated; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -2869,6 +3073,12 @@
     "dataNote": "Pass the starting reaction count as `count`. Without it the count starts at 128.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -2966,6 +3176,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -3040,6 +3256,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -3133,6 +3355,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -3221,6 +3449,12 @@
     "dataNote": "Pass your tasks in `items`. Without it the list shows demo tasks.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -3317,6 +3551,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -3389,6 +3629,12 @@
     "dataNote": "The five chats are invented; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -3479,6 +3725,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -3567,6 +3819,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -3639,6 +3897,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -3734,6 +3998,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -3822,6 +4092,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -3893,6 +4169,12 @@
     "dataNote": "The four radio stations are invented; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -3968,6 +4250,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -4030,6 +4318,12 @@
     "dataNote": "The filmstrip footage and its length are generated; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -4121,6 +4415,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -4193,6 +4493,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -4269,6 +4575,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -4351,6 +4663,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -4413,6 +4731,12 @@
     "dataNote": "The ticker items (model, latency, errors, agents, uptime) are invented; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -4482,6 +4806,12 @@
     "dataNote": "The six service nodes and their latencies are invented; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -4560,6 +4890,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -4622,6 +4958,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -4700,6 +5042,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -4762,6 +5110,12 @@
     "dataNote": "The regions, the traffic between them, the latencies and the request counter are simulated; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -4828,6 +5182,12 @@
     "dataNote": "The code is generated sample JavaScript; only the search query can be set with `find()`.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -4904,6 +5264,12 @@
     "dataNote": "The prompts and images are painted procedurally and no model is involved; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -4983,6 +5349,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -5055,6 +5427,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -5130,6 +5508,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -5200,6 +5584,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -5279,6 +5669,12 @@
     "dataNote": "The usage level starting at 64% and the Monday 09:00 reset time are invented; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -5490,6 +5886,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -5651,6 +6053,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -5807,6 +6215,12 @@
         "target": "lib/lumesec/color.ts",
         "source": "registry/lib/lumesec/color.ts",
         "title": "Theme colours",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -5978,6 +6392,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -6160,6 +6580,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
@@ -6369,6 +6795,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -6510,6 +6942,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -6678,6 +7116,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -6851,6 +7295,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -6989,6 +7439,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
@@ -7161,6 +7617,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
@@ -7345,6 +7807,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -7497,6 +7965,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -7600,6 +8074,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -7728,6 +8208,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -7849,6 +8335,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -7977,6 +8469,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -8097,6 +8595,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -8243,6 +8747,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -8406,6 +8916,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -8556,6 +9072,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -8670,6 +9192,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -8788,6 +9316,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -8935,6 +9469,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -9070,6 +9610,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -9231,6 +9777,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -9374,6 +9926,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -9547,6 +10105,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -9667,6 +10231,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -9832,6 +10402,12 @@
         "target": "lib/lumesec/math.ts",
         "source": "registry/lib/lumesec/math.ts",
         "title": "Math helpers",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -10007,6 +10583,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -10126,6 +10708,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -10258,6 +10846,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -10522,6 +11116,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -10645,6 +11245,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -10833,6 +11439,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -11008,6 +11620,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -11086,6 +11704,12 @@
     "dataNote": "Upload progress is simulated on a timer; only the file names and sizes come from the files the user drops.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -11232,6 +11856,12 @@
     ],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -11329,6 +11959,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -11438,6 +12074,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -11518,6 +12160,12 @@
     "dataNote": "The 200k window and its four segment sizes are invented; only `addTo()` and `compact()` change them.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -11669,6 +12317,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -11746,6 +12400,12 @@
     "dataNote": "Pass up to three `Name:current/goal` rings as `rings`. Without it the rings show invented usage figures.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -11853,6 +12513,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -11940,6 +12606,12 @@
     "dataNote": "Commands and their output are built-in demo content; `print()` adds your own lines.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -12050,6 +12722,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -12156,6 +12834,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -12307,6 +12991,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -12418,6 +13108,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -12549,6 +13245,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -12664,6 +13366,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -12763,6 +13471,12 @@
         "target": "lib/lumesec/data.ts",
         "source": "registry/lib/lumesec/data.ts",
         "title": "Data inputs",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -12867,6 +13581,12 @@
     "dataNote": "Pass your `Label:value` segments as `data` (and `total` for the centre). Without it the chart shows invented usage shares.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -13018,6 +13738,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -13095,6 +13821,12 @@
     "dataNote": "Pass your `Label:count` stages as `data`. Without it the funnel shows invented visitor counts.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -13197,6 +13929,12 @@
     "dataNote": "Pass your `label:value` rows as `data`; the read-only `items` property returns them parsed. Without it the list shows demo file names with invented edit counts.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -13311,6 +14049,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -13427,6 +14171,12 @@
     ],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -13534,6 +14284,12 @@
     "dataNote": "Pass the value to hide as `secret`. Without it a demo API key is shown.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -13666,6 +14422,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -13892,6 +14654,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -14023,6 +14791,12 @@
     "dataNote": "Pass your chips and counts as `options` (`Label:count`). Without it the chips show demo languages with invented counts.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -14211,6 +14985,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -14345,6 +15125,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -14467,6 +15253,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -14573,6 +15365,12 @@
     "dataNote": null,
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -14712,6 +15510,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -14788,6 +15592,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -14839,7 +15649,18 @@
     "name": "hf-diff",
     "kind": "element",
     "props": [],
-    "attributes": [],
+    "attributes": [
+      {
+        "name": "labels",
+        "prop": "labels",
+        "type": "json"
+      },
+      {
+        "name": "readonly",
+        "prop": "readonly",
+        "type": "boolean"
+      }
+    ],
     "events": [
       {
         "name": "resolve",
@@ -14853,14 +15674,30 @@
     "methods": [
       "resolve"
     ],
-    "observed": [],
-    "controls": [],
+    "observed": [
+      "labels",
+      "readonly"
+    ],
+    "controls": [
+      {
+        "name": "readonly",
+        "kind": "boolean",
+        "options": null,
+        "default": "false"
+      }
+    ],
     "playgroundProps": {},
     "formAssociated": false,
     "data": "input",
     "dataNote": "Pass your unified diff as the element's text content. Without it a built-in sample diff is shown.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -14918,6 +15755,11 @@
         "name": "paths",
         "prop": "paths",
         "type": "string"
+      },
+      {
+        "name": "labels",
+        "prop": "labels",
+        "type": "json"
       }
     ],
     "events": [
@@ -14932,7 +15774,8 @@
     ],
     "methods": [],
     "observed": [
-      "paths"
+      "paths",
+      "labels"
     ],
     "controls": [
       {
@@ -14948,6 +15791,12 @@
     "dataNote": "Pass your changed files as `paths` (`path:M`, `:A` or `:D`). Without it a demo path list is shown.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -15046,6 +15895,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -15142,6 +15997,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -15235,6 +16096,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -15308,6 +16175,12 @@
     "dataNote": "The paragraph, citations and sources are invented; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -15384,6 +16257,12 @@
     "dataNote": "The weekday-by-hour message and token counts are synthetic; only `label` can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -15468,6 +16347,12 @@
     "dataNote": "The 270 runs in three model groups are seeded random points; only `label` can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -15561,6 +16446,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -15638,6 +16529,12 @@
     "dataNote": "The sources, models and 100k request split are invented; only `label` can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -15726,6 +16623,12 @@
     "dataNote": "The six tasks, their dates and progress and the today line are invented; only `label` can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -15817,6 +16720,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -15893,6 +16802,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -15968,6 +16883,12 @@
     "dataNote": "The ten wordmarks are fictional placeholder logos; only `label` can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -16089,6 +17010,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -16161,6 +17088,12 @@
     "dataNote": "The three columns and six cards are invented; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -16250,6 +17183,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -16328,6 +17267,12 @@
     "dataNote": "The mock app and its four tour steps are built in; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -16428,6 +17373,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -16517,6 +17468,12 @@
     "nested": [],
     "files": [
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
         "title": "Pixel engine",
@@ -16587,6 +17544,12 @@
     "dataNote": "The document and its personal data are invented; nothing can be set.",
     "nested": [],
     "files": [
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
       {
         "target": "lib/lumesec/pixel.ts",
         "source": "registry/lib/lumesec/pixel.ts",
@@ -16777,6 +17740,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -16995,6 +17964,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -17184,6 +18159,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -17354,6 +18335,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -17559,6 +18546,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -17752,6 +18745,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -17985,6 +18984,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -18179,6 +19184,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -18361,6 +19372,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -18564,6 +19581,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -18771,6 +19794,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -19004,6 +20033,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -19208,6 +20243,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -19376,6 +20417,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -19583,6 +20630,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -19755,6 +20808,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -19918,6 +20977,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -20116,6 +21181,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -20328,6 +21399,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -20505,6 +21582,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -20696,6 +21779,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -20862,6 +21951,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -21022,6 +22117,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -21215,6 +22316,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -21440,6 +22547,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -21650,6 +22763,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -21837,6 +22956,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -22050,6 +23175,12 @@
         "note": "Shared by several components. Copy it once."
       },
       {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
         "target": "lib/lumesec/motion.ts",
         "source": "registry/lib/lumesec/motion.ts",
         "title": "Motion hooks",
@@ -22255,6 +23386,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {
@@ -22483,6 +23620,12 @@
         "target": "lib/lumesec/geo-countries.ts",
         "source": "registry/lib/lumesec/geo-countries.ts",
         "title": "Country data",
+        "note": "Shared by several components. Copy it once."
+      },
+      {
+        "target": "lib/lumesec/ticker.ts",
+        "source": "registry/lib/lumesec/ticker.ts",
+        "title": "Shared ticker",
         "note": "Shared by several components. Copy it once."
       },
       {

@@ -1,6 +1,19 @@
 {
   "summary": "Unified diff reviewer with dithered add and remove tints and a minimap; accepting or rejecting a hunk dissolves the dropped lines.",
-  "attributes": [],
+  "attributes": [
+    {
+      "name": "labels",
+      "type": "json",
+      "tsType": "Partial<ElementModule.HDiffLabels>",
+      "description": "The visible and spoken copy, for translation, with the keys `acceptAll`, `allResolved`, `accept`, `reject`, `acceptHunk`, `rejectHunk`, `accepted`, `rejected` and `changesTo`. `{index}` is the one-based hunk number, `{context}` the hunk's context text and `{file}` the file path. Missing keys and invalid JSON use the English defaults. Observed: a change renders the review again."
+    },
+    {
+      "name": "readonly",
+      "type": "boolean",
+      "default": "false",
+      "description": "Presence attribute. Shows the diff without the hunk buttons and Accept all, and `resolve()` does nothing. Observed: a change renders the review again."
+    }
+  ],
   "events": [
     {
       "name": "resolve",
@@ -11,10 +24,23 @@
   "methods": [
     {
       "signature": "resolve(index: number, accept: boolean)",
-      "description": "Accepts or rejects a hunk by index, as its buttons do. Ignored if the hunk is already resolved or does not exist."
+      "description": "Accepts or rejects a hunk by index, as its buttons do. Ignored if the hunk is already resolved or does not exist, or the review is read-only."
     }
   ],
-  "properties": [],
+  "properties": [
+    {
+      "name": "labels",
+      "type": "HDiffLabels",
+      "readonly": true,
+      "description": "The copy in use: the `labels` attribute over the English defaults."
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "readonly": true,
+      "description": "Whether the `readonly` attribute is present."
+    }
+  ],
   "keyboard": [],
   "accessibility": [
     "The code area is a `role=\"table\"` labelled `Changes to <file>`. Each line is a `row` of four cells (old and new line number, marker, text); each hunk header is a `row` with the header text and its buttons.",

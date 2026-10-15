@@ -8,6 +8,8 @@
  * ratio, tab visibility, reduced motion) start when the first element connects.
  */
 
+import { cancelTick, requestTick } from "@/lib/lumesec/ticker";
+
 /** An sRGB colour as `[r, g, b]` channels in 0–255. */
 export type RGB = [r: number, g: number, b: number];
 
@@ -376,7 +378,7 @@ export const repaint = (): void => {
 };
 
 /** The device pixel ratio the engine renders at (capped at 3). */
-const pixelRatio = (): number => Math.min(devicePixelRatio || 1, 3);
+export const pixelRatio = (): number => Math.min(devicePixelRatio || 1, 3);
 
 /**
  * Calls `onChange` on every change of the device pixel ratio: browser zoom, or the window moving to a screen with
@@ -542,6 +544,12 @@ export class PxBase extends Base {
   h = 0;
   /** Time of the current frame in seconds. */
   t = 0;
+  /**
+   * The most frames a second the loop draws. 60 draws on every display frame; an element whose motion looks the
+   * same at 30 sets 30, which halves the main-thread work of its canvas animation. Between frames the loop sleeps.
+   */
+  protected frameRate = 60;
+  private _drawnAt = -1e9;
   /** The template's `canvas.px`, found on connect; null for components that animate DOM only. */
   cv: HTMLCanvasElement | null = null;
   /** 2D context of {@link PxBase.cv}, scaled so drawing uses CSS pixels. */
@@ -559,6 +567,11 @@ export class PxBase extends Base {
 
   /** One-time setup on the first connect, after attributes are available. */
   protected init?(): void;
+  /**
+   * Called when the element goes on or off screen, after the frame loop paused or resumed. Elements that also
+   * animate with CSS or the Web Animations API pause those animations here.
+   */
+  protected visibilityChanged?(visible: boolean): void;
   /**
    * Called after the canvas was resized; `w` and `h` hold the new size. Runs at the start of a frame, before
    * `render`, so it may change the size of the canvas or its box.
@@ -596,8 +609,11 @@ export class PxBase extends Base {
     }
     if (this.cv) this._ro?.observe(this.cv);
     this._io = new IntersectionObserver((entries) => {
-      this._vis = entries[entries.length - 1].isIntersecting;
+      const visible = entries[entries.length - 1].isIntersecting;
+      const changed = visible !== this._vis;
+      this._vis = visible;
       this.kick();
+      if (changed) this.visibilityChanged?.(visible);
     });
     this._io.observe(this);
     if (!this._inited) {
@@ -613,7 +629,7 @@ export class PxBase extends Base {
     LIVE.delete(this);
     this._ro?.disconnect();
     this._io?.disconnect();
-    cancelAnimationFrame(this._raf);
+    cancelTick(this._raf);
     this._raf = 0;
   }
 
@@ -654,7 +670,7 @@ export class PxBase extends Base {
    * re-read whether the element is on screen (observing again reports the current intersection).
    */
   resume(): void {
-    cancelAnimationFrame(this._raf);
+    cancelTick(this._raf);
     this._raf = 0;
     if (this._io) {
       this._io.unobserve(this);
@@ -674,11 +690,20 @@ export class PxBase extends Base {
   private _frame(): void {
     if (this._raf || !this.isConnected) return;
     this._last = performance.now();
-    this._raf = requestAnimationFrame(this._tick);
+    // frames come from the shared ticker: one requestAnimationFrame for every element on the page
+    this._raf = requestTick(this._tick);
   }
 
   private readonly _tick = (now: number): void => {
     this._raf = 0;
+    // the frame rate cap: the timer wakes the loop one interval after the last drawn frame, and an earlier extra
+    // display frame is skipped, unless the canvas must refit
+    const interval = 1000 / this.frameRate;
+    if (!this._refit && now - this._drawnAt < interval / 2) {
+      if (this.isConnected && this._vis) this._raf = requestTick(this._tick, this._drawnAt + interval - 2);
+      return;
+    }
+    this._drawnAt = now;
     const dt = Math.min(0.05, Math.max(0, (now - this._last) / 1000));
     this._last = now;
     this.t = now / 1000;
@@ -694,7 +719,8 @@ export class PxBase extends Base {
     const more = this.render?.(this.t, dt) ?? false;
     // continue from this frame's timestamp, so `dt` measures whole frames and not the time since the draw ended;
     // the render may have queued a frame through kick() already
-    if (more && !this._raf && this.isConnected && this._vis) this._raf = requestAnimationFrame(this._tick);
+    if (more && !this._raf && this.isConnected && this._vis)
+      this._raf = requestTick(this._tick, this.frameRate < 60 ? now + 1000 / this.frameRate - 2 : 0);
   };
 
   /** Clear the whole canvas. */
@@ -819,10 +845,10 @@ export function pixelBurst(
     const dt = Math.min(0.05, (time - last) / 1000);
     last = time;
     g.clearRect(0, 0, lr.width, lr.height);
-    if (sparks.step(g, dt)) requestAnimationFrame(step);
+    if (sparks.step(g, dt)) requestTick(step);
     else canvas.remove();
   };
-  requestAnimationFrame(step);
+  requestTick(step);
 }
 
 /* pointer and box geometry: client coordinates are on-screen pixels, layout and drawing use CSS pixels */
@@ -1148,6 +1174,16 @@ export class Field {
   gd: Uint8ClampedArray = new Uint8ClampedArray(0);
   private color: CellLayer | null = null;
   private glow: CellLayer | null = null;
+  /**
+   * the cells as last drawn, colour then glow, one 32-bit word per cell. {@link Field.draw} compares
+   * against them and redraws only the region that changed.
+   */
+  private drawn: Uint32Array = new Uint32Array(0);
+  /** The next draw covers the whole canvas: after a resize, or when the target context changed. */
+  private stale = true;
+  private drawnTarget: CanvasRenderingContext2D | null = null;
+  /** The glow blurred at one pixel per cell, scaled up when drawn. */
+  private blurred: CellLayer | null = null;
   private mask: HTMLCanvasElement | null = null;
   private pattern: CanvasPattern | null = null;
   private patternTarget: CanvasRenderingContext2D | null = null;
@@ -1176,6 +1212,9 @@ export class Field {
     this.d = this.color.image.data;
     this.glow = createCellLayer(this.cols, this.rows);
     this.gd = this.glow.image.data;
+    this.drawn = new Uint32Array(this.cols * this.rows * 2);
+    this.stale = true;
+    this.blurred = createCellLayer(this.cols, this.rows);
     const mask = document.createElement("canvas");
     mask.width = devicePitch;
     mask.height = devicePitch;
@@ -1224,7 +1263,7 @@ export class Field {
     const k = (j * this.cols + i) * 4;
     const d = this.d;
     const alpha = Math.min(255, a * 255);
-    if (alpha >= d[k + 3]) {
+    if (alpha >= (d[k + 3] ?? 0)) {
       d[k] = c[0];
       d[k + 1] = c[1];
       d[k + 2] = c[2];
@@ -1233,7 +1272,7 @@ export class Field {
     if (glow > 0) {
       const gd = this.gd;
       const strength = Math.min(255, glow * 255);
-      if (strength > gd[k + 3]) {
+      if (strength > (gd[k + 3] ?? 0)) {
         gd[k] = c[0];
         gd[k + 1] = c[1];
         gd[k + 2] = c[2];
@@ -1247,21 +1286,87 @@ export class Field {
     this.put(Math.floor(x / this.pitch), Math.floor(y / this.pitch), c, a, glow);
   }
 
+  /** Draw everything again on the next {@link Field.draw}, for a canvas that was cleared or drawn over. */
+  invalidate(): void {
+    this.stale = true;
+  }
+
+  /**
+   * The cells that changed since the last draw, as `[i0, j0, i1, j1]` (inclusive), or null when none did. Records
+   * the current cells as drawn.
+   */
+  private changed(): [number, number, number, number] | null {
+    const cells = this.cols * this.rows;
+    const color = new Uint32Array(this.d.buffer, this.d.byteOffset, cells);
+    const glow = new Uint32Array(this.gd.buffer, this.gd.byteOffset, cells);
+    const drawn = this.drawn;
+    if (this.stale) {
+      this.stale = false;
+      drawn.set(color);
+      drawn.set(glow, cells);
+      return [0, 0, this.cols - 1, this.rows - 1];
+    }
+    let i0 = this.cols;
+    let j0 = this.rows;
+    let i1 = -1;
+    let j1 = -1;
+    for (let k = 0; k < cells; k++) {
+      const c = color[k] ?? 0;
+      const g = glow[k] ?? 0;
+      if (c === drawn[k] && g === drawn[cells + k]) continue;
+      drawn[k] = c;
+      drawn[cells + k] = g;
+      const j = (k / this.cols) | 0;
+      const i = k - j * this.cols;
+      if (i < i0) i0 = i;
+      if (i > i1) i1 = i;
+      if (j < j0) j0 = j;
+      j1 = j;
+    }
+    return i1 < 0 ? null : [i0, j0, i1, j1];
+  }
+
   /**
    * Draw the cells into `g` as square dots, then the glow buffer blurred on top: added light on dark themes,
-   * a soft wash on light ones.
+   * a soft wash on light ones. Only the region around the cells that changed since the last draw is
+   * cleared and drawn again; a draw with no changed cell does nothing. The canvas must hold nothing but the field.
    */
   draw(g: CanvasRenderingContext2D, dark: boolean, bloom = 0.9, blur = 6): void {
     const color = this.color;
     const glow = this.glow;
+    const blurred = this.blurred;
     const mask = this.mask;
-    if (!this.cols || !color || !glow || !mask) return;
-    color.g.putImageData(color.image, 0, 0);
-    const W = this.cols * this.pitch;
-    const H = this.rows * this.pitch;
+    if (!this.cols || !color || !glow || !blurred || !mask) return;
+    if (this.drawnTarget !== g) {
+      this.drawnTarget = g;
+      this.stale = true;
+    }
+    const region = this.changed();
+    if (!region) return;
+    const pitch = this.pitch;
+    // a canvas blur is measured in device pixels, whatever the transform; in cells it is that over the device pitch
+    const blurCells = blur / (pitch * this.dpr);
+    // a changed glow cell lights the cells around it, as far as the blur reaches
+    const reach = bloom > 0 ? Math.ceil(blurCells * 2.5) : 0;
+    const i0 = Math.max(0, region[0] - reach);
+    const j0 = Math.max(0, region[1] - reach);
+    const i1 = Math.min(this.cols - 1, region[2] + reach);
+    const j1 = Math.min(this.rows - 1, region[3] + reach);
+    const ci = i1 - i0 + 1;
+    const cj = j1 - j0 + 1;
+    const x = i0 * pitch;
+    const y = j0 * pitch;
+    const w = ci * pitch;
+    const h = cj * pitch;
+    color.g.putImageData(color.image, 0, 0, i0, j0, ci, cj);
     g.save();
+    g.beginPath();
+    g.rect(x, y, w, h);
+    g.clip();
+    g.globalAlpha = 1;
+    g.clearRect(x, y, w, h);
     g.imageSmoothingEnabled = false;
-    g.drawImage(color.canvas, 0, 0, W, H);
+    g.drawImage(color.canvas, i0, j0, ci, cj, x, y, w, h);
     if (this.patternTarget !== g) {
       this.pattern = g.createPattern(mask, "repeat");
       this.patternTarget = g;
@@ -1274,18 +1379,31 @@ export class Field {
     }
     g.globalCompositeOperation = "destination-in";
     if (this.pattern) g.fillStyle = this.pattern;
-    g.fillRect(0, 0, W, H);
-    g.restore();
+    g.fillRect(x, y, w, h);
+    g.globalCompositeOperation = "source-over";
     if (bloom > 0) {
-      glow.g.putImageData(glow.image, 0, 0);
-      g.save();
+      // the blur inside the region also takes light from glow cells just outside it
+      const gi0 = Math.max(0, i0 - reach);
+      const gj0 = Math.max(0, j0 - reach);
+      const gci = Math.min(this.cols, i1 + reach + 1) - gi0;
+      const gcj = Math.min(this.rows, j1 + reach + 1) - gj0;
+      glow.g.putImageData(glow.image, 0, 0, gi0, gj0, gci, gcj);
+      // blur at one pixel per cell: the same light as a full-size blur, on a canvas pitch² times smaller
+      const b = blurred.g;
+      b.save();
+      b.beginPath();
+      b.rect(i0, j0, ci, cj);
+      b.clip();
+      b.clearRect(i0, j0, ci, cj);
+      if ("filter" in b) b.filter = `blur(${blurCells}px)`;
+      b.drawImage(glow.canvas, gi0, gj0, gci, gcj, gi0, gj0, gci, gcj);
+      b.restore();
       g.imageSmoothingEnabled = true;
       g.globalCompositeOperation = dark ? "lighter" : "source-over";
       g.globalAlpha = dark ? bloom * 0.6 : bloom * 0.4;
-      if ("filter" in g) g.filter = `blur(${blur}px)`;
-      g.drawImage(glow.canvas, 0, 0, W, H);
-      g.restore();
+      g.drawImage(blurred.canvas, i0, j0, ci, cj, x, y, w, h);
     }
+    g.restore();
   }
 }
 
@@ -1293,6 +1411,11 @@ export class Field {
 export class HF extends PxBase {
   /** The dot field covering the canvas. */
   readonly F: Field;
+  /**
+   * Whether {@link HF.flush} redraws only the cells that changed. An element that draws on its canvas
+   * outside the field (sparks, text) sets it to false, and every flush clears and redraws the whole canvas.
+   */
+  protected partialFlush = true;
 
   /**
    * @param style component CSS
@@ -1318,11 +1441,20 @@ export class HF extends PxBase {
     return isDark(this.P);
   }
 
-  /** Clear the canvas and draw the field with bloom. */
+  /**
+   * Draw the field with bloom. With {@link HF.partialFlush} the field clears and redraws only the region that
+   * changed, so a frame that changed nothing draws nothing.
+   */
   flush(bloom = 0.9, blur = 6): void {
-    this.clear();
-    if (this.ctx) this.F.draw(this.ctx, this.dark, bloom, blur);
+    const dark = this.dark;
+    // a theme switch changes how the glow blends, even where the cells keep their colours
+    if (dark !== this.drawnDark || !this.partialFlush) this.F.invalidate();
+    this.drawnDark = dark;
+    if (!this.partialFlush) this.clear();
+    if (this.ctx) this.F.draw(this.ctx, dark, bloom, blur);
   }
+
+  private drawnDark = false;
 }
 
 /** Two-digit zero-padded number (`7` → `"07"`). */

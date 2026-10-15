@@ -71,6 +71,9 @@ interface TrailDot {
 
 /** Three-column kanban board: a dragged card leaves a dot trail and a bar marks where it will land. */
 class HKanban extends HF {
+  /** It also draws on the canvas outside the field, so every flush redraws the whole canvas. */
+  protected override partialFlush = false;
+
   /** The card being dragged by pointer. */
   private dragged: HTMLElement | null = null;
   private trail: TrailDot[] = [];

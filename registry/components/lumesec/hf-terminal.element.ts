@@ -74,6 +74,9 @@ const MAX_LINES = 120;
  * demo commands.
  */
 class HTerminal extends HF {
+  /** It also draws on the canvas outside the field, so every flush redraws the whole canvas. */
+  protected override partialFlush = false;
+
   private bars: ProgressBar[] = [];
   private flash: Flash[] = [];
   /** Command history, oldest first. */

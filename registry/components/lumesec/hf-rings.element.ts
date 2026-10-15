@@ -49,6 +49,9 @@ const DEFAULT_RINGS = "Messages:36/50,Tokens:410/900,Agents:13/10";
  * throws sparks.
  */
 class HRings extends HF {
+  /** It also draws on the canvas outside the field, so every flush redraws the whole canvas. */
+  protected override partialFlush = false;
+
   static readonly observedAttributes = ["rings"] as const;
 
   /** Sprung progress per ring, as a fraction of its goal (up to 2). */

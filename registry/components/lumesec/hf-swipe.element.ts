@@ -46,6 +46,9 @@ const DEFAULT_HINT = "Drag the handle all the way, or hold Enter";
  * re-arms after a delay.
  */
 class HSwipe extends HF {
+  /** It also draws on the canvas outside the field, so every flush redraws the whole canvas. */
+  protected override partialFlush = false;
+
   static readonly observedAttributes = ["label", "hint", "done-label", "done-hint"] as const;
 
   /** Handle offset in pixels from the start of its travel. */

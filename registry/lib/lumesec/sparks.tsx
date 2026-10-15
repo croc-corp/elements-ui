@@ -9,6 +9,7 @@
  */
 import * as React from "react";
 
+import { requestTick } from "@/lib/lumesec/ticker";
 import { resolveColor } from "@/lib/lumesec/color";
 import { prefersReducedMotion } from "@/lib/lumesec/motion";
 import { rand, rgba, TAU, type RGB } from "@/lib/lumesec/math";
@@ -212,10 +213,10 @@ export function burst(layer: HTMLElement, origin: BurstOrigin, options: BurstOpt
     const delta = Math.min(0.05, (now - last) / 1000);
     last = now;
     context.clearRect(0, 0, width, height);
-    if (sparks.step(context, delta)) requestAnimationFrame(step);
+    if (sparks.step(context, delta)) requestTick(step);
     else canvas.remove();
   };
-  requestAnimationFrame(step);
+  requestTick(step);
 }
 
 /**

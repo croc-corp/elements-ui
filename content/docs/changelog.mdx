@@ -4,6 +4,12 @@ description: New collections, components and changes to the registry, newest fir
 updated: "2026-10-10"
 ---
 
+## Unreleased
+
+- **Lower main-thread cost.** All animated components share one animation frame, and loops that draw at a lower rate wait on a timer instead of waking on every frame. Pixel HD redraws only the changed region of its canvas. `hf-diff`, `hf-tree` and `ui-context-meter` draw at 30 frames a second. `ui-thinking` and the `ui-send-button` ring run as compositor animations. `ui-context-meter` stops drawing once the fill settles.
+- **Translatable copy.** `ui-thinking` takes `labels`, `ui-send-button` takes `sendLabel` and `stopLabel`, `ui-context-meter` takes `compactingLabel`, `formatReadout` and `formatValueText`, and `hf-diff` and `hf-tree` take a JSON `labels` attribute. Every default is the English copy.
+- **Read-only diff.** `hf-diff` takes a `readonly` attribute that hides the hunk buttons and Accept all.
+
 ## 0.4.0 · 2026-10-10
 
 The source is public, every component went through an accessibility and robustness review, and the site no longer has accounts.

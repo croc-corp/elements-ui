@@ -40,6 +40,10 @@ export interface UiSendButtonProps extends Omit<React.ComponentProps<"button">, 
   onComplete?: () => void;
   /** Exposes `send()`, `stop()` and `complete()`. */
   ref?: React.Ref<UiSendButtonHandle>;
+  /** The accessible name while idle. Default `"Send"`. */
+  sendLabel?: string;
+  /** The accessible name while running. Default `"Stop"`. */
+  stopLabel?: string;
 }
 
 type RingPhase = "idle" | "complete" | "fade";
@@ -62,6 +66,8 @@ export function UiSendButton({
   onStop,
   onComplete,
   ref,
+  sendLabel = "Send",
+  stopLabel = "Stop",
   className,
   onClick,
   ...props
@@ -76,7 +82,7 @@ export function UiSendButton({
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const arrowRef = React.useRef<HTMLSpanElement>(null);
   const stopRef = React.useRef<HTMLSpanElement>(null);
-  const circleRef = React.useRef<SVGCircleElement>(null);
+  const ringRef = React.useRef<SVGSVGElement>(null);
   const { ref: sparksRef, fire: fireSparks } = useBurst();
 
   const runningNow = React.useRef(running);
@@ -152,9 +158,10 @@ export function UiSendButton({
 
   // the orbiting arc: 1.1 s per turn until the ring closes
   React.useEffect(() => {
-    const circle = circleRef.current;
-    if (!running || ring !== "idle" || reduced || !circle) return;
-    const spin = circle.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(360deg)" }], {
+    // the whole svg turns, which the compositor runs; turning the circle inside it repaints on every frame
+    const ringSvg = ringRef.current;
+    if (!running || ring !== "idle" || reduced || !ringSvg) return;
+    const spin = ringSvg.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(360deg)" }], {
       duration: 1100,
       iterations: Infinity,
     });
@@ -179,7 +186,7 @@ export function UiSendButton({
       type="button"
       data-slot="ui-send-button"
       data-state={state}
-      aria-label={running ? "Stop" : "Send"}
+      aria-label={running ? stopLabel : sendLabel}
       className={cn(
         "group relative grid size-10 cursor-pointer place-items-center rounded-full border-0 bg-lumesec p-0 font-[inherit] text-lumesec-foreground outline-none select-none",
         "[transition:background-color_.35s_ease,color_.35s_ease,transform_.2s_cubic-bezier(.2,.8,.2,1),box-shadow_.35s] active:[transform:scale(.9)] disabled:pointer-events-none disabled:opacity-50",
@@ -214,6 +221,7 @@ export function UiSendButton({
         <span className="block size-3 rounded-[3px] bg-current" />
       </span>
       <svg
+        ref={ringRef}
         viewBox="0 0 48 48"
         aria-hidden="true"
         className={cn(
@@ -222,7 +230,6 @@ export function UiSendButton({
         )}
       >
         <circle
-          ref={circleRef}
           cx="24"
           cy="24"
           r="22"
