@@ -33,6 +33,12 @@ export interface UiContextMeterProps extends Omit<React.ComponentProps<"div">, "
   capacity?: number;
   /** Caption before the percentage, and the meter's accessible name. */
   label?: string;
+  /** Caption shown while `compact()` runs. Default `"Compacting…"`. */
+  compactingLabel?: string;
+  /** The "used / total" readout. Default: thousands, such as `92k / 200k`. */
+  formatReadout?: (used: number, capacity: number) => string;
+  /** The meter's value text for assistive technology. Default: `46%, 92,000 of 200,000 tokens`. */
+  formatValueText?: (percent: number, used: number, capacity: number) => string;
   /** Called with the new percentage when `add()` or `compact()` changes it. */
   onValueChange?: (value: number) => void;
   /** Called when `compact()` runs, with the percentage before and after. */
@@ -60,6 +66,9 @@ export function UiContextMeter({
   defaultValue = 0,
   capacity = 200000,
   label = "Context",
+  compactingLabel = "Compacting…",
+  formatReadout = defaultReadout,
+  formatValueText = defaultValueText,
   onValueChange,
   onCompact,
   ref,
@@ -90,7 +99,8 @@ export function UiContextMeter({
   const fill = React.useRef(used);
   const sweepStart = React.useRef(-1);
 
-  const loop = useAnimationLoop(canvasRef, step);
+  // 30 frames a second: the pixel strip looks the same and draws half as often
+  const loop = useAnimationLoop(canvasRef, step, METER_LOOP);
   const surfaceRef = useCanvas(canvasRef, () => loop.kick());
   const palette = usePalette(canvasRef, undefined, () => loop.kick());
 
@@ -197,18 +207,16 @@ export function UiContextMeter({
       }
     }
     context.globalAlpha = 1;
-    return (
-      Math.abs(target.current - fill.current) > 0.0005 ||
-      sweep < 1.2 ||
-      (!reducedMotion && Math.abs(edge - Math.round(edge)) > 0)
-    );
+    // the loop sleeps once the fill settles; a dithered front that kept flickering drew about 25 frames a
+    // second for as long as the meter was on screen
+    return Math.abs(target.current - fill.current) > 0.0005 || sweep < 1.2;
   }
 
   return (
     <div data-slot="ui-context-meter" data-zone={zone} className={cn("block leading-normal", className)} {...props}>
       <div className="mb-[9px] flex items-baseline gap-2">
         <RollText
-          text={compacting ? "Compacting…" : label}
+          text={compacting ? compactingLabel : label}
           direction={compacting ? 1 : -1}
           className="text-[12.5px] text-muted-foreground"
         />
@@ -223,7 +231,7 @@ export function UiContextMeter({
           )}
         />
         <RollText
-          text={`${formatTokens(usedTokens)} / ${formatTokens(capacity)}`}
+          text={formatReadout(usedTokens, capacity)}
           direction={shown.direction}
           className="ml-auto font-mono text-[12px] text-muted-foreground tabular-nums"
         />
@@ -236,7 +244,7 @@ export function UiContextMeter({
         aria-valuenow={percent}
         // the name stays fixed; the changing level is the value text
         aria-label={label}
-        aria-valuetext={`${percent}%, ${usedTokens.toLocaleString("en-US")} of ${capacity.toLocaleString("en-US")} tokens`}
+        aria-valuetext={formatValueText(percent, usedTokens, capacity)}
         className="block h-[18px] w-full"
       />
     </div>
@@ -247,3 +255,10 @@ export function UiContextMeter({
 function formatTokens(count: number) {
   return count >= 1000 ? `${Math.round(count / 1000)}k` : String(count);
 }
+
+const defaultReadout = (used: number, capacity: number) => `${formatTokens(used)} / ${formatTokens(capacity)}`;
+
+const defaultValueText = (percent: number, used: number, capacity: number) =>
+  `${percent}%, ${used.toLocaleString("en-US")} of ${capacity.toLocaleString("en-US")} tokens`;
+
+const METER_LOOP = { frameRate: 30 } as const;

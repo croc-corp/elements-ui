@@ -27,6 +27,24 @@
       "description": "Caption before the percentage, and the meter's accessible name."
     },
     {
+      "name": "compactingLabel",
+      "type": "string",
+      "default": "\"Compacting…\"",
+      "description": "Caption shown while `compact()` runs."
+    },
+    {
+      "name": "formatReadout",
+      "type": "(used: number, capacity: number) => string",
+      "default": "-",
+      "description": "Formats the token readout. The default writes thousands, such as `92k / 200k`."
+    },
+    {
+      "name": "formatValueText",
+      "type": "(percent: number, used: number, capacity: number) => string",
+      "default": "-",
+      "description": "Formats the meter's `aria-valuetext`. The default reads `46%, 92,000 of 200,000 tokens`."
+    },
+    {
       "name": "onValueChange",
       "type": "(value: number) => void",
       "default": "-",
@@ -82,11 +100,29 @@
   ],
   "usage": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { UiContextMeter, type UiContextMeterHandle } from \"@/components/lumesec/ui-context-meter\";\n\nexport function Example() {\n  const meter = React.useRef<UiContextMeterHandle>(null);\n  return (\n    <div className=\"grid gap-3\">\n      <UiContextMeter ref={meter} defaultValue={46} capacity={200000} />\n      <button type=\"button\" onClick={() => meter.current?.compact()}>\n        Compact\n      </button>\n    </div>\n  );\n}\n",
   "playground": {
-    "props": { "defaultValue": 46, "capacity": 200000 },
+    "props": {
+      "defaultValue": 46,
+      "capacity": 200000
+    },
     "controls": [
-      { "name": "defaultValue", "kind": "number", "options": null, "default": "46" },
-      { "name": "capacity", "kind": "number", "options": null, "default": "200000" },
-      { "name": "label", "kind": "string", "options": null, "default": "Context" }
+      {
+        "name": "defaultValue",
+        "kind": "number",
+        "options": null,
+        "default": "46"
+      },
+      {
+        "name": "capacity",
+        "kind": "number",
+        "options": null,
+        "default": "200000"
+      },
+      {
+        "name": "label",
+        "kind": "string",
+        "options": null,
+        "default": "Context"
+      }
     ]
   }
 }

@@ -3,9 +3,9 @@
 import * as React from "react";
 
 import { useCanvas } from "@/lib/lumesec/canvas";
-import { usePalette, type ColorToken, type Palette } from "@/lib/lumesec/color";
+import { type ColorToken, type Palette, usePalette } from "@/lib/lumesec/color";
 import { mixRgb, rgba } from "@/lib/lumesec/math";
-import { prefersReducedMotion, useAnimationLoop, useReducedMotion } from "@/lib/lumesec/motion";
+import { useInView, useReducedMotion } from "@/lib/lumesec/motion";
 import { RollText } from "@/lib/lumesec/roll-text";
 import { useControllableState } from "@/lib/lumesec/use-controllable-state";
 import { cn } from "@/lib/utils";
@@ -34,6 +34,18 @@ export interface UiThinkingProps extends Omit<React.ComponentProps<"div">, "ref"
   children?: React.ReactNode;
   /** Imperative `finish()` and `restart()`. */
   ref?: React.Ref<UiThinkingHandle>;
+  /** The visible copy, for translation. Missing entries use the English defaults. */
+  labels?: Partial<UiThinkingLabels>;
+}
+
+/** The copy of the indicator. Each function receives the whole seconds shown. */
+export interface UiThinkingLabels {
+  /** The label while the model thinks. */
+  thinking: string;
+  /** The label once done, for example "Thought for 4s". */
+  done: (seconds: number) => string;
+  /** The running counter beside the label, for example "4s". */
+  counter: (seconds: number) => string;
 }
 
 /**
@@ -52,13 +64,24 @@ export function UiThinking({
   children,
   className,
   ref,
+  labels: labelsProp,
   ...props
 }: UiThinkingProps) {
-  const [done, setDone] = useControllableState({ value: doneProp, defaultValue: defaultDone, onChange: onDoneChange });
+  const labels = { ...DEFAULT_LABELS, ...labelsProp };
+  const [done, setDone] = useControllableState({
+    value: doneProp,
+    defaultValue: defaultDone,
+    onChange: onDoneChange,
+  });
   const [seconds, setSeconds] = React.useState(0);
   /** Bumped by `restart()` to restart the counter. */
   const [run, setRun] = React.useState(0);
   const [expanded, setExpanded] = React.useState(false);
+
+  // An indicator that mounts done never shows the wave, so its canvas holds a single frame. The strip
+  // appears with the first thinking state and stays, so the wave can fade out on the frame it stopped at.
+  const [strip, setStrip] = React.useState(!done);
+  if (!done && !strip) setStrip(true);
 
   // Returning to the thinking state collapses the reasoning.
   const [wasDone, setWasDone] = React.useState(done);
@@ -69,44 +92,68 @@ export function UiThinking({
 
   const rootRef = React.useRef<HTMLDivElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const labelRef = React.useRef<HTMLSpanElement>(null);
+  const bandRef = React.useRef<HTMLSpanElement>(null);
+  const bandTextRef = React.useRef<HTMLSpanElement>(null);
+  const animations = React.useRef<Animation[]>([]);
   const startedAt = React.useRef(0);
   const reportedDone = React.useRef(done);
 
   const reducedMotion = useReducedMotion();
+  // the wave and the shimmer pause off screen
+  const inView = useInView(rootRef);
   const panelId = React.useId();
 
-  const loop = useAnimationLoop(rootRef, step);
-  // a resize clears the canvas, so redraw (the still frame with reduced motion would stay blank otherwise)
-  const canvas = useCanvas(canvasRef, () => loop.kick());
-  const colors = usePalette(rootRef, WAVE_COLORS, () => loop.kick());
-
-  function step(time: number) {
-    // once done, the canvas fades out with CSS on the last drawn frame
-    if (done) return false;
+  // The wave is drawn once into a strip of frames, and a transform animation steps through the strip on the
+  // compositor, so the main thread does no work per frame. The strip is drawn again only when the canvas size, the
+  // theme or the motion preference changes.
+  const [paintCount, repaint] = React.useReducer((count: number) => count + 1, 0);
+  const canvas = useCanvas(canvasRef, repaint, { maxDpr: 2 });
+  const colors = usePalette(rootRef, WAVE_COLORS, repaint);
+  // paintCount is the trigger after a resize or a theme change
+  React.useEffect(() => {
     const surface = canvas.current;
     const palette = colors.current;
-    if (!surface || !palette) return true;
-    const reduced = prefersReducedMotion();
-    drawWave(surface.context, palette, time, reduced);
-    // the label shimmer rides the same clock
-    const label = labelRef.current;
-    if (reduced) label?.style.removeProperty("--thinking-shimmer");
-    else label?.style.setProperty("--thinking-shimmer", `${100 - ((time / 1.9) % 1) * 100}%`);
-    // with reduced motion the wave is a still frame: draw it once and let the loop sleep
-    return !reduced;
-  }
+    if (surface && palette) drawStrip(surface.context, palette, reducedMotion, Math.round(surface.width / 20));
+  }, [canvas, colors, reducedMotion, paintCount]);
 
-  // a change of the motion preference wakes the loop, to restart the wave or draw the still frame
+  // The wave and the shimmer are transform animations, which the compositor runs without main-thread
+  // work. With reduced motion there are none: the still frame and the plain label stay.
   React.useEffect(() => {
-    loop.kick();
-  }, [reducedMotion, loop]);
+    const wave = canvasRef.current;
+    const band = bandRef.current;
+    const bandText = bandTextRef.current;
+    if (reducedMotion || !wave || !band || !bandText || typeof wave.animate !== "function") return;
+    const running = [
+      wave.animate(WAVE_KEYFRAMES, {
+        duration: WAVE_PERIOD * 1000,
+        iterations: Number.POSITIVE_INFINITY,
+        easing: `steps(${FRAMES})`,
+      }),
+      band.animate(BAND_KEYFRAMES, SHIMMER_TIMING),
+      bandText.animate(BAND_TEXT_KEYFRAMES, SHIMMER_TIMING),
+    ];
+    animations.current = running;
+    return () => {
+      for (const animation of running) animation.cancel();
+      animations.current = [];
+    };
+  }, [reducedMotion]);
+
+  // done keeps the frame the wave stopped on while it fades; off screen nothing runs
+  // reducedMotion is a trigger: it recreates the animations, which then need pausing or playing
+  React.useEffect(() => {
+    for (const animation of animations.current) {
+      if (done || !inView) animation.pause();
+      else animation.play();
+    }
+  }, [done, inView, reducedMotion]);
 
   React.useEffect(() => {
     startedAt.current = performance.now();
   }, []);
 
   // The counter runs on a timer, so it stays right while the wave is paused off screen.
+  // run is a trigger: restart() starts the counter again
   React.useEffect(() => {
     if (done) return;
     let timer = 0;
@@ -117,9 +164,8 @@ export function UiThinking({
       timer = window.setTimeout(tick, 1000 - (elapsed % 1000));
     };
     timer = window.setTimeout(tick, 0);
-    loop.kick();
     return () => window.clearTimeout(timer);
-  }, [done, run, loop]);
+  }, [done, run]);
 
   React.useEffect(() => {
     if (reportedDone.current === done) return;
@@ -154,11 +200,14 @@ export function UiThinking({
     >
       <div className="flex items-center gap-2.5">
         <span className="relative h-3.5 w-5 flex-none">
-          <canvas
-            ref={canvasRef}
-            aria-hidden="true"
-            className="absolute inset-0 block size-full [transition:opacity_.3s_ease,transform_.45s_cubic-bezier(.2,.8,.2,1)] group-data-[state=done]/thinking:[transform:scale(.3)] group-data-[state=done]/thinking:opacity-0"
-          />
+          <span className="absolute inset-0 overflow-hidden [transition:opacity_.3s_ease,transform_.45s_cubic-bezier(.2,.8,.2,1)] group-data-[state=done]/thinking:[transform:scale(.3)] group-data-[state=done]/thinking:opacity-0">
+            <canvas
+              ref={canvasRef}
+              aria-hidden="true"
+              className="block h-3.5"
+              style={{ width: `${(strip ? FRAMES : 1) * 20}px` }}
+            />
+          </span>
           <svg
             viewBox="0 0 18 18"
             aria-hidden="true"
@@ -178,14 +227,37 @@ export function UiThinking({
           onClick={() => setExpanded((open) => !open)}
           className="-mx-1.5 -my-1 flex cursor-default items-center gap-2 rounded-lg border-0 bg-transparent px-1.5 py-1 text-inherit outline-none select-none [font:inherit] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lumesec focus-visible:outline-solid enabled:cursor-pointer enabled:hover:bg-foreground/7"
         >
+          <span className="relative inline-grid">
+            <RollText
+              text={done ? labels.done(Math.max(1, seconds)) : labels.thinking}
+              direction={done ? 1 : -1}
+              className={cn("*:font-medium", !done && "text-muted-foreground")}
+            />
+            {/*
+              The shimmer is a copy of the label in the foreground colour, seen through a soft-edged band. The band
+              and the copy move in opposite directions with transforms, so the compositor runs the sweep without a
+              repaint on every frame.
+            */}
+            <span
+              aria-hidden="true"
+              hidden={done || reducedMotion}
+              className="pointer-events-none absolute inset-0 overflow-hidden"
+            >
+              <span
+                ref={bandRef}
+                className="absolute inset-y-0 left-0 w-[62.4%] overflow-hidden [mask-image:linear-gradient(100deg,transparent_0%,#000_50%,transparent_100%)]"
+              >
+                <span
+                  ref={bandTextRef}
+                  className="absolute top-0 left-0 w-[160.26%] font-medium whitespace-nowrap text-foreground"
+                >
+                  {labels.thinking}
+                </span>
+              </span>
+            </span>
+          </span>
           <RollText
-            ref={labelRef}
-            text={done ? `Thought for ${Math.max(1, seconds)}s` : "Thinking"}
-            direction={done ? 1 : -1}
-            className={cn("*:font-medium", !done && SHIMMER_CLASSES)}
-          />
-          <RollText
-            text={`${seconds}s`}
+            text={labels.counter(seconds)}
             animate={seconds > 0}
             className="font-mono text-[12px] text-muted-foreground tabular-nums group-data-[state=done]/thinking:hidden"
           />
@@ -218,17 +290,55 @@ export function UiThinking({
   );
 }
 
+const DEFAULT_LABELS: UiThinkingLabels = {
+  thinking: "Thinking",
+  done: (seconds) => `Thought for ${seconds}s`,
+  counter: (seconds) => `${seconds}s`,
+};
+
 const WAVE_COLORS = {
   accent: ["--lumesec", "#6219f3"],
   glint: ["--lumesec-glint", "#c9bdff"],
 } as const satisfies Record<string, ColorToken>;
 
-/**
- * The thinking label: a light band sweeps across the muted text. Applied to each rolling item; the loop moves
- * `--thinking-shimmer` from 100% to 0% every 1.9 s.
+/** One period of the wave in seconds: `sin(time * 5.5)` repeats every 2π / 5.5. */
+const WAVE_PERIOD = (2 * Math.PI) / 5.5;
+/** Frames in the strip: one period at 60 frames a second. The wave animation steps through them. */
+const FRAMES = 69;
+
+/** The strip moves left by its own width in one period, one frame per step. */
+const WAVE_KEYFRAMES: Keyframe[] = [{ transform: "translateX(0)" }, { transform: "translateX(-100%)" }];
+
+/*
+ * The shimmer band is 62.4% of the label wide: the 38% to 62% ramp of a 260% gradient. It sweeps from
+ * 0.3 label widths before the label to 0.3 widths past it in 1.9 s. The copy of the label inside the band moves
+ * back by the same distance, so the text stays in place while the band passes over it.
  */
-const SHIMMER_CLASSES =
-  "*:bg-[linear-gradient(100deg,var(--muted-foreground)_0%,var(--muted-foreground)_38%,var(--foreground)_50%,var(--muted-foreground)_62%,var(--muted-foreground)_100%)] *:bg-clip-text *:text-transparent *:[background-position:var(--thinking-shimmer,0%)_0] *:[background-size:260%_100%]";
+const BAND_KEYFRAMES: Keyframe[] = [{ transform: "translateX(-98.08%)" }, { transform: "translateX(158.33%)" }];
+const BAND_TEXT_KEYFRAMES: Keyframe[] = [{ transform: "translateX(61.2%)" }, { transform: "translateX(-98.8%)" }];
+const SHIMMER_TIMING: KeyframeAnimationOptions = {
+  duration: 1900,
+  iterations: Number.POSITIVE_INFINITY,
+  easing: "linear",
+};
+
+/**
+ * Draw `frames` frames of one wave period side by side, 20px apart, or the still frame alone with reduced motion.
+ */
+function drawStrip(
+  context: CanvasRenderingContext2D,
+  colors: Palette<keyof typeof WAVE_COLORS>,
+  reduced: boolean,
+  frames: number,
+) {
+  context.clearRect(0, 0, frames * 20, 14);
+  for (let frame = 0; frame < (reduced ? 1 : frames); frame++) {
+    context.save();
+    context.translate(frame * 20, 0);
+    drawWave(context, colors, (frame * WAVE_PERIOD) / FRAMES, reduced);
+    context.restore();
+  }
+}
 
 /** A 6 x 4 grid of 2px pixels; a sine wave runs through it and brightens toward the glint. */
 function drawWave(
@@ -237,7 +347,6 @@ function drawWave(
   time: number,
   reduced: boolean,
 ) {
-  context.clearRect(0, 0, 20, 14);
   for (let column = 0; column < 6; column++) {
     for (let row = 0; row < 4; row++) {
       const wave = reduced ? 0.55 : Math.max(0, Math.sin(time * 5.5 - column * 0.85 + row * 0.55));

@@ -34,6 +34,9 @@ const FLIGHT = 0.62;
  * before it collapses.
  */
 class HBanner extends HF {
+  /** It also draws on the canvas outside the field, so every flush redraws the whole canvas. */
+  protected override partialFlush = false;
+
   static observedAttributes = ["action", "variant"];
 
   /** `in` while shown (and materialising), `out` once dismissed. */

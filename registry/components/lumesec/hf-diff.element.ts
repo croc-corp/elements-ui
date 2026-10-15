@@ -122,8 +122,44 @@ function parseDiff(src: readonly string[]): { file: string; hunks: ParsedHunk[] 
   return { file, hunks };
 }
 
+/**
+ * The copy of the review, read from the `labels` attribute (JSON) over these English defaults. `{index}` is the
+ * one-based hunk number, `{file}` the file path and `{context}` the hunk's context text.
+ */
+export type HDiffLabels = {
+  acceptAll: string;
+  allResolved: string;
+  accept: string;
+  reject: string;
+  acceptHunk: string;
+  rejectHunk: string;
+  accepted: string;
+  rejected: string;
+  changesTo: string;
+};
+
+const DEFAULT_LABELS: HDiffLabels = {
+  acceptAll: "Accept all",
+  allResolved: "All resolved",
+  accept: "Accept",
+  reject: "Reject",
+  acceptHunk: "Accept hunk {index}",
+  rejectHunk: "Reject hunk {index}",
+  accepted: "✓ Accepted · {context}",
+  rejected: "✕ Rejected · {context}",
+  changesTo: "Changes to {file}",
+};
+
+/** Replace `{name}` placeholders; unknown names stay as they are. */
+const fill = (template: string, values: Readonly<Record<string, string | number>>): string =>
+  template.replace(/\{(\w+)\}/g, (match, key: string) => (key in values ? String(values[key]) : match));
+
 /** Unified diff reviewer with dithered add and remove tints and a minimap; resolving a hunk dissolves dropped lines. */
 class HDiff extends HF {
+  /** 30 frames a second: the dissolve looks the same and draws half as often. */
+  protected override frameRate = 30;
+  static readonly observedAttributes = ["labels", "readonly"] as const;
+
   private hunks: Hunk[] = [];
   /** Follows the text content, so a new diff (a React child, for example) replaces the review. */
   private readonly textObserver = new MutationObserver(() => this.build());
@@ -187,18 +223,39 @@ class HDiff extends HF {
     this.build();
   }
 
+  attributeChangedCallback(): void {
+    if (this.initialized) this.build();
+  }
+
+  /** The copy: the `labels` attribute over the English defaults. Invalid JSON keeps the defaults. */
+  get labels(): HDiffLabels {
+    try {
+      const value: unknown = JSON.parse(this.getAttribute("labels") || "{}");
+      return value && typeof value === "object" ? { ...DEFAULT_LABELS, ...value } : DEFAULT_LABELS;
+    } catch {
+      return DEFAULT_LABELS;
+    }
+  }
+
+  /** Whether the review is read-only: the `readonly` attribute hides the hunk buttons and Accept all. */
+  get readOnly(): boolean {
+    return this.hasAttribute("readonly");
+  }
+
   /** Parse the text content (or the sample) and render the review; every hunk starts open. */
   private build(): void {
     const { file, hunks } = parseDiff((this.textContent.trim() || DIFF_SAMPLE).split(/\r?\n/));
+    const L = this.labels;
+    this.$(".all").hidden = this.readOnly;
     this.$(".fn").textContent = file;
     const code = this.$(".code");
-    code.setAttribute("aria-label", `Changes to ${file}`);
+    code.setAttribute("aria-label", fill(L.changesTo, { file }));
     const sign = (ty: LineType): string => (ty === "add" ? "+" : ty === "del" ? "−" : " ");
     // every interpolated text is escaped: the diff is content from the page
     code.innerHTML = hunks
       .map(
         (h, k) =>
-          `<div class="hk" data-k="${k}" role="row"><span role="cell" aria-colspan="3">${escapeHtml(h.head.replace(/ @@.*/, " @@"))} ${escapeHtml(h.ctx)}</span><span class="bt" role="cell"><button type="button" class="ok" aria-label="Accept hunk ${k + 1}">Accept</button><button type="button" class="no" aria-label="Reject hunk ${k + 1}">Reject</button></span></div>` +
+          `<div class="hk" data-k="${k}" role="row"><span role="cell" aria-colspan="3">${escapeHtml(h.head.replace(/ @@.*/, " @@"))} ${escapeHtml(h.ctx)}</span>${this.readOnly ? "" : `<span class="bt" role="cell"><button type="button" class="ok" aria-label="${escapeHtml(fill(L.acceptHunk, { index: k + 1 }))}">${escapeHtml(L.accept)}</button><button type="button" class="no" aria-label="${escapeHtml(fill(L.rejectHunk, { index: k + 1 }))}">${escapeHtml(L.reject)}</button></span>`}</div>` +
           h.lines
             .map(
               (l) =>
@@ -241,7 +298,7 @@ class HDiff extends HF {
     const left = this.hunks.filter((h) => !h.res).length;
     const all = this.$<HTMLButtonElement>(".all");
     all.disabled = !left;
-    all.textContent = left ? "Accept all" : "All resolved";
+    all.textContent = left ? this.labels.acceptAll : this.labels.allResolved;
   }
 
   /**
@@ -250,13 +307,13 @@ class HDiff extends HF {
    */
   resolve(index: number, accept: boolean): void {
     const h = this.hunks.at(index);
-    if (!h || index < 0 || h.res) return;
+    if (!h || index < 0 || h.res || this.readOnly) return;
     // the hunk's buttons are about to be hidden
     const hadFocus = h.el.contains(this.root.activeElement);
     h.res = accept ? "ok" : "no";
     h.el.classList.add("res");
     const label = h.el.querySelector("span");
-    if (label) label.textContent = accept ? `✓ Accepted · ${h.ctx}` : `✕ Rejected · ${h.ctx}`;
+    if (label) label.textContent = fill(accept ? this.labels.accepted : this.labels.rejected, { context: h.ctx });
     h.el.style.color = `var(--_${accept ? "ok" : "danger"})`;
     for (const l of h.lines) {
       // accepting drops the removed lines, rejecting the added ones
@@ -276,6 +333,9 @@ class HDiff extends HF {
     this.stats(true);
     if (hadFocus) this.focusAfter(index);
     this.emit<HDiffResolveDetail>("resolve", { hunk: index, accepted: accept });
+    // the dropped lines collapse with a CSS transition; the canvas keeps its height until the animation ends, so
+    // the shrinking box does not resize and clear it on every frame (.box clips the rest)
+    if (this.cv && this.h) this.cv.style.height = `${this.h}px`;
     this.kick();
   }
 
@@ -318,7 +378,8 @@ class HDiff extends HF {
         if (l.kept && kp <= 0) continue;
         for (let j = Math.floor(y0 / pitch); j < (y0 + hh) / pitch; j++) {
           for (let i = 0; i < F.cols; i++) {
-            const [x] = F.xy(i, j);
+            // the cell centre inline: F.xy allocates a pair per cell
+            const x = (i + 0.5) * pitch;
             const bar = x < 3;
             if (dy >= 0) {
               // dissolve to the right
@@ -356,6 +417,8 @@ class HDiff extends HF {
       }
     });
     this.flush(0.7, 4);
+    // once the animation ends, the canvas follows its box again and refits once
+    if (!busy && canvas.style.height) canvas.style.removeProperty("height");
     return busy;
   }
 }

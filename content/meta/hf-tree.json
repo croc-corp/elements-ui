@@ -6,6 +6,12 @@
       "type": "string",
       "default": "src/auth/session.ts:M,src/auth/token.ts:A,src/auth/legacy.ts:D,src/api/client.ts:M,src/api/routes.ts,src/ui/composer.tsx:M,src/ui/theme.ts,tests/auth.spec.ts:A,docs/README.md:M,package.json:M,tsconfig.json",
       "description": "Comma-separated file paths, each optionally followed by `:M` (modified), `:A` (added) or `:D` (deleted); other status letters are ignored. Folders come from the `/` segments. Observed: a change rebuilds the tree and keeps expanded folders and the selection where they still exist."
+    },
+    {
+      "name": "labels",
+      "type": "json",
+      "tsType": "Partial<ElementModule.HTreeLabels>",
+      "description": "The visible copy, for translation, with the keys `heading`, `headingOne`, `changedOnly`, `modified`, `added` and `deleted`. `heading` and `headingOne` may contain `{count}`, the number of changed files; `headingOne` is used when it is 1. Missing keys and invalid JSON use the English defaults. Observed: a change rebuilds the tree."
     }
   ],
   "events": [
@@ -22,14 +28,35 @@
       "type": "{ path: string; st: \"M\" | \"A\" | \"D\" | \"\" }[]",
       "readonly": true,
       "description": "The parsed `paths`; `st` is `M`, `A`, `D` or an empty string. Entries without a path are skipped."
+    },
+    {
+      "name": "labels",
+      "type": "HTreeLabels",
+      "readonly": true,
+      "description": "The copy in use: the `labels` attribute over the English defaults."
     }
   ],
   "keyboard": [
-    { "keys": "ArrowDown / ArrowUp", "action": "Move to and select the next or previous row." },
-    { "keys": "ArrowRight", "action": "Expand a closed folder; on an open folder, move to its first child." },
-    { "keys": "ArrowLeft", "action": "Collapse an open folder; otherwise move to the parent folder." },
-    { "keys": "Home / End", "action": "Move to and select the first or last row." },
-    { "keys": "Enter / Space", "action": "Select the row; on a folder, also expand or collapse it." }
+    {
+      "keys": "ArrowDown / ArrowUp",
+      "action": "Move to and select the next or previous row."
+    },
+    {
+      "keys": "ArrowRight",
+      "action": "Expand a closed folder; on an open folder, move to its first child."
+    },
+    {
+      "keys": "ArrowLeft",
+      "action": "Collapse an open folder; otherwise move to the parent folder."
+    },
+    {
+      "keys": "Home / End",
+      "action": "Move to and select the first or last row."
+    },
+    {
+      "keys": "Enter / Space",
+      "action": "Select the row; on a folder, also expand or collapse it."
+    }
   ],
   "accessibility": [
     "Rows sit in a `role=\"tree\"` named by the heading (for example `8 files changed`) as `role=\"treeitem\"` with `aria-level`, `aria-posinset`, `aria-setsize`, `aria-selected` and, on folders, `aria-expanded`.",

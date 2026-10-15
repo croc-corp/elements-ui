@@ -37,6 +37,9 @@ const STATUS_HINT = "Enter to send · Shift+Enter for a new line";
  * effort level.
  */
 class HComposer extends HF {
+  /** It also draws on the canvas outside the field, so every flush redraws the whole canvas. */
+  protected override partialFlush = false;
+
   static observedAttributes = ["placeholder", "model", "effort"];
 
   /** Typing energy, 0–1: each keystroke adds to it and it drains over time. */

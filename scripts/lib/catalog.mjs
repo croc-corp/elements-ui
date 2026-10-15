@@ -83,6 +83,10 @@ export const LIB_MODULES = {
   "pixel-canvas": ["Pixel canvas", "The canvas loop behind the Pixel UI components."],
   "pixel-font": ["Pixel font", "The 5x7 pixel font and bitmap helpers."],
   sparks: ["Sparks", "Square pixel sparks, in a canvas or as a one-off burst over a component."],
+  ticker: [
+    "Shared ticker",
+    "One shared animation frame for every animated component, with timed waits for loops that draw at a lower rate.",
+  ],
   "roll-text": ["Rolling text", "Text that rolls over a horizontal axis when it changes."],
   "use-controllable-state": [
     "Controllable state",

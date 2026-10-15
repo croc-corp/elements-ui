@@ -5,6 +5,8 @@
  */
 import * as React from "react";
 
+import { cancelTick, requestTick } from "@/lib/lumesec/ticker";
+
 const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
 
 let reducedQuery: MediaQueryList | null = null;
@@ -58,35 +60,61 @@ export function useInView(ref: React.RefObject<Element | null>, rootMargin = "0p
  */
 export type FrameStep = (time: number, delta: number) => boolean | void;
 
+/** Options of {@link useAnimationLoop}. */
+export interface AnimationLoopOptions {
+  /**
+   * The most frames a second the loop draws. Default 60, every display frame. A loop whose motion looks the same at
+   * 30 sets 30: it sleeps between frames and does half the main-thread work.
+   */
+  frameRate?: number;
+}
+
 /**
  * A requestAnimationFrame loop bound to an element. It runs only while the element is in view, stops
  * itself when `step` returns false, and restarts with `kick()` (call it whenever state changes). The browser
  * holds frames in hidden tabs; the first frame after that sees a delta clamped to 50 ms, so nothing jumps.
  */
-export function useAnimationLoop(ref: React.RefObject<Element | null>, step: FrameStep) {
+export function useAnimationLoop(
+  ref: React.RefObject<Element | null>,
+  step: FrameStep,
+  options: AnimationLoopOptions = {},
+) {
   const stepRef = React.useRef(step);
   const frame = React.useRef(0);
   const last = React.useRef(0);
+  const drawnAt = React.useRef(-1e9);
   const visible = React.useRef(false);
+  // the timer wakes the loop one interval after the last drawn frame; an earlier extra display frame is skipped
+  const interval = 1000 / (options.frameRate ?? 60);
 
   React.useEffect(() => {
     stepRef.current = step;
   });
 
-  const tick = React.useCallback(function frameTick(now: number) {
-    frame.current = 0;
-    const delta = Math.min(0.05, Math.max(0, (now - last.current) / 1000));
-    last.current = now;
-    // the step may call kick() itself; never queue a second frame next to that one
-    if (stepRef.current(now / 1000, delta) && visible.current && !frame.current) {
-      frame.current = requestAnimationFrame(frameTick);
-    }
-  }, []);
+  const tick = React.useCallback(
+    function frameTick(now: number) {
+      frame.current = 0;
+      if (now - drawnAt.current < interval / 2) {
+        // sleep until the next frame is due instead of waking on every display frame
+        if (visible.current) frame.current = requestTick(frameTick, drawnAt.current + interval - 2);
+        return;
+      }
+      drawnAt.current = now;
+      const delta = Math.min(0.05, Math.max(0, (now - last.current) / 1000));
+      last.current = now;
+      // the step may call kick() itself; never queue a second frame next to that one
+      if (stepRef.current(now / 1000, delta) && visible.current && !frame.current) {
+        frame.current = requestTick(frameTick, interval > 17 ? now + interval - 2 : 0);
+      }
+    },
+    [interval],
+  );
 
   const kick = React.useCallback(() => {
     if (frame.current || !visible.current) return;
     last.current = performance.now();
-    frame.current = requestAnimationFrame(tick);
+    // frames come from the shared ticker: one requestAnimationFrame for every loop on the page
+    frame.current = requestTick(tick);
   }, [tick]);
 
   React.useEffect(() => {
@@ -99,7 +127,7 @@ export function useAnimationLoop(ref: React.RefObject<Element | null>, step: Fra
     observer.observe(element);
     return () => {
       observer.disconnect();
-      cancelAnimationFrame(frame.current);
+      cancelTick(frame.current);
       frame.current = 0;
       visible.current = false;
     };

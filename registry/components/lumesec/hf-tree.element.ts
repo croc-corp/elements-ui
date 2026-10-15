@@ -27,7 +27,33 @@ export interface HTreeEventMap {
 const DEFAULT_PATHS =
   "src/auth/session.ts:M,src/auth/token.ts:A,src/auth/legacy.ts:D,src/api/client.ts:M,src/api/routes.ts,src/ui/composer.tsx:M,src/ui/theme.ts,tests/auth.spec.ts:A,docs/README.md:M,package.json:M,tsconfig.json";
 
-const STATUS_TITLE: Readonly<Record<TreeStatus, string>> = { M: "Modified", A: "Added", D: "Deleted" };
+/**
+ * The copy of the tree, read from the `labels` attribute (JSON) over these English defaults. `heading` may contain
+ * `{count}`, the number of changed files; `headingOne` is used when that number is 1.
+ */
+export type HTreeLabels = {
+  heading: string;
+  headingOne: string;
+  changedOnly: string;
+  modified: string;
+  added: string;
+  deleted: string;
+};
+
+const DEFAULT_LABELS: HTreeLabels = {
+  heading: "{count} files changed",
+  headingOne: "{count} file changed",
+  changedOnly: "Changed only",
+  modified: "Modified",
+  added: "Added",
+  deleted: "Deleted",
+};
+
+const STATUS_LABEL: Readonly<Record<TreeStatus, "modified" | "added" | "deleted">> = {
+  M: "modified",
+  A: "added",
+  D: "deleted",
+};
 
 const isStatus = (value: string): value is TreeStatus => value === "M" || value === "A" || value === "D";
 
@@ -85,7 +111,9 @@ function countChanges(node: TreeNode): number {
 
 /** Changed-files tree built from a path list; folders count their changes and arrow keys follow the tree pattern. */
 class HTree extends HF {
-  static readonly observedAttributes = ["paths"] as const;
+  /** 30 frames a second: the highlight looks the same and draws half as often. */
+  protected override frameRate = 30;
+  static readonly observedAttributes = ["paths", "labels"] as const;
 
   /** Paths of the expanded folders. */
   private readonly expanded = new Set<string>();
@@ -158,6 +186,16 @@ class HTree extends HF {
     if (this.initialized) this.load();
   }
 
+  /** The copy: the `labels` attribute over the English defaults. Invalid JSON keeps the defaults. */
+  get labels(): HTreeLabels {
+    try {
+      const value: unknown = JSON.parse(this.getAttribute("labels") || "{}");
+      return value && typeof value === "object" ? { ...DEFAULT_LABELS, ...value } : DEFAULT_LABELS;
+    } catch {
+      return DEFAULT_LABELS;
+    }
+  }
+
   /** Build the tree from `paths`; the expanded folders and the selection are kept where they still exist. */
   private load(): void {
     const root = createNode("", "", false, null);
@@ -188,7 +226,9 @@ class HTree extends HF {
     };
     expandChanged(root);
     const n = root.changes;
-    this.$(".ti").textContent = `${n} ${n === 1 ? "file" : "files"} changed`;
+    const L = this.labels;
+    this.$(".ti").textContent = (n === 1 ? L.headingOne : L.heading).replace("{count}", String(n));
+    this.filterButton.textContent = L.changedOnly;
     this.build();
     const keep = this.rows.some((row) => row.node.path === this.selected);
     this.select(keep ? this.selected : this.rows.find((row) => row.node.st)?.node.path, false);
@@ -224,7 +264,8 @@ class HTree extends HF {
     const expanded = node.file ? "" : ` aria-expanded="${this.expanded.has(node.path)}"`;
     let trailing = "";
     if (node.file) {
-      if (node.st) trailing = `<span class="bd ${node.st}" title="${STATUS_TITLE[node.st]}">${node.st}</span>`;
+      if (node.st)
+        trailing = `<span class="bd ${node.st}" title="${escapeHtml(this.labels[STATUS_LABEL[node.st]])}">${node.st}</span>`;
     } else if (node.changes) {
       trailing = `<span class="cnt">${node.changes}</span>`;
     }
@@ -358,7 +399,9 @@ class HTree extends HF {
       if (flash > 0) busy = true;
       for (let j = Math.floor(y0 / pp); j < (y0 + h) / pp; j++) {
         for (let i = Math.floor(x0 / pp); i < (x0 + w) / pp; i++) {
-          const [x, y] = F.xy(i, j);
+          // the cell centre inline: F.xy allocates a pair per cell
+          const x = (i + 0.5) * pp;
+          const y = (j + 0.5) * pp;
           const lx = x - x0;
           const ly = y - y0;
           if (inRR(lx, ly, w, h, 7) > 0) continue;
@@ -395,7 +438,9 @@ class HTree extends HF {
       const open = this.expanded.has(row.node.path);
       for (let j = Math.floor(iy / pp); j < (iy + 16) / pp; j++) {
         for (let i = Math.floor(ix / pp); i < (ix + 16) / pp; i++) {
-          const [x, y] = F.xy(i, j);
+          // the cell centre inline: F.xy allocates a pair per cell
+          const x = (i + 0.5) * pp;
+          const y = (j + 0.5) * pp;
           const lx = x - ix;
           const ly = y - iy;
           let on = false;
