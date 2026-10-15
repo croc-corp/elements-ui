@@ -25,10 +25,9 @@ To install from the fork, add the namespace to `components.json`:
 }
 ```
 
-Before the first deployment, an owner must:
+GitHub Actions runs on the fork, and Settings → Pages uses "GitHub Actions" as its source. The first deployment runs when this branch merges into `main`.
 
-1. Enable GitHub Actions on the fork.
-2. Set Settings → Pages → Source to "GitHub Actions".
+The upstream Dependency review check needs the dependency graph. If it fails with "Dependency review is not supported on this repository", enable Settings → Code security → Dependency graph.
 
 ## Changes
 
